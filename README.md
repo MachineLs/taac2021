@@ -30,3 +30,7 @@
 4. [Cross-Modal Generalization: Learning in Low Resource Modalities via Meta-Alignment](https://arxiv.org/pdf/2012.02813.pdf)
 
    [Github](https://github.com/peter-yh-wu/xmodal)
+   
+5. [Reading List for Topics in Multimodal Machine Learning](https://github.com/pliang279/awesome-multimodal-ml/)
+
+   [Github](https://github.com/pliang279/awesome-multimodal-ml/)
