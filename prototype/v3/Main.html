@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>光合 · 动态</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600&amp;family=Noto+Sans+SC:wght@400;600&amp;display=swap">
+<style>
+body{margin:0;background:#FFFFFF}
+a{color:#161616}a:hover{color:#4D4D4D}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #161616;outline-offset:2px}
+</style>
+</head>
+<body>
+<div style="background: #FFFFFF; color: #161616; font-family: 'Manrope', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif; padding-bottom: 96px">
+
+<header style="border-bottom: 1px solid #EFEFEF">
+<div style="max-width: 1128px; margin: 0 auto; padding: 0 32px; min-height: 64px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 32px">
+<a href="Main.html" style="font-size: 20px; font-weight: 600; letter-spacing: 0.08em; color: #161616; text-decoration: none">光合</a>
+<nav aria-label="主导航" style="align-self: stretch; display: flex; gap: 24px">
+<a href="Main.html" aria-current="page" style="display: flex; align-items: center; min-height: 64px; font-size: 14px; font-weight: 600; color: #161616; text-decoration: none; box-shadow: inset 0 -2px 0 #161616">动态</a>
+<a href="Discover.html" style="display: flex; align-items: center; min-height: 64px; font-size: 14px; color: #6B6B6B; text-decoration: none">发现</a>
+<a href="Jobs.html" style="display: flex; align-items: center; min-height: 64px; font-size: 14px; color: #6B6B6B; text-decoration: none">合作需求</a>
+<a href="Messages.html" style="display: flex; align-items: center; gap: 4px; min-height: 64px; font-size: 14px; color: #6B6B6B; text-decoration: none">消息<span style="min-width: 20px; height: 20px; padding: 0 4px; box-sizing: border-box; border-radius: 999px; background: #C62828; color: #FFFFFF; font-size: 12px; font-weight: 600; line-height: 20px; text-align: center">3</span></a>
+<a href="Studio.html" style="display: flex; align-items: center; min-height: 64px; font-size: 14px; color: #6B6B6B; text-decoration: none">工作台</a>
+</nav>
+<label style="margin-left: auto; flex: 0 1 240px; display: flex; align-items: center; gap: 8px; height: 40px; padding: 0 12px; box-sizing: border-box; border-radius: 8px; background: #F7F7F7; color: #6B6B6B">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="m20 20-4.2-4.2"></path></svg>
+<input aria-label="搜索" placeholder="搜索创作者或作品" style="flex: 1; min-width: 0; border: 0; background: transparent; font: inherit; font-size: 14px; color: #161616">
+</label>
+<a href="Profile.html" aria-label="我的名片" style="display: block; width: 32px; height: 32px; border-radius: 50%; overflow: hidden"><svg viewBox="0 0 64 64" width="100%" height="100%" aria-hidden="true" style="display: block"><rect width="64" height="64" fill="#E3E8E4"></rect><path d="M32 13c-10 0-15 7-14.5 17 .3 8-1.2 15-3.5 24h36c-2.3-9-3.8-16-3.5-24C47 20 42 13 32 13z" fill="#1E1A18"></path><path d="M12 64c1.5-10 9-16 20-16s18.5 6 20 16z" fill="#3A3F3C"></path><path d="M27.5 40h9v9c-3 2-6 2-9 0z" fill="#D9A486"></path><ellipse cx="32" cy="32" rx="9.5" ry="11.5" fill="#EDBD9E"></ellipse><path d="M22.5 31c-.5-8 4-12.5 10-12.5 6.5 0 10 4.5 9.5 11.5-2.5-4-6.5-6-10.5-6-4 0-7 2.5-9 7z" fill="#1E1A18"></path></svg></a>
+<a href="Publish.html" style="display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border-radius: 8px; background: #161616; color: #FFFFFF; text-decoration: none; font-size: 14px; font-weight: 600">发布作品</a>
+</div>
+</header>
+
+<div style="max-width: 1128px; margin: 0 auto; padding: 32px 32px 0; display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 64px">
+
+<main style="flex: 999 1 560px; min-width: 0; max-width: 680px">
+<div role="tablist" aria-label="动态范围" style="display: flex; gap: 24px; border-bottom: 1px solid #EFEFEF">
+<button role="tab" aria-selected="true" style="height: 48px; padding: 0; border: 0; background: transparent; font: inherit; font-size: 16px; font-weight: 600; color: #161616; box-shadow: inset 0 -2px 0 #161616; cursor: pointer">推荐</button>
+<button role="tab" aria-selected="false" style="height: 48px; padding: 0; border: 0; background: transparent; font: inherit; font-size: 16px; color: #6B6B6B; cursor: pointer">关注</button>
+<button role="tab" aria-selected="false" style="height: 48px; padding: 0; border: 0; background: transparent; font: inherit; font-size: 16px; color: #6B6B6B; cursor: pointer">同城</button>
+</div>
+
+<div style="margin-top: 32px; display: flex; flex-direction: column; gap: 64px">
+
+<article>
+<div style="display: flex; align-items: center; gap: 12px">
+<a href="Profile.html" aria-label="王一凡的名片" style="display: block; width: 40px; height: 40px; flex: none; border-radius: 50%; overflow: hidden"><svg viewBox="0 0 64 64" width="100%" height="100%" aria-hidden="true" style="display: block"><rect width="64" height="64" fill="#ECE6DD"></rect><path d="M12 64c1.5-10 9-16 20-16s18.5 6 20 16z" fill="#3B3F4E"></path><path d="M27.5 40h9v9c-3 2-6 2-9 0z" fill="#CF9A78"></path><ellipse cx="32" cy="32" rx="9.5" ry="11.5" fill="#E5B391"></ellipse><path d="M22 30c-1-8 3.5-12.5 10-12.5S43 21 42 30c-1.5-3.5-4-5.5-6.5-6-3 1.5-7.5 2-11 1-1.2 1.4-2 3-2.5 5z" fill="#1E1916"></path></svg></a>
+<div style="flex: 1; min-width: 0">
+<div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 8px"><a href="Profile.html" style="font-size: 14px; font-weight: 600; text-decoration: none">王一凡</a><span style="font-size: 14px; color: #6B6B6B">婚礼 / 纪实摄影师 · 杭州</span></div>
+<div style="margin-top: 4px; font-size: 12px; color: #6B6B6B">2 小时前</div>
+</div>
+<button style="height: 32px; padding: 0 12px; border: 1px solid #CDCDCD; border-radius: 6px; background: #FFFFFF; color: #161616; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer">关注</button>
+</div>
+<div style="position: relative; margin-top: 16px; aspect-ratio: 3 / 2; border-radius: 6px; overflow: hidden; background: #EFEFEF">
+<svg viewBox="0 0 400 500" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" role="img" aria-label="婚礼作品：花拱门下的新人" style="display: block"><rect width="400" height="500" fill="#F2EAE3"></rect><rect y="392" width="400" height="108" fill="#E5D8CC"></rect><path d="M92 392V214a108 108 0 0 1 216 0v178" fill="none" stroke="#D6C6B6" stroke-width="10"></path><g fill="#A9B9A0"><ellipse cx="108" cy="204" rx="11" ry="5" transform="rotate(-60 108 204)"></ellipse><ellipse cx="134" cy="140" rx="11" ry="5" transform="rotate(-35 134 140)"></ellipse><ellipse cx="198" cy="100" rx="11" ry="5"></ellipse><ellipse cx="264" cy="126" rx="11" ry="5" transform="rotate(35 264 126)"></ellipse><ellipse cx="300" cy="190" rx="11" ry="5" transform="rotate(65 300 190)"></ellipse></g><circle cx="94" cy="230" r="16" fill="#F2CFC5"></circle><circle cx="103" cy="190" r="14" fill="#FFFFFF"></circle><circle cx="121" cy="157" r="15" fill="#E8B9AD"></circle><circle cx="148" cy="131" r="13" fill="#FFFFFF"></circle><circle cx="180" cy="114" r="15" fill="#F2CFC5"></circle><circle cx="216" cy="110" r="14" fill="#FFFFFF"></circle><circle cx="250" cy="120" r="15" fill="#E8B9AD"></circle><circle cx="278" cy="142" r="13" fill="#FFFFFF"></circle><circle cx="298" cy="172" r="15" fill="#F2CFC5"></circle><circle cx="306" cy="208" r="14" fill="#FFFFFF"></circle><path d="M180 248c-22 40-28 96-22 144" fill="none" stroke="#FFFFFF" stroke-width="9" stroke-linecap="round" opacity="0.75"></path><path d="M176 278c-6 12-6 34-4 44l-28 70h76l-26-70c2-10 2-32-6-44z" fill="#FFFFFF"></path><circle cx="182" cy="262" r="13" fill="#E6BFA5"></circle><path d="M169 262c0-14 8-20 15-20 9 0 13 8 12 16-6-6-14-6-20-2-2 6-4 14-6 20z" fill="#3B2F2B"></path><path d="M208 274h28l6 66-4 52h-12l-4-52-4 52h-12l-4-52z" fill="#2F3742"></path><path d="M216 274l6 16 6-16z" fill="#FFFFFF"></path><circle cx="222" cy="258" r="13" fill="#D9A98C"></circle><path d="M209 256c0-12 7-16 14-16 8 0 13 6 12 14-5-4-13-5-21-2z" fill="#2A2321"></path></svg>
+<span style="position: absolute; top: 12px; right: 12px; padding: 4px 8px; border-radius: 999px; background: #161616; color: #FFFFFF; font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums">1 / 12</span>
+</div>
+<p style="margin: 16px 0 0; max-width: 34em; font-size: 16px; line-height: 1.7; color: #333333">周末在西溪湿地的户外婚礼，全程自然光。新人想要“像电影截图一样”的色调，后期统一用了低饱和暖调。<a href="Discover.html" style="font-weight: 600; text-decoration: none">#婚礼跟拍</a></p>
+<div style="margin-top: 12px; display: flex; align-items: center; gap: 24px; font-size: 14px; color: #6B6B6B">
+<button aria-label="点赞，326" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; cursor: pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.3a4.3 4.3 0 0 1 7.5 2.5C19.5 15.4 12 20 12 20z"></path></svg>326</button>
+<button aria-label="评论，48" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; cursor: pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 12a8.5 8.5 0 0 1-12.3 7.6L3.5 20.5l.9-4.4A8.5 8.5 0 1 1 20.5 12z"></path></svg>48</button>
+<button aria-label="转发，12" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; cursor: pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v7h16v-7M12 3v12M7 8l5-5 5 5"></path></svg>12</button>
+<button aria-label="收藏" style="margin-left: auto; display: flex; align-items: center; height: 32px; padding: 0; border: 0; background: transparent; color: inherit; cursor: pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 4.5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v16l-5.5-3.8-5.5 3.8z"></path></svg></button>
+</div>
+</article>
+
+<article>
+<div style="display: flex; align-items: center; gap: 12px">
+<a href="Profile.html" aria-label="周沐的名片" style="display: block; width: 40px; height: 40px; flex: none; border-radius: 50%; overflow: hidden"><svg viewBox="0 0 64 64" width="100%" height="100%" aria-hidden="true" style="display: block"><rect width="64" height="64" fill="#E9E4EC"></rect><circle cx="32" cy="16" r="5.5" fill="#2B211E"></circle><path d="M12 64c1.5-10 9-16 20-16s18.5 6 20 16z" fill="#5B4E63"></path><path d="M27.5 40h9v9c-3 2-6 2-9 0z" fill="#E2B89C"></path><ellipse cx="32" cy="32" rx="9.5" ry="11.5" fill="#F3D3BC"></ellipse><path d="M22.5 30.5c-.6-7.5 3.8-12 9.5-12s10.1 4.5 9.5 12c-1.8-3.6-5.2-5.6-9.5-5.6s-7.7 2-9.5 5.6z" fill="#2B211E"></path></svg></a>
+<div style="flex: 1; min-width: 0">
+<div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 8px"><a href="Profile.html" style="font-size: 14px; font-weight: 600; text-decoration: none">周沐</a><span style="font-size: 14px; color: #6B6B6B">电商修图师 · 支持远程</span></div>
+<div style="margin-top: 4px; font-size: 12px; color: #6B6B6B">5 小时前</div>
+</div>
+<button style="height: 32px; padding: 0 12px; border: 1px solid #CDCDCD; border-radius: 6px; background: #FFFFFF; color: #161616; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer">关注</button>
+</div>
+<div style="position: relative; margin-top: 16px; aspect-ratio: 16 / 9; border-radius: 6px; overflow: hidden; background: #EFEFEF">
+<div style="position: absolute; inset: 0">
+<svg viewBox="0 0 800 450" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" role="img" aria-label="修图后：干净的产品主图" style="display: block"><rect width="800" height="450" fill="#F1EBE3"></rect><path d="M470 0h330v230L640 316H360z" fill="#FFFFFF" opacity="0.5"></path><rect y="316" width="800" height="134" fill="#E6DCCF"></rect><ellipse cx="400" cy="372" rx="190" ry="30" fill="#D3C5B5"></ellipse><rect x="210" y="330" width="380" height="42" fill="#DED2C3"></rect><ellipse cx="400" cy="330" rx="190" ry="30" fill="#EEE6DB"></ellipse><ellipse cx="380" cy="334" rx="70" ry="9" fill="#BEAE9C" opacity="0.55"></ellipse><ellipse cx="500" cy="336" rx="54" ry="8" fill="#BEAE9C" opacity="0.5"></ellipse><rect x="310" y="170" width="84" height="162" rx="22" fill="#B7C8BC"></rect><rect x="327" y="128" width="50" height="48" rx="7" fill="#2F3B37"></rect><rect x="318" y="236" width="68" height="48" rx="5" fill="#F6F2EC"></rect><rect x="330" y="252" width="44" height="4" rx="2" fill="#B7C8BC"></rect><rect x="338" y="262" width="28" height="3" rx="1.5" fill="#D3DDD5"></rect><rect x="320" y="182" width="9" height="134" rx="4.5" fill="#FFFFFF" opacity="0.55"></rect><rect x="440" y="262" width="112" height="72" rx="14" fill="#E9DCCB"></rect><rect x="436" y="248" width="120" height="24" rx="8" fill="#C9B79F"></rect><rect x="452" y="284" width="88" height="28" rx="4" fill="#F7F3EE"></rect><rect x="448" y="272" width="8" height="54" rx="4" fill="#FFFFFF" opacity="0.5"></rect><path d="M610 330c-4-68 30-104 70-116-4 58-26 94-70 116z" fill="#8FA690"></path><path d="M610 330c18-42 38-74 64-108" fill="none" stroke="#6F8B71" stroke-width="2.5"></path></svg>
+</div>
+<div style="position: absolute; top: 0; bottom: 0; left: 0; width: 50%; overflow: hidden">
+<div style="width: 200%; height: 100%; filter: saturate(0.5) brightness(0.92) contrast(0.88)">
+<svg viewBox="0 0 800 450" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" role="img" aria-label="修图前：有反光和浮尘的原片" style="display: block"><rect width="800" height="450" fill="#DCD3C8"></rect><path d="M470 0h330v230L640 316H360z" fill="#FFFFFF" opacity="0.25"></path><rect y="316" width="800" height="134" fill="#D9CEC1"></rect><ellipse cx="400" cy="372" rx="190" ry="30" fill="#C8BAAA"></ellipse><rect x="210" y="330" width="380" height="42" fill="#D2C6B7"></rect><ellipse cx="400" cy="330" rx="190" ry="30" fill="#E2D9CE"></ellipse><rect x="310" y="170" width="84" height="162" rx="22" fill="#B7C8BC"></rect><rect x="327" y="128" width="50" height="48" rx="7" fill="#2F3B37"></rect><rect x="318" y="236" width="68" height="48" rx="5" fill="#ECE6DD"></rect><path d="M352 178h14l-8 140h-10z" fill="#FFFFFF" opacity="0.8"></path><circle cx="362" cy="214" r="3.5" fill="#FFFFFF" opacity="0.85"></circle><circle cx="378" cy="300" r="3" fill="#7E7264" opacity="0.6"></circle><circle cx="342" cy="150" r="2.5" fill="#FFFFFF" opacity="0.7"></circle><circle cx="300" cy="230" r="2" fill="#7E7264" opacity="0.5"></circle></svg>
+</div>
+</div>
+<span aria-hidden="true" style="position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; margin-left: -1px; background: #FFFFFF"></span>
+<span style="position: absolute; left: 12px; top: 12px; padding: 4px 8px; border-radius: 999px; background: #FFFFFF; color: #161616; font-size: 12px; font-weight: 600">修图前</span>
+<span style="position: absolute; right: 12px; top: 12px; padding: 4px 8px; border-radius: 999px; background: #FFFFFF; color: #161616; font-size: 12px; font-weight: 600">修图后</span>
+<button aria-label="拖动查看前后对比" style="position: absolute; left: 50%; top: 50%; width: 40px; height: 40px; margin: -20px 0 0 -20px; border-radius: 50%; border: 0; background: #FFFFFF; color: #161616; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16); cursor: ew-resize"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 7 4 12l5 5M15 7l5 5-5 5"></path></svg></button>
+</div>
+<div style="margin-top: 16px; display: flex; align-items: center; gap: 16px; padding: 16px; border-radius: 8px; background: #F7F7F7">
+<div style="flex: 1; min-width: 0"><div style="font-size: 14px; font-weight: 600">电商主图精修</div><div style="margin-top: 4px; font-size: 14px; color: #6B6B6B">¥60 / 张起 · 48 小时交付 · 支持远程</div></div>
+<a href="Profile.html" style="flex: none; display: inline-flex; align-items: center; height: 32px; padding: 0 12px; box-sizing: border-box; border: 1px solid #CDCDCD; border-radius: 6px; background: #FFFFFF; font-size: 14px; font-weight: 600; text-decoration: none">查看服务</a>
+</div>
+<p style="margin: 16px 0 0; max-width: 34em; font-size: 16px; line-height: 1.7; color: #333333">护肤品主图精修：去掉瓶身反光、清理浮尘、统一暖白底，补回玻璃的通透感。<a href="Discover.html" style="font-weight: 600; text-decoration: none">#电商主图精修</a></p>
+<div style="margin-top: 12px; display: flex; align-items: center; gap: 24px; font-size: 14px; color: #6B6B6B">
+<button aria-label="点赞，1024" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; cursor: pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.3a4.3 4.3 0 0 1 7.5 2.5C19.5 15.4 12 20 12 20z"></path></svg>1,024</button>
+<button aria-label="评论，96" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; cursor: pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 12a8.5 8.5 0 0 1-12.3 7.6L3.5 20.5l.9-4.4A8.5 8.5 0 1 1 20.5 12z"></path></svg>96</button>
+<button aria-label="转发，37" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; cursor: pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v7h16v-7M12 3v12M7 8l5-5 5 5"></path></svg>37</button>
+<button aria-label="收藏" style="margin-left: auto; display: flex; align-items: center; height: 32px; padding: 0; border: 0; background: transparent; color: inherit; cursor: pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 4.5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v16l-5.5-3.8-5.5 3.8z"></path></svg></button>
+</div>
+</article>
+
+<article>
+<div style="display: flex; align-items: center; gap: 12px">
+<a href="Profile.html" aria-label="陈屿的名片" style="display: block; width: 40px; height: 40px; flex: none; border-radius: 50%; overflow: hidden"><svg viewBox="0 0 64 64" width="100%" height="100%" aria-hidden="true" style="display: block"><rect width="64" height="64" fill="#E3E7EE"></rect><path d="M12 64c1.5-10 9-16 20-16s18.5 6 20 16z" fill="#2F3742"></path><path d="M27.5 40h9v9c-3 2-6 2-9 0z" fill="#C4937A"></path><ellipse cx="32" cy="32" rx="9.5" ry="11.5" fill="#D9A98C"></ellipse><path d="M22 30c-1-8 3.5-12.5 10-12.5S43 21 42 30c-1.5-3.5-4-5.5-6.5-6-3 1.5-7.5 2-11 1-1.2 1.4-2 3-2.5 5z" fill="#15171B"></path><g fill="none" stroke="#1C2026" stroke-width="1.3"><circle cx="28" cy="33" r="3.2"></circle><circle cx="36" cy="33" r="3.2"></circle><path d="M31.2 33h1.6"></path></g></svg></a>
+<div style="flex: 1; min-width: 0">
+<div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 8px"><a href="Profile.html" style="font-size: 14px; font-weight: 600; text-decoration: none">陈屿</a><span style="font-size: 14px; color: #6B6B6B">品牌短片导演 · 剪辑 / 调色</span></div>
+<div style="margin-top: 4px; font-size: 12px; color: #6B6B6B">昨天</div>
+</div>
+<button style="height: 32px; padding: 0 12px; border: 1px solid #CDCDCD; border-radius: 6px; background: #FFFFFF; color: #161616; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer">关注</button>
+</div>
+<div style="position: relative; margin-top: 16px; aspect-ratio: 16 / 9; border-radius: 6px; overflow: hidden; background: #2B4641">
+<svg viewBox="0 0 800 450" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" role="img" aria-label="视频封面：清晨茶园" style="display: block"><defs><linearGradient id="w1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2E4E5A"></stop><stop offset="0.55" stop-color="#C98A5E"></stop><stop offset="1" stop-color="#E7B27C"></stop></linearGradient></defs><rect width="800" height="450" fill="url(#w1) #7A6E60"></rect><circle cx="600" cy="252" r="38" fill="#FBE3B8" opacity="0.9"></circle><path d="M0 270c140-30 260-8 400-26s260 6 400-8v214H0z" fill="#3C5A55"></path><path d="M0 318c160-26 300 2 460-18s240 0 340-8v158H0z" fill="#2B4641"></path><path d="M0 362c200-20 420 2 800-26M0 396c220-22 460 4 800-28M0 430c240-22 500 4 800-28" fill="none" stroke="#3F625A" stroke-width="10" stroke-linecap="round"></path><path d="M230 332l11-58h20l11 58z" fill="#1A2624"></path><circle cx="251" cy="262" r="10" fill="#1A2624"></circle><path d="M231 258h40l-20-14z" fill="#1A2624"></path></svg>
+<button aria-label="播放视频" style="position: absolute; left: 50%; top: 50%; width: 56px; height: 56px; margin: -28px 0 0 -28px; border-radius: 50%; border: 0; background: #FFFFFF; color: #161616; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16); cursor: pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8.5 5.5v13l10.5-6.5z"></path></svg></button>
+<span style="position: absolute; right: 12px; bottom: 12px; padding: 4px 8px; border-radius: 999px; background: #161616; color: #FFFFFF; font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums">01:00</span>
+</div>
+<p style="margin: 16px 0 0; max-width: 34em; font-size: 16px; line-height: 1.7; color: #333333">给一家茶饮品牌拍的 60 秒新品短片。清晨的茶园，一台相机、一个稳定器，两天拍完。<a href="Discover.html" style="font-weight: 600; text-decoration: none">#品牌短片</a></p>
+<div style="margin-top: 12px; display: flex; align-items: center; gap: 24px; font-size: 14px; color: #6B6B6B">
+<button aria-label="点赞，712" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; cursor: pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.3a4.3 4.3 0 0 1 7.5 2.5C19.5 15.4 12 20 12 20z"></path></svg>712</button>
+<button aria-label="评论，64" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; cursor: pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 12a8.5 8.5 0 0 1-12.3 7.6L3.5 20.5l.9-4.4A8.5 8.5 0 1 1 20.5 12z"></path></svg>64</button>
+<span>3,208 次播放</span>
+<button aria-label="收藏" style="margin-left: auto; display: flex; align-items: center; height: 32px; padding: 0; border: 0; background: transparent; color: inherit; cursor: pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 4.5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v16l-5.5-3.8-5.5 3.8z"></path></svg></button>
+</div>
+</article>
+
+<article style="padding: 24px; border-radius: 12px; background: #F7F7F7">
+<div style="font-size: 12px; font-weight: 600; color: #6B6B6B">合作需求</div>
+<h3 style="margin: 8px 0 0; font-size: 20px; font-weight: 600; line-height: 1.4">11 月 · 杭州 · 茶饮品牌新品拍摄</h3>
+<div style="margin-top: 4px; font-size: 14px; color: #6B6B6B">山青茶事 · 3 小时前发布 · 14 人已申请</div>
+<dl style="margin: 24px 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(140px, 100%), 1fr)); gap: 16px">
+<div><dt style="font-size: 12px; color: #6B6B6B">拍摄日期</dt><dd style="margin: 4px 0 0; font-size: 16px; font-weight: 600; font-variant-numeric: tabular-nums">11.18 – 11.19</dd></div>
+<div><dt style="font-size: 12px; color: #6B6B6B">需要</dt><dd style="margin: 4px 0 0; font-size: 16px; font-weight: 600">产品摄影 + 短视频</dd></div>
+<div><dt style="font-size: 12px; color: #6B6B6B">预算</dt><dd style="margin: 4px 0 0; font-size: 16px; font-weight: 600">[面议]</dd></div>
+</dl>
+<p style="margin: 16px 0 0; font-size: 14px; line-height: 1.6; color: #4D4D4D">需自带灯光，另交付一条 15 秒竖版短视频。</p>
+<div style="margin-top: 24px; display: flex; flex-wrap: wrap; gap: 12px">
+<a href="Jobs.html" style="display: inline-flex; align-items: center; height: 40px; padding: 0 16px; box-sizing: border-box; border-radius: 8px; background: #161616; color: #FFFFFF; font-size: 14px; font-weight: 600; text-decoration: none">用我的名片申请</a>
+<button style="height: 40px; padding: 0 16px; border: 1px solid #CDCDCD; border-radius: 8px; background: #FFFFFF; color: #161616; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer">收藏</button>
+</div>
+</article>
+</div>
+</main>
+
+<aside style="flex: 1 1 280px; max-width: 320px; display: flex; flex-direction: column; gap: 48px">
+<section aria-label="我的名片" style="padding: 24px; border-radius: 12px; background: #F7F7F7">
+<div style="display: flex; align-items: center; gap: 12px">
+<a href="Profile.html" aria-label="查看我的名片" style="display: block; width: 48px; height: 48px; flex: none; border-radius: 50%; overflow: hidden"><svg viewBox="0 0 64 64" width="100%" height="100%" aria-hidden="true" style="display: block"><rect width="64" height="64" fill="#E3E8E4"></rect><path d="M32 13c-10 0-15 7-14.5 17 .3 8-1.2 15-3.5 24h36c-2.3-9-3.8-16-3.5-24C47 20 42 13 32 13z" fill="#1E1A18"></path><path d="M12 64c1.5-10 9-16 20-16s18.5 6 20 16z" fill="#3A3F3C"></path><path d="M27.5 40h9v9c-3 2-6 2-9 0z" fill="#D9A486"></path><ellipse cx="32" cy="32" rx="9.5" ry="11.5" fill="#EDBD9E"></ellipse><path d="M22.5 31c-.5-8 4-12.5 10-12.5 6.5 0 10 4.5 9.5 11.5-2.5-4-6.5-6-10.5-6-4 0-7 2.5-9 7z" fill="#1E1A18"></path></svg></a>
+<div style="min-width: 0"><a href="Profile.html" style="font-size: 16px; font-weight: 600; text-decoration: none">林夏</a><div style="margin-top: 4px; font-size: 14px; color: #6B6B6B">人像 / 商业摄影师</div></div>
+</div>
+<div style="margin-top: 24px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px">
+<div><div style="font-size: 20px; font-weight: 600; font-variant-numeric: tabular-nums">128</div><div style="margin-top: 4px; font-size: 12px; color: #6B6B6B">本周名片访问</div></div>
+<div><div style="font-size: 20px; font-weight: 600; font-variant-numeric: tabular-nums">2,340</div><div style="margin-top: 4px; font-size: 12px; color: #6B6B6B">作品曝光</div></div>
+<a href="StudioOrders.html" style="display: block; text-decoration: none"><div style="font-size: 20px; font-weight: 600; font-variant-numeric: tabular-nums">3</div><div style="margin-top: 4px; font-size: 12px; color: #6B6B6B">待确认预约</div></a>
+</div>
+<div style="margin-top: 24px; display: flex; gap: 16px; font-size: 14px; font-weight: 600">
+<a href="Profile.html" style="text-decoration: none">我的名片 →</a>
+<a href="Card.html" style="text-decoration: none">分享名片</a>
+</div>
+</section>
+
+<section aria-labelledby="follow-title">
+<h2 id="follow-title" style="margin: 0; font-size: 16px; font-weight: 600">推荐关注</h2>
+<ul style="list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-direction: column; gap: 16px">
+<li style="display: flex; align-items: center; gap: 12px">
+<a href="Profile.html" aria-label="许南的名片" style="display: block; width: 40px; height: 40px; flex: none; border-radius: 50%; overflow: hidden"><svg viewBox="0 0 64 64" width="100%" height="100%" aria-hidden="true" style="display: block"><rect width="64" height="64" fill="#E4E7EA"></rect><path d="M12 64c1.5-10 9-16 20-16s18.5 6 20 16z" fill="#556B8E"></path><path d="M27.5 40h9v9c-3 2-6 2-9 0z" fill="#D3A583"></path><ellipse cx="32" cy="32" rx="9.5" ry="11.5" fill="#E8BC9A"></ellipse><path d="M22 30c-1-8 3.5-12.5 10-12.5S43 21 42 30c-1.5-3.5-4-5.5-6.5-6-3 1.5-7.5 2-11 1-1.2 1.4-2 3-2.5 5z" fill="#2A2420"></path></svg></a>
+<div style="flex: 1; min-width: 0"><a href="Profile.html" style="font-size: 14px; font-weight: 600; text-decoration: none">许南</a><div style="margin-top: 4px; font-size: 14px; color: #6B6B6B">航拍 / 风光 · 成都</div></div>
+<button style="height: 32px; padding: 0 12px; border: 1px solid #CDCDCD; border-radius: 6px; background: #FFFFFF; color: #161616; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer">关注</button>
+</li>
+<li style="display: flex; align-items: center; gap: 12px">
+<a href="Profile.html" aria-label="苏禾的名片" style="display: block; width: 40px; height: 40px; flex: none; border-radius: 50%; overflow: hidden"><svg viewBox="0 0 64 64" width="100%" height="100%" aria-hidden="true" style="display: block"><rect width="64" height="64" fill="#EFE5DE"></rect><path d="M32 13c-10 0-15 7-14.5 17 .3 8-1.2 15-3.5 24h36c-2.3-9-3.8-16-3.5-24C47 20 42 13 32 13z" fill="#5A3A2E"></path><path d="M12 64c1.5-10 9-16 20-16s18.5 6 20 16z" fill="#8A5A44"></path><path d="M27.5 40h9v9c-3 2-6 2-9 0z" fill="#E2B194"></path><ellipse cx="32" cy="32" rx="9.5" ry="11.5" fill="#F1C9A9"></ellipse><path d="M22.5 31c-.5-8 4-12.5 10-12.5 6.5 0 10 4.5 9.5 11.5-2.5-4-6.5-6-10.5-6-4 0-7 2.5-9 7z" fill="#5A3A2E"></path></svg></a>
+<div style="flex: 1; min-width: 0"><a href="Profile.html" style="font-size: 14px; font-weight: 600; text-decoration: none">苏禾</a><div style="margin-top: 4px; font-size: 14px; color: #6B6B6B">胶片人像 · 北京</div></div>
+<button style="height: 32px; padding: 0 12px; border: 1px solid #CDCDCD; border-radius: 6px; background: #FFFFFF; color: #161616; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer">关注</button>
+</li>
+<li style="display: flex; align-items: center; gap: 12px">
+<a href="Profile.html" aria-label="何一舟的名片" style="display: block; width: 40px; height: 40px; flex: none; border-radius: 50%; overflow: hidden"><svg viewBox="0 0 64 64" width="100%" height="100%" aria-hidden="true" style="display: block"><rect width="64" height="64" fill="#E5E9E0"></rect><path d="M12 64c1.5-10 9-16 20-16s18.5 6 20 16z" fill="#4F5D3A"></path><path d="M27.5 40h9v9c-3 2-6 2-9 0z" fill="#B47A58"></path><ellipse cx="32" cy="32" rx="9.5" ry="11.5" fill="#C98E6B"></ellipse><path d="M22 30c-1-8 3.5-12.5 10-12.5S43 21 42 30c-1.5-3.5-4-5.5-6.5-6-3 1.5-7.5 2-11 1-1.2 1.4-2 3-2.5 5z" fill="#1B1714"></path></svg></a>
+<div style="flex: 1; min-width: 0"><a href="Profile.html" style="font-size: 14px; font-weight: 600; text-decoration: none">何一舟</a><div style="margin-top: 4px; font-size: 14px; color: #6B6B6B">Vlog 剪辑 · 广州</div></div>
+<button style="height: 32px; padding: 0 12px; border: 1px solid #CDCDCD; border-radius: 6px; background: #FFFFFF; color: #161616; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer">关注</button>
+</li>
+</ul>
+<a href="Discover.html" style="margin-top: 16px; display: inline-block; font-size: 14px; font-weight: 600; text-decoration: none">发现更多创作者 →</a>
+</section>
+
+<section aria-labelledby="theme-title">
+<h2 id="theme-title" style="margin: 0; font-size: 16px; font-weight: 600">本周主题</h2>
+<div style="margin-top: 16px; aspect-ratio: 16 / 9; border-radius: 8px; overflow: hidden; background: #262B45">
+<svg viewBox="0 0 400 500" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" role="img" aria-label="主题示例：城市夜景" style="display: block"><rect width="400" height="500" fill="#262B45"></rect><circle cx="312" cy="200" r="16" fill="#F3E5C5"></circle><rect y="262" width="64" height="238" fill="#131929"></rect><rect x="64" y="210" width="60" height="290" fill="#1A2236"></rect><rect x="124" y="176" width="58" height="324" fill="#111726"></rect><rect x="182" y="236" width="80" height="264" fill="#1C2439"></rect><rect x="262" y="198" width="56" height="302" fill="#141A2B"></rect><rect x="318" y="270" width="82" height="230" fill="#192034"></rect><path d="M134 196h8v10h-8zM162 196h8v10h-8zM148 216h8v10h-8zM134 256h8v10h-8zM162 276h8v10h-8zM148 296h8v10h-8zM78 230h10v8H78zM100 250h10v8h-10zM78 290h10v8H78zM196 256h10v8h-10zM220 256h10v8h-10zM244 276h10v8h-10zM196 316h10v8h-10zM274 216h8v10h-8zM296 236h8v10h-8zM274 276h8v10h-8zM330 290h10v8h-10zM354 310h10v8h-10zM378 290h10v8h-10zM12 280h10v8H12zM36 320h10v8H36z" fill="#F4C774" opacity="0.9"></path></svg>
+</div>
+<div style="margin-top: 12px; font-size: 16px; font-weight: 600">城市夜景</div>
+<p style="margin: 4px 0 0; font-size: 14px; line-height: 1.6; color: #6B6B6B">照片或 15 秒短片都可以投稿，入选作品会出现在发现页首屏。截止 11 月 10 日。</p>
+<button style="margin-top: 16px; height: 40px; padding: 0 16px; border: 1px solid #CDCDCD; border-radius: 8px; background: #FFFFFF; color: #161616; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer">参与投稿</button>
+</section>
+
+<section aria-labelledby="topic-title">
+<h2 id="topic-title" style="margin: 0; font-size: 16px; font-weight: 600">热门话题</h2>
+<ul style="list-style: none; margin: 8px 0 0; padding: 0">
+<li><a href="Discover.html" style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 8px 0; text-decoration: none"><span style="font-size: 14px; font-weight: 600">#胶片人像</span><span style="font-size: 12px; color: #6B6B6B">1.2 万作品</span></a></li>
+<li><a href="Discover.html" style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 8px 0; text-decoration: none"><span style="font-size: 14px; font-weight: 600">#电商主图精修</span><span style="font-size: 12px; color: #6B6B6B">8,600 作品</span></a></li>
+<li><a href="Discover.html" style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 8px 0; text-decoration: none"><span style="font-size: 14px; font-weight: 600">#Vlog 调色</span><span style="font-size: 12px; color: #6B6B6B">5,400 作品</span></a></li>
+<li><a href="Discover.html" style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 8px 0; text-decoration: none"><span style="font-size: 14px; font-weight: 600">#婚礼跟拍</span><span style="font-size: 12px; color: #6B6B6B">4,900 作品</span></a></li>
+</ul>
+</section>
+
+<div style="display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 12px; color: #6B6B6B">
+<a href="#" style="color: #6B6B6B; text-decoration: none">关于</a><a href="#" style="color: #6B6B6B; text-decoration: none">创作者协议</a><a href="#" style="color: #6B6B6B; text-decoration: none">隐私</a><a href="#" style="color: #6B6B6B; text-decoration: none">帮助</a><span>光合 © 2026</span>
+</div>
+</aside>
+</div>
+</div>
+<a href="./" style="position: fixed; right: calc(24px + env(safe-area-inset-right, 0px)); bottom: calc(24px + env(safe-area-inset-bottom, 0px)); z-index: 50; display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px; border-radius: 999px; background: #FFFFFF; color: #161616; font-family: 'Manrope', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif; font-size: 14px; font-weight: 600; text-decoration: none; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8.5 6.5h11M8.5 12h11M8.5 17.5h11M4.5 6.5h.01M4.5 12h.01M4.5 17.5h.01"></path></svg>全部页面</a>
+<script>document.addEventListener("submit",function(e){e.preventDefault()});document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest('a[href="#"]');if(a){e.preventDefault()}});</script>
+</body>
+</html>
