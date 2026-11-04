@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>光合 V3 原型</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600&amp;family=Noto+Sans+SC:wght@400;600&amp;display=swap">
+<style>
+/* Directory of the V3 prototype; single light look, same tokens as the V3 spec */
+:root { --ink: #161616; --text: #333333; --muted: #6B6B6B; --line: #EFEFEF; --panel: #F7F7F7; --bg: #FFFFFF;
+  --font: 'Manrope', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font); }
+a { color: var(--ink); }
+a:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.wrap { max-width: 1128px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.top { border-bottom: 1px solid var(--line); }
+.top .wrap { min-height: 64px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 32px; }
+.logo { font-size: 20px; font-weight: 600; letter-spacing: 0.08em; }
+.note { margin-left: auto; font-size: 14px; color: var(--muted); }
+main { padding-block: 48px 96px; }
+h1 { margin: 0; font-size: 32px; font-weight: 600; line-height: 1.25; text-wrap: balance; }
+.lead { margin: 8px 0 0; max-width: 36em; font-size: 16px; line-height: 1.6; color: var(--muted); }
+.paths { margin-top: 32px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)); gap: 16px; }
+.path { padding: 24px; border-radius: 12px; background: var(--panel); }
+.path h3 { margin: 0; font-size: 16px; font-weight: 600; }
+.path p { margin: 8px 0 0; font-size: 14px; line-height: 1.8; color: var(--muted); }
+.path a { font-weight: 600; text-decoration: none; }
+.cta { margin-top: 24px; display: inline-flex; align-items: center; height: 48px; padding: 0 24px; border-radius: 8px; background: var(--ink); color: var(--bg); font-size: 16px; font-weight: 600; text-decoration: none; }
+section { margin-top: 48px; }
+h2 { margin: 0; font-size: 20px; font-weight: 600; }
+ul { list-style: none; margin: 16px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr)); gap: 0 32px; }
+li a { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); text-decoration: none; }
+.name { font-size: 14px; font-weight: 600; }
+.who { font-size: 12px; color: var(--muted); }
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap"><span class="logo">光合</span><span class="note">V3 前端原型 · 无后端，数据为示例</span></div></header>
+<main class="wrap">
+<h1>光合 V3 原型</h1>
+<p class="lead">摄影、修图、视频创作者的名片平台。所有页面互相连通，从任意页面右下角的“全部页面”回到这里。</p>
+<div class="paths">
+<div class="path"><h3>客户的一次预约</h3><p><a href="Discover.html">发现</a> → <a href="Work.html">作品</a> → <a href="Booking.html">预约</a> → <a href="Pay.html">支付定金</a> → <a href="BookingDone.html">预约已提交</a> → <a href="Orders.html">我的订单</a></p></div>
+<div class="path"><h3>创作者的一天</h3><p><a href="Studio.html">工作台</a> → <a href="StudioOrders.html">确认预约</a> → <a href="Schedule.html">档期</a> → <a href="Deliver.html">交付作品</a> → <a href="Earnings.html">收入</a></p></div>
+</div>
+<a class="cta" href="Main.html">进入首页</a>
+<section><h2>从这里开始</h2><ul><li><a href="Main.html"><span class="name">首页动态</span><span class="who">创作者</span></a></li><li><a href="Auth.html"><span class="name">注册 / 登录</span><span class="who">新用户</span></a></li><li><a href="System.html"><span class="name">设计规范</span><span class="who">设计</span></a></li></ul></section><section><h2>客户：找人、预约、验收</h2><ul><li><a href="Discover.html"><span class="name">发现创作者</span><span class="who">客户</span></a></li><li><a href="Profile.html"><span class="name">个人名片主页</span><span class="who">客户</span></a></li><li><a href="Work.html"><span class="name">作品详情</span><span class="who">客户</span></a></li><li><a href="Booking.html"><span class="name">预约拍摄</span><span class="who">客户</span></a></li><li><a href="Pay.html"><span class="name">支付定金</span><span class="who">客户</span></a></li><li><a href="BookingDone.html"><span class="name">预约已提交</span><span class="who">客户</span></a></li><li><a href="Orders.html"><span class="name">我的订单</span><span class="who">客户</span></a></li><li><a href="OrderDetail.html"><span class="name">订单详情与验收</span><span class="who">客户</span></a></li><li><a href="Review.html"><span class="name">写评价</span><span class="who">客户</span></a></li><li><a href="PostJob.html"><span class="name">发布合作需求</span><span class="who">客户</span></a></li><li><a href="Card.html"><span class="name">移动端电子名片</span><span class="who">客户</span></a></li></ul></section><section><h2>创作者：接需求、沟通</h2><ul><li><a href="Jobs.html"><span class="name">合作需求广场</span><span class="who">创作者</span></a></li><li><a href="JobDetail.html"><span class="name">需求详情与名片申请</span><span class="who">创作者</span></a></li><li><a href="Messages.html"><span class="name">消息</span><span class="who">创作者</span></a></li><li><a href="Notifications.html"><span class="name">通知</span><span class="who">创作者</span></a></li><li><a href="Saved.html"><span class="name">收藏与灵感板</span><span class="who">创作者</span></a></li><li><a href="Settings.html"><span class="name">设置与认证</span><span class="who">创作者</span></a></li></ul></section><section><h2>创作者工作台</h2><ul><li><a href="Studio.html"><span class="name">概览</span><span class="who">创作者</span></a></li><li><a href="StudioOrders.html"><span class="name">订单管理</span><span class="who">创作者</span></a></li><li><a href="Deliver.html"><span class="name">交付作品</span><span class="who">创作者</span></a></li><li><a href="Schedule.html"><span class="name">档期管理</span><span class="who">创作者</span></a></li><li><a href="Publish.html"><span class="name">发布作品</span><span class="who">创作者</span></a></li><li><a href="EditCard.html"><span class="name">编辑名片</span><span class="who">创作者</span></a></li><li><a href="Services.html"><span class="name">服务与报价</span><span class="who">创作者</span></a></li><li><a href="Earnings.html"><span class="name">收入与提现</span><span class="who">创作者</span></a></li></ul></section>
+</main>
+</body>
+</html>
