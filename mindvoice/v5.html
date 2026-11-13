@@ -1,0 +1,1573 @@
+<title>听屿 Tingyu · 路演 Pitch</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --paper:#F2F4F7;
+  --paper-2:#E8ECF1;
+  --surface:#FBFCFD;
+  --surface-2:#F5F7FA;
+  --ink:#0E1A2B;
+  --ink-2:#34445A;
+  --ink-3:#5F6D82;
+  --ink-4:#98A3B3;
+  --line:#D5DCE5;
+  --line-2:#E3E8EE;
+  --primary:#25378A;
+  --primary-ink:#18255F;
+  --primary-2:#5B6CB9;
+  --primary-3:#A7B1DB;
+  --primary-soft:#E2E6F4;
+  --primary-wash:#EEF0F8;
+  --amber:#C27708;
+  --amber-ink:#8F5500;
+  --amber-soft:#F6E8CF;
+  --ok:#2C7656;
+  --ok-soft:#DFEFE7;
+  --danger:#B3261E;
+  --danger-soft:#FBE7E5;
+  --on-primary:#FFFFFF;
+  --on-dark:#F2F4F7;
+  --photo-shade:rgba(8,14,26,.72);
+  --backdrop:rgba(14,26,43,.48);
+  --shadow:0 1px 2px rgba(14,26,43,.05), 0 18px 40px -18px rgba(14,26,43,.28);
+  --serif:"Noto Serif SC","Songti SC","STSong","SimSun",serif;
+  --sans:"Noto Sans SC","PingFang SC","Microsoft YaHei","WenQuanYi Zen Hei",sans-serif;
+  --mono:"IBM Plex Mono","JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+  --gutter:max(16px, env(safe-area-inset-left, 0px));
+  --gutter-r:max(16px, env(safe-area-inset-right, 0px));
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.7;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--primary);outline-offset:3px;border-radius:6px}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.num,.mono{font-variant-numeric:tabular-nums}
+.mono{font-family:var(--mono)}
+.wrap{max-width:1180px;margin-inline:auto;padding-left:var(--gutter);padding-right:var(--gutter-r)}
+@media (min-width:768px){.wrap{padding-left:max(32px, env(safe-area-inset-left, 0px));padding-right:max(32px, env(safe-area-inset-right, 0px))}}
+
+/* ---------- top bar ---------- */
+.topbar{position:fixed;top:env(safe-area-inset-top, 0px);left:0;right:0;z-index:40;background:rgba(242,244,247,.86);backdrop-filter:saturate(1.4) blur(12px);-webkit-backdrop-filter:saturate(1.4) blur(12px);border-bottom:1px solid var(--line-2)}
+.topbar .wrap{display:flex;align-items:center;gap:16px;height:56px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:700;letter-spacing:.02em;flex-shrink:0}
+.brand-mark{width:28px;height:28px;flex-shrink:0}
+.brand small{font-family:var(--mono);font-weight:500;font-size:12px;color:var(--ink-3);letter-spacing:.04em}
+.round-chip{font-family:var(--mono);font-size:11px;letter-spacing:.06em;padding:3px 8px;border:1px solid var(--line);border-radius:999px;color:var(--ink-2);white-space:nowrap}
+.chapter{margin-left:auto;font-family:var(--mono);font-size:12.5px;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chapter b{color:var(--ink);font-weight:600}
+.topbar .btn-primary{padding:8px 16px;font-size:14px}
+.progress{position:absolute;left:0;bottom:-1px;height:2px;background:var(--primary);width:0;transition:width .1s linear}
+@media (max-width:640px){.topbar .btn-primary,.round-chip{display:none}}
+
+/* ---------- side rail ---------- */
+.rail{position:fixed;right:max(20px, env(safe-area-inset-right, 0px));top:50%;transform:translateY(-50%);z-index:30;display:none}
+.rail ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.rail a{display:flex;align-items:center;justify-content:flex-end;gap:10px;text-decoration:none;font-size:12px;color:var(--ink-3);padding:4px 0;font-family:var(--sans)}
+.rail a span{opacity:0;transform:translateX(4px);transition:opacity .2s,transform .2s;white-space:nowrap;background:var(--paper);padding:0 4px}
+.rail a i{display:block;width:14px;height:2px;background:var(--ink-4);border-radius:2px;transition:width .2s,background .2s}
+.rail a:hover span,.rail a:focus-visible span,.rail a.on span{opacity:1;transform:none}
+.rail a.on{color:var(--ink);font-weight:500}
+.rail a.on i{width:26px;background:var(--primary)}
+@media (min-width:1380px){.rail{display:block}}
+
+/* ---------- buttons ---------- */
+.btn-primary,.btn-ghost,.btn-text{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:999px;font-weight:500;text-decoration:none;white-space:nowrap;transition:background .15s,border-color .15s,color .15s,transform .1s}
+.btn-primary{background:var(--primary);color:var(--on-primary);border:1px solid var(--primary);padding:12px 22px}
+.btn-primary:hover{background:var(--primary-ink)}
+.btn-primary:active{transform:translateY(1px)}
+.btn-ghost{background:transparent;border:1px solid var(--line);color:var(--ink);padding:11px 20px}
+.btn-ghost:hover{border-color:var(--ink-3);background:var(--surface)}
+.btn-text{background:none;border:0;padding:8px 6px;color:var(--ink-3);font-size:14px}
+.btn-text:hover{color:var(--ink)}
+.btn-primary svg,.btn-ghost svg{width:18px;height:18px;flex-shrink:0}
+.icon-btn{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--surface);display:inline-grid;place-items:center;color:var(--ink-2);flex-shrink:0}
+.icon-btn:hover{border-color:var(--ink-3);color:var(--ink)}
+.icon-btn svg{width:18px;height:18px}
+
+/* ---------- section scaffolding ---------- */
+.sec{padding-block:120px;border-top:1px solid var(--line-2);scroll-margin-top:56px}
+.sec.alt{background:var(--surface-2)}
+.eyebrow{display:flex;align-items:center;gap:12px;font-family:var(--mono);font-size:12.5px;letter-spacing:.08em;color:var(--ink-3);text-transform:uppercase;margin:0 0 20px}
+.eyebrow::before{content:"";width:28px;height:1px;background:var(--ink-3)}
+.eyebrow b{color:var(--primary);font-weight:600}
+.h2{font-family:var(--serif);font-weight:900;font-size:clamp(32px, 4.3vw, 58px);line-height:1.14;letter-spacing:-.015em;margin:0 0 24px;max-width:18em;text-wrap:balance}
+.h2 em{font-style:normal;color:var(--amber);white-space:nowrap}
+.lede{font-size:clamp(16px,1.35vw,19px);color:var(--ink-2);max-width:40em;margin:0 0 56px;line-height:1.8}
+.src{font-size:12px;line-height:1.6;color:var(--ink-3);margin:8px 0 0}
+.src::before{content:"来源 ";font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--ink-4)}
+.src.calc::before{content:"测算 "}
+.tag-demo{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;letter-spacing:.04em;font-weight:500;color:var(--amber-ink);background:var(--amber-soft);padding:2px 8px;border-radius:4px;vertical-align:middle;white-space:nowrap}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--ink-3);text-transform:uppercase}
+@media (max-width:767px){.sec{padding-block:76px}.lede{margin-bottom:40px}}
+
+/* ---------- hero ---------- */
+.hero{padding-top:calc(56px + 64px + env(safe-area-inset-top, 0px));padding-bottom:96px;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background:
+  radial-gradient(680px 420px at 82% 18%, var(--primary-wash), transparent 70%);pointer-events:none}
+.hero .wrap{position:relative;display:grid;grid-template-columns:minmax(0,1.04fr) minmax(0,.96fr);gap:64px;align-items:start}
+.round{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:13px;letter-spacing:.06em;color:var(--primary);border:1px solid var(--primary-3);background:var(--surface);padding:6px 14px 6px 10px;border-radius:999px;margin-bottom:32px}
+.round i{width:8px;height:8px;border-radius:50%;background:var(--amber);box-shadow:0 0 0 4px var(--amber-soft)}
+.hero h1{font-family:var(--serif);font-weight:900;font-size:clamp(46px, 7vw, 100px);line-height:1.02;letter-spacing:-.03em;margin:0 0 28px}
+.hero h1 span{color:var(--primary)}
+.hero .pos{font-size:clamp(17px,1.5vw,20px);line-height:1.8;color:var(--ink-2);max-width:30em;margin:0 0 36px}
+.hero .pos b{color:var(--ink);font-weight:700}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:56px}
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line);max-width:560px}
+.facts div{padding:18px 16px 0 0}
+.facts div+div{padding-left:16px;border-left:1px solid var(--line-2)}
+.facts b{display:block;font-family:var(--mono);font-weight:600;font-size:22px;letter-spacing:-.01em;color:var(--ink);font-variant-numeric:tabular-nums;line-height:1.3}
+.facts span{font-size:13px;color:var(--ink-3);line-height:1.5;display:block;margin-top:6px}
+@media (max-width:980px){.hero .wrap{grid-template-columns:1fr;gap:48px}}
+@media (max-width:767px){.hero{padding-top:calc(56px + 40px + env(safe-area-inset-top, 0px));padding-bottom:64px}.cta-row{margin-bottom:40px}.facts b{font-size:17px}.facts div+div{padding-left:12px}.facts div{padding-right:8px}}
+
+/* ---------- demo card ---------- */
+.demo{background:var(--surface);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);overflow:hidden;position:relative}
+.demo-head{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid var(--line-2)}
+.demo-id{display:flex;align-items:center;gap:12px;min-width:0}
+.demo-mark{width:38px;height:38px;border-radius:50%;background:var(--primary);color:var(--on-primary);display:grid;place-items:center;font-family:var(--serif);font-weight:700;font-size:18px;flex-shrink:0}
+.demo-id b{display:block;font-size:15px;line-height:1.3}
+.status{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:12px;color:var(--ink-3)}
+.status i{width:7px;height:7px;border-radius:50%;background:var(--ink-4)}
+.status[data-s="listening"] i{background:var(--amber)}
+.status[data-s="speaking"] i{background:var(--primary)}
+.status[data-s="thinking"] i{background:var(--primary-2);animation:blink 1s infinite}
+.status[data-s="listening"] i,.status[data-s="speaking"] i{animation:blink 1.2s infinite}
+@keyframes blink{50%{opacity:.35}}
+.demo-head .spacer{flex:1}
+.label-kicker{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--ink-4);text-transform:uppercase}
+.demo-vis{position:relative;height:200px;background:linear-gradient(180deg,var(--primary-wash),var(--surface));border-bottom:1px solid var(--line-2)}
+.demo-vis canvas{width:100%;height:100%;display:block}
+.mode-chip{position:absolute;left:14px;bottom:12px;font-size:12px;color:var(--ink-2);background:var(--surface);border:1px solid var(--line-2);border-radius:999px;padding:4px 10px;max-width:calc(100% - 28px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mode-chip.live{color:var(--ok);border-color:var(--ok-soft)}
+.demo-tabs{display:flex;gap:4px;padding:10px 14px 0}
+.demo-tabs button{border:0;background:none;padding:8px 12px;font-size:14px;color:var(--ink-3);border-bottom:2px solid transparent;border-radius:0}
+.demo-tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--primary);font-weight:500}
+.demo-log{height:252px;overflow-y:auto;padding:16px 18px;display:flex;flex-direction:column;gap:12px;scroll-behavior:smooth;overscroll-behavior:contain}
+.bub{max-width:86%;padding:10px 14px;border-radius:14px;font-size:14.5px;line-height:1.7}
+.bub .who{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--ink-4);margin-bottom:2px}
+.bub.ai{align-self:flex-start;background:var(--surface-2);border:1px solid var(--line-2);border-top-left-radius:4px}
+.bub.user{align-self:flex-end;background:var(--primary);color:var(--on-primary);border-top-right-radius:4px}
+.bub.user .who{color:var(--primary-3)}
+.bub.typing .txt::after{content:"";display:inline-block;width:2px;height:1em;margin-left:2px;vertical-align:-2px;background:currentColor;animation:blink .8s infinite}
+.hint{font-size:13px;color:var(--ink-3);border:1px dashed var(--line);border-radius:12px;padding:10px 14px;display:flex;gap:10px;align-items:flex-start;line-height:1.6}
+.hint svg{width:16px;height:16px;flex-shrink:0;margin-top:3px;color:var(--primary)}
+.crisis{margin:12px 14px 0;border:1px solid var(--danger);background:var(--danger-soft);color:var(--ink);border-radius:12px;padding:12px 14px;font-size:13.5px;position:relative}
+.crisis b{color:var(--danger)}
+.crisis ul{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:4px}
+.crisis li{display:flex;justify-content:space-between;gap:8px;font-size:13px}
+.crisis li span:last-child{font-family:var(--mono);font-weight:600;white-space:nowrap}
+.crisis .x{position:absolute;right:8px;top:8px;width:28px;height:28px;border:0;background:none;border-radius:50%}
+.demo-input{display:flex;gap:8px;padding:12px 14px;border-top:1px solid var(--line-2)}
+.demo-input input{flex:1;min-width:0;border:1px solid var(--line);background:var(--surface-2);border-radius:999px;padding:10px 16px;font-size:14.5px}
+.demo-input input:focus{outline:none;border-color:var(--primary);background:var(--surface)}
+.demo-actions{display:flex;align-items:center;gap:10px;padding:0 14px 14px;flex-wrap:wrap}
+.demo-actions .btn-primary{flex:1;min-width:180px;padding:13px 20px;font-size:15.5px}
+.demo-actions .btn-primary[data-active="1"]{background:var(--ink);border-color:var(--ink)}
+.demo-foot{margin:0;padding:10px 18px 14px;font-size:12px;color:var(--ink-3);border-top:1px solid var(--line-2);background:var(--surface-2)}
+
+/* summary */
+.demo-sum{padding:14px 18px 18px}
+.sum-top{display:flex;align-items:center;gap:10px;justify-content:space-between;margin-bottom:12px}
+.sum-top h3{font-family:var(--serif);font-size:20px;margin:0}
+.risk{font-size:12.5px;font-weight:500;padding:3px 10px;border-radius:999px;white-space:nowrap}
+.risk.low{background:var(--ok-soft);color:var(--ok)}
+.risk.medium{background:var(--amber-soft);color:var(--amber-ink)}
+.risk.high{background:var(--danger-soft);color:var(--danger)}
+.sum-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 18px;margin-bottom:14px}
+.sum-grid dt{font-size:12px;color:var(--ink-3)}
+.sum-grid dd{margin:0;font-weight:500;font-size:14.5px}
+.meter{height:6px;border-radius:6px;background:var(--line-2);overflow:hidden;margin-top:6px}
+.meter i{display:block;height:100%;background:var(--primary)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:12.5px;padding:2px 10px;border-radius:999px;background:var(--primary-soft);color:var(--primary-ink)}
+.scales{display:grid;gap:8px;margin:12px 0 14px;padding:12px 0;border-block:1px solid var(--line-2)}
+.scale{display:grid;grid-template-columns:7.4em 1fr auto;gap:10px;align-items:center;font-size:13px}
+.scale .meter{margin:0}
+.scale .v{font-family:var(--mono);font-size:12.5px;color:var(--ink-2);white-space:nowrap}
+.scale .v b{color:var(--ink)}
+.plan{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:13px;margin:6px 0 14px}
+.plan span{background:var(--surface-2);border:1px solid var(--line-2);border-radius:8px;padding:3px 8px}
+.plan svg{width:12px;height:12px;color:var(--ink-4)}
+.match{display:grid;grid-template-columns:52px 1fr;gap:12px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:14px}
+.match img{width:52px;height:52px;border-radius:50%;object-fit:cover}
+.match b{font-size:15px}
+.match p{margin:0;font-size:12.5px;color:var(--ink-3);line-height:1.5}
+.match .btn-primary{grid-column:1/-1;padding:10px 16px;font-size:14.5px}
+.match .btn-primary.done{background:var(--ok);border-color:var(--ok)}
+.sum-note{font-size:12px;color:var(--ink-3);margin:10px 0 0}
+
+/* ---------- problem ---------- */
+.prob-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:56px;align-items:start}
+.photo{position:relative;margin:0;border-radius:6px;overflow:hidden;background:var(--ink)}
+.photo img{width:100%;aspect-ratio:4/3.1;object-fit:cover;object-position:center 30%}
+.photo figcaption{position:absolute;left:0;right:0;bottom:0;padding:48px 24px 20px;background:linear-gradient(180deg,transparent,var(--photo-shade));color:var(--on-dark);font-size:14px;line-height:1.6}
+.photo figcaption b{font-family:var(--serif);font-size:20px;display:block;margin-bottom:2px}
+.bigstat{border-top:2px solid var(--ink);padding-top:18px;margin-bottom:36px}
+.bigstat .n{font-family:var(--serif);font-weight:900;font-size:clamp(64px,8vw,112px);line-height:.95;letter-spacing:-.03em;color:var(--amber);font-variant-numeric:tabular-nums}
+.bigstat .n small{font-size:.45em;letter-spacing:0}
+.bigstat .l{font-size:17px;font-weight:500;margin-top:10px}
+.bigstat .d{font-size:14px;color:var(--ink-2);margin-top:4px}
+.supply{display:grid;gap:16px}
+.supply h3{font-size:14px;font-weight:500;margin:0 0 4px;color:var(--ink-3)}
+.sbar{display:grid;grid-template-columns:1fr auto;gap:4px 16px;align-items:end}
+.sbar .lab{font-size:14px}
+.sbar .val{font-family:var(--serif);font-weight:900;font-size:28px;line-height:1;font-variant-numeric:tabular-nums}
+.sbar .val small{font-size:14px;font-weight:700;margin-left:2px}
+.sbar .track{grid-column:1/-1;height:12px;background:var(--line-2);border-radius:2px;overflow:hidden}
+.sbar .track i{display:block;height:100%}
+.ratio{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:56px;align-items:center;margin-top:88px;padding-top:56px;border-top:1px solid var(--line)}
+.ratio .big{font-family:var(--serif);font-weight:900;font-size:clamp(56px,7vw,96px);line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.ratio .big span{color:var(--amber)}
+.ratio p{font-size:17px;color:var(--ink-2);margin:16px 0 0;max-width:26em}
+.ratio p strong{color:var(--ink)}
+.dots svg{width:100%;height:auto;display:block}
+.dots .legend{display:flex;gap:20px;font-size:13px;color:var(--ink-3);margin-top:12px;flex-wrap:wrap}
+.dots .legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+@media (max-width:900px){.prob-grid,.ratio{grid-template-columns:1fr;gap:40px}.ratio{margin-top:56px;padding-top:40px}}
+
+/* ---------- why now ---------- */
+.now-list{border-top:2px solid var(--ink)}
+.now-row{display:grid;grid-template-columns:200px minmax(0,1fr) minmax(0,1fr);gap:40px;padding:40px 0;border-bottom:1px solid var(--line)}
+.now-row .k{font-family:var(--mono);font-weight:600;font-size:34px;letter-spacing:-.02em;color:var(--primary);line-height:1.1;font-variant-numeric:tabular-nums}
+.now-row .k small{display:block;font-size:12px;font-weight:500;letter-spacing:.06em;color:var(--ink-3);margin-top:8px;text-transform:uppercase}
+.now-row h3{font-family:var(--serif);font-weight:700;font-size:clamp(22px,2.2vw,28px);line-height:1.35;margin:0}
+.now-row p{margin:0;color:var(--ink-2);font-size:15.5px}
+.now-row p+p{margin-top:10px}
+@media (max-width:900px){.now-row{grid-template-columns:1fr;gap:12px;padding:32px 0}.now-row .k{font-size:28px}}
+
+/* ---------- solution ---------- */
+.sol-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px;align-items:center}
+.fly svg{width:100%;height:auto;display:block;max-width:560px;margin-inline:auto}
+.fly .legend{display:flex;justify-content:center;gap:20px;font-size:13px;color:var(--ink-3);margin-top:12px;flex-wrap:wrap}
+.fly .legend i{display:inline-block;width:14px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px;border:1.5px solid var(--primary)}
+.steps{list-style:none;margin:0;padding:0;counter-reset:s}
+.steps li{display:grid;grid-template-columns:40px 1fr;gap:4px 14px;padding:16px 0;border-bottom:1px solid var(--line-2)}
+.steps li:first-child{border-top:1px solid var(--line-2)}
+.steps .no{font-family:var(--mono);font-weight:600;font-size:14px;color:var(--primary);padding-top:3px}
+.steps h3{font-size:17px;margin:0;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.who-tag{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.04em;padding:1px 7px;border-radius:4px;border:1px solid var(--primary);color:var(--primary)}
+.who-tag.h{background:var(--primary);color:var(--on-primary)}
+.who-tag.m{background:var(--primary-soft);border-color:var(--primary-soft);color:var(--primary-ink)}
+.steps p{grid-column:2;margin:0;font-size:14.5px;color:var(--ink-2)}
+.escalate{margin-top:48px;display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:center;border:1px solid var(--danger);border-left-width:4px;border-radius:6px;padding:18px 22px;background:var(--surface)}
+.escalate .ic{width:36px;height:36px;color:var(--danger)}
+.escalate b{display:block;font-size:16px}
+.escalate p{margin:2px 0 0;font-size:14px;color:var(--ink-2)}
+.escalate .t{font-family:var(--mono);font-weight:600;font-size:26px;color:var(--danger);white-space:nowrap;font-variant-numeric:tabular-nums}
+.escalate .t small{font-size:12px;font-weight:500;display:block;color:var(--ink-3);text-align:right}
+@media (max-width:900px){.sol-grid{grid-template-columns:1fr;gap:40px}.escalate{grid-template-columns:auto 1fr}.escalate .t{grid-column:1/-1;font-size:22px}.escalate .t small{text-align:left;display:inline;margin-left:8px}}
+
+/* ---------- product ---------- */
+.shots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}
+.shot figure{margin:0}
+.screen{background:var(--surface);border:1px solid var(--line);border-radius:28px;padding:14px;height:500px;display:flex;flex-direction:column;overflow:hidden;box-shadow:var(--shadow)}
+.screen .bar{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--ink-3);padding:2px 8px 10px}
+.screen .ttl{font-weight:700;font-size:16px;padding:0 6px 10px;display:flex;align-items:center;justify-content:space-between}
+.screen .ttl small{font-weight:400;font-size:12px;color:var(--ink-3)}
+.shot figcaption{margin-top:18px}
+.shot figcaption .kicker{display:block;margin-bottom:4px}
+.shot figcaption b{font-size:17px;display:block;margin-bottom:4px}
+.shot figcaption p{margin:0;font-size:14.5px;color:var(--ink-2)}
+/* screen 1 */
+.s1-orb{flex:1;display:grid;place-items:center;position:relative;background:var(--primary-wash);border-radius:18px;margin:0 2px}
+.orb{position:relative;width:120px;height:120px}
+.orb i{position:absolute;inset:0;border-radius:50%;border:1.5px solid var(--primary-3)}
+.orb i:nth-child(2){inset:-18px;opacity:.6}
+.orb i:nth-child(3){inset:-38px;opacity:.3}
+.orb b{position:absolute;inset:22px;border-radius:50%;background:var(--primary);animation:breathe 3.2s ease-in-out infinite}
+@keyframes breathe{50%{transform:scale(1.08)}}
+.s1-cap{padding:14px 8px 4px;font-size:14px;line-height:1.7}
+.s1-cap .u{color:var(--ink-3);font-size:13px}
+.s1-cap .a{font-weight:500}
+.s1-cap mark{background:var(--amber-soft);color:inherit;padding:0 2px;border-radius:2px}
+.s1-btns{display:flex;justify-content:center;align-items:center;gap:20px;padding:10px 0 4px}
+.s1-btns span{width:52px;height:52px;border-radius:50%;background:var(--primary);display:grid;place-items:center;color:var(--on-primary)}
+.s1-btns span.s{width:38px;height:38px;background:var(--surface-2);border:1px solid var(--line);color:var(--ink-3)}
+.s1-btns svg{width:20px;height:20px}
+/* screen 2 */
+.s2-body{flex:1;display:flex;flex-direction:column;gap:10px;padding:0 4px}
+.s2-card{border:1px solid var(--line-2);border-radius:14px;padding:10px 12px;background:var(--surface-2)}
+.s2-card .row{display:flex;justify-content:space-between;align-items:center;font-size:12.5px}
+.s2-card .row+.row{margin-top:8px}
+.s2-card .meter{margin-top:4px;height:5px}
+.mini-match{display:grid;grid-template-columns:44px 1fr;gap:10px;align-items:center}
+.mini-match img{width:44px;height:44px;border-radius:50%;object-fit:cover}
+.mini-match b{font-size:14px;display:block}
+.mini-match span{font-size:11.5px;color:var(--ink-3)}
+.mini-btn{margin-top:auto;background:var(--primary);color:var(--on-primary);border-radius:999px;text-align:center;padding:10px;font-size:14px;font-weight:500}
+/* screen 3 */
+.s3-chart{border:1px solid var(--line-2);border-radius:14px;padding:10px 10px 6px;background:var(--surface-2);margin:0 4px}
+.s3-chart svg{width:100%;height:auto;display:block}
+.s3-list{list-style:none;margin:10px 4px 0;padding:0;display:grid;gap:8px;flex:1}
+.s3-list li{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;font-size:12.5px;padding:8px 10px;border:1px solid var(--line-2);border-radius:12px}
+.s3-list .d{font-family:var(--mono);font-size:11px;color:var(--ink-3)}
+.s3-list .wv{display:flex;gap:2px;align-items:center;height:16px}
+.s3-list .wv i{width:2px;background:var(--primary-3);border-radius:2px}
+.diffs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:80px;border-top:2px solid var(--ink)}
+.diffs div{padding:22px 24px 0 0}
+.diffs div+div{padding-left:24px;border-left:1px solid var(--line)}
+.diffs b{display:block;font-size:16.5px;margin-bottom:6px}
+.diffs p{margin:0;font-size:14px;color:var(--ink-2)}
+.diffs .n{font-family:var(--mono);font-size:12px;color:var(--ink-3);display:block;margin-bottom:10px}
+.callout{margin-top:48px;display:flex;gap:24px;align-items:baseline;flex-wrap:wrap;padding:22px 0;border-top:1px solid var(--line)}
+.callout .n{font-family:var(--serif);font-weight:900;font-size:56px;line-height:1;color:var(--amber)}
+.callout p{margin:0;flex:1;min-width:240px;font-size:16px;color:var(--ink-2)}
+@media (max-width:980px){
+  .shots{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:16px;padding-bottom:12px;margin-right:calc(-1 * var(--gutter-r));padding-right:var(--gutter-r)}
+  .shot{flex:0 0 min(300px,82%);scroll-snap-align:start}
+  .diffs{grid-template-columns:1fr 1fr}
+  .diffs div:nth-child(3){padding-left:0;border-left:0}
+  .diffs div{padding-bottom:20px}
+}
+@media (max-width:560px){.diffs{grid-template-columns:1fr}.diffs div,.diffs div+div{padding-left:0;border-left:0;border-bottom:1px solid var(--line-2)}}
+
+/* ---------- market ---------- */
+.mkt-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px;align-items:start}
+.tam svg{width:100%;height:auto;display:block;max-width:540px}
+.tam-legend{list-style:none;margin:28px 0 0;padding:0;display:grid;gap:0}
+.tam-legend li{display:grid;grid-template-columns:52px 1fr auto;gap:12px;padding:14px 0;border-top:1px solid var(--line-2);align-items:baseline}
+.tam-legend .k{font-family:var(--mono);font-weight:600;font-size:13px;color:var(--primary)}
+.tam-legend .t{font-size:14.5px}
+.tam-legend .t small{display:block;font-size:12px;color:var(--ink-3)}
+.tam-legend .v{font-family:var(--serif);font-weight:900;font-size:22px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.growth h3{font-size:16px;margin:0 0 4px}
+.growth .sub{font-size:13px;color:var(--ink-3);margin:0 0 18px}
+.vbars{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:end;height:260px;border-bottom:1px solid var(--ink);padding:0 12px}
+.vbar{display:flex;flex-direction:column;justify-content:flex-end;height:100%;text-align:center}
+.vbar .v{font-family:var(--serif);font-weight:900;font-size:26px;line-height:1.1;margin-bottom:8px;font-variant-numeric:tabular-nums}
+.vbar .v.am{color:var(--amber)}
+.vbar .v small{font-size:13px;font-weight:700}
+.vbar i{display:block;background:var(--primary);border-radius:3px 3px 0 0}
+.vbar i.est{background:repeating-linear-gradient(135deg,var(--primary-2) 0 6px,var(--primary-3) 6px 12px)}
+.vlab{display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:8px 12px 0;text-align:center;font-family:var(--mono);font-size:12.5px;color:var(--ink-3)}
+.growth-pair{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.cagr{display:inline-block;margin-top:14px;font-size:13.5px;color:var(--ink-2)}
+.cagr b{font-family:var(--mono);color:var(--amber-ink)}
+@media (max-width:980px){.mkt-grid{grid-template-columns:1fr;gap:56px}}
+@media (max-width:560px){.growth-pair{grid-template-columns:1fr;gap:48px}.vbars{height:220px}}
+
+/* ---------- competition ---------- */
+.comp-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:56px;align-items:start}
+.matrix svg{width:100%;height:auto;display:block}
+.comp-notes{display:grid;gap:22px}
+.comp-notes div{border-left:2px solid var(--line);padding-left:18px}
+.comp-notes div.me{border-left-color:var(--primary)}
+.comp-notes b{display:block;font-size:16px;margin-bottom:4px}
+.comp-notes p{margin:0;font-size:14.5px;color:var(--ink-2)}
+.tbl-wrap{overflow-x:auto;margin-top:72px;border:1px solid var(--line);border-radius:8px;background:var(--surface);-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;min-width:720px;font-size:14px}
+th,td{padding:14px 16px;text-align:center;border-bottom:1px solid var(--line-2);white-space:nowrap}
+th:first-child,td:first-child{text-align:left;position:sticky;left:0;background:var(--surface);z-index:1}
+thead th{font-weight:500;color:var(--ink-3);font-size:13px;background:var(--surface-2)}
+thead th:first-child{background:var(--surface-2)}
+tbody tr:last-child td{border-bottom:0}
+tr.me td{background:var(--primary-wash);font-weight:600}
+tr.me td:first-child{background:var(--primary-wash);color:var(--primary)}
+td small{display:block;font-weight:400;font-size:11.5px;color:var(--ink-3)}
+.mk{display:inline-block;width:14px;height:14px;border-radius:50%;vertical-align:-2px}
+.mk.f{background:var(--primary)}
+.mk.p{background:linear-gradient(90deg,var(--primary) 50%,transparent 50%);border:1.5px solid var(--primary)}
+.mk.n{width:14px;height:2px;border-radius:2px;background:var(--ink-4);vertical-align:3px}
+.tbl-legend{display:flex;gap:18px;flex-wrap:wrap;font-size:12.5px;color:var(--ink-3);margin-top:12px;align-items:center}
+.tbl-legend span{display:inline-flex;align-items:center;gap:6px}
+@media (max-width:980px){.comp-grid{grid-template-columns:1fr;gap:40px}}
+
+/* ---------- business ---------- */
+.lanes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:2px solid var(--ink)}
+.lane{padding:28px 28px 8px 0}
+.lane+.lane{padding-left:28px;border-left:1px solid var(--line)}
+.lane .kicker{display:block;margin-bottom:8px}
+.lane h3{font-family:var(--serif);font-size:24px;margin:0 0 16px}
+.lane ul{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+.lane li{font-size:14.5px;color:var(--ink-2);padding-left:14px;position:relative}
+.lane li::before{content:"";position:absolute;left:0;top:.75em;width:6px;height:1.5px;background:var(--primary)}
+.lane li b{color:var(--ink);font-weight:600}
+.lane .price{font-family:var(--mono);font-weight:600;color:var(--primary)}
+.biz-bottom{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:40px;margin-top:64px;align-items:stretch}
+.mix h3,.unit h3{font-size:16px;margin:0 0 4px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.mix .sub{font-size:13px;color:var(--ink-3);margin:0 0 20px}
+.stack{display:flex;height:44px;border-radius:4px;overflow:hidden}
+.stack i{display:flex;align-items:center;padding-left:12px;font-style:normal;font-family:var(--mono);font-size:13px;font-weight:600;color:var(--on-primary);white-space:nowrap}
+.stack-legend{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:14px;font-size:13px;color:var(--ink-2)}
+.stack-legend span{display:flex;gap:8px;align-items:baseline}
+.stack-legend i{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+.unit{background:var(--ink);color:var(--on-dark);border-radius:10px;padding:26px 28px}
+.unit h3{color:var(--on-dark)}
+.unit .tag-demo{background:rgba(246,232,207,.16);color:var(--amber-soft)}
+.unit dl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 24px;margin:20px 0 0}
+.unit dt{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;color:var(--ink-4);text-transform:uppercase}
+.unit dd{margin:4px 0 0;font-family:var(--mono);font-weight:600;font-size:28px;font-variant-numeric:tabular-nums;line-height:1.2}
+.unit dd.am{color:#F0B04A}
+.unit dd small{font-size:13px;font-weight:400;color:var(--ink-4);margin-left:4px}
+.unit .formula{margin:20px 0 0;padding-top:16px;border-top:1px solid rgba(255,255,255,.14);font-size:12.5px;color:var(--ink-4);line-height:1.7}
+@media (max-width:980px){.lanes{grid-template-columns:1fr}.lane,.lane+.lane{padding:24px 0 20px;border-left:0;border-bottom:1px solid var(--line)}.biz-bottom{grid-template-columns:1fr}}
+
+/* ---------- traction ---------- */
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border-top:2px solid var(--ink);margin-bottom:56px}
+.kpi{padding:22px 20px 0 0}
+.kpi+.kpi{padding-left:20px;border-left:1px solid var(--line)}
+.kpi .v{font-family:var(--serif);font-weight:900;font-size:clamp(34px,3.6vw,48px);line-height:1.05;font-variant-numeric:tabular-nums}
+.kpi .v.am{color:var(--amber)}
+.kpi .v small{font-size:.45em}
+.kpi .l{font-size:14px;color:var(--ink-2);margin-top:6px}
+.chart-box{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:22px 22px 14px}
+.chart-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+.chart-head b{font-size:16px}
+.chart-head span{font-size:13px;color:var(--ink-3)}
+#trChart{position:relative}
+#trChart svg{display:block;width:100%}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--on-dark);font-family:var(--mono);font-size:12px;padding:5px 8px;border-radius:6px;white-space:nowrap;transform:translate(-50%,-130%);opacity:0;transition:opacity .12s}
+.quote{display:grid;grid-template-columns:56px 1fr;gap:18px;align-items:start;margin-top:48px;max-width:760px}
+.quote img{width:56px;height:56px;border-radius:50%;object-fit:cover}
+.quote blockquote{margin:0;font-family:var(--serif);font-size:clamp(19px,1.8vw,23px);font-weight:600;line-height:1.6}
+.quote cite{display:block;font-style:normal;font-size:13.5px;color:var(--ink-3);margin-top:10px}
+@media (max-width:900px){.kpis{grid-template-columns:1fr 1fr}.kpi:nth-child(3){padding-left:0;border-left:0}.kpi{padding-bottom:20px}}
+
+/* ---------- roadmap ---------- */
+.road{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));position:relative}
+.road::before{content:"";position:absolute;left:0;right:0;top:9px;height:2px;background:var(--line)}
+.road li{position:relative;padding:40px 18px 0 0}
+.road li::before{content:"";position:absolute;left:0;top:2px;width:16px;height:16px;border-radius:50%;background:var(--paper);border:2px solid var(--primary)}
+.road li.now::before{background:var(--amber);border-color:var(--amber);box-shadow:0 0 0 5px var(--amber-soft)}
+.road .t{font-family:var(--mono);font-weight:600;font-size:14px;color:var(--primary);display:block}
+.road li.now .t{color:var(--amber-ink)}
+.road b{display:block;font-size:16px;margin:6px 0 6px;line-height:1.45}
+.road p{margin:0;font-size:13.5px;color:var(--ink-2);line-height:1.65}
+@media (max-width:980px){
+  .road{grid-template-columns:1fr;padding-left:32px}
+  .road::before{left:7px;right:auto;top:6px;bottom:6px;width:2px;height:auto}
+  .road li{padding:0 0 32px}
+  .road li::before{left:-32px;top:2px}
+}
+
+/* ---------- team ---------- */
+.team{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:28px}
+.member img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:6px;filter:saturate(.85)}
+.member b{display:block;font-size:17px;margin-top:14px}
+.member .role{font-family:var(--mono);font-size:12px;color:var(--primary);letter-spacing:.02em}
+.member p{margin:8px 0 0;font-size:13.5px;color:var(--ink-2);line-height:1.65}
+.advisors{margin-top:48px;padding-top:22px;border-top:1px solid var(--line);font-size:15px;color:var(--ink-2);display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+@media (max-width:1100px){.team{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:640px){.team{grid-template-columns:1fr 1fr;gap:24px 16px}.member b{font-size:16px}}
+
+/* ---------- raise ---------- */
+.raise-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px;align-items:start}
+.donut-wrap{display:grid;grid-template-columns:200px minmax(0,1fr);gap:28px;align-items:center}
+.donut-wrap svg{width:200px;height:200px;display:block}
+.uses{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.uses li{display:grid;grid-template-columns:12px 1fr auto;gap:12px;align-items:baseline;padding:12px 0;border-top:1px solid var(--line-2)}
+.uses li:last-child{border-bottom:1px solid var(--line-2)}
+.uses i{width:12px;height:12px;border-radius:2px;align-self:center}
+.uses b{font-size:15px}
+.uses small{display:block;font-size:12.5px;color:var(--ink-3);line-height:1.5}
+.uses .p{font-family:var(--mono);font-weight:600;font-size:15px;text-align:right;white-space:nowrap}
+.uses .p small{text-align:right}
+.miles{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:2px solid var(--ink)}
+.miles li{padding:18px 16px 18px 0;border-bottom:1px solid var(--line)}
+.miles li:nth-child(even){padding-left:16px;border-left:1px solid var(--line)}
+.miles .v{font-family:var(--serif);font-weight:900;font-size:32px;line-height:1.1;font-variant-numeric:tabular-nums}
+.miles .l{font-size:13.5px;color:var(--ink-2)}
+.contact{margin-top:40px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:24px}
+.contact h3{font-size:16px;margin:0 0 4px}
+.contact .sub{margin:0 0 16px;font-size:14px;color:var(--ink-2)}
+.mail{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.mail code{font-family:var(--mono);font-size:17px;font-weight:500;background:var(--surface-2);border:1px solid var(--line-2);padding:9px 14px;border-radius:8px;user-select:all;-webkit-user-select:all;word-break:break-all}
+.copy-msg{font-size:13px;color:var(--ok);min-height:1.4em;margin-top:8px}
+.copy-msg.err{color:var(--danger)}
+.contact .cta-row{margin:20px 0 0}
+@media (max-width:980px){.raise-grid{grid-template-columns:1fr;gap:56px}}
+@media (max-width:560px){.donut-wrap{grid-template-columns:1fr;justify-items:center}.donut-wrap svg{width:220px;height:220px}.donut-wrap .uses{width:100%}.miles .v{font-size:26px}}
+.miles .v{white-space:nowrap}
+
+/* ---------- closing ---------- */
+.closing{position:relative;min-height:440px;display:flex;align-items:flex-end;background:var(--ink) url(assets/tree-lake.jpg) center 40%/cover no-repeat;color:var(--on-dark)}
+.closing::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,14,26,.05),var(--photo-shade))}
+.closing .wrap{position:relative;padding-block:72px;width:100%}
+.closing p{font-family:var(--serif);font-weight:900;font-size:clamp(30px,4.2vw,56px);line-height:1.2;margin:0;max-width:16em;letter-spacing:-.01em}
+.closing span{display:block;font-family:var(--mono);font-size:13px;letter-spacing:.06em;margin-top:18px;opacity:.85}
+footer{padding-block:40px;background:var(--paper);font-size:13px;color:var(--ink-3);line-height:1.8}
+footer .wrap{display:grid;grid-template-columns:auto 1fr;gap:32px}
+footer p{margin:0}
+footer strong{color:var(--ink)}
+@media (max-width:767px){footer .wrap{grid-template-columns:1fr;gap:12px}}
+
+/* ---------- modal ---------- */
+.modal{position:fixed;inset:0;z-index:80;display:grid;place-items:center;padding:16px}
+.modal[hidden]{display:none}
+.modal-bg{position:absolute;inset:0;background:var(--backdrop)}
+.modal-panel{position:relative;background:var(--surface);border-radius:16px;width:min(480px,100%);max-height:calc(100dvh - 32px);overflow:auto;padding:26px 24px 22px;box-shadow:var(--shadow)}
+.modal-panel h2{font-family:var(--serif);font-size:22px;margin:0 0 6px;padding-right:40px}
+.modal-panel .sub{margin:0 0 18px;font-size:14px;color:var(--ink-2)}
+.m-close{position:absolute;right:14px;top:14px}
+.fld{margin-bottom:16px}
+.fld>span,.fld>label{display:block;font-size:13px;color:var(--ink-3);margin-bottom:8px}
+.fld input[type=text],.fld input[type=email]{width:100%;border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--surface-2);font-size:15px}
+.fld input[type=text]:focus,.fld input[type=email]:focus{outline:none;border-color:var(--primary);background:var(--surface)}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opts input{position:absolute;opacity:0;width:1px;height:1px}
+.opts label{border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-size:14px;cursor:pointer;font-family:var(--mono);background:var(--surface)}
+.opts.cn label{font-family:var(--sans)}
+.opts input:checked+label{background:var(--primary);border-color:var(--primary);color:var(--on-primary)}
+.opts input:focus-visible+label{outline:2px solid var(--primary);outline-offset:2px}
+.m-cn{display:grid;grid-template-columns:56px 1fr;gap:12px;align-items:center;padding:12px;border:1px solid var(--line-2);border-radius:12px;margin-bottom:18px}
+.m-cn img{width:56px;height:56px;border-radius:50%;object-fit:cover}
+.m-cn b{display:block}
+.m-cn span{font-size:12.5px;color:var(--ink-3)}
+.modal-panel .btn-primary{width:100%;margin-top:6px}
+.done-box{text-align:center;padding:12px 0 4px}
+.done-box .ck{width:56px;height:56px;border-radius:50%;background:var(--ok-soft);color:var(--ok);display:grid;place-items:center;margin:0 auto 14px}
+.done-box .ck svg{width:28px;height:28px}
+.done-box p{color:var(--ink-2);font-size:14.5px}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+</style>
+
+<!-- ============ top bar ============ -->
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="#cover" aria-label="听屿 Tingyu 回到封面">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="var(--primary)"/><path d="M7 19.5c3-2.2 6-2.2 9 0s6 2.2 9 0" fill="none" stroke="var(--on-primary)" stroke-width="2" stroke-linecap="round"/><path d="M12 15.5c1.2-3.6 2.6-5.5 4-5.5s2.8 1.9 4 5.5" fill="none" stroke="var(--amber-soft)" stroke-width="2" stroke-linecap="round"/></svg>
+      听屿 <small>Tingyu</small>
+    </a>
+    <span class="round-chip">SEED · 2026</span>
+    <span class="chapter" id="chapter" aria-live="polite"><b>01</b> / 12 · 封面</span>
+    <button class="btn-primary" type="button" data-meet>约见创始团队</button>
+  </div>
+  <div class="progress" id="progress"></div>
+</header>
+
+<nav class="rail" aria-label="章节导航">
+  <ol id="railList"></ol>
+</nav>
+
+<main>
+<!-- ============ 01 cover ============ -->
+<section class="hero" id="cover" data-title="封面">
+  <div class="wrap">
+    <div>
+      <div class="round"><i></i>Seed / 天使轮 · 2026</div>
+      <h1>开口，<br><span>就被接住。</span></h1>
+      <p class="pos"><b>听屿 Tingyu</b> 是开口就被接住的心理服务 —— AI 语音接待 7×24 小时在线，用一次自然的对话完成倾听、量表初筛与风险分级，<b>再为你匹配对的咨询师</b>。</p>
+      <div class="cta-row">
+        <button class="btn-primary" type="button" id="heroPlay">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.6-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5Z"/></svg>
+          收听 90 秒接待 Demo
+        </button>
+        <a class="btn-ghost" href="#problem">3 分钟看完路演
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
+        </a>
+      </div>
+      <div class="facts">
+        <div><b>7×24</b><span>AI 语音接待，深夜也有人接</span></div>
+        <div><b>3 分钟</b><span>高风险时真人值班咨询师介入</span></div>
+        <div><b>3 项量表</b><span>PHQ-9 · GAD-7 · ISI 在对话中完成</span></div>
+      </div>
+    </div>
+
+    <!-- demo card -->
+    <div class="demo" id="demo" aria-label="小屿语音接待演示">
+      <div class="demo-head">
+        <div class="demo-id">
+          <span class="demo-mark" aria-hidden="true">屿</span>
+          <div><b>小屿 · 语音接待</b><span class="status" id="vStatus" data-s="idle"><i></i><span id="vStateLabel">待机中</span></span></div>
+        </div>
+        <span class="spacer"></span>
+        <span class="label-kicker">Live Demo</span>
+        <button class="icon-btn" type="button" id="vSound" aria-pressed="true" aria-label="关闭声音" title="声音">
+          <svg id="icoSoundOn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5H4Z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/></svg>
+          <svg id="icoSoundOff" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5H4Z"/><path d="m16 9.5 5 5m0-5-5 5"/></svg>
+        </button>
+      </div>
+      <div class="demo-vis">
+        <canvas id="vCanvas" aria-hidden="true"></canvas>
+        <span class="mode-chip" id="vMode">演示模式 · 点击收听一段完整接待</span>
+      </div>
+      <div class="demo-tabs" id="vTabs" role="tablist" hidden>
+        <button type="button" role="tab" id="tabChat" aria-selected="false" aria-controls="vLog">对话记录</button>
+        <button type="button" role="tab" id="tabSum" aria-selected="true" aria-controls="vSum">接待小结</button>
+      </div>
+      <div class="crisis" id="vCrisis" role="alert" hidden>
+        <button class="x" type="button" id="vCrisisX" aria-label="收起危机支持提示"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+        <b>你现在的安全最重要。</b> 值班咨询师正在接入，你也可以立即拨打：
+        <ul id="vHotlines"></ul>
+      </div>
+      <div class="demo-log" id="vLog" aria-live="polite">
+        <div class="bub ai ph"><span class="who">小屿</span><span class="txt">晚上好，我是听屿的接待助手小屿。这里很安全，你说的内容只有你和为你服务的咨询师能看到。今晚想聊点什么？</span></div>
+        <div class="hint ph"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.6-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5Z"/></svg><span>点击「开始语音接待」收听一段完整接待：倾诉 → 风险筛查 → 量表初筛 → 匹配咨询师，结束后自动生成接待小结。也可以直接在下方打字。</span></div>
+      </div>
+      <div class="demo-sum" id="vSum" role="tabpanel" hidden></div>
+      <form class="demo-input" id="vForm" autocomplete="off">
+        <label class="sr" for="vText">用文字代替说话</label>
+        <input id="vText" name="vText" type="text" placeholder="也可以打字代替说话…" maxlength="500">
+        <button class="icon-btn" type="submit" aria-label="发送"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></button>
+      </form>
+      <div class="demo-actions">
+        <button class="btn-primary" type="button" id="vMain">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></svg>
+          <span id="vMainLabel">开始语音接待</span>
+        </button>
+        <button class="btn-ghost" type="button" id="vSummarize" hidden>生成接待小结</button>
+        <button class="btn-text" type="button" id="vReset">重置</button>
+      </div>
+      <p class="demo-foot">小屿只做接待、分诊与随访，不做诊断与治疗。演示对话为脚本示例。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 02 problem ============ -->
+<section class="sec" id="problem" data-title="问题">
+  <div class="wrap">
+    <p class="eyebrow"><b>02</b> 问题</p>
+    <h2 class="h2">1 亿人需要被听见，<br>只有 <em>20 万</em>名活跃咨询师。</h2>
+    <p class="lede">需求不缺，缺的是第一次开口时有人接。大多数人在「要不要去看心理咨询」这一步就停下了：不知道找谁、怕被评判、填完 27 道题也没人回应。</p>
+
+    <div class="prob-grid">
+      <figure class="photo">
+        <img src="assets/hidden-smile.jpg" alt="一位女性举着画有笑脸的白纸遮住嘴，眼妆已经哭花" loading="lazy">
+        <figcaption><b>「我还好。」</b>很多抑郁风险藏在笑脸后面，等到被发现时，往往已经拖了很久。</figcaption>
+      </figure>
+      <div>
+        <div class="bigstat">
+          <div class="n">10.6<small>%</small></div>
+          <div class="l">成人抑郁风险检出率</div>
+          <div class="d">按约 11 亿成年人估算，约 <b class="num">1.17 亿</b>人存在抑郁风险。</div>
+          <p class="src">《中国国民心理健康发展报告》蓝皮书；人群规模为我们的估算</p>
+        </div>
+        <div class="supply">
+          <h3>供给侧：持证不等于在岗</h3>
+          <div class="sbar">
+            <span class="lab">持证心理咨询从业者</span><span class="val">160<small>万</small></span>
+            <span class="track"><i style="width:100%;background:var(--ink-4)"></i></span>
+          </div>
+          <div class="sbar">
+            <span class="lab">一线活跃执业者</span><span class="val" style="color:var(--amber)">20<small>万</small></span>
+            <span class="track"><i style="width:12.5%;background:var(--amber)"></i></span>
+          </div>
+          <div class="sbar">
+            <span class="lab">精神科执业医师</span><span class="val">6<small>万</small></span>
+            <span class="track"><i style="width:3.75%;background:var(--primary)"></i></span>
+          </div>
+          <p class="src">《中国心理咨询行业白皮书 2025》（转引）；精神科医师为 2025 年上半年口径。条形长度按人数等比例绘制</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="ratio">
+      <div>
+        <div class="big"><span>1</span> : 500</div>
+        <p>每 1 名活跃咨询师，对应约 500 名有抑郁风险的成年人。<strong>即使每人每周接 20 位来访者，也要 25 周才能轮完一遍。</strong>咨询师的时间必须留给真正需要专业干预的那部分。</p>
+        <p class="src calc">1.17 亿 ÷ 20 万 ≈ 585，取整为约 500 的量级</p>
+      </div>
+      <div class="dots">
+        <svg id="dotGrid" viewBox="0 0 500 100" role="img" aria-label="500 个点中只有 1 个被高亮，表示 1 名咨询师对应约 500 人"></svg>
+        <div class="legend"><span><i style="background:var(--amber)"></i>1 名活跃咨询师</span><span><i style="background:var(--primary-3)"></i>约 500 名有抑郁风险的成年人</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 03 why now ============ -->
+<section class="sec alt" id="now" data-title="为什么是现在">
+  <div class="wrap">
+    <p class="eyebrow"><b>03</b> 为什么是现在</p>
+    <h2 class="h2">三件事在 2025—2026 年同时成熟了。</h2>
+    <p class="lede">技术让 AI 第一次能「接得住话」，政策让心理求助变成一个公共号码，新一代用户则更愿意开口而不是填表。</p>
+    <div class="now-list">
+      <div class="now-row">
+        <div class="k">2026.02<small>技术拐点</small></div>
+        <h3>语音 AI 第一次能像人一样接住一句话。</h3>
+        <div>
+          <p>语音 AI 支持教练 Lovon 在 2026 年 2 月登上 Product Hunt 日榜第一，主打「说出来，而不是打字」；Sonia 等产品也把语音作为主要入口。</p>
+          <p>实时语音识别、大模型、自然语音合成已经能在一次对话里串起来，延迟和语气都到了「可以倾诉」的水平。</p>
+        </div>
+      </div>
+      <div class="now-row">
+        <div class="k">12356<small>政策与认知</small></div>
+        <h3>国家把「心理求助」变成了一个号码。</h3>
+        <div>
+          <p>全国统一心理援助热线 12356 已于 2025 年在全国 31 个省份开通，7×24 小时免费。社会对「心理问题可以求助」的认知被整体拉高。</p>
+          <p>热线擅长危机时刻；危机之前的倾诉、之后的持续咨询与随访，需要一个能长期承接的服务。</p>
+        </div>
+      </div>
+      <div class="now-row">
+        <div class="k">说 &gt; 写<small>用户习惯</small></div>
+        <h3>Z 世代更愿意开口，而不是填 27 道题。</h3>
+        <div>
+          <p>语音消息、播客、语音陪伴已经是年轻人的日常。传统初筛靠一页页量表，很多人中途就关掉了。</p>
+          <p>听屿把 PHQ-9 / GAD-7 / ISI 的条目拆进自然对话，用户只是在「聊天」，量表就填完了。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 04 solution ============ -->
+<section class="sec" id="solution" data-title="解决方案">
+  <div class="wrap">
+    <p class="eyebrow"><b>04</b> 解决方案</p>
+    <h2 class="h2">AI 接住第一句话，<br>真人完成专业的那部分。</h2>
+    <p class="lede">AI 只做接待、分诊、陪伴与随访，不做诊断与治疗。每一次咨询的结果回流到接待与匹配，让下一次更准 —— 这是一个越转越快的人机协同闭环。</p>
+    <div class="sol-grid">
+      <div class="fly">
+        <svg id="flywheel" viewBox="0 0 520 520" role="img" aria-label="人机协同闭环：开口倾诉、初筛分级、智能匹配、真人咨询、随访陪伴，循环往复"></svg>
+        <div class="legend"><span><i style="background:var(--surface)"></i>AI 负责</span><span><i style="background:var(--primary-soft);border-color:var(--primary-soft)"></i>AI 推荐 + 用户确认</span><span><i style="background:var(--primary)"></i>真人负责</span></div>
+      </div>
+      <ol class="steps">
+        <li><span class="no">1</span><h3>开口倾诉 <span class="who-tag">AI</span></h3><p>小屿 7×24 小时语音接待，先共情复述，再一次只问一个问题。来访者不需要知道「该挂什么号」。</p></li>
+        <li><span class="no">2</span><h3>初筛与风险分级 <span class="who-tag">AI</span></h3><p>对话中完成 PHQ-9 / GAD-7 / ISI 条目，实时识别风险词，输出低 / 需关注 / 高三级风险。</p></li>
+        <li><span class="no">3</span><h3>智能匹配 <span class="who-tag m">AI + 用户</span></h3><p>按困扰类型、流派、性别、价格、时间匹配持证咨询师，接待小结随预约一起交给咨询师，不用再讲一遍。</p></li>
+        <li><span class="no">4</span><h3>真人咨询 <span class="who-tag h">真人</span></h3><p>50 分钟一节，语音 / 视频 / 文字可选。咨询师持证上岗，并接受临床督导。</p></li>
+        <li><span class="no">5</span><h3>随访与陪伴 <span class="who-tag">AI</span></h3><p>每日 1 分钟语音情绪打卡、正念与睡眠音频；情绪曲线异常时提醒咨询师，形成闭环。</p></li>
+      </ol>
+    </div>
+    <div class="escalate">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 3 19.5h18L12 3Z"/><path d="M12 10v4.5M12 17.2v.3" stroke-linecap="round"/></svg>
+      <div><b>任何环节出现风险词，立即越过闭环升级</b><p>弹出 12356 等热线，真人值班咨询师接入；有生命危险时引导拨打 120 / 110。全程端到端加密。</p></div>
+      <div class="t">≤ 3:00<small>真人介入目标时长</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 05 product ============ -->
+<section class="sec alt" id="product" data-title="产品">
+  <div class="wrap">
+    <p class="eyebrow"><b>05</b> 产品</p>
+    <h2 class="h2">一次对话，从「我睡不着」到「明晚 8 点见林老师」。</h2>
+    <p class="lede">三个核心界面覆盖来访者旅程：开口、被理解、被持续陪伴。首屏的 Demo 就是第一个界面的可交互版本。</p>
+    <div class="shots">
+      <div class="shot"><figure>
+        <div class="screen" aria-hidden="true">
+          <div class="bar"><span>21:42</span><span>端到端加密</span></div>
+          <div class="ttl">小屿 <small>倾听中 · 02:14</small></div>
+          <div class="s1-orb"><div class="orb"><i></i><i></i><i></i><b></b></div></div>
+          <div class="s1-cap">
+            <div class="u">你：差不多一个多月了吧，白天也没精神……</div>
+            <div class="a">一个多月的失眠加上<mark>情绪低落</mark>，确实很消耗人。我想确认一下……</div>
+          </div>
+          <div class="s1-btns"><span class="s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M5 7h14M5 12h10M5 17h7"/></svg></span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></svg></span><span class="s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></span></div>
+        </div>
+        <figcaption><span class="kicker">界面 1 · 语音接待</span><b>声音球 + 实时字幕</b><p>说话即可，停顿后自动发送。字幕里高亮小屿捕捉到的情绪关键词。</p></figcaption>
+      </figure></div>
+      <div class="shot"><figure>
+        <div class="screen" aria-hidden="true">
+          <div class="bar"><span>21:44</span><span>接待完成</span></div>
+          <div class="ttl">接待小结 <span class="risk low">低风险</span></div>
+          <div class="s2-body">
+            <div class="s2-card">
+              <div class="row"><span>情绪</span><b>焦虑 · 疲惫</b></div>
+              <div class="row"><span>主题</span><span class="chips"><span class="chip">职场压力</span><span class="chip">失眠</span></span></div>
+            </div>
+            <div class="s2-card">
+              <div class="row"><span>PHQ-9 抑郁</span><span class="mono">9/27 轻度</span></div><div class="meter"><i style="width:33%"></i></div>
+              <div class="row"><span>GAD-7 焦虑</span><span class="mono">11/21 中度</span></div><div class="meter"><i style="width:52%"></i></div>
+              <div class="row"><span>ISI 失眠</span><span class="mono">16/28 中度</span></div><div class="meter"><i style="width:57%"></i></div>
+            </div>
+            <div class="s2-card mini-match"><img src="assets/c-lin.jpg" alt="" loading="lazy"><div><b>林知夏</b><span>CBT · 失眠 · 职场压力 · 匹配度 94%</span></div></div>
+            <div class="mini-btn">预约 明天 20:00 · 语音</div>
+          </div>
+        </div>
+        <figcaption><span class="kicker">界面 2 · 小结与匹配</span><b>量表分数 + 风险分级 + 一键预约</b><p>小结同步给咨询师，第一节课从第 10 分钟开始，而不是从「你好，说说你的情况」开始。</p></figcaption>
+      </figure></div>
+      <div class="shot"><figure>
+        <div class="screen" aria-hidden="true">
+          <div class="bar"><span>08:05</span><span>第 3 周</span></div>
+          <div class="ttl">情绪日记 <small>近 14 天</small></div>
+          <div class="s3-chart"><svg viewBox="0 0 260 110" role="presentation">
+            <path d="M0 30H260M0 60H260M0 90H260" stroke="var(--line-2)" stroke-width="1"/>
+            <path d="M5 88 L23 82 L41 90 L59 76 L77 79 L95 68 L113 72 L131 60 L149 63 L167 50 L185 54 L203 42 L221 46 L239 34 L255 30" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+            <circle cx="255" cy="30" r="4.5" fill="var(--amber)"/>
+            <text x="4" y="106" font-size="10" fill="var(--ink-3)" font-family="IBM Plex Mono, monospace">D1</text><text x="236" y="106" font-size="10" fill="var(--ink-3)" font-family="IBM Plex Mono, monospace">D14</text>
+          </svg></div>
+          <ul class="s3-list">
+            <li><span class="d">今天</span><span>「睡了 6 个小时，好多了」</span><span class="wv"><i style="height:6px"></i><i style="height:12px"></i><i style="height:9px"></i><i style="height:15px"></i><i style="height:7px"></i></span></li>
+            <li><span class="d">昨天</span><span>「和老板谈了排期」</span><span class="wv"><i style="height:10px"></i><i style="height:5px"></i><i style="height:13px"></i><i style="height:8px"></i><i style="height:11px"></i></span></li>
+            <li><span class="d">周二</span><span>正念 · 睡前身体扫描 12′</span><span class="wv"><i style="height:4px"></i><i style="height:8px"></i><i style="height:6px"></i><i style="height:9px"></i><i style="height:5px"></i></span></li>
+          </ul>
+          <div class="mini-btn">今日 1 分钟语音打卡</div>
+        </div>
+        <figcaption><span class="kicker">界面 3 · 随访</span><b>1 分钟语音打卡 + 情绪曲线</b><p>两次咨询之间不断线；曲线连续下行时，系统提醒咨询师主动跟进。</p></figcaption>
+      </figure></div>
+    </div>
+
+    <div class="diffs">
+      <div><span class="n">差异点 A</span><b>语音优先的接待</b><p>不是把聊天机器人加上麦克风，而是围绕「说话」重新设计节奏：共情复述、一次一问、允许沉默。</p></div>
+      <div><span class="n">差异点 B</span><b>量表内嵌在对话里</b><p>PHQ-9 / GAD-7 / ISI 条目在对话中自然完成，输出标准分数，可被咨询师直接使用。</p></div>
+      <div><span class="n">差异点 C</span><b>真人咨询闭环</b><p>AI 的终点是一位对的咨询师，而不是更长的 AI 对话。接待小结随预约交接。</p></div>
+      <div><span class="n">差异点 D</span><b>安全升级默认开启</b><p>风险词实时识别、三级分级、3 分钟真人介入目标；咨询师持证 + 临床督导。</p></div>
+    </div>
+    <div class="callout">
+      <span class="n">3%</span>
+      <p>只有约 3% 的心理健康 App 发表过临床证据。听屿从第一天起设立临床督导，使用标准化量表并保留真人咨询闭环，为后续临床验证打基础。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 06 market ============ -->
+<section class="sec" id="market" data-title="市场规模">
+  <div class="wrap">
+    <p class="eyebrow"><b>06</b> 市场规模</p>
+    <h2 class="h2">百亿级市场，正以 <em>27%</em> 的年增速扩张。</h2>
+    <p class="lede">我们从中国泛心理健康服务切入。AI 让服务成本下降、触达变广，市场的增长正在向「AI + 服务」的形态集中。</p>
+    <div class="mkt-grid">
+      <div class="tam">
+        <svg id="tamSvg" viewBox="0 0 520 420" role="img" aria-label="TAM、SAM、SOM 同心圆，面积按金额等比例绘制"></svg>
+        <ul class="tam-legend">
+          <li><span class="k">TAM</span><span class="t">中国泛心理健康服务市场（2025）<small>来源：沙利文，转引自中邮证券研报</small></span><span class="v">104.1 亿元</span></li>
+          <li><span class="k">SAM</span><span class="t">线上咨询 + 企业 EAP + 高校心理服务<small>我们的测算 / 示意，约占 TAM 的三分之一</small></span><span class="v">≈ 35 亿元</span></li>
+          <li><span class="k">SOM</span><span class="t">2028 年可获得份额目标<small>我们的测算 / 示意，约占 SAM 的 4%</small></span><span class="v" style="color:var(--amber)">≈ 1.5 亿元</span></li>
+        </ul>
+        <p class="src">圆的面积与金额成正比</p>
+      </div>
+      <div class="growth">
+        <div class="growth-pair">
+          <div>
+            <h3>中国泛心理健康服务</h3>
+            <p class="sub">单位：亿元人民币</p>
+            <div class="vbars" id="cnBars"></div>
+            <div class="vlab"><span>2025</span><span>2030E</span></div>
+            <span class="cagr">CAGR <b>27%</b></span>
+            <p class="src">沙利文（转引自中邮证券研报）；2030E 为按 27% CAGR 外推的我们的测算</p>
+          </div>
+          <div>
+            <h3>全球 AI 心理健康</h3>
+            <p class="sub">单位：亿美元</p>
+            <div class="vbars" id="glBars"></div>
+            <div class="vlab"><span>2025</span><span>2030</span></div>
+            <span class="cagr">CAGR <b>17.1%</b></span>
+            <p class="src">Knowledge Sourcing Intelligence, 2025；其他机构预测 CAGR 为 24%–31%</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 07 competition ============ -->
+<section class="sec alt" id="compete" data-title="竞争格局">
+  <div class="wrap">
+    <p class="eyebrow"><b>07</b> 竞争格局</p>
+    <h2 class="h2">语音优先 × 真人专业服务：<br>右上角还空着。</h2>
+    <p class="lede">国内平台强在真人供给，但入口仍是文字与表单；海外语音 AI 体验领先，却止步于 AI 陪伴。听屿把两者接在一起。</p>
+    <div class="comp-grid">
+      <div class="matrix"><svg id="matrix" viewBox="0 0 500 430" role="img" aria-label="定位矩阵：横轴从文字到语音，纵轴从纯 AI 到 AI 加真人专业服务。听屿位于右上角。"></svg></div>
+      <div class="comp-notes">
+        <div><b>真人平台（简单心理、BetterHelp、Talkspace）</b><p>咨询师供给与品牌成熟；入口是文字筛选与表单，首次匹配依赖用户自己判断。简单心理已提供 460 万+ 分钟免费热线服务。</p></div>
+        <div><b>AI 倾诉 + 真人倾听（壹心理「鲸鱼倾诉」）</b><p>文字与语音都有，真人语音按分钟收费；更偏倾诉陪伴，而非结构化的专业咨询分诊。</p></div>
+        <div><b>AI 原生（Wysa、Lovon、KnowYourself）</b><p>Wysa 临床验证积累最多但以文字为主；Lovon 语音体验出色，但不提供真人咨询闭环。</p></div>
+        <div class="me"><b>听屿：语音接待 + 专业分诊 + 真人咨询</b><p>用语音降低开口门槛，用量表与风险分级做专业分诊，用真人咨询完成服务与变现。</p></div>
+      </div>
+    </div>
+
+    <div class="tbl-wrap" role="region" aria-label="功能对比表，可横向滚动" tabindex="0">
+      <table>
+        <thead><tr><th scope="col">产品</th><th scope="col">语音接待</th><th scope="col">风险分级</th><th scope="col">真人咨询</th><th scope="col">量表评估</th><th scope="col">企业 EAP</th></tr></thead>
+        <tbody id="cmpBody"></tbody>
+      </table>
+    </div>
+    <div class="tbl-legend"><span><i class="mk f"></i>具备</span><span><i class="mk p"></i>部分具备</span><span><i class="mk n"></i>未见公开信息</span><span>根据各产品公开信息整理（2026 年 11 月），可能不完整</span></div>
+  </div>
+</section>
+
+<!-- ============ 08 business ============ -->
+<section class="sec" id="business" data-title="商业模式">
+  <div class="wrap">
+    <p class="eyebrow"><b>08</b> 商业模式</p>
+    <h2 class="h2">三条收入线，共用一个接待入口和咨询师池。</h2>
+    <p class="lede">AI 接待把获客与分诊的边际成本压到接近零；收入主要来自真人咨询与订阅。以下价格与比例均为<span class="tag-demo">示意</span>。</p>
+    <div class="lanes">
+      <div class="lane">
+        <span class="kicker">C 端 · 个人来访者</span>
+        <h3>抽佣 + 会员</h3>
+        <ul>
+          <li><b>单次咨询抽佣</b>：咨询师定价 ¥300–800 / 50 分钟，平台抽佣 <span class="price">25%</span></li>
+          <li><b>「屿伴」会员</b> <span class="price">¥39/月</span>：AI 接待与随访不限次、情绪日记、正念与睡眠音频、咨询 9 折</li>
+          <li>首次 AI 接待与小结免费，作为转化入口</li>
+        </ul>
+      </div>
+      <div class="lane">
+        <span class="kicker">B 端 · 企业</span>
+        <h3>EAP 按人头年费</h3>
+        <ul>
+          <li><b>员工心理福利</b>：按在职人数收取年费，<span class="price">¥120–260/人/年</span></li>
+          <li>包含 AI 接待不限次 + 每人每年 3 次真人咨询</li>
+          <li><b>匿名数据看板</b>：团队压力指数趋势，不暴露个人</li>
+        </ul>
+      </div>
+      <div class="lane">
+        <span class="kicker">G / 机构端</span>
+        <h3>项目制 + 年服务费</h3>
+        <ul>
+          <li><b>高校</b>：新生心理普筛、夜间语音接待，补位学校心理中心</li>
+          <li><b>医院</b>：心理门诊预问诊，把量表与主诉提前整理好</li>
+          <li><b>热线外包</b>：为地方热线提供夜间分流与溢出承接</li>
+        </ul>
+      </div>
+    </div>
+    <div class="biz-bottom">
+      <div class="mix">
+        <h3>2028 年收入结构目标 <span class="tag-demo">示意</span></h3>
+        <p class="sub">C 端打品牌与数据，B / G 端提供更稳定的现金流</p>
+        <div class="stack" role="img" aria-label="收入结构目标：C 端 45%，B 端 35%，G 和机构端 20%">
+          <i style="width:45%;background:var(--primary)">45%</i><i style="width:35%;background:var(--primary-2)">35%</i><i style="width:20%;background:var(--amber)">20%</i>
+        </div>
+        <div class="stack-legend">
+          <span><i style="background:var(--primary)"></i>C 端 咨询抽佣 + 会员</span>
+          <span><i style="background:var(--primary-2)"></i>B 端 企业 EAP</span>
+          <span><i style="background:var(--amber)"></i>G / 机构端</span>
+        </div>
+      </div>
+      <div class="unit">
+        <h3>C 端单位经济模型 <span class="tag-demo">示意</span></h3>
+        <dl>
+          <div><dt>CAC 获客成本</dt><dd>¥140</dd></div>
+          <div><dt>LTV 24 个月毛利</dt><dd>¥580</dd></div>
+          <div><dt>LTV / CAC</dt><dd class="am">4.1<small>×</small></dd></div>
+          <div><dt>毛利率</dt><dd>64<small>%</small></dd></div>
+        </dl>
+        <p class="formula">LTV ≈（会员 ¥39 × 平均 8 个月 + 咨询抽佣 ¥112 × 平均 4.5 次）× 毛利率 64%。AI 接待替代人工初访，是毛利率高于传统咨询平台的主要原因。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 09 traction ============ -->
+<section class="sec alt" id="traction" data-title="牵引力">
+  <div class="wrap">
+    <p class="eyebrow"><b>09</b> 牵引力 <span class="tag-demo">示意数据</span></p>
+    <h2 class="h2">内测 16 周，每周语音接待量增长 <em>12 倍</em>。</h2>
+    <p class="lede">邀请制内测，无付费投放。以下全部为<span class="tag-demo">示意数据</span>，用于展示我们会追踪的核心指标。</p>
+    <div class="kpis">
+      <div class="kpi"><div class="v">12,400</div><div class="l">内测注册用户 <span class="tag-demo">示意</span></div></div>
+      <div class="kpi"><div class="v">38,600</div><div class="l">累计语音接待次数 <span class="tag-demo">示意</span></div></div>
+      <div class="kpi"><div class="v am">23<small>%</small></div><div class="l">接待 → 首次真人咨询 <span class="tag-demo">示意</span></div></div>
+      <div class="kpi"><div class="v">61<small>%</small></div><div class="l">首次咨询后复购 <span class="tag-demo">示意</span></div></div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-head"><b>每周完成的语音接待次数</b><span>W1–W16 · <span class="tag-demo">示意数据</span></span></div>
+      <div id="trChart" role="img" aria-label="每周语音接待次数从第 1 周约 320 次增长到第 16 周约 3,910 次（示意数据）"></div>
+    </div>
+    <div class="quote">
+      <img src="assets/u-asian-woman.jpg" alt="示例用户头像" loading="lazy">
+      <div>
+        <blockquote>「第一次没有填一堆问卷，就是说着说着，小屿就帮我约好了明晚的咨询。」</blockquote>
+        <cite>小周，28 岁，产品经理 · <span class="tag-demo">示例评价</span></cite>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 10 roadmap ============ -->
+<section class="sec" id="roadmap" data-title="路线图">
+  <div class="wrap">
+    <p class="eyebrow"><b>10</b> 路线图</p>
+    <h2 class="h2">从接待入口，到心理服务的基础设施。</h2>
+    <p class="lede">按时间顺序排列，均为计划与<span class="tag-demo">目标</span>。</p>
+    <ol class="road">
+      <li class="now"><span class="t">2026 Q4 · 现在</span><b>种子轮 · 内测扩至 2 万人</b><p>AI 语音接待 v1、三项量表初筛、危机升级 SOP 上线</p></li>
+      <li><span class="t">2027 Q1</span><b>公开上线</b><p>入驻持证咨询师 300 人；「屿伴」会员开始收费</p></li>
+      <li><span class="t">2027 Q2</span><b>企业 EAP 首批 10 家</b><p>匿名数据看板；危机流程通过第三方临床评审</p></li>
+      <li><span class="t">2027 Q4</span><b>高校合作 20 所</b><p>新生普筛 + 夜间接待；试点地方热线夜间分流</p></li>
+      <li><span class="t">2028 H1</span><b>A 轮 · 方言接待</b><p>粤语、川渝方言语音接待；医院心理门诊预问诊</p></li>
+      <li><span class="t">2028 H2</span><b>年收入目标 1.5 亿元</b><p>入驻咨询师 1,000+；开放接待能力给合作机构</p></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ 11 team ============ -->
+<section class="sec alt" id="team" data-title="团队">
+  <div class="wrap">
+    <p class="eyebrow"><b>11</b> 团队 <span class="tag-demo">示意</span></p>
+    <h2 class="h2">懂临床的人，和懂语音的人，坐在一张桌子上。</h2>
+    <p class="lede">以下人物为化名与示意履历，用于展示团队结构。</p>
+    <div class="team">
+      <div class="member"><img src="assets/u-asian-man.jpg" alt="沈屿（化名）头像" loading="lazy"><b>沈屿</b><span class="role">创始人 · CEO</span><p>9 年医疗互联网经验，曾负责在线问诊平台心理业务线（示意）。</p></div>
+      <div class="member"><img src="assets/u-man-3.jpg" alt="陆一舟（化名）头像" loading="lazy"><b>陆一舟</b><span class="role">联合创始人 · CTO</span><p>语音交互与大模型应用工程，曾带领 40 人语音团队（示意）。</p></div>
+      <div class="member"><img src="assets/u-asian-woman.jpg" alt="苏青禾（化名）头像" loading="lazy"><b>苏青禾</b><span class="role">临床总监</span><p>临床心理学博士、注册督导师，12 年临床与危机干预经验（示意）。</p></div>
+      <div class="member"><img src="assets/u-woman-2.jpg" alt="叶澄（化名）头像" loading="lazy"><b>叶澄</b><span class="role">增长负责人</span><p>曾负责千万级用户健康 App 增长，擅长高校与企业渠道（示意）。</p></div>
+      <div class="member"><img src="assets/u-man-2.jpg" alt="许安（化名）头像" loading="lazy"><b>许安</b><span class="role">安全与合规</span><p>医疗数据合规与信息安全，主导过等保三级项目（示意）。</p></div>
+    </div>
+    <div class="advisors"><span class="kicker">临床顾问委员会</span><span>3 位三甲医院精神科主任医师 + 2 位注册督导师，负责危机流程与量表使用规范 <span class="tag-demo">示意</span></span></div>
+  </div>
+</section>
+
+<!-- ============ 12 raise ============ -->
+<section class="sec" id="raise" data-title="融资">
+  <div class="wrap">
+    <p class="eyebrow"><b>12</b> 融资</p>
+    <h2 class="h2">本轮融资 <em>¥3,000 万</em>，跑 18 个月。</h2>
+    <p class="lede">用这笔钱证明一件事：AI 语音接待能让每位咨询师服务更多真正需要他们的人。金额、用途比例与里程碑均为<span class="tag-demo">示意</span>。</p>
+    <div class="raise-grid">
+      <div>
+        <div class="donut-wrap">
+          <svg id="donut" viewBox="0 0 240 240" role="img" aria-label="资金用途：研发 40%，临床与合规 20%，增长 28%，运营 12%"></svg>
+          <ul class="uses" id="uses"></ul>
+        </div>
+      </div>
+      <div>
+        <ul class="miles">
+          <li><div class="v num">20 万</div><div class="l">注册用户（目标）</div></li>
+          <li><div class="v num">1,000</div><div class="l">入驻持证咨询师（目标）</div></li>
+          <li><div class="v num">50 家</div><div class="l">企业 EAP 客户（目标）</div></li>
+          <li><div class="v num" style="color:var(--amber)">¥3,000 万</div><div class="l">ARR，本轮结束时（目标）</div></li>
+        </ul>
+        <div class="contact">
+          <h3>和创始团队聊聊</h3>
+          <p class="sub">我们会在 24 小时内回复，并发送完整 BP 与产品演示账号。</p>
+          <div class="mail">
+            <code id="mailText">ir@tingyu.example</code>
+            <button class="btn-ghost" type="button" id="copyMail">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg>
+              复制邮箱
+            </button>
+          </div>
+          <div class="copy-msg" id="copyMsg" role="status"></div>
+          <div class="cta-row">
+            <button class="btn-primary" type="button" data-meet>预约 30 分钟会面</button>
+            <button class="btn-ghost" type="button" data-bp>索取完整 BP</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="closing" aria-label="结语">
+  <div class="wrap">
+    <p>让每一个开口的人，<br>都被接住。</p>
+    <span>听屿 TINGYU · SEED / 天使轮 · 2026</span>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><strong>听屿 Tingyu</strong><br>© 2026</p>
+    <p>本页为融资路演原型。公司运营、团队与财务数字均为示意数据或目标；行业数据来源已在对应位置标注。小屿是 AI 接待助手，不提供诊断或治疗。若你或身边的人正处于危机，请拨打全国心理援助热线 <strong>12356</strong>（7×24 小时免费），有生命危险请拨打 120 / 110。</p>
+  </div>
+</footer>
+
+<!-- modal -->
+<div class="modal" id="modal" hidden>
+  <div class="modal-bg" data-close></div>
+  <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+    <button class="icon-btn m-close" type="button" data-close aria-label="关闭"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    <div id="mBody"></div>
+  </div>
+</div>
+
+<script src="voice.js"></script>
+<script>
+(function(){
+  'use strict';
+  var $ = function(s, r){ return (r || document).querySelector(s); };
+  var css = getComputedStyle(document.documentElement);
+  var C = {};
+  ['primary','primary-2','primary-3','primary-soft','primary-wash','primary-ink','amber','amber-soft','ink','ink-2','ink-3','ink-4','line','line-2','surface','surface-2','on-primary','danger'].forEach(function(k){ C[k] = css.getPropertyValue('--' + k).trim(); });
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var SVGNS = 'http://www.w3.org/2000/svg';
+  function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  var ICON_ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+  var ICON_CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>';
+
+  /* ================= voice demo ================= */
+  var vr = TingyuVoice.create();
+  var log = $('#vLog'), sumEl = $('#vSum'), tabs = $('#vTabs');
+  var mainBtn = $('#vMain'), mainLabel = $('#vMainLabel');
+  var sumBtn = $('#vSummarize');
+  var placeholder = true, bubbles = {}, userCount = 0, summary = null, curState = 'idle', curMode = 'demo';
+  var booked = null;
+
+  function clearPh(){
+    if (!placeholder) return;
+    placeholder = false;
+    Array.prototype.forEach.call(log.querySelectorAll('.ph'), function(n){ n.remove(); });
+  }
+  function upsert(m, partial){
+    clearPh();
+    var b = bubbles[m.id];
+    if (!b){
+      b = document.createElement('div');
+      b.className = 'bub ' + (m.role === 'ai' ? 'ai' : 'user');
+      b.innerHTML = '<span class="who">' + (m.role === 'ai' ? '小屿' : '你') + '</span><span class="txt"></span>';
+      log.appendChild(b);
+      bubbles[m.id] = b;
+    }
+    b.querySelector('.txt').textContent = m.text;
+    b.classList.toggle('typing', !!partial);
+    log.scrollTop = log.scrollHeight;
+  }
+  vr.on('partial', function(p){ upsert(p, true); if (!tabs.hidden) showView('chat'); });
+  vr.on('message', function(m){ upsert(m, false); if (m.role === 'user') userCount++; syncButtons(); });
+  vr.on('reset', function(){
+    bubbles = {}; log.innerHTML = ''; placeholder = false; userCount = 0; summary = null;
+    tabs.hidden = true; sumEl.hidden = true; sumEl.innerHTML = ''; log.hidden = false; $('#vCrisis').hidden = true;
+    syncButtons();
+  });
+  var STATE_TXT = { idle:'待机中', listening:'倾听中', thinking:'思考中', speaking:'小屿正在说话' };
+  vr.on('state', function(s){
+    curState = s;
+    $('#vStatus').setAttribute('data-s', s);
+    $('#vStateLabel').textContent = (curMode === 'demo' && s === 'listening') ? '倾听中 · 来访者在说' : STATE_TXT[s] || s;
+    syncButtons();
+  });
+  vr.on('mode', function(m){
+    curMode = m;
+    var chip = $('#vMode');
+    chip.textContent = m === 'live' ? '实时模式 · 点击说话，停顿后自动发送' : '演示模式 · 点击收听一段完整接待';
+    chip.classList.toggle('live', m === 'live');
+    syncButtons();
+  });
+  vr.on('summary', function(s){ summary = s; renderSummary(s); tabs.hidden = false; showView('sum'); syncButtons(); });
+  vr.on('crisis', function(c){
+    $('#vHotlines').innerHTML = (c.hotlines || []).map(function(h){ return '<li><span>' + esc(h.name) + ' · ' + esc(h.note) + '</span><span>' + esc(h.number) + '</span></li>'; }).join('');
+    $('#vCrisis').hidden = false;
+  });
+  $('#vCrisisX').addEventListener('click', function(){ $('#vCrisis').hidden = true; });
+
+  function syncButtons(){
+    var busy = curState !== 'idle';
+    var label;
+    if (curMode === 'live'){
+      label = curState === 'listening' ? '说完了' : busy ? '停止' : (vr.history.length ? '点击说话' : '开始语音接待');
+    } else {
+      label = busy ? '停止接待' : (summary ? '再听一遍' : (userCount ? '继续演示' : '开始语音接待'));
+    }
+    mainLabel.textContent = label;
+    mainBtn.setAttribute('data-active', busy ? '1' : '0');
+    sumBtn.hidden = !(!busy && userCount > 0 && !summary);
+  }
+  function showView(v){
+    var sum = v === 'sum' && summary;
+    sumEl.hidden = !sum; log.hidden = !!sum;
+    $('#tabSum').setAttribute('aria-selected', sum ? 'true' : 'false');
+    $('#tabChat').setAttribute('aria-selected', sum ? 'false' : 'true');
+    if (!sum) log.scrollTop = log.scrollHeight;
+  }
+  $('#tabSum').addEventListener('click', function(){ showView('sum'); });
+  $('#tabChat').addEventListener('click', function(){ showView('chat'); });
+
+  mainBtn.addEventListener('click', function(){ vr.toggle(); });
+  $('#heroPlay').addEventListener('click', function(){
+    if (vr.state === 'idle') vr.toggle();
+    if (window.innerWidth < 981) $('#demo').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
+  });
+  sumBtn.addEventListener('click', function(){ vr.summarize(); });
+  $('#vReset').addEventListener('click', function(){ vr.reset(); });
+  $('#vForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var inp = $('#vText'); var t = inp.value.trim();
+    if (!t) return;
+    inp.value = '';
+    if (!tabs.hidden) showView('chat');
+    vr.send(t);
+  });
+  var soundBtn = $('#vSound');
+  soundBtn.addEventListener('click', function(){
+    var on = !vr.sound; vr.setSound(on);
+    soundBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    soundBtn.setAttribute('aria-label', on ? '关闭声音' : '打开声音');
+    $('#icoSoundOn').hidden = !on; $('#icoSoundOff').hidden = on;
+  });
+
+  function renderSummary(s){
+    var c = vr.counselor(s.counselor);
+    var risk = s.risk || 'low';
+    var scales = (s.scales || []).map(function(x){
+      return '<div class="scale"><span>' + esc(x.name) + '</span><span class="meter"><i style="width:' + Math.round(x.value / x.max * 100) + '%"></i></span><span class="v"><b>' + x.value + '</b>/' + x.max + ' ' + esc(x.label) + '</span></div>';
+    }).join('');
+    var plan = String(s.plan || '').split('→').map(function(p){ return '<span>' + esc(p.trim()) + '</span>'; }).join('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>');
+    var isBooked = booked && booked.cid === c.id;
+    sumEl.innerHTML =
+      '<div class="sum-top"><h3>接待小结</h3><span class="risk ' + esc(risk) + '">' + esc(s.riskLabel || '低风险') + '</span></div>' +
+      '<dl class="sum-grid">' +
+        '<div><dt>情绪</dt><dd>' + esc(s.mood) + '</dd><div class="meter" title="情绪分 ' + s.moodScore + '/100"><i style="width:' + (s.moodScore || 0) + '%;background:' + C.amber + '"></i></div></div>' +
+        '<div><dt>持续时间</dt><dd>' + esc(s.duration) + '</dd></div>' +
+        '<div style="grid-column:1/-1"><dt>主题</dt><dd class="chips" style="margin-top:4px">' + (s.topics || []).map(function(t){ return '<span class="chip">' + esc(t) + '</span>'; }).join('') + '</dd></div>' +
+        '<div style="grid-column:1/-1"><dt>风险说明</dt><dd style="font-weight:400;font-size:13.5px">' + esc(s.riskNote) + '</dd></div>' +
+      '</dl>' +
+      '<div class="scales">' + scales + '</div>' +
+      '<div style="font-size:12px;color:var(--ink-3)">建议方案 · ' + esc(s.modality) + '</div>' +
+      '<div class="plan">' + plan + '</div>' +
+      '<div class="match"><img src="' + esc(c.img) + '" alt="' + esc(c.name) + ' 头像"><div><b>' + esc(c.name) + '</b> <span class="mono" style="font-size:12px;color:var(--ink-3)">★ ' + c.rating + ' · ' + c.years + ' 年</span><p>' + esc(c.method) + ' · ' + esc(c.tags.join(' / ')) + ' · ¥' + c.price + '/50 分钟</p></div>' +
+        '<button type="button" class="btn-primary' + (isBooked ? ' done' : '') + '" id="sumBook">' + (isBooked ? ICON_CHECK + ' 已预约 ' + esc(booked.when) : '预约 ' + esc(s.slot) + ' · ' + esc(s.modality)) + '</button></div>' +
+      '<p class="sum-note">接待小结仅用于分诊与匹配，不构成诊断；预约后将随预约同步给咨询师。</p>';
+    $('#sumBook').addEventListener('click', function(){ openBooking(c, s); });
+  }
+
+  /* --- visualizer --- */
+  var cv = $('#vCanvas'), ctx = cv.getContext('2d'), dpr = 1;
+  function sizeCanvas(){
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    cv.width = Math.round(cv.clientWidth * dpr); cv.height = Math.round(cv.clientHeight * dpr);
+  }
+  sizeCanvas();
+  window.addEventListener('resize', sizeCanvas);
+  function hexA(hex, a){
+    var h = hex.replace('#',''); if (h.length === 3) h = h.split('').map(function(x){ return x + x; }).join('');
+    var n = parseInt(h, 16); return 'rgba(' + (n >> 16 & 255) + ',' + (n >> 8 & 255) + ',' + (n & 255) + ',' + a + ')';
+  }
+  vr.on('level', function(l){
+    var w = cv.clientWidth, h = cv.clientHeight;
+    if (!w || !h) return;
+    if (cv.width !== Math.round(w * dpr)) sizeCanvas();
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, w, h);
+    var cx = w / 2, cy = h / 2 - 4, t = reduced ? 0 : performance.now() / 1000;
+    var col = curState === 'listening' ? C.amber : curState === 'speaking' ? C.primary : curState === 'thinking' ? C['primary-2'] : C['ink-4'];
+    // halo rings
+    for (var k = 0; k < 3; k++){
+      ctx.beginPath();
+      ctx.arc(cx, cy, 44 + k * 16 + l * 22 * (k + 1) / 3, 0, Math.PI * 2);
+      ctx.strokeStyle = hexA(col, 0.16 - k * 0.04);
+      ctx.lineWidth = 1.2; ctx.stroke();
+    }
+    // radial bars
+    var N = 72, base = 50;
+    ctx.lineCap = 'round'; ctx.lineWidth = 2.2;
+    for (var i = 0; i < N; i++){
+      var a = i / N * Math.PI * 2 + t * 0.12;
+      var n = Math.abs(Math.sin(i * 1.27 + t * 4.1) * Math.sin(i * 0.37 - t * 2.3));
+      var len = 3 + l * 40 * (0.25 + 0.75 * n);
+      ctx.strokeStyle = hexA(col, 0.3 + 0.7 * n);
+      ctx.beginPath();
+      ctx.moveTo(cx + Math.cos(a) * base, cy + Math.sin(a) * base);
+      ctx.lineTo(cx + Math.cos(a) * (base + len), cy + Math.sin(a) * (base + len));
+      ctx.stroke();
+    }
+    // core
+    var r = 30 + l * 10;
+    var g = ctx.createRadialGradient(cx - r * 0.35, cy - r * 0.35, r * 0.1, cx, cy, r);
+    g.addColorStop(0, hexA(col, 0.55)); g.addColorStop(1, col);
+    ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.fillStyle = g; ctx.fill();
+  });
+
+  /* ================= modal ================= */
+  var modal = $('#modal'), mBody = $('#mBody'), lastFocus = null;
+  function openModal(html, onReady){
+    lastFocus = document.activeElement;
+    mBody.innerHTML = html; modal.hidden = false;
+    document.body.style.overflow = 'hidden';
+    if (onReady) onReady();
+    var f = mBody.querySelector('input:not([type=radio]),input:checked,button'); (f || $('.m-close')).focus();
+  }
+  function closeModal(){
+    modal.hidden = true; document.body.style.overflow = '';
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+  modal.addEventListener('click', function(e){ if (e.target.closest('[data-close]')) closeModal(); });
+  document.addEventListener('keydown', function(e){
+    if (modal.hidden) return;
+    if (e.key === 'Escape') closeModal();
+    if (e.key === 'Tab'){
+      var f = Array.prototype.filter.call(modal.querySelectorAll('button,input,[tabindex]'), function(n){ return !n.disabled && n.offsetParent !== null; });
+      if (!f.length) return;
+      if (e.shiftKey && document.activeElement === f[0]){ e.preventDefault(); f[f.length - 1].focus(); }
+      else if (!e.shiftKey && document.activeElement === f[f.length - 1]){ e.preventDefault(); f[0].focus(); }
+    }
+  });
+  function opts(name, list, sel, cn){
+    return '<div class="opts' + (cn ? ' cn' : '') + '" role="radiogroup">' + list.map(function(v, i){
+      var id = name + '-' + i;
+      return '<input type="radio" name="' + name + '" id="' + id + '" value="' + esc(v) + '"' + (v === sel ? ' checked' : '') + '><label for="' + id + '">' + esc(v) + '</label>';
+    }).join('') + '</div>';
+  }
+  function openBooking(c, s){
+    var slot = String(s.slot || '明天 20:00').split(' ');
+    var day = slot[0] || '明天', time = slot[1] || '20:00';
+    var mode = (s.modality || '语音咨询').replace('咨询', '');
+    openModal(
+      '<h2 id="mTitle">预约 ' + esc(c.name) + '</h2><p class="sub">接待小结会在预约成功后同步给咨询师。50 分钟 · ¥' + c.price + '</p>' +
+      '<div class="m-cn"><img src="' + esc(c.img) + '" alt=""><div><b>' + esc(c.name) + '</b><span>' + esc(c.title) + '</span></div></div>' +
+      '<form id="bookForm"><div class="fld"><span>日期</span>' + opts('bd', ['明天', '后天', '周六'], day, true) + '</div>' +
+      '<div class="fld"><span>时间</span>' + opts('bt', ['19:00', '20:00', '21:00'], time) + '</div>' +
+      '<div class="fld"><span>方式</span>' + opts('bm', ['语音', '视频', '文字'], mode, true) + '</div>' +
+      '<button class="btn-primary" type="submit">确认预约 ' + ICON_ARROW + '</button></form>',
+      function(){
+        $('#bookForm').addEventListener('submit', function(e){
+          e.preventDefault();
+          var f = e.target;
+          var when = f.bd.value + ' ' + f.bt.value + ' · ' + f.bm.value;
+          booked = { cid: c.id, when: when };
+          mBody.innerHTML = '<div class="done-box"><div class="ck">' + ICON_CHECK + '</div><h2 id="mTitle" style="padding:0">已预约</h2><p>' + esc(c.name) + ' · ' + esc(when) + '咨询<br>开始前 30 分钟提醒你；小屿会在咨询后做一次随访。</p><button class="btn-primary" type="button" data-close>完成</button></div>';
+          mBody.querySelector('button').focus();
+          if (summary) renderSummary(summary);
+        });
+      });
+  }
+  function openMeet(isBp){
+    openModal(
+      '<h2 id="mTitle">' + (isBp ? '索取完整 BP' : '预约 30 分钟会面') + '</h2><p class="sub">' + (isBp ? '留下联系方式，我们会发送完整商业计划书与产品演示账号。' : '与创始人 CEO 和临床总监视频沟通，可现场体验实时语音接待。') + '</p>' +
+      '<form id="meetForm"><div class="fld"><label for="mName">姓名</label><input type="text" id="mName" name="mName" required placeholder="怎么称呼你"></div>' +
+      '<div class="fld"><label for="mOrg">机构</label><input type="text" id="mOrg" name="mOrg" placeholder="基金 / 机构名称"></div>' +
+      (isBp ? '<div class="fld"><label for="mMail">邮箱</label><input type="email" id="mMail" name="mMail" required placeholder="name@fund.com"></div>' :
+      '<div class="fld"><span>时间</span>' + opts('ms', ['周二 10:00', '周三 15:00', '周四 16:30', '周五 11:00'], '周三 15:00') + '</div>') +
+      '<button class="btn-primary" type="submit">' + (isBp ? '发送 BP' : '确认会面') + ' ' + ICON_ARROW + '</button></form>',
+      function(){
+        $('#meetForm').addEventListener('submit', function(e){
+          e.preventDefault();
+          var f = e.target, name = f.mName.value.trim() || '你';
+          var msg = isBp ? ('BP 将在 24 小时内发送到 ' + esc(f.mMail.value.trim()) + '。') : ('已为 ' + esc(name) + ' 预留 ' + esc(f.ms.value) + '，会议链接将通过邮件发送。');
+          mBody.innerHTML = '<div class="done-box"><div class="ck">' + ICON_CHECK + '</div><h2 id="mTitle" style="padding:0">' + (isBp ? '已收到' : '已预约会面') + '</h2><p>' + msg + '</p><button class="btn-primary" type="button" data-close>完成</button></div>';
+          mBody.querySelector('button').focus();
+        });
+      });
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('[data-meet]'), function(b){ b.addEventListener('click', function(){ openMeet(false); }); });
+  Array.prototype.forEach.call(document.querySelectorAll('[data-bp]'), function(b){ b.addEventListener('click', function(){ openMeet(true); }); });
+
+  /* ================= copy email ================= */
+  $('#copyMail').addEventListener('click', function(){
+    var text = $('#mailText').textContent.trim(), msg = $('#copyMsg');
+    function fallback(){
+      try { var r = document.createRange(); r.selectNodeContents($('#mailText')); var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r); } catch (e) {}
+      msg.className = 'copy-msg err'; msg.textContent = '浏览器未允许自动复制，邮箱已选中，请按 Ctrl/⌘ + C 复制。';
+    }
+    try {
+      if (!navigator.clipboard || !navigator.clipboard.writeText) { fallback(); return; }
+      navigator.clipboard.writeText(text).then(function(){ msg.className = 'copy-msg'; msg.textContent = '已复制：' + text; }).catch(fallback);
+    } catch (e) { fallback(); }
+  });
+
+  /* ================= charts ================= */
+  function el(tag, attrs, text){
+    var n = document.createElementNS(SVGNS, tag);
+    for (var k in attrs) n.setAttribute(k, attrs[k]);
+    if (text != null) n.textContent = text;
+    return n;
+  }
+  // dot grid 500
+  (function(){
+    var g = $('#dotGrid'), cols = 50, rows = 10, sp = 10;
+    for (var r = 0; r < rows; r++) for (var c = 0; c < cols; c++){
+      var hi = r === 4 && c === 24;
+      g.appendChild(el('circle', { cx: 5 + c * sp, cy: 5 + r * sp, r: hi ? 5 : 3.3, fill: hi ? C.amber : C['primary-3'] }));
+    }
+  })();
+
+  // flywheel
+  (function(){
+    var s = $('#flywheel'), cx = 260, cy = 262, R = 182;
+    var nodes = [
+      { t: '开口倾诉', k: 'AI', type: 'ai' },
+      { t: '初筛分级', k: 'AI', type: 'ai' },
+      { t: '智能匹配', k: 'AI + 用户', type: 'mix' },
+      { t: '真人咨询', k: '真人', type: 'human' },
+      { t: '随访陪伴', k: 'AI', type: 'ai' }
+    ];
+    var defs = el('defs', {});
+    var mk = el('marker', { id: 'arw', viewBox: '0 0 10 10', refX: '7', refY: '5', markerWidth: '7', markerHeight: '7', orient: 'auto-start-reverse' });
+    mk.appendChild(el('path', { d: 'M1 1 L9 5 L1 9 Z', fill: C['primary-2'] }));
+    defs.appendChild(mk); s.appendChild(defs);
+    s.appendChild(el('circle', { cx: cx, cy: cy, r: R, fill: 'none', stroke: C['line'], 'stroke-width': 1, 'stroke-dasharray': '2 6' }));
+    var ang = nodes.map(function(_, i){ return (-90 + i * 72) * Math.PI / 180; });
+    var off = 25 * Math.PI / 180;
+    ang.forEach(function(a, i){
+      var a1 = a + off, a2 = ang[(i + 1) % 5] + (i === 4 ? Math.PI * 2 : 0) - off;
+      var p1 = [cx + R * Math.cos(a1), cy + R * Math.sin(a1)], p2 = [cx + R * Math.cos(a2), cy + R * Math.sin(a2)];
+      s.appendChild(el('path', { d: 'M' + p1[0].toFixed(1) + ' ' + p1[1].toFixed(1) + ' A' + R + ' ' + R + ' 0 0 1 ' + p2[0].toFixed(1) + ' ' + p2[1].toFixed(1), fill: 'none', stroke: C['primary-2'], 'stroke-width': 2.2, 'marker-end': 'url(#arw)' }));
+    });
+    // center
+    s.appendChild(el('circle', { cx: cx, cy: cy, r: 84, fill: C['primary-soft'] }));
+    s.appendChild(el('text', { x: cx, y: cy - 8, 'text-anchor': 'middle', 'font-size': 26, 'font-weight': 900, fill: C['primary-ink'], 'font-family': 'Noto Serif SC, serif' }, '人机协同'));
+    s.appendChild(el('text', { x: cx, y: cy + 24, 'text-anchor': 'middle', 'font-size': 16, fill: C['ink-2'], 'font-family': 'Noto Sans SC, sans-serif' }, '数据回流 · 匹配更准'));
+    nodes.forEach(function(n, i){
+      var x = cx + R * Math.cos(ang[i]), y = cy + R * Math.sin(ang[i]);
+      var w = 150, h = 66;
+      var fill = n.type === 'human' ? C.primary : n.type === 'mix' ? C['primary-soft'] : C.surface;
+      var stroke = n.type === 'mix' ? C['primary-soft'] : C.primary;
+      var tc = n.type === 'human' ? C['on-primary'] : C.ink;
+      var kc = n.type === 'human' ? C['primary-3'] : C.primary;
+      s.appendChild(el('rect', { x: x - w / 2, y: y - h / 2, width: w, height: h, rx: 12, fill: fill, stroke: stroke, 'stroke-width': 1.8 }));
+      s.appendChild(el('text', { x: x, y: y - 4, 'text-anchor': 'middle', 'font-size': 21, 'font-weight': 700, fill: tc, 'font-family': 'Noto Sans SC, sans-serif' }, n.t));
+      s.appendChild(el('text', { x: x, y: y + 20, 'text-anchor': 'middle', 'font-size': 15, 'font-weight': 500, fill: kc, 'font-family': 'IBM Plex Mono, monospace' }, (i + 1) + ' · ' + n.k));
+    });
+  })();
+
+  // TAM / SAM / SOM (area proportional)
+  (function(){
+    var s = $('#tamSvg');
+    var data = [{ k: 'TAM', v: 104.1, label: '104.1 亿' }, { k: 'SAM', v: 35, label: '≈ 35 亿' }, { k: 'SOM', v: 1.5, label: '≈ 1.5 亿' }];
+    var R0 = 200, cx = 210, bottom = 412;
+    var fills = [C['primary-wash'], C['primary-soft'], C.amber];
+    var strokes = [C['primary-3'], C['primary-2'], C.amber];
+    var rs = data.map(function(d){ return R0 * Math.sqrt(d.v / data[0].v); });
+    data.forEach(function(d, i){
+      s.appendChild(el('circle', { cx: cx, cy: bottom - rs[i], r: rs[i], fill: fills[i], stroke: strokes[i], 'stroke-width': 1.5 }));
+    });
+    // TAM label in band above SAM
+    var tamTop = bottom - 2 * rs[0], samTop = bottom - 2 * rs[1];
+    s.appendChild(el('text', { x: cx, y: tamTop + 50, 'text-anchor': 'middle', 'font-size': 16, 'font-weight': 600, fill: C.primary, 'font-family': 'IBM Plex Mono, monospace', 'letter-spacing': '1' }, 'TAM'));
+    s.appendChild(el('text', { x: cx, y: tamTop + 92, 'text-anchor': 'middle', 'font-size': 34, 'font-weight': 900, fill: C.ink, 'font-family': 'Noto Serif SC, serif' }, data[0].label));
+    var somTop = bottom - 2 * rs[2];
+    s.appendChild(el('text', { x: cx, y: samTop + 52, 'text-anchor': 'middle', 'font-size': 16, 'font-weight': 600, fill: C['primary-ink'], 'font-family': 'IBM Plex Mono, monospace', 'letter-spacing': '1' }, 'SAM'));
+    s.appendChild(el('text', { x: cx, y: samTop + 92, 'text-anchor': 'middle', 'font-size': 30, 'font-weight': 900, fill: C.ink, 'font-family': 'Noto Serif SC, serif' }, data[1].label));
+    // SOM leader line to the right
+    var sy = bottom - rs[2];
+    s.appendChild(el('line', { x1: cx + rs[2] + 2, y1: sy, x2: 340, y2: sy, stroke: C['amber'], 'stroke-width': 1.5 }));
+    s.appendChild(el('circle', { cx: 340, cy: sy, r: 3, fill: C.amber }));
+    s.appendChild(el('text', { x: 350, y: sy - 8, 'font-size': 16, 'font-weight': 600, fill: C.amber, 'font-family': 'IBM Plex Mono, monospace', 'letter-spacing': '1' }, 'SOM'));
+    s.appendChild(el('text', { x: 350, y: sy + 20, 'font-size': 26, 'font-weight': 900, fill: C.ink, 'font-family': 'Noto Serif SC, serif' }, data[2].label));
+  })();
+
+  // growth bars (HTML, true scale within each chart)
+  function vbars(id, vals, labels, max, cls){
+    $(id).innerHTML = vals.map(function(v, i){
+      return '<div class="vbar"><span class="v' + (i === 1 ? ' am' : '') + '">' + labels[i] + '</span><i class="' + (cls[i] || '') + '" style="height:' + (v / max * 100 * 0.78).toFixed(1) + '%"></i></div>';
+    }).join('');
+  }
+  var cn2030 = 104.1 * Math.pow(1.27, 5);
+  vbars('#cnBars', [104.1, cn2030], ['104.1', '≈ ' + Math.round(cn2030)], cn2030, ['', 'est']);
+  vbars('#glBars', [32.7, 72], ['32.7', '72'], 72, ['', '']);
+
+  // competition matrix
+  (function(){
+    var s = $('#matrix');
+    var X0 = 44, X1 = 490, Y0 = 16, Y1 = 380, mx = (X0 + X1) / 2, my = (Y0 + Y1) / 2;
+    s.appendChild(el('rect', { x: mx, y: Y0, width: X1 - mx, height: my - Y0, fill: C['primary-wash'] }));
+    s.appendChild(el('rect', { x: X0, y: Y0, width: X1 - X0, height: Y1 - Y0, fill: 'none', stroke: C.line }));
+    s.appendChild(el('line', { x1: mx, y1: Y0, x2: mx, y2: Y1, stroke: C.line, 'stroke-dasharray': '4 4' }));
+    s.appendChild(el('line', { x1: X0, y1: my, x2: X1, y2: my, stroke: C.line, 'stroke-dasharray': '4 4' }));
+    // quadrant names
+    var q = [[X0 + 10, Y0 + 22, '真人平台', 'start'], [X1 - 10, Y0 + 22, '人机协同 · 语音优先', 'end'], [X0 + 10, Y1 - 12, 'AI 文字助手', 'start'], [X1 - 10, Y1 - 12, 'AI 语音陪伴', 'end']];
+    q.forEach(function(a){ s.appendChild(el('text', { x: a[0], y: a[1], 'text-anchor': a[3], 'font-size': 14, fill: C['ink-3'], 'font-family': 'IBM Plex Mono, monospace' }, a[2])); });
+    // axes labels
+    s.appendChild(el('text', { x: X0, y: Y1 + 26, 'font-size': 16, fill: C['ink-2'], 'font-family': 'Noto Sans SC, sans-serif' }, '文字'));
+    s.appendChild(el('text', { x: X1, y: Y1 + 26, 'text-anchor': 'end', 'font-size': 16, fill: C['ink-2'], 'font-family': 'Noto Sans SC, sans-serif' }, '语音'));
+    s.appendChild(el('text', { x: mx, y: Y1 + 26, 'text-anchor': 'middle', 'font-size': 13, fill: C['ink-3'], 'font-family': 'Noto Sans SC, sans-serif' }, '交互方式 →'));
+    var vy = el('text', { x: 0, y: 0, 'text-anchor': 'middle', 'font-size': 13, fill: C['ink-3'], transform: 'translate(22 ' + my + ') rotate(-90)', 'font-family': 'Noto Sans SC, sans-serif' }, '纯 AI → AI + 真人专业服务');
+    s.appendChild(vy);
+    var pts = [
+      ['简单心理', 150, 66, 'r'], ['BetterHelp', 86, 112, 'r'], ['Talkspace', 172, 156, 'r'],
+      ['壹心理 · 鲸鱼倾诉', 284, 180, 'r'], ['KnowYourself', 92, 240, 'r'], ['Wysa', 120, 312, 'r'], ['Lovon', 420, 326, 'r']
+    ];
+    pts.forEach(function(p){
+      s.appendChild(el('circle', { cx: p[1], cy: p[2], r: 6, fill: C.surface, stroke: C['ink-3'], 'stroke-width': 2 }));
+      s.appendChild(el('text', { x: p[1] + 12, y: p[2] + 6, 'font-size': 18, fill: C.ink, 'font-family': 'Noto Sans SC, sans-serif' }, p[0]));
+    });
+    // Tingyu
+    var tx = 436, ty = 76;
+    s.appendChild(el('circle', { cx: tx, cy: ty, r: 20, fill: 'none', stroke: C.amber, 'stroke-width': 1.5, 'stroke-dasharray': '3 3' }));
+    s.appendChild(el('circle', { cx: tx, cy: ty, r: 10, fill: C.primary }));
+    s.appendChild(el('text', { x: tx - 28, y: ty + 8, 'text-anchor': 'end', 'font-size': 24, 'font-weight': 900, fill: C.primary, 'font-family': 'Noto Serif SC, serif' }, '听屿'));
+  })();
+
+  // comparison table
+  (function(){
+    var F = 'f', P = 'p', N = 'n';
+    var rows = [
+      ['听屿 Tingyu', [F, F, F, F, F], true],
+      ['简单心理', [N, P, F, F, F]],
+      ['壹心理 · 鲸鱼倾诉', [P, P, F, F, F]],
+      ['KnowYourself', [N, N, P, F, P]],
+      ['Wysa', [N, F, P, F, F]],
+      ['Lovon', [F, P, N, N, N]],
+      ['BetterHelp', [N, P, F, F, P]],
+      ['Talkspace', [N, F, F, F, F]]
+    ];
+    var lab = { f: '具备', p: '部分具备', n: '未见公开信息' };
+    $('#cmpBody').innerHTML = rows.map(function(r){
+      return '<tr' + (r[2] ? ' class="me"' : '') + '><td>' + esc(r[0]) + '</td>' + r[1].map(function(v){ return '<td><i class="mk ' + v + '" role="img" aria-label="' + lab[v] + '"></i></td>'; }).join('') + '</tr>';
+    }).join('');
+  })();
+
+  // traction line chart (rendered at actual pixel width)
+  var tr = [320, 410, 520, 600, 780, 900, 1080, 1250, 1490, 1720, 1980, 2310, 2650, 3020, 3460, 3910];
+  function renderTraction(){
+    var box = $('#trChart'), W = box.clientWidth; if (!W) return;
+    var H = W < 560 ? 240 : 300, pl = 44, pr = W < 560 ? 56 : 72, pt = 18, pb = 30;
+    var iw = W - pl - pr, ih = H - pt - pb, ymax = 4000;
+    var X = function(i){ return pl + i / (tr.length - 1) * iw; }, Y = function(v){ return pt + ih - v / ymax * ih; };
+    var s = el('svg', { viewBox: '0 0 ' + W + ' ' + H, width: W, height: H });
+    for (var v = 0; v <= ymax; v += 1000){
+      s.appendChild(el('line', { x1: pl, x2: pl + iw, y1: Y(v), y2: Y(v), stroke: v ? C['line-2'] : C['ink-3'], 'stroke-width': 1 }));
+      s.appendChild(el('text', { x: pl - 8, y: Y(v) + 4, 'text-anchor': 'end', 'font-size': 12, fill: C['ink-3'], 'font-family': 'IBM Plex Mono, monospace' }, v ? (v / 1000) + 'k' : '0'));
+    }
+    [0, 3, 7, 11, 15].forEach(function(i){
+      s.appendChild(el('text', { x: X(i), y: H - 8, 'text-anchor': 'middle', 'font-size': 12, fill: C['ink-3'], 'font-family': 'IBM Plex Mono, monospace' }, 'W' + (i + 1)));
+    });
+    var d = tr.map(function(v, i){ return (i ? 'L' : 'M') + X(i).toFixed(1) + ' ' + Y(v).toFixed(1); }).join(' ');
+    s.appendChild(el('path', { d: d + ' L' + X(tr.length - 1) + ' ' + Y(0) + ' L' + X(0) + ' ' + Y(0) + 'Z', fill: C['primary-soft'], opacity: 0.7 }));
+    s.appendChild(el('path', { d: d, fill: 'none', stroke: C.primary, 'stroke-width': 2.5, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }));
+    var li = tr.length - 1;
+    s.appendChild(el('circle', { cx: X(li), cy: Y(tr[li]), r: 5, fill: C.amber }));
+    s.appendChild(el('text', { x: X(li) + 9, y: Y(tr[li]) + 4, 'font-size': 13, 'font-weight': 600, fill: C.amber, 'font-family': 'IBM Plex Mono, monospace' }, '3,910'));
+    s.appendChild(el('circle', { cx: X(0), cy: Y(tr[0]), r: 4, fill: C.primary }));
+    s.appendChild(el('text', { x: X(0) + 8, y: Y(tr[0]) - 10, 'font-size': 12, fill: C['ink-2'], 'font-family': 'IBM Plex Mono, monospace' }, '320'));
+    // hover
+    var guide = el('line', { y1: pt, y2: pt + ih, stroke: C['ink-4'], 'stroke-dasharray': '3 3', opacity: 0 });
+    var dot = el('circle', { r: 5, fill: C.surface, stroke: C.primary, 'stroke-width': 2, opacity: 0 });
+    s.appendChild(guide); s.appendChild(dot);
+    var hit = el('rect', { x: pl, y: pt, width: iw, height: ih, fill: 'transparent' });
+    s.appendChild(hit);
+    box.innerHTML = ''; box.appendChild(s);
+    var tip = document.createElement('div'); tip.className = 'tip'; box.appendChild(tip);
+    function move(e){
+      var r = s.getBoundingClientRect(), px = (e.clientX - r.left) * (W / r.width);
+      var i = Math.max(0, Math.min(li, Math.round((px - pl) / iw * li)));
+      guide.setAttribute('x1', X(i)); guide.setAttribute('x2', X(i)); guide.setAttribute('opacity', 1);
+      dot.setAttribute('cx', X(i)); dot.setAttribute('cy', Y(tr[i])); dot.setAttribute('opacity', 1);
+      tip.textContent = 'W' + (i + 1) + ' · ' + tr[i].toLocaleString('en-US') + ' 次（示意）';
+      tip.style.left = (X(i) / W * r.width) + 'px'; tip.style.top = (Y(tr[i]) / H * r.height) + 'px'; tip.style.opacity = 1;
+    }
+    hit.addEventListener('pointermove', move);
+    hit.addEventListener('pointerleave', function(){ guide.setAttribute('opacity', 0); dot.setAttribute('opacity', 0); tip.style.opacity = 0; });
+  }
+  renderTraction();
+  var rt; window.addEventListener('resize', function(){ clearTimeout(rt); rt = setTimeout(renderTraction, 120); });
+
+  // donut
+  (function(){
+    var uses = [
+      { k: '研发', p: 40, c: C.primary, d: '语音接待模型、方言、风险识别' },
+      { k: '临床与合规', p: 20, c: C['primary-2'], d: '临床督导团队、伦理审查、数据安全' },
+      { k: '增长', p: 28, c: C.amber, d: '高校与企业渠道、内容与品牌' },
+      { k: '运营', p: 12, c: C['ink-4'], d: '咨询师招募与服务质量' }
+    ];
+    var s = $('#donut'), cx = 120, cy = 120, r = 92, sw = 30, circ = 2 * Math.PI * r, acc = 0;
+    s.appendChild(el('circle', { cx: cx, cy: cy, r: r, fill: 'none', stroke: C['line-2'], 'stroke-width': sw }));
+    uses.forEach(function(u){
+      var len = u.p / 100 * circ, gap = 2;
+      s.appendChild(el('circle', { cx: cx, cy: cy, r: r, fill: 'none', stroke: u.c, 'stroke-width': sw, 'stroke-dasharray': (len - gap).toFixed(2) + ' ' + (circ - len + gap).toFixed(2), 'stroke-dashoffset': (-acc).toFixed(2), transform: 'rotate(-90 ' + cx + ' ' + cy + ')' }));
+      acc += len;
+    });
+    s.appendChild(el('text', { x: cx, y: cy - 2, 'text-anchor': 'middle', 'font-size': 28, 'font-weight': 900, fill: C.ink, 'font-family': 'Noto Serif SC, serif' }, '¥3,000万'));
+    s.appendChild(el('text', { x: cx, y: cy + 24, 'text-anchor': 'middle', 'font-size': 12.5, fill: C['ink-3'], 'font-family': 'Noto Sans SC, sans-serif' }, '种子轮 · 示意'));
+    $('#uses').innerHTML = uses.map(function(u){
+      return '<li><i style="background:' + u.c + '"></i><span><b>' + u.k + '</b><small>' + u.d + '</small></span><span class="p">' + u.p + '%<small>¥' + (u.p * 30).toLocaleString('en-US') + ' 万</small></span></li>';
+    }).join('');
+  })();
+
+  /* ================= chapter nav ================= */
+  var secs = Array.prototype.slice.call(document.querySelectorAll('main > section[data-title]'));
+  var rail = $('#railList');
+  rail.innerHTML = secs.map(function(s, i){ return '<li><a href="#' + s.id + '" data-i="' + i + '"><span>' + s.getAttribute('data-title') + '</span><i></i></a></li>'; }).join('');
+  var links = rail.querySelectorAll('a'), chapter = $('#chapter'), prog = $('#progress');
+  var active = -1;
+  function setActive(i){
+    if (i === active) return; active = i;
+    Array.prototype.forEach.call(links, function(a, j){ a.classList.toggle('on', j === i); if (j === i) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current'); });
+    chapter.innerHTML = '<b>' + String(i + 1).padStart(2, '0') + '</b> / ' + secs.length + ' · ' + secs[i].getAttribute('data-title');
+  }
+  function onScroll(){
+    var y = window.scrollY, h = document.documentElement.scrollHeight - window.innerHeight;
+    prog.style.width = (h > 0 ? Math.min(100, y / h * 100) : 0) + '%';
+    var mid = window.innerHeight * 0.35, cur = 0;
+    secs.forEach(function(s, i){ if (s.getBoundingClientRect().top <= mid) cur = i; });
+    setActive(cur);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+</script>
