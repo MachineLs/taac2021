@@ -1,0 +1,239 @@
+<title>听屿 Tingyu 原型合集</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700;900&family=Noto+Sans+SC:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a quiet index — masthead, five large version tiles, then the research that shaped them. */
+:root {
+  --bg: #f4f6f5;
+  --surface: #ffffff;
+  --ink: #15211e;
+  --ink-2: #4a5955;
+  --ink-3: #7b8985;
+  --line: #dde3e0;
+  --accent: #1f5c50;
+  --accent-soft: #e2eeea;
+  --amber: #b9782a;
+  --shadow: 0 1px 2px rgba(21,33,30,.06), 0 12px 32px -12px rgba(21,33,30,.18);
+  --font-display: "Noto Serif SC", "Songti SC", "STSong", serif;
+  --font-body: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1514; --surface: #172120; --ink: #e7eeec; --ink-2: #aab8b4; --ink-3: #7d8c88;
+    --line: #26332f; --accent: #7cc4b3; --accent-soft: #1d2f2b; --amber: #e0a85c;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 32px -12px rgba(0,0,0,.6); color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1514; --surface: #172120; --ink: #e7eeec; --ink-2: #aab8b4; --ink-3: #7d8c88;
+  --line: #26332f; --accent: #7cc4b3; --accent-soft: #1d2f2b; --amber: #e0a85c;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 32px -12px rgba(0,0,0,.6); color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.7;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 1180px; margin: 0 auto; }
+a { color: var(--accent); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+h1, h2, h3 { text-wrap: balance; }
+
+.mast { padding-block: 56px 36px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px; align-items: end; border-bottom: 1px solid var(--line); }
+.brand { display: flex; align-items: center; gap: 12px; font-family: var(--font-mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); }
+.brand svg { width: 28px; height: 28px; }
+.mast h1 { font-family: var(--font-display); font-weight: 900; font-size: clamp(34px, 5.4vw, 60px); line-height: 1.12; margin: 18px 0 14px; letter-spacing: -.01em; }
+.mast h1 em { font-style: normal; color: var(--accent); }
+.mast p.lede { max-width: 640px; color: var(--ink-2); font-size: 16px; margin: 0; }
+.meta { font-family: var(--font-mono); font-size: 12px; color: var(--ink-3); display: grid; gap: 6px; text-align: right; }
+.meta b { color: var(--ink); font-weight: 500; }
+
+.section-head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; margin: 48px 0 20px; }
+.section-head h2 { font-family: var(--font-display); font-size: 26px; margin: 0; font-weight: 700; }
+.section-head span { color: var(--ink-3); font-size: 13px; }
+
+.versions { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 20px; }
+.v { grid-column: span 2; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; text-decoration: none; color: inherit; box-shadow: var(--shadow); transition: transform .25s ease, box-shadow .25s ease; }
+.v:nth-child(1), .v:nth-child(2) { grid-column: span 3; }
+.v:hover { transform: translateY(-3px); }
+.v .shot { aspect-ratio: 16 / 10; background: var(--accent-soft) center top / cover no-repeat; border-bottom: 1px solid var(--line); max-width: 100%; }
+.v .body { padding: 18px 20px 20px; display: grid; gap: 8px; flex: 1; align-content: start; }
+.v .tag { font-family: var(--font-mono); font-size: 12px; color: var(--ink-3); letter-spacing: .06em; display: flex; justify-content: space-between; gap: 8px; }
+.v h3 { font-family: var(--font-display); font-size: 22px; margin: 0; font-weight: 700; }
+.v p { margin: 0; color: var(--ink-2); font-size: 14px; }
+.v .fit { margin-top: 6px; font-size: 13px; color: var(--ink-3); }
+.v .fit b { color: var(--ink); font-weight: 500; }
+.v .go { margin-top: 10px; font-weight: 500; color: var(--accent); font-size: 14px; display: inline-flex; gap: 6px; align-items: center; }
+.swatches { display: flex; gap: 4px; }
+.swatches i { width: 12px; height: 12px; border-radius: 3px; display: block; border: 1px solid rgba(127,127,127,.25); }
+
+.note { margin-top: 20px; padding: 16px 18px; border-radius: 12px; background: var(--accent-soft); color: var(--ink-2); font-size: 14px; display: grid; grid-template-columns: auto minmax(0,1fr); gap: 12px; align-items: start; }
+.note svg { width: 20px; height: 20px; color: var(--accent); margin-top: 3px; }
+
+.research { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 28px; }
+.table-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; }
+table { border-collapse: collapse; width: 100%; min-width: 620px; font-size: 13.5px; }
+th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-family: var(--font-mono); font-weight: 500; font-size: 11.5px; letter-spacing: .06em; color: var(--ink-3); text-transform: uppercase; }
+tr:last-child td { border-bottom: 0; }
+td.n { font-weight: 700; white-space: nowrap; }
+.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+.yes { background: var(--accent); } .part { background: var(--amber); } .no { background: var(--line); border: 1px solid var(--ink-3); }
+
+.facts { display: grid; gap: 12px; align-content: start; }
+.fact { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; display: grid; gap: 4px; }
+.fact .num { font-family: var(--font-display); font-weight: 900; font-size: 30px; line-height: 1.1; color: var(--ink); font-variant-numeric: tabular-nums; }
+.fact .num small { font-size: 15px; font-weight: 700; color: var(--ink-2); margin-left: 4px; }
+.fact p { margin: 0; font-size: 13.5px; color: var(--ink-2); }
+.fact cite { font-style: normal; font-size: 12px; color: var(--ink-3); }
+
+.position { margin-top: 28px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.position div { border-top: 2px solid var(--accent); padding-top: 14px; }
+.position h3 { margin: 0 0 6px; font-size: 16px; }
+.position p { margin: 0; font-size: 14px; color: var(--ink-2); }
+
+footer { margin-top: 56px; padding-block: 28px 48px; border-top: 1px solid var(--line); color: var(--ink-3); font-size: 13px; display: grid; gap: 8px; }
+footer a { color: var(--ink-2); }
+
+@media (max-width: 900px) {
+  .versions { grid-template-columns: minmax(0, 1fr); }
+  .v, .v:nth-child(1), .v:nth-child(2) { grid-column: auto; }
+  .research { grid-template-columns: minmax(0, 1fr); }
+  .position { grid-template-columns: minmax(0, 1fr); }
+  .mast { grid-template-columns: minmax(0, 1fr); }
+  .meta { text-align: left; }
+}
+@media (prefers-reduced-motion: reduce) { .v { transition: none; } .v:hover { transform: none; } }
+</style>
+
+<div class="wrap">
+  <header class="mast">
+    <div>
+      <div class="brand">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M6 19c3.5-3 6.5-3 10 0s6.5 3 10 0" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M11 14.5c1.6-4 8.4-4 10 0" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        听屿 Tingyu · UI Prototype
+      </div>
+      <h1>开口，就被接住。<br><em>五个方向</em>的心理服务平台原型</h1>
+      <p class="lede">听屿是一个「AI 语音接待 + 真人咨询」的心理服务平台：来访者直接开口说话，接待助手小屿共情倾听、完成量表初筛和风险分级，再匹配合适的持证咨询师。下面五版原型是同一个产品的五种表达，每一版都可以点开体验完整的语音接待流程。</p>
+    </div>
+    <div class="meta">
+      <span>版本 <b>5</b> · 页面全部可交互</span>
+      <span>日期 <b>2026-11</b></span>
+      <span>阶段 <b>高保真原型，无后端</b></span>
+    </div>
+  </header>
+
+  <div class="section-head">
+    <h2>选择一个版本</h2>
+    <span>点击卡片进入；每个页面左下角可以切换版本</span>
+  </div>
+
+  <div class="versions">
+    <a class="v" href="v1.html">
+      <div class="shot" style="background-image:url(assets/shot-v1.jpg), url(assets/lake-dock.jpg)" role="img" aria-label="V1 晨雾首页截图"></div>
+      <div class="body">
+        <div class="tag"><span>V1 · MIST</span><span class="swatches"><i style="background:#eef2ef"></i><i style="background:#8fa89b"></i><i style="background:#1e2b26"></i><i style="background:#d9a35c"></i></span></div>
+        <h3>晨雾 · 自然疗愈品牌官网</h3>
+        <p>大幅自然摄影、宋体标题和大量留白，把语音接待做成一块悬在湖面上的磨砂卡片。气质安静、高级、可信。</p>
+        <div class="fit">最适合：<b>品牌官网、C 端获客、第一印象</b></div>
+        <span class="go">打开 V1 →</span>
+      </div>
+    </a>
+    <a class="v" href="v2.html">
+      <div class="shot" style="background-image:url(assets/shot-v2.jpg), url(assets/night-sky.jpg)" role="img" aria-label="V2 夜航首页截图"></div>
+      <div class="body">
+        <div class="tag"><span>V2 · NIGHT</span><span class="swatches"><i style="background:#070b1a"></i><i style="background:#1b2a4a"></i><i style="background:#6ee7d8"></i><i style="background:#b9a7ff"></i></span></div>
+        <h3>夜航 · 深夜陪伴的沉浸式语音</h3>
+        <p>首屏就是体验本身：一颗随声音变化的发光声音球和电影字幕式对话。讲的是「凌晨两点睡不着时，有人接得住你」。</p>
+        <div class="fit">最适合：<b>展示 AI 语音能力、产品发布</b></div>
+        <span class="go">打开 V2 →</span>
+      </div>
+    </a>
+    <a class="v" href="v3.html">
+      <div class="shot" style="background-image:url(assets/shot-v3.jpg), url(assets/session-asian.jpg)" role="img" aria-label="V3 专业首页截图"></div>
+      <div class="body">
+        <div class="tag"><span>V3 · CLINIC</span><span class="swatches"><i style="background:#ffffff"></i><i style="background:#0f4c5c"></i><i style="background:#f08a6c"></i></span></div>
+        <h3>专业 · 咨询师市场与合规平台</h3>
+        <p>AI 接待台、可筛选的咨询师市场、风险分级流程、测评与企业 EAP 看板，信息密度更高。</p>
+        <div class="fit">最适合：<b>证明平台可运营、可规模化</b></div>
+        <span class="go">打开 V3 →</span>
+      </div>
+    </a>
+    <a class="v" href="v4.html">
+      <div class="shot" style="background-image:url(assets/shot-v4.jpg), url(assets/grad-pastel.jpg)" role="img" aria-label="V4 掌心首页截图"></div>
+      <div class="body">
+        <div class="tag"><span>V4 · APP</span><span class="swatches"><i style="background:#ffe3d3"></i><i style="background:#f4c7d8"></i><i style="background:#ef7d5b"></i><i style="background:#3a2a26"></i></span></div>
+        <h3>掌心 · 移动 App 全流程</h3>
+        <p>CSS 绘制的手机里跑着真实的接待流程：语音接待、小结、预约，再加情绪打卡、曲线、通话和睡眠音频屏幕。</p>
+        <div class="fit">最适合：<b>产品演示、App 下载页</b></div>
+        <span class="go">打开 V4 →</span>
+      </div>
+    </a>
+    <a class="v" href="v5.html">
+      <div class="shot" style="background-image:url(assets/shot-v5.jpg), url(assets/hidden-smile.jpg)" role="img" aria-label="V5 路演首页截图"></div>
+      <div class="body">
+        <div class="tag"><span>V5 · PITCH</span><span class="swatches"><i style="background:#f3f5f4"></i><i style="background:#14213d"></i><i style="background:#2b3a8c"></i><i style="background:#d4952f"></i></span></div>
+        <h3>路演 · 投资人叙事网站</h3>
+        <p>问题、时机、方案、市场规模、竞争格局、商业模式、路线图和融资计划，中间嵌入可交互的产品 Demo。</p>
+        <div class="fit">最适合：<b>融资路演、BP 配套网站</b></div>
+        <span class="go">打开 V5 →</span>
+      </div>
+    </a>
+  </div>
+
+  <div class="note">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>
+    <div><b>关于语音接待演示：</b>默认是演示模式，点击后会自动播放一段完整的接待对话（有声音，可关闭），结束时弹出接待小结和咨询师匹配。如果在 Chrome 浏览器中、以本组织成员身份打开，页面会尝试切换到实时模式：用你自己的声音说话，由 Claude 实时回复并朗读。页面中的公司运营数字均为示意数据。</div>
+  </div>
+
+  <div class="section-head">
+    <h2>市场调研摘要</h2>
+    <span>这些发现决定了五个版本的共同骨架</span>
+  </div>
+
+  <div class="research">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>产品</th><th>形态</th><th>语音</th><th>真人</th><th>对我们的启示</th></tr></thead>
+        <tbody>
+          <tr><td class="n">简单心理</td><td>咨询师平台 + 免费热线</td><td><span class="dot part"></span>热线</td><td><span class="dot yes"></span>是</td><td>专业设置和边界是信任的基础；创始人公开表示对 AI 替代咨询师持保留态度</td></tr>
+          <tr><td class="n">壹心理 · 鲸鱼倾诉</td><td>AI 倾诉 + 真人倾听者</td><td><span class="dot yes"></span>是</td><td><span class="dot yes"></span>按分钟</td><td>「轻度先找 AI，深度转真人」的分层模式已被用户接受</td></tr>
+          <tr><td class="n">Lovon</td><td>语音 AI 支持教练</td><td><span class="dot yes"></span>是</td><td><span class="dot no"></span>否</td><td>2026 年 2 月 Product Hunt 日榜第一，「说出来」比打字门槛低</td></tr>
+          <tr><td class="n">Wysa</td><td>AI CBT + 可加购真人</td><td><span class="dot part"></span>部分</td><td><span class="dot part"></span>加购</td><td>临床证据是最强的差异化，CBT / DBT / 正念组合</td></tr>
+          <tr><td class="n">Sonia</td><td>AI CBT 语音或文字</td><td><span class="dot yes"></span>是</td><td><span class="dot no"></span>否</td><td>纯 AI 疗法面临监管压力，美国多州已限制 AI 冒充专业治疗</td></tr>
+          <tr><td class="n">Talkspace / BetterHelp</td><td>真人在线咨询订阅</td><td><span class="dot no"></span>否</td><td><span class="dot yes"></span>是</td><td>规模化匹配与订阅模式可行，但接待和分诊仍靠表单</td></tr>
+          <tr><td class="n" style="color:var(--accent)">听屿</td><td>AI 语音接待 + 真人咨询</td><td><span class="dot yes"></span>是</td><td><span class="dot yes"></span>是</td><td>AI 只做接待、初筛、分诊、陪伴与随访，诊断和治疗交给持证咨询师</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="facts">
+      <div class="fact"><span class="num">104.1<small>亿元</small></span><p>中国泛心理健康服务市场 2025 年预计规模，年复合增长率 27%</p><cite>沙利文，转引自中邮证券研报</cite></div>
+      <div class="fact"><span class="num">160 万 / 20 万</span><p>持证心理咨询从业者 vs 一线活跃执业者，供给严重不足</p><cite>《中国心理咨询行业白皮书 2025》，转引</cite></div>
+      <div class="fact"><span class="num">$3.27B → $7.2B</span><p>全球 AI 心理健康市场 2025 → 2030，CAGR 17.1%（其他机构预测 24%–31%）</p><cite>Knowledge Sourcing Intelligence, 2025</cite></div>
+      <div class="fact"><span class="num">12356</span><p>全国统一心理援助热线，2025 年 5 月前 31 个省份全部开通，所有版本都把它作为危机升级出口</p><cite>新华社、澎湃新闻，2025</cite></div>
+    </div>
+  </div>
+
+  <div class="position">
+    <div><h3>语音优先，降低开口门槛</h3><p>用一次三分钟的对话替代二十道题的表单，同时在对话中完成 PHQ-9、GAD-7、ISI 初筛。</p></div>
+    <div><h3>人机协同，守住专业边界</h3><p>AI 负责接待、分诊、陪伴和随访；风险词实时识别，高风险立即转 12356 和真人值班咨询师。</p></div>
+    <div><h3>B + C 双轮商业模式</h3><p>C 端单次咨询抽佣和会员订阅，B 端企业 EAP 和高校、医院合作，接待能力可以直接对外输出。</p></div>
+  </div>
+
+  <footer>
+    <span>图片素材来自 Unsplash（Unsplash License，可免费商用）。品牌「听屿」、咨询师姓名和用户评价均为原型虚构内容。</span>
+    <span>调研来源：
+      <a href="https://www.producthunt.com/posts/lovon-ai-therapy" target="_blank" rel="noopener">Lovon · Product Hunt</a> ·
+      <a href="https://m.thepaper.cn/detail/34058273" target="_blank" rel="noopener">澎湃新闻 · 简单心理访谈</a> ·
+      <a href="https://www.bilibili.com/read/cv47013311" target="_blank" rel="noopener">鲸鱼倾诉测评</a> ·
+      <a href="https://www.sohu.com/a/991908780_122645289" target="_blank" rel="noopener">行业数据（搜狐转引）</a> ·
+      <a href="https://www.researchandmarkets.com/reports/5926928/artificial-intelligence-ai-in-mental-health" target="_blank" rel="noopener">AI 心理健康市场报告</a> ·
+      <a href="https://www.thepaper.cn/newsDetail_forward_29738873" target="_blank" rel="noopener">12356 热线开通</a> ·
+      <a href="https://www.aimagicx.com/blog/ai-mental-health-therapy-apps-guide-2026" target="_blank" rel="noopener">AI 心理 App 2026 综述</a>
+    </span>
+  </footer>
+</div>
