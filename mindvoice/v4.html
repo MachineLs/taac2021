@@ -548,6 +548,7 @@ a{color:inherit}
 .store{display:inline-flex;align-items:center;gap:12px;height:62px;padding:0 24px 0 18px;border-radius:18px;background:var(--ink);color:#fff;text-align:left;transition:transform .25s var(--ease),box-shadow .25s}
 .store:hover{transform:translateY(-2px);box-shadow:0 14px 28px -12px rgba(42,29,26,.6)}
 .store svg{width:28px;height:28px;fill:#fff}
+.store span{white-space:nowrap}
 .store small{display:block;font-size:11.5px;opacity:.75;line-height:1.2}
 .store b{display:block;font-size:18px;font-weight:700;line-height:1.2}
 .qr{background:#fff;border-radius:30px;padding:22px;box-shadow:var(--shadow-md);text-align:center;width:250px}
@@ -632,7 +633,7 @@ footer{padding-block:48px;border-top:1px solid var(--line);background:#fff}
   .rv-score b{font-size:64px}
   .qr{width:100%;display:flex;align-items:center;gap:16px;text-align:left;padding:16px}
   .qr svg{width:110px;height:110px;flex:none}
-  .store{flex:1 1 160px}
+  .store{flex:1 1 100%;justify-content:flex-start}
   .promises li{grid-template-columns:44px 1fr;gap:14px}
   .promises .pi{width:44px;height:44px}
 }
@@ -1362,7 +1363,7 @@ footer{padding-block:48px;border-top:1px solid var(--line);background:#fff}
       }).join('') + '</div>' +
       '<div class="sc"><h4>风险评估</h4><div class="risk"><span class="badge ' + risk + '">' + esc(s.riskLabel || '低风险') + '</span><p>' + esc(s.riskNote) + '</p></div></div>' +
       '<div class="sc"><h4>建议方案</h4><ol class="plan">' + plan.map(function (p) { return '<li>' + esc(p) + '</li>'; }).join('') + '</ol></div>' +
-      '<div class="sc"><h4>为你匹配</h4><div class="coun"><img src="' + esc(c.img) + '" alt="' + esc(c.name) + '老师头像"><div><b>' + esc(c.name) + '</b><span class="match">匹配 96%</span><p>' + esc(c.method) + ' · ' + c.years + ' 年经验</p><span class="rt">★ ' + c.rating.toFixed(2) + ' · ' + c.sessions.toLocaleString() + ' 次咨询 · ¥' + c.price + '/50 分钟</span></div></div>' +
+      '<div class="sc"><h4>为你匹配</h4><div class="coun"><img src="' + esc(c.img) + '" alt="' + esc(c.name) + '老师头像"><div><b>' + esc(c.name) + '</b><span class="match">匹配 96%</span><p>' + esc(c.method) + ' · ' + c.years + ' 年经验</p><span class="rt">★ ' + c.rating.toFixed(2) + ' · ' + c.sessions.toLocaleString() + ' 次 · ¥' + c.price + '/节</span></div></div>' +
       '<div class="slots" role="group" aria-label="选择咨询时间">' + slots.map(function (t, i) { return '<button type="button" data-slot="' + esc(t) + '" aria-pressed="' + (i === 0) + '">' + esc(t) + '</button>'; }).join('') + '</div></div>';
     $('#sumBody').scrollTop = 0;
     updateBookBtn();
@@ -1569,7 +1570,7 @@ footer{padding-block:48px;border-top:1px solid var(--line);background:#fff}
     ['睡前音频是意外收获', '何清老师的身体扫描我几乎每晚都听，现在 20 分钟内基本能睡着。', '小林，29 岁，教师', 'u-woman-5.jpg', '1 个月前']
   ];
   $('#rvCards').innerHTML = REV.map(function (r) {
-    return '<article class="rv"><div class="rv-h"><b>' + r[0] + '</b><time>' + r[4] + '</time></div><div class="rv-s"><div class="stars" aria-label="5 星">' + STAR + STAR + STAR + STAR + STAR + '</div><em>示例评价</em></div><p>' + r[1] + '</p><div class="rv-f"><img src="assets/' + r[3] + '" alt="" loading="lazy"><span>' + r[2] + '</span></div></article>';
+    return '<article class="rv"><div class="rv-h"><b>' + r[0] + '</b><time>' + r[4] + '</time></div><div class="rv-s"><div class="stars" aria-label="5 星">' + STAR + STAR + STAR + STAR + STAR + '</div><em>示例评价</em></div><p>' + r[1] + '</p><div class="rv-f"><img src="assets/' + r[3] + '" alt=""><span>' + r[2] + '</span></div></article>';
   }).join('');
 
   /* ---------------- decorative QR ---------------- */
