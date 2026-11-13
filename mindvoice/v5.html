@@ -1,8 +1,8 @@
-<title>听屿 Tingyu · 路演 Pitch</title>
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style><title>听屿 Tingyu · 路演 Pitch</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;700;900&display=swap" rel="stylesheet"></head><body>
 <style>
 :root{
   color-scheme: light;
@@ -809,7 +809,7 @@ footer strong{color:var(--ink)}
     </div>
     <div class="callout">
       <span class="n">3%</span>
-      <p>只有约 3% 的心理健康 App 发表过临床证据。听屿从第一天起设立临床督导，使用标准化量表并保留真人咨询闭环，为后续临床验证打基础。</p>
+      <p>只有约 3% 的心理健康 App 发表过临床证据。听屿从第一天起设立临床督导，使用标准化量表并保留真人咨询闭环，为后续临床验证打基础。<small style="display:block;opacity:.7;font-size:12px;margin-top:4px">来源：AI Magicx《AI Therapy Apps in 2026》综述，转引</small></p>
     </div>
   </div>
 </section>
@@ -1571,3 +1571,21 @@ footer strong{color:var(--ink)}
   onScroll();
 })();
 </script>
+
+<nav class="tyx-switch" aria-label="原型版本切换">
+  <a href="index.html" class="tyx-home" title="返回原型合集">合集</a><span class="tyx-sep"></span><a href="v1.html" title="V1 晨雾">V1</a><a href="v2.html" title="V2 夜航">V2</a><a href="v3.html" title="V3 专业">V3</a><a href="v4.html" title="V4 掌心">V4</a><a href="v5.html" aria-current="page" title="V5 路演">V5</a>
+</nav>
+<style>
+.tyx-switch{position:fixed;left:calc(12px + env(safe-area-inset-left,0px));bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:2147483000;
+  display:flex;align-items:center;gap:2px;padding:4px;border-radius:999px;background:rgba(18,24,23,.78);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 6px 24px -8px rgba(0,0,0,.45);
+  font:500 12px/1 "Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;opacity:.72;transition:opacity .2s}
+.tyx-switch:hover,.tyx-switch:focus-within{opacity:1}
+.tyx-switch a{color:rgba(255,255,255,.82);text-decoration:none;padding:7px 9px;border-radius:999px}
+.tyx-switch a:hover{background:rgba(255,255,255,.12);color:#fff}
+.tyx-switch a[aria-current]{background:#fff;color:#111}
+.tyx-switch a:focus-visible{outline:2px solid #fff;outline-offset:1px}
+.tyx-sep{width:1px;height:14px;background:rgba(255,255,255,.25);margin:0 3px}
+@media print{.tyx-switch{display:none}}
+</style>
+</body></html>

@@ -1,8 +1,8 @@
-<title>听屿 Tingyu · 掌心 App</title>
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style><title>听屿 Tingyu · 掌心 App</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet"></head><body>
 <style>
 :root{
   color-scheme: light;
@@ -826,7 +826,7 @@ footer{padding-block:48px;border-top:1px solid var(--line);background:#fff}
     <div><b>104.1<small>亿元</small></b><p>2025 年中国泛心理健康服务市场，年复合增长 27%</p><cite>来源：沙利文，转引自中邮证券研报</cite></div>
     <div><b>20<small>万</small></b><p>一线活跃执业咨询师，而持证者约 160 万——供给严重不足</p><cite>来源：《中国心理咨询行业白皮书 2025》，转引</cite></div>
     <div><b>10.6<small>%</small></b><p>成人抑郁风险检出率，多数人从未走进咨询室</p><cite>来源：《中国国民心理健康发展报告》蓝皮书</cite></div>
-    <div><b>3<small>%</small></b><p>心理健康 App 中发表过临床证据的比例，我们用量表与督导补上</p><cite>来源：行业研究综述</cite></div>
+    <div><b>3<small>%</small></b><p>心理健康 App 中发表过临床证据的比例，我们用量表与督导补上</p><cite>来源：AI Magicx《AI Therapy Apps in 2026》综述，转引</cite></div>
   </div>
 </section>
 
@@ -1642,3 +1642,21 @@ footer{padding-block:48px;border-top:1px solid var(--line);background:#fff}
   });
 })();
 </script>
+
+<nav class="tyx-switch" aria-label="原型版本切换">
+  <a href="index.html" class="tyx-home" title="返回原型合集">合集</a><span class="tyx-sep"></span><a href="v1.html" title="V1 晨雾">V1</a><a href="v2.html" title="V2 夜航">V2</a><a href="v3.html" title="V3 专业">V3</a><a href="v4.html" aria-current="page" title="V4 掌心">V4</a><a href="v5.html" title="V5 路演">V5</a>
+</nav>
+<style>
+.tyx-switch{position:fixed;left:calc(12px + env(safe-area-inset-left,0px));bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:2147483000;
+  display:flex;align-items:center;gap:2px;padding:4px;border-radius:999px;background:rgba(18,24,23,.78);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 6px 24px -8px rgba(0,0,0,.45);
+  font:500 12px/1 "Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;opacity:.72;transition:opacity .2s}
+.tyx-switch:hover,.tyx-switch:focus-within{opacity:1}
+.tyx-switch a{color:rgba(255,255,255,.82);text-decoration:none;padding:7px 9px;border-radius:999px}
+.tyx-switch a:hover{background:rgba(255,255,255,.12);color:#fff}
+.tyx-switch a[aria-current]{background:#fff;color:#111}
+.tyx-switch a:focus-visible{outline:2px solid #fff;outline-offset:1px}
+.tyx-sep{width:1px;height:14px;background:rgba(255,255,255,.25);margin:0 3px}
+@media print{.tyx-switch{display:none}}
+</style>
+</body></html>

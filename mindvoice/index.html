@@ -81,6 +81,8 @@ th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--li
 th { font-family: var(--font-mono); font-weight: 500; font-size: 11.5px; letter-spacing: .06em; color: var(--ink-3); text-transform: uppercase; }
 tr:last-child td { border-bottom: 0; }
 td.n { font-weight: 700; white-space: nowrap; }
+td:nth-child(3), td:nth-child(4) { white-space: nowrap; }
+td:nth-child(2) { min-width: 9em; }
 .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
 .yes { background: var(--accent); } .part { background: var(--amber); } .no { background: var(--line); border: 1px solid var(--ink-3); }
 
@@ -187,7 +189,7 @@ footer a { color: var(--ink-2); }
 
   <div class="note">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>
-    <div><b>关于语音接待演示：</b>默认是演示模式，点击后会自动播放一段完整的接待对话（有声音，可关闭），结束时弹出接待小结和咨询师匹配。如果在 Chrome 浏览器中、以本组织成员身份打开，页面会尝试切换到实时模式：用你自己的声音说话，由 Claude 实时回复并朗读。页面中的公司运营数字均为示意数据。</div>
+    <div><b>关于语音接待演示：</b>点击「开始语音接待」后，会自动播放一段约 80 秒的完整接待对话（有声音，可随时关闭），结束时弹出接待小结、量表分数、风险等级和咨询师匹配。你也可以在输入框里打字和小屿对话；输入含有风险的话语会触发危机支持横幅。页面中的公司运营数字、价格和评价均为示意。</div>
   </div>
 
   <div class="section-head">

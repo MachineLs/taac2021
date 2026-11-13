@@ -137,30 +137,34 @@
     }
     if ('speechSynthesis' in window) { pickVoice(); window.speechSynthesis.onvoiceschanged = pickVoice; }
 
+    function browserSpeak(text, est) {
+      if (!('speechSynthesis' in window) || !zhVoice) return sleep(est);
+      return new Promise(function (res) {
+        try {
+          window.speechSynthesis.cancel();
+          var u = new SpeechSynthesisUtterance(text);
+          u.lang = 'zh-CN'; u.voice = zhVoice; u.rate = 1.02; u.pitch = 1.05;
+          var done = false, fin = function () { if (!done) { done = true; res(); } };
+          u.onend = fin; u.onerror = fin;
+          setTimeout(fin, est + 4000);
+          window.speechSynthesis.speak(u);
+        } catch (e) { sleep(est).then(res); }
+      });
+    }
     function speak(text) {
       var est = Math.max(1600, text.length * 230);
       if (!sound) return sleep(est);
       if (cap.tts) {
         return cap.tts.speak(text, { voice: 'airy', language: 'zh-CN', rate: 1.05 }).catch(function (e) {
-          if (e && e.code === 'stopped') throw { cancelled: true };
-          if (e && e.code === 'not_granted') { cap.tts = null; }
-          return sleep(est);
+          var code = e && e.code;
+          if (code === 'stopped') throw { cancelled: true };
+          // The viewer turned reading aloud off: respect it and stay silent.
+          if (code === 'not_granted') { cap.tts = null; sound = false; emit('sound', sound); return sleep(est); }
+          if (code === 'unavailable') cap.tts = null;
+          return browserSpeak(text, est);
         });
       }
-      if ('speechSynthesis' in window && zhVoice) {
-        return new Promise(function (res) {
-          try {
-            window.speechSynthesis.cancel();
-            var u = new SpeechSynthesisUtterance(text);
-            u.lang = 'zh-CN'; u.voice = zhVoice; u.rate = 1.02; u.pitch = 1.05;
-            var done = false, fin = function () { if (!done) { done = true; res(); } };
-            u.onend = fin; u.onerror = fin;
-            setTimeout(fin, est + 4000);
-            window.speechSynthesis.speak(u);
-          } catch (e) { sleep(est).then(res); }
-        });
-      }
-      return sleep(est);
+      return browserSpeak(text, est);
     }
     function silence() {
       try { cap.tts && cap.tts.stop(); } catch (e) { /* ignore */ }
