@@ -68,6 +68,30 @@ a{color:inherit}
 .progress{position:absolute;left:0;bottom:-1px;height:2px;background:var(--primary);width:0;transition:width .1s linear}
 @media (max-width:640px){.topbar .btn-primary,.round-chip{display:none}}
 
+/* ---------- growth engine ---------- */
+.gr-flow{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px}
+.gr-step{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:22px 22px 20px;display:flex;flex-direction:column;gap:10px}
+.gr-step+.gr-step::before{content:"";position:absolute;left:-22px;top:50%;width:16px;height:16px;transform:translateY(-50%);background:no-repeat center/16px url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M2 8h11M9 4l4 4-4 4' fill='none' stroke='%2325378A' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+.gr-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.gr-step h3{font-family:var(--serif);font-size:21px;margin:0}
+.gr-step p{margin:0;font-size:14px;color:var(--ink-2);flex:1}
+.gr-metric{display:grid;gap:2px;padding-top:12px;border-top:1px solid var(--line-2)}
+.gr-metric b{font-family:var(--mono);font-size:26px;font-weight:600;color:var(--primary);font-variant-numeric:tabular-nums;line-height:1.2}
+.gr-metric span{font-size:12.5px;color:var(--ink-3)}
+.gr-why{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:40px;margin-top:56px;border-top:2px solid var(--ink);padding-top:28px}
+.gr-why h3{font-family:var(--serif);font-size:22px;margin:0 0 16px}
+.gr-why ul{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+.gr-why li{font-size:14.5px;color:var(--ink-2);padding-left:14px;position:relative}
+.gr-why li::before{content:"";position:absolute;left:0;top:.75em;width:6px;height:1.5px;background:var(--primary)}
+.gr-why li b{color:var(--ink);font-weight:600}
+.gr-why .price{font-family:var(--mono);font-weight:600;color:var(--primary)}
+.gr-note{margin:32px 0 0;font-size:13px;color:var(--ink-3);padding:12px 16px;border-left:3px solid var(--amber);background:var(--amber-soft)}
+.split{margin:0 0 56px}
+.split h3{font-size:16px;margin:0 0 14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.split .sub{font-size:13px;color:var(--ink-3);margin:12px 0 0}
+@media (max-width:1023px){.gr-flow{grid-template-columns:repeat(2,minmax(0,1fr))}.gr-step:nth-child(3)::before{display:none}}
+@media (max-width:767px){.gr-flow{grid-template-columns:minmax(0,1fr);gap:24px}.gr-step+.gr-step::before{display:block;left:50%;top:-20px;transform:translateX(-50%) rotate(90deg)}.gr-why{grid-template-columns:minmax(0,1fr);gap:28px}.split .stack-legend{grid-template-columns:minmax(0,1fr)}}
+
 /* ---------- side rail ---------- */
 .rail{position:fixed;right:max(20px, env(safe-area-inset-right, 0px));top:50%;transform:translateY(-50%);z-index:30;display:none}
 .rail ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
@@ -542,7 +566,7 @@ footer strong{color:var(--ink)}
       听屿 <small>Tingyu</small>
     </a>
     <span class="round-chip">SEED · 2026</span>
-    <span class="chapter" id="chapter" aria-live="polite"><b>01</b> / 12 · 封面</span>
+    <span class="chapter" id="chapter" aria-live="polite"><b>01</b> / 13 · 封面</span>
     <button class="btn-primary" type="button" data-meet>约见创始团队</button>
   </div>
   <div class="progress" id="progress"></div>
@@ -740,10 +764,64 @@ footer strong{color:var(--ink)}
   </div>
 </section>
 
-<!-- ============ 05 product ============ -->
-<section class="sec alt" id="product" data-title="产品">
+<!-- ============ 05 growth engine ============ -->
+<section class="sec alt" id="growth" data-title="增长引擎">
   <div class="wrap">
-    <p class="eyebrow"><b>05</b> 产品</p>
+    <p class="eyebrow"><b>05</b> 增长引擎</p>
+    <h2 class="h2">达人负责被看见，平台负责接住，<br>咨询师负责专业。</h2>
+    <p class="lede">我们不靠买量。心理类达人用内容把人带到听屿；平台把分散在各个达人那里的流量汇成一个池子，由小屿统一接待、分流；咨询和治疗始终由入驻的持证咨询师完成，AI 不碰。</p>
+    <ol class="gr-flow">
+      <li class="gr-step">
+        <div class="gr-top"><span class="kicker">1 · 达人宣传</span><span class="who-tag m">达人</span></div>
+        <h3>内容带来信任</h3>
+        <p>心理科普、情感、职场、育儿类博主，通过短视频、直播和图文讲真实话题，留下专属口令和二维码。</p>
+        <div class="gr-metric"><b>30</b><span>首批签约达人 <span class="tag-demo">目标</span></span></div>
+      </li>
+      <li class="gr-step">
+        <div class="gr-top"><span class="kicker">2 · 平台聚流</span><span class="who-tag m">平台</span></div>
+        <h3>流量汇进一个池子</h3>
+        <p>达人渠道、搜索、企业与高校入口全部汇到听屿。用户沉淀为平台会员，不散落在某个达人的私域里。</p>
+        <div class="gr-metric"><b>50 万</b><span>月访客 <span class="tag-demo">目标</span></span></div>
+      </li>
+      <li class="gr-step">
+        <div class="gr-top"><span class="kicker">3 · AI 接待分流</span><span class="who-tag">AI</span></div>
+        <h3>小屿接住每个人</h3>
+        <p>语音接待、量表初筛、风险分级，再按困扰匹配咨询师。高风险直接转 12356 和真人值班。AI 只接待，不咨询、不治疗。</p>
+        <div class="gr-metric"><b>23%</b><span>接待 → 首次咨询 <span class="tag-demo">示意</span></span></div>
+      </li>
+      <li class="gr-step">
+        <div class="gr-top"><span class="kicker">4 · 真人服务</span><span class="who-tag h">真人</span></div>
+        <h3>咨询师完成专业部分</h3>
+        <p>持证咨询师和合作机构提供咨询与治疗；平台负责排期、支付、质控和临床督导。</p>
+        <div class="gr-metric"><b>61%</b><span>首次咨询后复购 <span class="tag-demo">示意</span></span></div>
+      </li>
+    </ol>
+    <div class="gr-why">
+      <div>
+        <h3>达人为什么愿意带</h3>
+        <ul>
+          <li><b>按成交分成</b>：达人带来的新客，首单咨询费的 <span class="price">10%</span> 归达人 <span class="tag-demo">示意</span></li>
+          <li><b>不担专业风险</b>：达人不需要咨询资质，也不用回答粉丝的私信求助，专业的事交给平台</li>
+          <li><b>数据透明</b>：达人后台能看到带来的接待量和转化，看不到任何来访者隐私</li>
+        </ul>
+      </div>
+      <div>
+        <h3>流量为什么要聚在平台</h3>
+        <ul>
+          <li><b>养得起咨询师</b>：单个达人的求助量排不满一位咨询师的档期，汇在一起才能稳定供需</li>
+          <li><b>复购不靠再曝光</b>：会员、随访和情绪打卡让用户留在平台，第二次咨询不用再付推广成本</li>
+          <li><b>同一条安全底线</b>：所有入口都先经过同一套 AI 接待与风险分级</li>
+        </ul>
+      </div>
+    </div>
+    <p class="gr-note">达人只做科普与引导，不做咨询、不承诺疗效；推广内容经平台审核，并按广告法标注「广告」。</p>
+  </div>
+</section>
+
+<!-- ============ 06 product ============ -->
+<section class="sec" id="product" data-title="产品">
+  <div class="wrap">
+    <p class="eyebrow"><b>06</b> 产品</p>
     <h2 class="h2">一次对话，从「我睡不着」到「明晚 8 点见林老师」。</h2>
     <p class="lede">三个核心界面覆盖来访者旅程：开口、被理解、被持续陪伴。首屏的 Demo 就是第一个界面的可交互版本。</p>
     <div class="shots">
@@ -815,9 +893,9 @@ footer strong{color:var(--ink)}
 </section>
 
 <!-- ============ 06 market ============ -->
-<section class="sec" id="market" data-title="市场规模">
+<section class="sec alt" id="market" data-title="市场规模">
   <div class="wrap">
-    <p class="eyebrow"><b>06</b> 市场规模</p>
+    <p class="eyebrow"><b>07</b> 市场规模</p>
     <h2 class="h2">百亿级市场，正以 <em>27%</em> 的年增速扩张。</h2>
     <p class="lede">我们从中国泛心理健康服务切入。AI 让服务成本下降、触达变广，市场的增长正在向「AI + 服务」的形态集中。</p>
     <div class="mkt-grid">
@@ -855,9 +933,9 @@ footer strong{color:var(--ink)}
 </section>
 
 <!-- ============ 07 competition ============ -->
-<section class="sec alt" id="compete" data-title="竞争格局">
+<section class="sec" id="compete" data-title="竞争格局">
   <div class="wrap">
-    <p class="eyebrow"><b>07</b> 竞争格局</p>
+    <p class="eyebrow"><b>08</b> 竞争格局</p>
     <h2 class="h2">语音优先 × 真人专业服务：<br>右上角还空着。</h2>
     <p class="lede">国内平台强在真人供给，但入口仍是文字与表单；海外语音 AI 体验领先，却止步于 AI 陪伴。听屿把两者接在一起。</p>
     <div class="comp-grid">
@@ -881,17 +959,29 @@ footer strong{color:var(--ink)}
 </section>
 
 <!-- ============ 08 business ============ -->
-<section class="sec" id="business" data-title="商业模式">
+<section class="sec alt" id="business" data-title="商业模式">
   <div class="wrap">
-    <p class="eyebrow"><b>08</b> 商业模式</p>
-    <h2 class="h2">三条收入线，共用一个接待入口和咨询师池。</h2>
-    <p class="lede">AI 接待把获客与分诊的边际成本压到接近零；收入主要来自真人咨询与订阅。以下价格与比例均为<span class="tag-demo">示意</span>。</p>
+    <p class="eyebrow"><b>09</b> 商业模式</p>
+    <h2 class="h2">流量来自达人，服务来自真人，<br>平台赚撮合与运营的钱。</h2>
+    <p class="lede">达人按成交分成，获客成本只在成交时发生；AI 接待把分诊成本压到接近零。收入来自真人咨询的平台服务费、会员订阅和机构合作。以下价格与比例均为<span class="tag-demo">示意</span>。</p>
+    <div class="split">
+      <h3>一单 ¥450 的达人引流首单咨询，钱怎么分 <span class="tag-demo">示意</span></h3>
+      <div class="stack" role="img" aria-label="咨询师 70% 即 315 元，平台 20% 即 90 元，推荐达人 10% 即 45 元">
+        <i style="width:70%;background:var(--primary)">咨询师 70% · ¥315</i><i style="width:20%;background:var(--primary-2)">平台 20%</i><i style="width:10%;background:var(--amber)">10%</i>
+      </div>
+      <div class="stack-legend">
+        <span><i style="background:var(--primary)"></i>咨询师 ¥315：提供咨询与治疗</span>
+        <span><i style="background:var(--primary-2)"></i>平台 ¥90：接待、匹配、支付、督导</span>
+        <span><i style="background:var(--amber)"></i>推荐达人 ¥45：只分首单</span>
+      </div>
+      <p class="sub">复购订单不再给达人分成，平台服务费为 30%。</p>
+    </div>
     <div class="lanes">
       <div class="lane">
-        <span class="kicker">C 端 · 个人来访者</span>
-        <h3>抽佣 + 会员</h3>
+        <span class="kicker">C 端 · 个人来访者（主要来自达人引流）</span>
+        <h3>平台服务费 + 会员</h3>
         <ul>
-          <li><b>单次咨询抽佣</b>：咨询师定价 ¥300–800 / 50 分钟，平台抽佣 <span class="price">25%</span></li>
+          <li><b>单次咨询服务费</b>：咨询师定价 ¥300–800 / 50 分钟，平台收 <span class="price">30%</span>，达人引流的首单从中分出 10% 给达人</li>
           <li><b>「屿伴」会员</b> <span class="price">¥39/月</span>：AI 接待与随访不限次、情绪日记、正念与睡眠音频、咨询 9 折</li>
           <li>首次 AI 接待与小结免费，作为转化入口</li>
         </ul>
@@ -923,7 +1013,7 @@ footer strong{color:var(--ink)}
           <i style="width:45%;background:var(--primary)">45%</i><i style="width:35%;background:var(--primary-2)">35%</i><i style="width:20%;background:var(--amber)">20%</i>
         </div>
         <div class="stack-legend">
-          <span><i style="background:var(--primary)"></i>C 端 咨询抽佣 + 会员</span>
+          <span><i style="background:var(--primary)"></i>C 端 咨询服务费 + 会员</span>
           <span><i style="background:var(--primary-2)"></i>B 端 企业 EAP</span>
           <span><i style="background:var(--amber)"></i>G / 机构端</span>
         </div>
@@ -931,23 +1021,23 @@ footer strong{color:var(--ink)}
       <div class="unit">
         <h3>C 端单位经济模型 <span class="tag-demo">示意</span></h3>
         <dl>
-          <div><dt>CAC 获客成本</dt><dd>¥140</dd></div>
-          <div><dt>LTV 24 个月毛利</dt><dd>¥580</dd></div>
-          <div><dt>LTV / CAC</dt><dd class="am">4.1<small>×</small></dd></div>
+          <div><dt>CAC 获客成本</dt><dd>¥95</dd></div>
+          <div><dt>LTV 24 个月毛利</dt><dd>¥560</dd></div>
+          <div><dt>LTV / CAC</dt><dd class="am">5.9<small>×</small></dd></div>
           <div><dt>毛利率</dt><dd>64<small>%</small></dd></div>
         </dl>
-        <p class="formula">LTV ≈（会员 ¥39 × 平均 8 个月 + 咨询抽佣 ¥112 × 平均 4.5 次）× 毛利率 64%。AI 接待替代人工初访，是毛利率高于传统咨询平台的主要原因。</p>
+        <p class="formula">LTV ≈（会员 ¥39 × 平均 8 个月 + 首单平台收入 ¥90 + 复购服务费 ¥135 × 平均 3.5 次）× 毛利率 64% ≈ ¥560。CAC 主要是达人内容支持费用，分成只在成交时支付；AI 接待替代人工初访，是毛利率高于传统咨询平台的主要原因。</p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ============ 09 traction ============ -->
-<section class="sec alt" id="traction" data-title="牵引力">
+<section class="sec" id="traction" data-title="牵引力">
   <div class="wrap">
-    <p class="eyebrow"><b>09</b> 牵引力 <span class="tag-demo">示意数据</span></p>
+    <p class="eyebrow"><b>10</b> 牵引力 <span class="tag-demo">示意数据</span></p>
     <h2 class="h2">内测 16 周，每周语音接待量增长 <em>12 倍</em>。</h2>
-    <p class="lede">邀请制内测，无付费投放。以下全部为<span class="tag-demo">示意数据</span>，用于展示我们会追踪的核心指标。</p>
+    <p class="lede">邀请制内测，流量全部来自 12 位合作心理达人的内容，无付费投放。以下全部为<span class="tag-demo">示意数据</span>，用于展示我们会追踪的核心指标。</p>
     <div class="kpis">
       <div class="kpi"><div class="v">12,400</div><div class="l">内测注册用户 <span class="tag-demo">示意</span></div></div>
       <div class="kpi"><div class="v">38,600</div><div class="l">累计语音接待次数 <span class="tag-demo">示意</span></div></div>
@@ -969,13 +1059,13 @@ footer strong{color:var(--ink)}
 </section>
 
 <!-- ============ 10 roadmap ============ -->
-<section class="sec" id="roadmap" data-title="路线图">
+<section class="sec alt" id="roadmap" data-title="路线图">
   <div class="wrap">
-    <p class="eyebrow"><b>10</b> 路线图</p>
+    <p class="eyebrow"><b>11</b> 路线图</p>
     <h2 class="h2">从接待入口，到心理服务的基础设施。</h2>
     <p class="lede">按时间顺序排列，均为计划与<span class="tag-demo">目标</span>。</p>
     <ol class="road">
-      <li class="now"><span class="t">2026 Q4 · 现在</span><b>种子轮 · 内测扩至 2 万人</b><p>AI 语音接待 v1、三项量表初筛、危机升级 SOP 上线</p></li>
+      <li class="now"><span class="t">2026 Q4 · 现在</span><b>种子轮 · 内测扩至 2 万人</b><p>AI 语音接待 v1、三项量表初筛、危机升级 SOP 上线；签约首批 30 位心理达人</p></li>
       <li><span class="t">2027 Q1</span><b>公开上线</b><p>入驻持证咨询师 300 人；「屿伴」会员开始收费</p></li>
       <li><span class="t">2027 Q2</span><b>企业 EAP 首批 10 家</b><p>匿名数据看板；危机流程通过第三方临床评审</p></li>
       <li><span class="t">2027 Q4</span><b>高校合作 20 所</b><p>新生普筛 + 夜间接待；试点地方热线夜间分流</p></li>
@@ -986,9 +1076,9 @@ footer strong{color:var(--ink)}
 </section>
 
 <!-- ============ 11 team ============ -->
-<section class="sec alt" id="team" data-title="团队">
+<section class="sec" id="team" data-title="团队">
   <div class="wrap">
-    <p class="eyebrow"><b>11</b> 团队 <span class="tag-demo">示意</span></p>
+    <p class="eyebrow"><b>12</b> 团队 <span class="tag-demo">示意</span></p>
     <h2 class="h2">懂临床的人，和懂语音的人，坐在一张桌子上。</h2>
     <p class="lede">以下人物为化名与示意履历，用于展示团队结构。</p>
     <div class="team">
@@ -1003,9 +1093,9 @@ footer strong{color:var(--ink)}
 </section>
 
 <!-- ============ 12 raise ============ -->
-<section class="sec" id="raise" data-title="融资">
+<section class="sec alt" id="raise" data-title="融资">
   <div class="wrap">
-    <p class="eyebrow"><b>12</b> 融资</p>
+    <p class="eyebrow"><b>13</b> 融资</p>
     <h2 class="h2">本轮融资 <em>¥3,000 万</em>，跑 18 个月。</h2>
     <p class="lede">用这笔钱证明一件事：AI 语音接待能让每位咨询师服务更多真正需要他们的人。金额、用途比例与里程碑均为<span class="tag-demo">示意</span>。</p>
     <div class="raise-grid">
