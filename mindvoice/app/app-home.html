@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>听屿 App · 首页</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@500;600;900&display=swap">
+<link rel="stylesheet" href="ds.css">
+<script src="icons.js"></script>
+<style>
+/* App · 首页 —— page-specific styles, tokens only */
+.hello { padding: 6px 20px 14px; display: flex; align-items: center; gap: 12px; }
+.hello h1 { margin: 0; font-size: 22px; line-height: 1.3; }
+.hello p { margin: 2px 0 0; color: var(--ink-3); font-size: 13px; }
+.hello .nb-btn { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--surface); border: 1px solid var(--line-2); position: relative; }
+.hello .nb-btn .badge { position: absolute; top: -2px; right: -2px; }
+
+.voice-card { margin: 0 16px; padding: 18px; border-radius: var(--r-xl); background: var(--primary); color: var(--on-primary); position: relative; overflow: hidden; display: grid; grid-template-columns: 1fr auto; gap: 6px 14px; align-items: center; }
+.voice-card::before { content: ""; position: absolute; right: -60px; top: -70px; width: 220px; height: 220px; border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--orb-1) 55%, transparent), transparent 70%); }
+.voice-card .k { font-size: 12px; opacity: .8; display: flex; align-items: center; gap: 6px; }
+.voice-card h2 { margin: 0; font-size: 21px; position: relative; }
+.voice-card p { margin: 0; font-size: 13px; opacity: .85; position: relative; }
+.voice-card .orb { width: 76px; height: 76px; grid-row: 1 / span 3; grid-column: 2; display: grid; place-items: center; color: var(--on-primary); }
+.voice-card .last { grid-column: 1 / -1; margin-top: 10px; padding-top: 10px; border-top: 1px solid color-mix(in srgb, var(--on-primary) 22%, transparent); font-size: 12px; opacity: .85; display: flex; justify-content: space-between; position: relative; }
+
+.block { padding: 22px 16px 0; }
+.mood { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+.mood button { border: 1px solid var(--line-2); background: var(--surface); border-radius: var(--r); padding: 10px 0 8px; display: grid; justify-items: center; gap: 6px; font-size: 12px; color: var(--ink-2); }
+.mood i { width: 26px; height: 26px; border-radius: 50%; display: block; }
+.mood button.on { border-color: var(--primary); background: var(--primary-soft); color: var(--primary); font-weight: 600; }
+
+.appt { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; padding: 14px; }
+.appt b { font-size: 15px; }
+.appt .meta { font-size: 12.5px; color: var(--ink-3); display: flex; gap: 10px; flex-wrap: wrap; }
+.appt .count { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; background: var(--surface-2); border-radius: var(--r); padding: 10px 12px; font-size: 12.5px; color: var(--ink-2); }
+
+.quick { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.quick a { display: grid; justify-items: center; gap: 6px; font-size: 12px; color: var(--ink-2); }
+.quick span { width: 52px; height: 52px; border-radius: var(--r-lg); display: grid; place-items: center; background: var(--surface); border: 1px solid var(--line-2); color: var(--primary); }
+.quick a.sos span { background: var(--risk-soft); color: var(--risk); border-color: transparent; }
+
+.hscroll { display: flex; gap: 12px; overflow-x: auto; padding: 2px 16px 4px; margin: 0 -16px; scroll-snap-type: x mandatory; scrollbar-width: none; }
+.hscroll::-webkit-scrollbar { display: none; }
+.cs { width: 150px; flex-shrink: 0; scroll-snap-align: start; overflow: hidden; }
+.cs img { width: 100%; height: 150px; object-fit: cover; object-position: top; }
+.cs .in { padding: 10px 12px 12px; display: grid; gap: 4px; }
+.cs b { font-size: 15px; }
+.cs .t { font-size: 11.5px; color: var(--ink-3); }
+
+.feed { display: grid; gap: 12px; }
+.post { display: grid; grid-template-columns: 1fr 108px; gap: 12px; padding: 12px; }
+.post h3 { margin: 0 0 6px; font-size: 15px; line-height: 1.45; }
+.post .by { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--ink-3); }
+.post .by b { color: var(--ink-2); font-weight: 500; }
+.post img.cover { width: 108px; height: 84px; border-radius: var(--r); object-fit: cover; }
+.post .stat { font-size: 11.5px; color: var(--ink-4); margin-top: 6px; }
+.end { padding: 20px 16px 24px; text-align: center; font-size: 12px; color: var(--ink-4); }
+</style>
+</head>
+<body>
+<div class="phone fixed">
+  <div class="statusbar"></div>
+
+  <div class="scroll">
+    <header class="hello">
+      <div class="grow">
+        <h1 class="display">晚上好，小周</h1>
+        <p>今天也辛苦了。想聊聊的时候，小屿一直在。</p>
+      </div>
+      <a class="nb-btn" href="app-messages.html" aria-label="通知，2 条未读"><svg class="ic"><use href="#i-bell"/></svg><span class="badge">2</span></a>
+    </header>
+
+    <a class="voice-card" href="app-voice.html">
+      <span class="k"><span class="dot"></span>小屿在线 · 平均 3 秒接通</span>
+      <h2 class="display">和小屿说说</h2>
+      <p>不用组织语言，说出来就好。3 分钟接待后，为你匹配合适的咨询师。</p>
+      <span class="orb" style="--lv:.25"><svg class="ic ic-lg"><use href="#i-mic"/></svg></span>
+      <span class="last"><span>上次接待 · 11 月 12 日 · 焦虑、疲惫</span><span>查看小结 ›</span></span>
+    </a>
+
+    <section class="block">
+      <div class="section-title"><h2>今天感觉怎么样？</h2><a href="app-diary.html">情绪日记<svg class="ic ic-sm"><use href="#i-chevron"/></svg></a></div>
+      <div class="mood" role="group" aria-label="情绪打卡">
+        <button type="button"><i style="background:var(--risk-soft);border:2px solid var(--risk)"></i>很差</button>
+        <button type="button" class="on"><i style="background:var(--warn-soft);border:2px solid var(--warn)"></i>低落</button>
+        <button type="button"><i style="background:var(--bg-2);border:2px solid var(--ink-4)"></i>一般</button>
+        <button type="button"><i style="background:var(--primary-soft);border:2px solid var(--primary)"></i>不错</button>
+        <button type="button"><i style="background:var(--ok-soft);border:2px solid var(--ok)"></i>很好</button>
+      </div>
+    </section>
+
+    <section class="block">
+      <div class="section-title"><h2>我的预约</h2><a href="app-orders.html">全部<svg class="ic ic-sm"><use href="#i-chevron"/></svg></a></div>
+      <div class="card appt">
+        <img class="avatar avatar-lg" src="../assets/c-lin.jpg" alt="林知夏">
+        <div class="stack" style="gap:2px">
+          <b>林知夏 · 第 1 次咨询</b>
+          <span class="meta"><span>明天 20:00–20:50</span><span>语音咨询</span></span>
+        </div>
+        <span class="tag tag-ok">已支付</span>
+        <div class="count"><span>接待小结已同步给咨询师，不用再讲一遍</span><a class="btn btn-soft btn-sm" href="app-session.html">咨询室</a></div>
+      </div>
+    </section>
+
+    <section class="block">
+      <div class="quick">
+        <a href="app-assess.html"><span><svg class="ic ic-lg"><use href="#i-file"/></svg></span>心理测评</a>
+        <a href="app-diary.html"><span><svg class="ic ic-lg"><use href="#i-chart"/></svg></span>情绪曲线</a>
+        <a href="app-player.html"><span><svg class="ic ic-lg"><use href="#i-headphones"/></svg></span>助眠音频</a>
+        <a class="sos" href="app-voice.html#crisis"><span><svg class="ic ic-lg"><use href="#i-phone"/></svg></span>紧急求助</a>
+      </div>
+    </section>
+
+    <section class="block">
+      <div class="section-title"><h2>为你推荐的咨询师</h2><a href="app-counselors.html">更多<svg class="ic ic-sm"><use href="#i-chevron"/></svg></a></div>
+      <div class="hscroll">
+        <a class="card cs" href="app-counselor.html"><img src="../assets/c-lin.jpg" alt=""><div class="in"><b>林知夏</b><span class="t">焦虑 · 失眠 · CBT</span><span class="row"><span class="rating"><svg class="ic ic-sm" style="fill:currentColor;stroke:none"><use href="#i-star"/></svg>4.97</span><span class="price" style="margin-left:auto">¥400<small>/次</small></span></span></div></a>
+        <a class="card cs" href="app-counselor.html"><img src="../assets/c-he.jpg" alt=""><div class="in"><b>何清</b><span class="t">情绪调节 · 正念</span><span class="row"><span class="rating"><svg class="ic ic-sm" style="fill:currentColor;stroke:none"><use href="#i-star"/></svg>4.96</span><span class="price" style="margin-left:auto">¥450<small>/次</small></span></span></div></a>
+        <a class="card cs" href="app-counselor.html"><img src="../assets/c-fang.jpg" alt=""><div class="in"><b>方宁</b><span class="t">职业倦怠 · 职场</span><span class="row"><span class="rating"><svg class="ic ic-sm" style="fill:currentColor;stroke:none"><use href="#i-star"/></svg>4.94</span><span class="price" style="margin-left:auto">¥420<small>/次</small></span></span></div></a>
+      </div>
+    </section>
+
+    <section class="block">
+      <div class="section-title"><h2>达人推荐</h2><a href="app-feed.html">更多<svg class="ic ic-sm"><use href="#i-chevron"/></svg></a></div>
+      <div class="feed">
+        <a class="card post" href="app-feed.html">
+          <div><h3>凌晨三点还睡不着？试试这个 4-7-8 呼吸法</h3><div class="by"><img class="avatar avatar-sm" src="../assets/u-woman-5.jpg" alt=""><b>睡眠研究所阿屿</b><span class="tag tag-plain">心理科普</span></div><div class="stat">3.2 万人看过 · 1,284 人去和小屿聊了聊</div></div>
+          <img class="cover" src="../assets/moon.jpg" alt="">
+        </a>
+        <a class="card post" href="app-feed.html">
+          <div><h3>周日晚上的焦虑，其实是身体在提醒你</h3><div class="by"><img class="avatar avatar-sm" src="../assets/u-man-3.jpg" alt=""><b>打工人心理课</b><span class="tag tag-plain">职场</span></div><div class="stat">1.8 万人看过 · 906 人去和小屿聊了聊</div></div>
+          <img class="cover" src="../assets/laptop-sweater.jpg" alt="">
+        </a>
+      </div>
+    </section>
+    <div class="end">已经到底了 · 内容由合作达人提供，不构成诊疗建议</div>
+  </div>
+
+  <nav class="tabbar" aria-label="主导航">
+    <a class="on" href="app-home.html" aria-current="page"><svg class="ic"><use href="#i-home"/></svg>首页</a>
+    <a href="app-counselors.html"><svg class="ic"><use href="#i-users"/></svg>咨询师</a>
+    <a class="tab-voice" href="app-voice.html" aria-label="小屿语音接待"><span class="orb" style="--lv:.2"><svg class="ic"><use href="#i-mic"/></svg></span></a>
+    <a href="app-messages.html"><svg class="ic"><use href="#i-chat"/></svg>消息</a>
+    <a href="app-me.html"><svg class="ic"><use href="#i-user"/></svg>我的</a>
+  </nav>
+  <span class="homebar" aria-hidden="true"></span>
+</div>
+<script>
+document.querySelectorAll('.mood button').forEach(function (b) {
+  b.addEventListener('click', function () {
+    document.querySelectorAll('.mood button').forEach(function (x) { x.classList.remove('on'); });
+    b.classList.add('on'); toast('已记录今天的心情：' + b.textContent.trim());
+  });
+});
+</script>
+</body>
+</html>

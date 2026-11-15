@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>听屿 App · 欢迎</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@500;600;900&display=swap">
+<link rel="stylesheet" href="ds.css">
+<script src="icons.js"></script>
+<style>
+/* App · 首次引导 —— tokens only */
+.ob-top { height: 44px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; flex-shrink: 0; }
+.ob-top .brand { font-size: 16px; }
+.ob-top .brand-mark { width: 26px; height: 26px; border-radius: 8px; }
+.ob-top a.skip { font-size: 14px; color: var(--ink-3); }
+
+.ob { flex: 1; display: flex; flex-direction: column; padding: 4px 20px 0; min-height: 0; }
+.hero { position: relative; height: 282px; border-radius: var(--r-xl); overflow: hidden; flex-shrink: 0; background: var(--bg-2); }
+.hero img { width: 100%; height: 100%; object-fit: cover; }
+.hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 45%, rgba(0,0,0,.42)); }
+.hero .listen { position: absolute; left: 14px; right: 14px; bottom: 14px; z-index: 1; display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: var(--r-lg); background: color-mix(in srgb, var(--surface) 90%, transparent); backdrop-filter: blur(10px); box-shadow: var(--shadow); }
+.hero .listen .orb { width: 40px; height: 40px; flex-shrink: 0; }
+.hero .listen .orb::after { inset: -4px; }
+.hero .listen b { display: block; font-size: 14px; }
+.hero .listen span.t { font-size: 12px; color: var(--ink-3); }
+.hero .listen .wave { margin-left: auto; height: 24px; }
+.hero .listen .wave i { width: 3px; }
+.hero .pill { position: absolute; top: 14px; left: 14px; z-index: 1; display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 12px; border-radius: var(--r-pill); background: rgba(0,0,0,.32); color: #fff; font-size: 12px; backdrop-filter: blur(6px); }
+.hero .pill .dot { width: 6px; height: 6px; }
+
+.dots { display: flex; gap: 6px; justify-content: center; padding: 16px 0 12px; }
+.dots button { width: 7px; height: 7px; border-radius: 4px; border: 0; padding: 0; background: var(--line); transition: width .2s, background .2s; }
+.dots button.on { width: 22px; background: var(--primary); }
+
+.copy { text-align: center; min-height: 82px; }
+.copy h1 { margin: 0; font-size: 26px; line-height: 1.3; }
+.copy p { margin: 6px auto 0; max-width: 300px; font-size: 13.5px; color: var(--ink-3); line-height: 1.6; }
+
+.promise { margin-top: 14px; display: grid; gap: 0; background: var(--surface); border: 1px solid var(--line-2); border-radius: var(--r-lg); overflow: hidden; }
+.promise li { list-style: none; display: grid; grid-template-columns: 34px 1fr; gap: 12px; align-items: center; padding: 10px 14px; }
+.promise li + li { border-top: 1px solid var(--line-2); }
+.promise .ico { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; background: var(--primary-soft); color: var(--primary); }
+.promise b { font-size: 14px; display: block; line-height: 1.4; }
+.promise span { font-size: 12px; color: var(--ink-3); line-height: 1.45; display: block; }
+ul.promise { padding: 0; margin-bottom: 0; }
+
+.ob-foot { padding: 14px 20px 38px; display: grid; gap: 6px; flex-shrink: 0; }
+.ob-foot .btn-text { height: 32px; font-size: 14px; justify-self: center; color: var(--ink-2); }
+.ob-foot .btn-text b { color: var(--primary); }
+</style>
+</head>
+<body>
+<div class="phone fixed">
+  <div class="statusbar"></div>
+  <div class="ob-top">
+    <span class="brand"><span class="brand-mark"><svg class="ic ic-sm"><use href="#i-leaf"/></svg></span>听屿</span>
+    <a class="skip" href="app-login.html">跳过</a>
+  </div>
+
+  <main class="ob">
+    <div class="hero">
+      <img src="../assets/tree-lake.jpg" alt="湖边的一棵树">
+      <span class="pill"><span class="dot"></span>今晚 1,286 人正在和小屿聊天</span>
+      <div class="listen">
+        <span class="orb" id="orb" style="--lv:.3"></span>
+        <div><b>小屿 · 正在倾听</b><span class="t">不用组织语言，想到什么说什么</span></div>
+        <span class="wave" id="wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+      </div>
+    </div>
+
+    <div class="dots" role="tablist" aria-label="引导页">
+      <button type="button" class="on" aria-label="第 1 屏" data-i="0"></button>
+      <button type="button" aria-label="第 2 屏" data-i="1"></button>
+      <button type="button" aria-label="第 3 屏" data-i="2"></button>
+    </div>
+
+    <div class="copy" id="copy" aria-live="polite">
+      <h1 class="display">说出来，就有人接住</h1>
+      <p>深夜睡不着、压力憋在心里时，按住说话。小屿先听你说完，再帮你找到合适的咨询师。</p>
+    </div>
+
+    <ul class="promise" aria-label="我们的承诺">
+      <li><span class="ico"><svg class="ic"><use href="#i-sparkle"/></svg></span><div><b>AI 只做接待，不做治疗</b><span>小屿负责倾听、量表初筛、风险分级和匹配</span></div></li>
+      <li><span class="ico"><svg class="ic"><use href="#i-shield"/></svg></span><div><b>咨询由持证咨询师完成</b><span>286 位入驻咨询师，均经资质核验与持续督导</span></div></li>
+      <li><span class="ico"><svg class="ic"><use href="#i-lock"/></svg></span><div><b>对话端到端加密</b><span>内容只有你和为你服务的咨询师可见</span></div></li>
+    </ul>
+  </main>
+
+  <div class="ob-foot">
+    <a class="btn btn-primary btn-lg btn-block" href="app-login.html">开始使用</a>
+    <a class="btn btn-text" href="app-login.html">已有账号？<b>登录</b></a>
+  </div>
+  <span class="homebar" aria-hidden="true"></span>
+</div>
+<script>
+(function () {
+  var screens = [
+    { h: '说出来，就有人接住', p: '深夜睡不着、压力憋在心里时，按住说话。小屿先听你说完，再帮你找到合适的咨询师。' },
+    { h: '3 分钟，找到对的人', p: '小屿用 PHQ-9、GAD-7、ISI 量表做初筛，按你的困扰、时间和预算匹配咨询师。' },
+    { h: '不用再讲一遍', p: '接待小结经你同意后同步给咨询师，第一次咨询就能直接进入正题。' }
+  ];
+  var copy = document.getElementById('copy');
+  var dots = document.querySelectorAll('.dots button');
+  function show(i) {
+    cur = i;
+    dots.forEach(function (d, k) { d.classList.toggle('on', k === i); d.setAttribute('aria-selected', k === i); });
+    copy.querySelector('h1').textContent = screens[i].h;
+    copy.querySelector('p').textContent = screens[i].p;
+  }
+  dots.forEach(function (d) { d.addEventListener('click', function () { show(+d.dataset.i); }); });
+  // swipe on hero
+  var x0 = null, cur = 0, hero = document.querySelector('.hero');
+  hero.addEventListener('pointerdown', function (e) { x0 = e.clientX; });
+  hero.addEventListener('pointerup', function (e) {
+    if (x0 === null) return; var dx = e.clientX - x0; x0 = null;
+    if (Math.abs(dx) > 40) { cur = (cur + (dx < 0 ? 1 : 2)) % 3; show(cur); }
+  });
+  // gentle listening animation
+  var orb = document.getElementById('orb'), bars = document.querySelectorAll('#wave i'), t0 = performance.now();
+  (function f(t) {
+    var k = (t - t0) / 1000, lv = .22 + .2 * Math.abs(Math.sin(k * 2.2));
+    orb.style.setProperty('--lv', lv.toFixed(3));
+    bars.forEach(function (b, i) { b.style.height = (25 + 65 * Math.abs(Math.sin(k * 3 + i * .9))) + '%'; });
+    requestAnimationFrame(f);
+  })(t0);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>听屿 App · 消息</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@500;600;900&display=swap">
+<link rel="stylesheet" href="ds.css">
+<script src="icons.js"></script>
+<style>
+/* App · 消息 —— tokens only */
+.big-head { padding: 4px 16px 10px; display: flex; align-items: center; gap: 8px; }
+.big-head h1 { margin: 0; font-size: 30px; line-height: 1.2; flex: 1; }
+.big-head .nb-btn { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; background: var(--surface); border: 1px solid var(--line-2); color: var(--ink-2); }
+.tools { padding: 0 16px 12px; display: flex; align-items: center; gap: 10px; }
+.tools .seg { flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); }
+.tools .seg button { padding: 0; }
+.tools .seg .badge { margin-left: 4px; height: 16px; min-width: 16px; font-size: 10px; vertical-align: 1px; }
+.readall { border: 0; background: none; color: var(--ink-3); font-size: 13px; padding: 0 2px; }
+
+.pin { margin: 0 16px 12px; padding: 12px 14px; display: flex; align-items: center; gap: 12px; border-radius: var(--r-lg); background: var(--primary-soft); color: var(--primary); }
+.pin .ic-box { width: 36px; height: 36px; border-radius: var(--r); background: var(--surface); display: grid; place-items: center; flex-shrink: 0; }
+.pin b { display: block; font-size: 14px; color: var(--ink); }
+.pin span { font-size: 12px; color: var(--ink-2); }
+
+.conv { margin: 0 16px; }
+.conv .list-item { padding: 13px 14px; gap: 12px; align-items: flex-start; }
+.conv .av { position: relative; flex-shrink: 0; }
+.conv .av .avatar { width: 48px; height: 48px; }
+.conv .av .online { position: absolute; right: 1px; bottom: 1px; width: 11px; height: 11px; border-radius: 50%; background: var(--ok); border: 2px solid var(--surface); }
+.conv .sysav { width: 48px; height: 48px; border-radius: var(--r); display: grid; place-items: center; }
+.conv .sysav.p { background: var(--primary-soft); color: var(--primary); }
+.conv .sysav.a { background: var(--accent-soft); color: var(--accent); }
+.conv .sysav.o { background: var(--ok-soft); color: var(--ok); }
+.conv .body { flex: 1; min-width: 0; display: grid; gap: 3px; padding-top: 2px; }
+.conv .top { display: flex; align-items: center; gap: 6px; }
+.conv .top b { font-size: 15px; font-weight: 600; }
+.conv .top .tag { height: 18px; font-size: 10.5px; padding: 0 5px; border-radius: 4px; }
+.conv .top time { margin-left: auto; font-size: 12px; color: var(--ink-4); font-family: var(--font-num); }
+.conv .sub { display: flex; align-items: center; gap: 8px; }
+.conv .sub p { margin: 0; flex: 1; min-width: 0; font-size: 13px; color: var(--ink-3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.conv .unread .sub p { color: var(--ink-2); }
+.conv .mute { width: 8px; height: 8px; border-radius: 50%; background: var(--ink-4); }
+.conv .list-item:active { background: var(--surface-2); }
+.foot { padding: 16px 16px 24px; text-align: center; font-size: 12px; color: var(--ink-4); display: flex; justify-content: center; align-items: center; gap: 6px; }
+.empty { padding: 60px 16px; text-align: center; color: var(--ink-4); font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="phone fixed">
+  <div class="statusbar"></div>
+
+  <header class="big-head">
+    <h1 class="display">消息</h1>
+    <button class="nb-btn" type="button" aria-label="搜索消息" onclick="toast('搜索聊天记录')"><svg class="ic"><use href="#i-search"/></svg></button>
+    <button class="nb-btn" type="button" aria-label="通知设置" onclick="toast('已开启咨询提醒与随访提醒')"><svg class="ic"><use href="#i-settings"/></svg></button>
+  </header>
+
+  <div class="tools">
+    <div class="seg" role="tablist" aria-label="消息分类">
+      <button class="on" type="button" data-f="all" role="tab" aria-selected="true">全部<span class="badge">3</span></button>
+      <button type="button" data-f="consult" role="tab">咨询<span class="badge">1</span></button>
+      <button type="button" data-f="notify" role="tab">通知<span class="badge">2</span></button>
+    </div>
+    <button class="readall" type="button" id="readAll">全部已读</button>
+  </div>
+
+  <div class="scroll">
+    <a class="pin" href="app-orders.html">
+      <span class="ic-box"><svg class="ic"><use href="#i-calendar"/></svg></span>
+      <span class="grow"><b>明天 20:00 · 林知夏 语音咨询</b><span>还有 22 小时 19 分 · 开始前 15 分钟提醒你</span></span>
+      <svg class="ic ic-sm"><use href="#i-chevron"/></svg>
+    </a>
+
+    <div class="list conv" id="conv">
+      <a class="list-item unread" data-t="consult" href="app-chat.html">
+        <span class="av"><img class="avatar" src="../assets/c-lin.jpg" alt=""><i class="online"></i></span>
+        <span class="body">
+          <span class="top"><b>林知夏</b><span class="tag">咨询师</span><time>21:36</time></span>
+          <span class="sub"><p>明天 20:00 见，可以先试试呼吸练习</p><span class="badge">1</span></span>
+        </span>
+      </a>
+      <a class="list-item" data-t="consult" href="app-voice.html">
+        <span class="av"><span class="avatar avatar-xiaoyu" style="width:48px;height:48px;font-size:17px">屿</span></span>
+        <span class="body">
+          <span class="top"><b>小屿</b><span class="tag tag-plain">随访提醒</span><time>21:00</time></span>
+          <span class="sub"><p>今晚的情绪打卡还没做哦，说 30 秒就好。睡前一小时可以先把手机调成勿扰。</p></span>
+        </span>
+      </a>
+      <a class="list-item unread" data-t="notify" href="app-orders.html">
+        <span class="av"><span class="sysav p"><svg class="ic ic-lg"><use href="#i-calendar"/></svg></span></span>
+        <span class="body">
+          <span class="top"><b>预约通知</b><span class="tag tag-plain">系统</span><time>19:12</time></span>
+          <span class="sub"><p>预约成功：林知夏 · 11月16日 周一 20:00–20:50 · 语音咨询</p><span class="badge">1</span></span>
+        </span>
+      </a>
+      <a class="list-item unread" data-t="notify" href="app-orders.html">
+        <span class="av"><span class="sysav o"><svg class="ic ic-lg"><use href="#i-wallet"/></svg></span></span>
+        <span class="body">
+          <span class="top"><b>支付凭证</b><span class="tag tag-plain">系统</span><time>19:11</time></span>
+          <span class="sub"><p>微信支付 ¥400.00 · 订单号 TY2611151911038 · 可开电子发票</p><span class="badge">1</span></span>
+        </span>
+      </a>
+      <a class="list-item" data-t="notify" href="app-feed.html">
+        <span class="av"><img class="avatar" src="../assets/u-woman-5.jpg" alt=""></span>
+        <span class="body">
+          <span class="top"><b>睡眠研究所阿屿</b><span class="tag tag-accent">达人</span><time>昨天</time></span>
+          <span class="sub"><p>更新了内容：凌晨三点还睡不着？试试这个 4-7-8 呼吸法</p></span>
+        </span>
+      </a>
+      <a class="list-item" data-t="notify" href="app-me.html">
+        <span class="av"><span class="sysav a"><svg class="ic ic-lg"><use href="#i-gift"/></svg></span></span>
+        <span class="body">
+          <span class="top"><b>屿伴会员</b><span class="tag tag-plain">系统</span><time>11/12</time></span>
+          <span class="sub"><p>屿伴会员已开通，有效期至 2026-12-12，助眠音频全部解锁</p></span>
+        </span>
+      </a>
+      <a class="list-item" data-t="consult" href="app-chat.html">
+        <span class="av"><img class="avatar" src="../assets/c-fang.jpg" alt=""></span>
+        <span class="body">
+          <span class="top"><b>方宁</b><span class="tag">咨询师</span><time>11/07</time></span>
+          <span class="sub"><p>今天的文字咨询记录已归档，祝你这周顺利。</p><i class="mute" title="已结束"></i></span>
+        </span>
+      </a>
+      <a class="list-item" data-t="notify" href="app-feed.html">
+        <span class="av"><img class="avatar" src="../assets/u-man-3.jpg" alt=""></span>
+        <span class="body">
+          <span class="top"><b>打工人心理课</b><span class="tag tag-accent">达人</span><time>11/06</time></span>
+          <span class="sub"><p>更新了内容：周日晚上的焦虑，其实是身体在提醒你</p></span>
+        </span>
+      </a>
+    </div>
+    <div class="empty" id="empty" hidden>暂无消息</div>
+    <div class="foot"><svg class="ic ic-sm"><use href="#i-lock"/></svg>与咨询师的聊天内容加密存储，仅你和咨询师可见</div>
+  </div>
+
+  <nav class="tabbar" aria-label="主导航">
+    <a href="app-home.html"><svg class="ic"><use href="#i-home"/></svg>首页</a>
+    <a href="app-counselors.html"><svg class="ic"><use href="#i-users"/></svg>咨询师</a>
+    <a class="tab-voice" href="app-voice.html" aria-label="小屿语音接待"><span class="orb" style="--lv:.2"><svg class="ic"><use href="#i-mic"/></svg></span></a>
+    <a class="on" href="app-messages.html" aria-current="page"><svg class="ic"><use href="#i-chat"/></svg>消息</a>
+    <a href="app-me.html"><svg class="ic"><use href="#i-user"/></svg>我的</a>
+  </nav>
+  <span class="homebar" aria-hidden="true"></span>
+</div>
+<script>
+var segBtns = document.querySelectorAll('.seg button');
+segBtns.forEach(function (b) {
+  b.addEventListener('click', function () {
+    segBtns.forEach(function (x) { x.classList.toggle('on', x === b); x.setAttribute('aria-selected', x === b); });
+    var f = b.dataset.f, n = 0;
+    document.querySelectorAll('#conv .list-item').forEach(function (it) {
+      var show = f === 'all' || it.dataset.t === f; it.hidden = !show; if (show) n++;
+    });
+    document.getElementById('conv').hidden = !n; document.getElementById('empty').hidden = !!n;
+  });
+});
+document.getElementById('readAll').addEventListener('click', function () {
+  document.querySelectorAll('.badge').forEach(function (x) { x.remove(); });
+  document.querySelectorAll('.unread').forEach(function (x) { x.classList.remove('unread'); });
+  toast('已全部标为已读');
+});
+</script>
+</body>
+</html>
