@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>听屿 Tingyu · 开口，就被接住</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=Noto+Sans+SC:wght@300;400;500;600&family=Noto+Serif+SC:wght@300;400;500&display=swap">
+<style>
+/* Reference: ouraring.com (Oura, Finland) — warm paper ground, light condensed serif headlines,
+   full-bleed lifestyle photography, small dark pill buttons, one saturated CTA, dark editorial footer.
+   Single light look by design. */
+:root {
+  --paper: #F5F0E8;
+  --paper-2: #EDE6DB;
+  --paper-3: #E4DBCD;
+  --ink: #2A2622;
+  --ink-2: #5E5750;
+  --ink-3: #8C847B;
+  --line: #DED5C8;
+  --pill: #4A4540;
+  --cta: #2F62E8;
+  --sage: #C9D3B6;
+  --night: #1D1B19;
+  --night-2: #2A2724;
+  --on-night: #EFE9E1;
+  --on-night-2: rgba(239,233,225,.62);
+  --gold: #C9A46C;
+  --serif-zh: "Noto Serif SC", "Songti SC", "STSong", serif;
+  --serif: "Instrument Serif", "Noto Serif SC", serif;
+  --sans: "Inter", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  --gutter: max(16px, env(safe-area-inset-left, 0px));
+  --gutter-r: max(16px, env(safe-area-inset-right, 0px));
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: 15px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--cta); outline-offset: 3px; border-radius: 6px; }
+.wrap { max-width: 1320px; margin: 0 auto; padding-left: calc(var(--gutter) + 24px); padding-right: calc(var(--gutter-r) + 24px); }
+.serif { font-family: var(--serif-zh); font-weight: 300; letter-spacing: -.01em; }
+svg.i { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+
+.pill { display: inline-flex; align-items: center; gap: 8px; height: 38px; padding: 0 18px; border-radius: 999px; border: 0; font-size: 13.5px; font-weight: 500; white-space: nowrap; }
+.pill-dark { background: var(--pill); color: #F7F2EB; }
+.pill-cta { background: var(--cta); color: #fff; height: 44px; padding: 0 22px; font-size: 14.5px; }
+.pill-line { border: 1px solid currentColor; background: transparent; }
+.link { display: inline-flex; align-items: center; gap: 6px; font-size: 14.5px; font-weight: 500; border-bottom: 1px solid currentColor; padding-bottom: 2px; }
+
+/* announcement + nav */
+.notice { background: var(--sage); font-size: 12.5px; text-align: center; padding-block: 8px; padding-left: var(--gutter); padding-right: var(--gutter-r); }
+.notice b { font-weight: 600; letter-spacing: .02em; }
+.nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: color-mix(in srgb, var(--paper) 86%, transparent); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--paper); }
+.nav .wrap { height: 68px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; }
+.logo { display: inline-flex; align-items: baseline; gap: 10px; }
+.logo b { font: 300 22px/1 var(--serif-zh); letter-spacing: .32em; }
+.logo small { font-size: 10px; letter-spacing: .34em; color: var(--ink-3); }
+.nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 30px; font-size: 13.5px; color: var(--ink-2); }
+.nav ul a:hover { color: var(--ink); }
+.nav .right { display: flex; justify-content: flex-end; align-items: center; gap: 18px; font-size: 13.5px; }
+
+/* hero */
+.hero { position: relative; min-height: 720px; display: grid; align-items: center; overflow: hidden; }
+.hero .photo { position: absolute; inset: 0 0 0 42%; background: url(../assets/session-asian.jpg) 34% 40% / cover no-repeat; }
+.hero .wrap { position: relative; width: 100%; }
+.hero h1 { margin: 0; font: 300 clamp(52px, 6.6vw, 96px)/1.06 var(--serif-zh); letter-spacing: -.02em; }
+.hero .sub { margin: 26px 0 34px; max-width: 26em; font-size: 16px; color: var(--ink-2); }
+.hero .acts { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+.hero .meta { margin-top: 56px; display: flex; gap: 40px; font-size: 12.5px; color: var(--ink-3); }
+.hero .meta b { display: block; font: 400 30px/1.1 var(--serif); color: var(--ink); letter-spacing: -.01em; }
+/* live transcript chip on the photo */
+.live { position: absolute; right: calc(var(--gutter-r) + 56px); bottom: 64px; width: 340px; padding: 18px 18px 16px; border-radius: 22px; background: rgba(250,247,242,.78); -webkit-backdrop-filter: blur(22px) saturate(140%); backdrop-filter: blur(22px) saturate(140%); border: 1px solid rgba(255,255,255,.7); box-shadow: 0 30px 60px -30px rgba(42,38,34,.45); }
+.live .hd { display: flex; align-items: center; gap: 10px; font-size: 12.5px; color: var(--ink-2); }
+.live .orb { width: 30px; height: 30px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #FFF9EE, #E8CFA3 55%, #9FC9C2 100%); box-shadow: 0 0 18px rgba(232,207,163,.8); }
+.live .hd b { color: var(--ink); font-weight: 600; font-size: 13.5px; display: block; }
+.live .wave { margin-left: auto; display: flex; gap: 2.5px; align-items: center; height: 20px; }
+.live .wave i { width: 2.5px; border-radius: 2px; background: var(--ink-2); animation: w 1.2s ease-in-out infinite; }
+.live .wave i:nth-child(2n) { animation-delay: .2s; } .live .wave i:nth-child(3n) { animation-delay: .4s; }
+@keyframes w { 0%,100% { height: 5px; } 50% { height: 18px; } }
+.live p { margin: 14px 0 0; font: 400 15px/1.7 var(--serif-zh); }
+.live p span { color: var(--ink-3); }
+.live .ft { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; font-size: 11.5px; color: var(--ink-3); }
+
+/* statement */
+.statement { text-align: center; padding-block: 130px 70px; }
+.statement h2 { margin: 0 auto; font: 300 clamp(36px, 4.2vw, 58px)/1.2 var(--serif-zh); letter-spacing: -.015em; max-width: 16em; text-wrap: balance; }
+.statement p { margin: 22px auto 30px; max-width: 34em; color: var(--ink-2); font-size: 16px; }
+.statement .acts { display: flex; justify-content: center; gap: 10px; }
+.chips { margin-top: 64px; display: flex; justify-content: center; align-items: center; gap: 28px; flex-wrap: wrap; color: var(--ink-3); }
+.chips span { display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 16px; border-radius: 999px; background: var(--pill); color: #F7F2EB; font-size: 12.5px; }
+.chips em { font-style: normal; font-size: 20px; font-weight: 300; }
+
+/* feature trio */
+.trio { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; padding-bottom: 130px; }
+.feat { display: grid; gap: 22px; }
+.feat .pic { position: relative; aspect-ratio: 4 / 5; border-radius: 6px; overflow: hidden; background: var(--paper-3) center / cover no-repeat; max-width: 100%; }
+.feat .pic::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 50%, rgba(0,0,0,.28)); }
+.feat .tag { position: absolute; left: 18px; top: 18px; z-index: 2; font-size: 10.5px; letter-spacing: .16em; padding: 6px 10px; border-radius: 4px; background: rgba(42,38,34,.78); color: #F7F2EB; }
+.ui { position: absolute; z-index: 2; left: 18px; right: 18px; bottom: 18px; padding: 14px 16px; border-radius: 16px; background: rgba(250,247,242,.86); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); font-size: 12.5px; color: var(--ink-2); box-shadow: 0 20px 40px -20px rgba(0,0,0,.4); }
+.ui b { color: var(--ink); font-weight: 600; }
+.ui .row { display: flex; align-items: center; gap: 10px; }
+.ui img { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; }
+.ui .bars { display: grid; gap: 7px; margin-top: 10px; }
+.ui .bars div { display: grid; grid-template-columns: 70px 1fr 34px; align-items: center; gap: 8px; font-size: 11.5px; }
+.ui .bars i { height: 4px; border-radius: 2px; background: var(--paper-3); position: relative; overflow: hidden; }
+.ui .bars i::after { content: ""; position: absolute; inset: 0 auto 0 0; width: var(--v); background: var(--ink); border-radius: 2px; }
+.ui .shapes { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 10px; align-items: end; }
+.ui .shapes i { display: block; aspect-ratio: 1; }
+.s-calm { background: #7FB9A8; border-radius: 50% 50% 50% 12%; } .s-low { background: #8EA4D8; border-radius: 40% 60% 30% 70% / 60% 40% 60% 40%; }
+.s-tense { background: #DE8B72; clip-path: polygon(50% 0, 100% 38%, 82% 100%, 18% 100%, 0 38%); } .s-good { background: #E9C66A; border-radius: 50%; }
+.feat h3 { margin: 0; font: 300 26px/1.3 var(--serif-zh); }
+.feat p { margin: 8px 0 0; color: var(--ink-2); font-size: 14.5px; max-width: 30em; }
+
+/* proof */
+.proof { padding-block: 0 130px; }
+.proof .big { text-align: center; }
+.proof .big h2 { margin: 0; font: 300 clamp(40px, 5vw, 70px)/1.12 var(--serif-zh); letter-spacing: -.02em; }
+.proof .big h2 b { font: 400 1.14em/1 var(--serif); font-weight: 400; }
+.proof .big p { margin: 20px auto 28px; color: var(--ink-2); max-width: 36em; }
+.quotes { margin-top: 90px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.quote { background: var(--paper-2); border-radius: 6px; padding: 26px 26px 24px; display: grid; gap: 20px; align-content: space-between; min-height: 290px; }
+.quote .t { justify-self: start; font-size: 10.5px; letter-spacing: .14em; padding: 5px 9px; border-radius: 4px; background: var(--pill); color: #F7F2EB; }
+.quote blockquote { margin: 0; font: 300 19px/1.75 var(--serif-zh); }
+.quote .who { display: flex; align-items: center; gap: 12px; font-size: 13px; color: var(--ink-3); }
+.quote .who img { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; }
+.quote .who b { color: var(--ink); font-weight: 500; display: block; }
+.fine { margin-top: 18px; font-size: 11.5px; color: var(--ink-3); }
+
+/* counselors */
+.people { padding-block: 0 130px; }
+.head2 { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 40px; flex-wrap: wrap; }
+.head2 .k { font-size: 11px; letter-spacing: .2em; color: var(--ink-3); }
+.head2 h2 { margin: 10px 0 0; font: 300 clamp(32px, 3.4vw, 46px)/1.2 var(--serif-zh); letter-spacing: -.015em; }
+.grid4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+.person .ph { aspect-ratio: 3 / 4; border-radius: 6px; overflow: hidden; background: var(--paper-3); max-width: 100%; }
+.person .ph img { width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform .6s; }
+.person:hover .ph img { transform: scale(1.03); }
+.person h3 { margin: 18px 0 2px; font: 300 24px/1.3 var(--serif-zh); display: flex; justify-content: space-between; align-items: baseline; }
+.person h3 span { font: 400 15px/1 var(--serif); color: var(--ink-3); }
+.person p { margin: 0; font-size: 13px; color: var(--ink-3); }
+.person .tags { margin-top: 12px; display: flex; gap: 6px; flex-wrap: wrap; }
+.person .tags span { font-size: 11.5px; padding: 3px 9px; border: 1px solid var(--line); border-radius: 999px; color: var(--ink-2); }
+
+/* dark: safety + footer */
+.dark { background: var(--night); color: var(--on-night); border-radius: 28px 28px 0 0; }
+.safety { padding-block: 100px 90px; display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 24px; }
+.safety .k { font-size: 11px; letter-spacing: .2em; color: var(--on-night-2); grid-column: 1 / -1; }
+.feature-dark { position: relative; min-height: 440px; border-radius: 8px; overflow: hidden; background: url(../assets/hands-reach.jpg) center / cover; display: flex; align-items: flex-end; padding: 32px; }
+.feature-dark::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(29,27,25,.05), rgba(29,27,25,.82)); }
+.feature-dark > div { position: relative; z-index: 1; }
+.feature-dark .t { display: inline-block; font-size: 10.5px; letter-spacing: .14em; padding: 5px 9px; border-radius: 4px; background: #F7F2EB; color: var(--ink); }
+.feature-dark h3 { margin: 16px 0 18px; font: 300 32px/1.3 var(--serif-zh); max-width: 15em; }
+.stackc { display: grid; gap: 14px; }
+.sc { background: #F7F2EB; color: var(--ink); border-radius: 8px; padding: 24px; display: grid; grid-template-columns: 1fr auto; gap: 8px 16px; align-items: start; }
+.sc h4 { margin: 0; font: 400 19px/1.4 var(--serif-zh); }
+.sc p { margin: 0; grid-column: 1; font-size: 13.5px; color: var(--ink-2); }
+.sc .num { grid-row: 1 / span 2; grid-column: 2; font: 400 34px/1 var(--serif); }
+.sc .go { width: 30px; height: 30px; border-radius: 50%; background: var(--night); color: #F7F2EB; display: grid; place-items: center; grid-row: 1 / span 2; grid-column: 2; align-self: end; }
+footer { border-top: 1px solid rgba(255,255,255,.1); padding-block: 64px 40px; }
+.ft-grid { display: grid; grid-template-columns: minmax(0, 1.4fr) repeat(4, minmax(0, 1fr)); gap: 32px; }
+.ft-grid h5 { margin: 0 0 14px; font-size: 12.5px; font-weight: 500; }
+.ft-grid ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 9px; font-size: 12.5px; color: var(--on-night-2); }
+.ft-brand b { font: 300 32px/1 var(--serif-zh); letter-spacing: .3em; }
+.ft-brand p { font: 300 22px/1.4 var(--serif-zh); margin: 26px 0 18px; max-width: 13em; }
+.subscribe { display: flex; align-items: center; height: 44px; max-width: 320px; border-radius: 999px; border: 1px solid rgba(255,255,255,.22); padding: 0 6px 0 18px; }
+.subscribe input { flex: 1; min-width: 0; background: none; border: 0; outline: none; color: var(--on-night); font: inherit; font-size: 13px; }
+.subscribe input::placeholder { color: var(--on-night-2); }
+.subscribe button { width: 32px; height: 32px; border-radius: 50%; border: 0; background: #F7F2EB; color: var(--ink); display: grid; place-items: center; }
+.legal { margin-top: 56px; padding-top: 22px; border-top: 1px solid rgba(255,255,255,.1); display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; font-size: 11.5px; color: var(--on-night-2); }
+
+@media (max-width: 1080px) {
+  .nav ul { display: none; } .nav .wrap { grid-template-columns: 1fr auto; }
+  .trio, .quotes { grid-template-columns: minmax(0, 1fr); }
+  .grid4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .safety { grid-template-columns: minmax(0, 1fr); }
+  .ft-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ft-brand { grid-column: 1 / -1; }
+}
+@media (max-width: 760px) {
+  .wrap { padding-left: var(--gutter); padding-right: var(--gutter-r); }
+  .hero { min-height: 0; align-items: start; padding-bottom: 0; }
+  .hero .photo { position: relative; inset: auto; height: 420px; order: 2; margin-top: 36px; }
+  
+  .hero .wrap { padding-top: 48px; }
+  .hero .meta { gap: 24px; margin-top: 36px; }
+  .live { position: relative; right: auto; bottom: auto; width: auto; margin: -120px var(--gutter-r) 0 var(--gutter); }
+  .nav .right .login { display: none; }
+  .statement { padding-block: 90px 50px; }
+  .chips { gap: 10px; } .chips em { display: none; }
+  .grid4 { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; }
+  .dark { border-radius: 20px 20px 0 0; }
+}
+@media (prefers-reduced-motion: reduce) { .live .wave i { animation: none; height: 10px; } .person .ph img { transition: none; } }
+</style>
+</head>
+<body>
+<div class="notice">需要紧急帮助？拨打全国心理援助热线 <b>12356</b>（7×24 小时 · 免费）；有生命危险请拨 120 / 110</div>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="logo" href="#"><b>听屿</b><small>TINGYU</small></a>
+    <ul>
+      <li><a href="#">小屿 AI 接待</a></li>
+      <li><a href="#people">找咨询师</a></li>
+      <li><a href="#">心理测评</a></li>
+      <li><a href="#">企业与高校</a></li>
+      <li><a href="#">达人合作</a></li>
+    </ul>
+    <div class="right"><a class="login" href="#">登录</a><a class="pill pill-dark" href="#">下载 App</a></div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="photo" role="img" aria-label="明亮的窗边，一位女性正在轻松地和咨询师交谈"></div>
+  <div class="wrap">
+    <h1>开口，<br>就被接住。</h1>
+    <p class="sub">想说的话，不用先想清楚。小屿 AI 语音接待 24 小时在线，听你说完、帮你理清，再为你匹配持证咨询师。</p>
+    <div class="acts">
+      <a class="pill pill-cta" href="#"><svg class="i" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>和小屿说说</a>
+      <a class="link" href="#people">浏览咨询师 →</a>
+    </div>
+    <div class="meta">
+      <div><b>3 秒</b>平均接通</div>
+      <div><b>24 小时</b>内见到咨询师</div>
+      <div><b>100%</b>持证 · 接受督导</div>
+    </div>
+  </div>
+  <div class="live" aria-label="语音接待示例">
+    <div class="hd"><span class="orb"></span><div><b>小屿 · 正在倾听</b>语音接待 · 02:14</div><span class="wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
+    <p><span>「最近工作压力特别大，一躺下脑子就停不下来。」</span><br>听起来你这段时间一直绷得很紧。这种睡不着的情况，大概持续多久了？</p>
+    <div class="ft"><span>端到端加密</span><span>小屿只做接待，不做诊断</span></div>
+  </div>
+</section>
+
+<section class="statement wrap">
+  <h2>先被听见，再被理解，<br>最后遇到对的人。</h2>
+  <p>每一次对话都从倾听开始。小屿在对话里完成 PHQ-9、GAD-7、ISI 初筛和风险分级，把接待小结交给为你匹配的咨询师，见面时不用从头讲起。</p>
+  <div class="acts"><a class="pill pill-dark" href="#">接待怎么进行</a><a class="pill pill-dark" href="#">咨询师如何审核</a></div>
+  <div class="chips"><span>AI 语音接待</span><em>+</em><span>持证咨询师</span><em>+</em><span>情绪追踪与随访</span></div>
+</section>
+
+<section class="trio wrap">
+  <article class="feat">
+    <div class="pic" style="background-image:url(../assets/rain-window.jpg)">
+      <span class="tag">AI 接待</span>
+      <div class="ui"><div class="row"><b>接待小结</b><span style="margin-left:auto">6 分 38 秒</span></div>
+        <div class="bars"><div><span>PHQ-9 抑郁</span><i style="--v:33%"></i><span>9 轻</span></div><div><span>GAD-7 焦虑</span><i style="--v:52%"></i><span>11 中</span></div><div><span>ISI 失眠</span><i style="--v:57%"></i><span>16 中</span></div></div>
+      </div>
+    </div>
+    <div><h3>深夜也有人接</h3><p>开口说就好。小屿共情倾听，一次只问一个问题，在对话中完成量表初筛；出现风险词，立刻转接真人值班。</p></div>
+  </article>
+  <article class="feat">
+    <div class="pic" style="background-image:url(../assets/session-window.jpg)">
+      <span class="tag">真人咨询</span>
+      <div class="ui"><div class="row"><img src="../assets/c-lin.jpg" alt=""><div><b>林知夏</b><br>认知行为疗法 · 匹配度 96%</div><span style="margin-left:auto;color:var(--ink)">明天 20:00</span></div></div>
+    </div>
+    <div><h3>和对的咨询师，聊 50 分钟</h3><p>按困扰、流派、时间与价格匹配。语音、视频或文字，选你最自在的方式；所有咨询师持证上岗，并接受临床督导。</p></div>
+  </article>
+  <article class="feat">
+    <div class="pic" style="background-image:url(../assets/forest-path.jpg)">
+      <span class="tag">情绪追踪</span>
+      <div class="ui"><div class="row"><b>这一周</b><span style="margin-left:auto">慢慢平稳</span></div>
+        <div class="shapes" aria-label="一周情绪形状"><i class="s-tense"></i><i class="s-low"></i><i class="s-low"></i><i class="s-calm"></i><i class="s-calm"></i><i class="s-good"></i><i class="s-calm"></i></div>
+      </div>
+    </div>
+    <div><h3>看见自己慢慢变好</h3><p>每天 1 分钟语音打卡，情绪曲线和睡眠变化一目了然；咨询之间，小屿按咨询师的计划提醒你练习。</p></div>
+  </article>
+</section>
+
+<section class="proof wrap">
+  <div class="big">
+    <h2>从开口到见到咨询师，<br>平均只要 <b>19</b> 小时</h2>
+    <p>传统预约要先填表、等回访、再排期。听屿把接待、分诊和排期连成一条线，让需要帮助的人更快被接住。</p>
+    <a class="pill pill-dark" href="#">了解服务流程</a>
+  </div>
+  <div class="quotes">
+    <article class="quote"><span class="t">失眠</span><blockquote>「第一次没有填一堆问卷。说着说着，小屿就帮我约好了明晚的咨询。」</blockquote><div class="who"><img src="../assets/u-asian-woman.jpg" alt=""><div><b>小周</b>28 岁 · 产品经理</div></div></article>
+    <article class="quote"><span class="t">职场压力</span><blockquote>「凌晨两点不想吵醒任何人，就和小屿说了二十分钟。第二天林老师已经看过我的小结了。」</blockquote><div class="who"><img src="../assets/u-asian-man.jpg" alt=""><div><b>阿哲</b>34 岁 · 工程师</div></div></article>
+    <article class="quote"><span class="t">亲子关系</span><blockquote>「孩子不愿意去咨询室，在家用语音反而愿意说。匹配的老师很懂青少年。」</blockquote><div class="who"><img src="../assets/u-woman-3.jpg" alt=""><div><b>陈女士</b>42 岁 · 家长</div></div></article>
+  </div>
+  <p class="fine">以上为示例评价，用于展示产品体验；数据为产品目标口径。</p>
+</section>
+
+<section class="people wrap" id="people">
+  <div class="head2">
+    <div><div class="k">我们的咨询师</div><h2>每一位都持证上岗，<br>并接受每月督导</h2></div>
+    <a class="link" href="#">查看全部咨询师 →</a>
+  </div>
+  <div class="grid4">
+    <a class="person" href="#"><div class="ph"><img src="../assets/c-lin.jpg" alt="林知夏" loading="lazy"></div><h3>林知夏<span>8 yrs</span></h3><p>国家二级心理咨询师 · 认知行为疗法</p><div class="tags"><span>焦虑</span><span>失眠</span><span>职场压力</span></div></a>
+    <a class="person" href="#"><div class="ph"><img src="../assets/c-zhou.jpg" alt="周以宁" loading="lazy"></div><h3>周以宁<span>11 yrs</span></h3><p>婚姻家庭治疗师 · 情绪聚焦疗法</p><div class="tags"><span>亲密关系</span><span>家庭沟通</span></div></a>
+    <a class="person" href="#"><div class="ph"><img src="../assets/c-he.jpg" alt="何清" loading="lazy"></div><h3>何清<span>9 yrs</span></h3><p>正念减压导师 · 接纳承诺疗法</p><div class="tags"><span>情绪调节</span><span>正念</span></div></a>
+    <a class="person" href="#"><div class="ph"><img src="../assets/c-chen.jpg" alt="陈牧" loading="lazy"></div><h3>陈牧<span>15 yrs</span></h3><p>精神科主治医师 · 医学博士</p><div class="tags"><span>抑郁评估</span><span>药物咨询</span></div></a>
+  </div>
+</section>
+
+<div class="dark">
+  <section class="safety wrap">
+    <div class="k">安全与专业边界</div>
+    <article class="feature-dark"><div><span class="t">我们的原则</span><h3>AI 负责接住你，<br>专业的部分交给人。</h3><a class="pill pill-line" href="#" style="color:#F7F2EB">阅读安全白皮书 ↗</a></div></article>
+    <div class="stackc">
+      <div class="sc"><h4>风险实时识别，立即升级</h4><p>识别到自伤风险时，立刻提示 12356 并呼叫真人值班咨询师。</p><span class="num">3 分钟</span></div>
+      <div class="sc"><h4>AI 不诊断、不治疗</h4><p>小屿只做接待、初筛与随访；咨询和治疗始终由持证咨询师完成。</p><span class="go">↗</span></div>
+      <div class="sc"><h4>你的话，只有你和咨询师能看到</h4><p>端到端加密；是否把接待小结同步给咨询师，由你决定。</p><span class="go">↗</span></div>
+    </div>
+  </section>
+  <footer class="wrap">
+    <div class="ft-grid">
+      <div class="ft-brand"><b>听屿</b><p>每周一封心理小课，帮你更了解自己。</p>
+        <form class="subscribe" onsubmit="event.preventDefault(); this.querySelector('input').value=''; this.querySelector('input').placeholder='已订阅，谢谢你';"><label for="em" style="position:absolute;left:-9999px">邮箱地址</label><input id="em" type="email" placeholder="你的邮箱地址" required><button type="submit" aria-label="订阅">→</button></form>
+      </div>
+      <div><h5>服务</h5><ul><li>小屿 AI 接待</li><li>找咨询师</li><li>心理测评</li><li>屿伴会员</li></ul></div>
+      <div><h5>合作</h5><ul><li>企业 EAP</li><li>高校与医院</li><li>达人合作计划</li><li>咨询师入驻</li></ul></div>
+      <div><h5>支持</h5><ul><li>帮助中心</li><li>隐私与安全</li><li>危机求助 12356</li><li>联系我们</li></ul></div>
+      <div><h5>关注</h5><ul><li>微信公众号</li><li>小红书</li><li>抖音</li><li>微博</li></ul></div>
+    </div>
+    <div class="legal"><span>© 2026 听屿 Tingyu · 原型示例，内容与数据均为示意</span><span>小屿是 AI 接待助手，不提供诊断或治疗；如有紧急情况请拨打 12356、120 或 110</span></div>
+  </footer>
+</div>
+</body>
+</html>
