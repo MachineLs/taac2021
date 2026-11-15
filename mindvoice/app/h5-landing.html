@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>听屿 H5 · 达人落地页</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@500;600;900&display=swap">
+<link rel="stylesheet" href="ds.css">
+<script src="icons.js"></script>
+<style>
+/* H5 · 达人落地页 —— tokens only */
+.phone { overflow: clip; display: flex; flex-direction: column; }
+.phone > main { flex: 1; padding-bottom: 8px; }
+.open-app { position: sticky; top: 0; z-index: 12; }
+.open-app .brand-mark { width: 30px; height: 30px; border-radius: 8px; }
+.open-app b { display: block; font-size: 13px; color: var(--ink); line-height: 1.3; }
+.open-app span.s { font-size: 11.5px; color: var(--ink-3); }
+.open-app .btn { margin-left: auto; }
+
+.creator { background: var(--surface); padding: 18px 16px 16px; border-bottom: 1px solid var(--line-2); }
+.creator .head { display: flex; align-items: center; gap: 12px; }
+.creator .avatar-lg { width: 60px; height: 60px; box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--accent-soft); }
+.creator .nm { font-size: 17px; font-weight: 700; line-height: 1.35; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.verify { display: inline-flex; align-items: center; gap: 3px; height: 20px; padding: 0 7px 0 5px; border-radius: var(--r-pill); background: var(--accent-soft); color: var(--accent); font-size: 11px; font-weight: 600; }
+.verify .ic { width: 13px; height: 13px; stroke-width: 2.2; }
+.creator .bio { font-size: 12.5px; color: var(--ink-3); margin-top: 2px; }
+.stats { display: grid; grid-template-columns: repeat(3, auto) 1fr; gap: 20px; align-items: end; margin-top: 14px; }
+.stats div { display: grid; line-height: 1.25; }
+.stats b { font-family: var(--font-num); font-size: 17px; font-weight: 700; }
+.stats b small { font-size: 12px; font-weight: 600; margin-left: 1px; }
+.stats span { font-size: 11.5px; color: var(--ink-3); }
+.stats .btn { justify-self: end; }
+.quote { margin-top: 14px; padding: 12px 14px 12px 38px; background: var(--surface-2); border: 1px solid var(--line-2); border-radius: var(--r); font-size: 13.5px; color: var(--ink-2); position: relative; line-height: 1.65; }
+.quote::before { content: "“"; position: absolute; left: 12px; top: 2px; font-family: var(--font-display); font-size: 34px; color: var(--accent); line-height: 1.2; }
+.quote .sig { display: block; margin-top: 4px; font-size: 12px; color: var(--ink-3); }
+
+.block { padding: 18px 16px 0; }
+.video { display: grid; grid-template-columns: 132px 1fr; gap: 12px; padding: 10px; align-items: stretch; }
+.video .cover { position: relative; border-radius: var(--r); overflow: hidden; height: 100px; }
+.video .cover img { width: 100%; height: 100%; object-fit: cover; }
+.video .cover .play { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 36px; height: 36px; border-radius: 50%; background: color-mix(in srgb, var(--surface) 88%, transparent); color: var(--ink); display: grid; place-items: center; }
+.video .cover .play .ic { width: 16px; height: 16px; fill: currentColor; stroke: none; margin-left: 2px; }
+.video .cover .dur { position: absolute; right: 6px; bottom: 6px; height: 18px; padding: 0 6px; border-radius: 4px; background: color-mix(in srgb, var(--surface) 88%, transparent); color: var(--ink); font-size: 11px; font-family: var(--font-num); display: flex; align-items: center; }
+.video .k { font-size: 11.5px; color: var(--ink-3); display: flex; align-items: center; gap: 4px; }
+.video h3 { margin: 2px 0 2px; font-size: 16px; line-height: 1.35; }
+.video p { margin: 0; font-size: 12.5px; color: var(--ink-2); }
+.video .st { font-size: 11.5px; color: var(--ink-4); margin-top: 6px; display: flex; gap: 10px; }
+
+.entry { display: block; border-radius: var(--r-xl); background: var(--primary); color: var(--on-primary); padding: 18px; position: relative; overflow: hidden; }
+.entry::before { content: ""; position: absolute; right: -70px; top: -80px; width: 240px; height: 240px; border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--orb-1) 55%, transparent), transparent 70%); }
+.entry .top { display: flex; align-items: center; gap: 14px; position: relative; }
+.entry .orb { width: 68px; height: 68px; display: grid; place-items: center; color: var(--on-primary); flex-shrink: 0; }
+.entry .k { font-size: 12px; opacity: .85; display: flex; align-items: center; gap: 6px; }
+.entry h2 { margin: 2px 0 0; font-size: 22px; line-height: 1.3; }
+.entry p { margin: 4px 0 0; font-size: 13px; opacity: .85; }
+.entry .feats { position: relative; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 16px; }
+.entry .feats div { border-radius: var(--r); background: color-mix(in srgb, var(--on-primary) 12%, transparent); padding: 10px 10px 9px; display: grid; gap: 2px; }
+.entry .feats .ic { width: 18px; height: 18px; opacity: .9; }
+.entry .feats b { font-size: 13.5px; }
+.entry .feats span { font-size: 11px; opacity: .78; }
+
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; position: relative; }
+.steps::before { content: ""; position: absolute; top: 22px; left: 16%; right: 16%; height: 1px; border-top: 1px dashed var(--line); }
+.step { display: grid; justify-items: center; text-align: center; gap: 4px; position: relative; }
+.step .ico { width: 44px; height: 44px; border-radius: 50%; background: var(--surface); border: 1px solid var(--line-2); color: var(--primary); display: grid; place-items: center; position: relative; }
+.step .ico i { position: absolute; top: -4px; right: -4px; width: 18px; height: 18px; border-radius: 50%; background: var(--primary); color: var(--on-primary); font-size: 10.5px; font-style: normal; font-weight: 700; display: grid; place-items: center; font-family: var(--font-num); }
+.step b { font-size: 13px; margin-top: 4px; }
+.step span { font-size: 11.5px; color: var(--ink-3); line-height: 1.45; }
+
+.cl { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; padding: 14px; align-items: center; }
+.cl + .cl { border-top: 1px solid var(--line-2); }
+.cl .avatar { width: 52px; height: 52px; object-position: top; }
+.cl b { font-size: 15px; }
+.cl .t { font-size: 12px; color: var(--ink-3); }
+.cl .tags { display: flex; gap: 4px; margin-top: 5px; flex-wrap: wrap; }
+.cl .r { display: grid; justify-items: end; gap: 4px; }
+.cl .say { grid-column: 1 / -1; font-size: 12px; color: var(--ink-2); background: var(--accent-soft); border-radius: var(--r-sm); padding: 7px 10px; display: flex; gap: 6px; align-items: flex-start; }
+.cl .say img { width: 18px; height: 18px; border-radius: 50%; margin-top: 1px; }
+.cl .say b { font-size: 12px; color: var(--accent); font-weight: 600; white-space: nowrap; }
+
+.promise { margin: 18px 16px 0; padding: 14px; border-radius: var(--r-lg); background: var(--surface-2); border: 1px solid var(--line-2); display: grid; gap: 8px; font-size: 12px; color: var(--ink-3); }
+.promise div { display: flex; gap: 8px; align-items: flex-start; }
+.promise .ic { width: 16px; height: 16px; color: var(--primary); margin-top: 2px; }
+.promise .sos { color: var(--risk); }
+.promise .sos .ic { color: var(--risk); }
+.promise a { text-decoration: underline; text-underline-offset: 2px; }
+.foot { text-align: center; font-size: 11px; color: var(--ink-4); padding: 14px 16px 18px; }
+
+.fixed-bottom { z-index: 12; }
+.fixed-bottom .hint { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 11.5px; color: var(--ink-3); margin-bottom: 8px; }
+.fixed-bottom .hint .avs { display: flex; }
+.fixed-bottom .hint .avs img { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--surface); margin-left: -5px; object-fit: cover; }
+.fixed-bottom .hint .avs img:first-child { margin-left: 0; }
+</style>
+</head>
+<body>
+<div class="phone">
+  <a class="open-app" href="#" data-open-app>
+    <span class="brand-mark"><svg class="ic ic-sm"><use href="#i-leaf"/></svg></span>
+    <span><b>听屿 App</b><span class="s">接待记录、咨询提醒都在这里</span></span>
+    <span class="btn btn-primary btn-sm">打开 App</span>
+  </a>
+
+  <main>
+    <section class="creator">
+      <div class="head">
+        <img class="avatar avatar-lg" src="../assets/u-woman-5.jpg" alt="睡眠研究所阿屿">
+        <div class="grow">
+          <div class="nm">睡眠研究所阿屿 <span class="verify"><svg class="ic"><use href="#i-check-circle"/></svg>听屿合作达人</span></div>
+          <div class="bio">心理学硕士 · 睡眠科普 · 每周三更新</div>
+        </div>
+      </div>
+      <div class="stats">
+        <div><b>46.8<small>万</small></b><span>粉丝</span></div>
+        <div><b>312<small>万</small></b><span>获赞</span></div>
+        <div><b>286</b><span>作品</span></div>
+        <button class="btn btn-soft btn-sm" type="button" id="follow"><svg class="ic ic-sm"><use href="#i-plus"/></svg>关注</button>
+      </div>
+      <p class="quote">失眠不是你不够努力。睡不着的那几晚，先别一个人硬扛——和小屿说说，它会帮你理清楚，再找一位真正懂睡眠的老师。<span class="sig">—— 阿屿，写给刷到这条视频的你</span></p>
+    </section>
+
+    <section class="block">
+      <div class="section-title"><h2>你刚看的视频</h2><a href="#" data-toast="正在打开原视频…">看原视频<svg class="ic ic-sm"><use href="#i-chevron"/></svg></a></div>
+      <a class="card video" href="#" data-toast="正在打开原视频…">
+        <div class="cover">
+          <img src="../assets/moon.jpg" alt="视频封面：夜空中的月亮">
+          <span class="play"><svg class="ic"><use href="#i-play"/></svg></span>
+          <span class="dur">02:48</span>
+        </div>
+        <div>
+          <span class="k"><svg class="ic ic-sm"><use href="#i-moon"/></svg>睡眠研究所阿屿 · 11 月 12 日</span>
+          <h3 class="display">凌晨三点还睡不着？</h3>
+          <p>试试这个 4-7-8 呼吸法，以及什么时候该找人聊聊。</p>
+          <div class="st"><span class="num">3.2 万播放</span><span class="num">1,284 人来聊过</span></div>
+        </div>
+      </a>
+    </section>
+
+    <section class="block">
+      <a class="entry" href="h5-voice.html">
+        <div class="top">
+          <span class="orb" style="--lv:.28"><svg class="ic ic-lg"><use href="#i-mic"/></svg></span>
+          <div>
+            <span class="k"><span class="dot"></span>小屿在线 · 平均 3 秒接通</span>
+            <h2 class="display">和小屿说说</h2>
+            <p>不用组织语言，想到哪说到哪。</p>
+          </div>
+        </div>
+        <div class="feats">
+          <div><svg class="ic"><use href="#i-clock"/></svg><b>3 分钟</b><span>语音接待</span></div>
+          <div><svg class="ic"><use href="#i-lock"/></svg><b>全程匿名</b><span>不用实名</span></div>
+          <div><svg class="ic"><use href="#i-gift"/></svg><b>免费</b><span>接待和初筛</span></div>
+        </div>
+      </a>
+    </section>
+
+    <section class="block">
+      <div class="section-title"><h2>接待怎么进行</h2><span class="small muted">约 3–5 分钟</span></div>
+      <div class="steps">
+        <div class="step"><span class="ico"><svg class="ic"><use href="#i-mic"/></svg><i>1</i></span><b>说说你的情况</b><span>小屿听你讲<br>最近的困扰</span></div>
+        <div class="step"><span class="ico"><svg class="ic"><use href="#i-file"/></svg><i>2</i></span><b>量表初筛</b><span>PHQ-9 · GAD-7<br>ISI 睡眠评估</span></div>
+        <div class="step"><span class="ico"><svg class="ic"><use href="#i-users"/></svg><i>3</i></span><b>匹配咨询师</b><span>持证真人老师<br>语音/视频/文字</span></div>
+      </div>
+    </section>
+
+    <section class="block">
+      <div class="section-title"><h2>阿屿推荐的咨询师</h2><a href="h5-counselors.html">全部 9 位<svg class="ic ic-sm"><use href="#i-chevron"/></svg></a></div>
+      <div class="card" style="overflow:hidden">
+        <a class="cl" href="h5-counselor.html">
+          <img class="avatar" src="../assets/c-lin.jpg" alt="林知夏">
+          <div class="grow">
+            <b>林知夏</b> <span class="t">8 年 · CBT</span>
+            <div class="tags"><span class="tag">失眠</span><span class="tag">焦虑</span><span class="tag tag-plain">职场压力</span></div>
+          </div>
+          <div class="r"><span class="price">¥400<small>/次</small></span><span class="rating"><svg class="ic ic-sm" style="fill:currentColor;stroke:none"><use href="#i-star"/></svg>4.97</span></div>
+          <div class="say"><img src="../assets/u-woman-5.jpg" alt=""><span><b>阿屿说</b>　做失眠干预很系统，会给你一份能执行的睡眠计划。</span></div>
+        </a>
+        <a class="cl" href="h5-counselor.html">
+          <img class="avatar" src="../assets/c-he.jpg" alt="何清">
+          <div class="grow">
+            <b>何清</b> <span class="t">9 年 · ACT</span>
+            <div class="tags"><span class="tag">情绪调节</span><span class="tag tag-plain">正念</span></div>
+          </div>
+          <div class="r"><span class="price">¥450<small>/次</small></span><span class="rating"><svg class="ic ic-sm" style="fill:currentColor;stroke:none"><use href="#i-star"/></svg>4.96</span></div>
+        </a>
+        <a class="cl" href="h5-counselor.html">
+          <img class="avatar" src="../assets/c-fang.jpg" alt="方宁">
+          <div class="grow">
+            <b>方宁</b> <span class="t">7 年 · 焦点解决</span>
+            <div class="tags"><span class="tag">职业倦怠</span><span class="tag tag-plain">团队冲突</span></div>
+          </div>
+          <div class="r"><span class="price">¥420<small>/次</small></span><span class="rating"><svg class="ic ic-sm" style="fill:currentColor;stroke:none"><use href="#i-star"/></svg>4.94</span></div>
+        </a>
+      </div>
+    </section>
+
+    <div class="promise">
+      <div><svg class="ic"><use href="#i-shield"/></svg><span>对话全程加密，只有你和为你服务的咨询师能看到，可随时在「我的」中删除。</span></div>
+      <div><svg class="ic"><use href="#i-sparkle"/></svg><span>小屿是 AI 接待助手，只做接待、初筛与匹配，不做诊断和治疗；咨询由持证咨询师完成。</span></div>
+      <div class="sos"><svg class="ic"><use href="#i-phone"/></svg><span>如果你现在有伤害自己的想法，请立即拨打 <a href="tel:12356">12356</a> 全国心理援助热线（7×24 免费）。</span></div>
+    </div>
+    <div class="foot">听屿 · 内容由合作达人提供，不构成诊疗建议</div>
+  </main>
+
+  <div class="fixed-bottom">
+    <div class="hint"><span class="avs"><img src="../assets/u-woman-3.jpg" alt=""><img src="../assets/u-man-2.jpg" alt=""><img src="../assets/u-woman-7.jpg" alt=""></span><span>今晚已有 <b class="num">216</b> 位阿屿的粉丝和小屿聊过</span></div>
+    <a class="btn btn-primary btn-lg btn-block" href="h5-voice.html"><svg class="ic"><use href="#i-mic"/></svg>开始语音接待</a>
+  </div>
+</div>
+<script>
+document.querySelectorAll('[data-toast]').forEach(function (a) {
+  a.addEventListener('click', function (e) { e.preventDefault(); toast(a.getAttribute('data-toast')); });
+});
+document.querySelector('[data-open-app]').addEventListener('click', function (e) { e.preventDefault(); toast('未检测到听屿 App，正在前往下载页…'); });
+var f = document.getElementById('follow');
+f.addEventListener('click', function () {
+  var on = f.classList.toggle('btn-ghost'); f.classList.toggle('btn-soft', !on);
+  f.innerHTML = on ? '已关注' : '<svg class="ic ic-sm"><use href="#i-plus"/></svg>关注';
+  toast(on ? '已关注睡眠研究所阿屿' : '已取消关注');
+});
+</script>
+</body>
+</html>

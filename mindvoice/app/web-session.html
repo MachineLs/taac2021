@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>听屿 Web · 咨询室</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@500;600;900&display=swap">
+<link rel="stylesheet" href="ds.css">
+<script src="icons.js"></script>
+<style>
+/* Web · 咨询室 —— tokens only; white text appears only over black-tinted video imagery */
+.top-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+.top-right .search { width: 220px; height: 36px; }
+.icon-btn { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; border: 1px solid var(--line-2); background: var(--surface); color: var(--ink-2); position: relative; }
+.icon-btn .badge { position: absolute; top: -4px; right: -4px; }
+
+.sess-head { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; flex-wrap: wrap; }
+.sess-head .back { display: inline-flex; align-items: center; gap: 4px; color: var(--ink-3); font-size: 13px; }
+.sess-head h1 { margin: 0; font-size: 22px; }
+.sess-head .meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.sess-head .sos { margin-left: auto; background: var(--risk-soft); color: var(--risk); border-color: transparent; }
+
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) 368px; gap: 20px; align-items: start; }
+
+.callbar { display: flex; align-items: center; gap: 18px; padding: 12px 16px; margin-bottom: 12px; }
+.timer { display: flex; align-items: baseline; gap: 6px; }
+.timer b { font-size: 24px; font-weight: 700; letter-spacing: .01em; }
+.timer span { color: var(--ink-3); font-size: 14px; }
+.timer-bar { flex: 1; min-width: 120px; }
+.timer-bar .bar { height: 6px; }
+.timer-bar .lbl { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink-3); margin-top: 6px; }
+.signal { display: inline-flex; align-items: flex-end; gap: 2px; height: 14px; }
+.signal i { width: 3px; border-radius: 1px; background: var(--ok); }
+.signal i:nth-child(1) { height: 5px; } .signal i:nth-child(2) { height: 8px; } .signal i:nth-child(3) { height: 11px; } .signal i:nth-child(4) { height: 14px; }
+.qual { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--ink-2); }
+.vsep { width: 1px; height: 28px; background: var(--line-2); }
+
+.stage { position: relative; height: 540px; border-radius: var(--r-xl); overflow: hidden; background: var(--bg-2); isolation: isolate; }
+.stage .bg { position: absolute; inset: -40px; background: url(../assets/c-lin.jpg) center / cover; filter: blur(28px) saturate(1.1); transform: scale(1.1); z-index: -2; }
+.stage::before { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,.28); z-index: -1; }
+.stage .main-cam { position: absolute; inset: 0; display: grid; place-items: center; }
+.stage .main-cam img { height: 100%; aspect-ratio: 1; object-fit: cover; }
+.stage .ov { position: absolute; color: #fff; font-size: 13px; display: flex; align-items: center; gap: 8px; }
+.stage .ov.tl { top: 16px; left: 16px; }
+.stage .ov.tr { top: 16px; right: 16px; }
+.stage .ov.bl { bottom: 16px; left: 16px; }
+.pill-dark { background: rgba(0,0,0,.45); backdrop-filter: blur(8px); padding: 6px 12px; border-radius: var(--r-pill); display: inline-flex; align-items: center; gap: 8px; }
+.pill-dark .wave { height: 16px; gap: 2px; }
+.pill-dark .wave i { background: #fff; width: 2px; }
+.rec-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 0 3px rgba(255,255,255,.18); }
+
+.self { position: absolute; right: 16px; bottom: 16px; width: 224px; height: 150px; border-radius: var(--r-lg); overflow: hidden; border: 2px solid rgba(255,255,255,.7); box-shadow: 0 10px 30px rgba(0,0,0,.35); background: rgba(0,0,0,.55); }
+.self img { width: 100%; height: 100%; object-fit: cover; object-position: center 35%; }
+.self .who { position: absolute; left: 8px; bottom: 8px; color: #fff; font-size: 12px; background: rgba(0,0,0,.45); padding: 2px 8px; border-radius: var(--r-pill); display: inline-flex; align-items: center; gap: 4px; }
+.self .off { position: absolute; inset: 0; display: grid; place-items: center; align-content: center; gap: 6px; color: rgba(255,255,255,.85); font-size: 12px; }
+.self .off .avatar { width: 52px; height: 52px; }
+.self .muted-ic { position: absolute; right: 8px; top: 8px; width: 26px; height: 26px; border-radius: 50%; background: var(--risk); color: var(--on-accent); display: grid; place-items: center; }
+.btn-risk { background: var(--risk); color: var(--on-accent); }
+
+.voice-mode { position: absolute; inset: 0; display: grid; place-items: center; align-content: center; gap: 14px; color: #fff; text-align: center; }
+.voice-mode .avatar { width: 128px; height: 128px; border: 3px solid rgba(255,255,255,.75); }
+.voice-mode .wave { height: 36px; justify-content: center; }
+.voice-mode .wave i { background: #fff; width: 4px; }
+.stage.audio::before { background: rgba(0,0,0,.5); }
+.stage.audio .main-cam { display: none; }
+
+.controls { display: flex; align-items: center; justify-content: center; gap: 14px; padding: 16px; margin-top: 12px; }
+.ctl { display: grid; justify-items: center; gap: 6px; font-size: 12px; color: var(--ink-2); background: none; border: 0; min-width: 72px; }
+.ctl .c { width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; background: var(--surface-2); border: 1px solid var(--line); color: var(--ink); transition: background .15s; }
+.ctl:hover .c { border-color: var(--ink-4); }
+.ctl.off .c { background: var(--ink); color: var(--surface); border-color: var(--ink); }
+.ctl.end .c { background: var(--risk); border-color: var(--risk); color: var(--on-accent); width: 64px; border-radius: var(--r-pill); }
+.ctl.end { color: var(--risk); font-weight: 600; }
+.controls .sp { width: 1px; height: 40px; background: var(--line-2); margin: 0 4px; }
+
+.assure { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 12px; font-size: 12.5px; color: var(--ink-3); }
+.assure span { display: inline-flex; align-items: center; gap: 6px; }
+
+.side { display: grid; gap: 14px; }
+.side .card { padding: 16px; }
+.side h3 { margin: 0; font-size: 15px; display: flex; align-items: center; gap: 8px; }
+.ai-note { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--ink-3); margin: 4px 0 12px; }
+.kv { display: grid; grid-template-columns: 64px 1fr; gap: 8px 10px; font-size: 13px; }
+.kv dt { color: var(--ink-3); }
+.kv dd { margin: 0; color: var(--ink); }
+.scales { display: grid; gap: 8px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line-2); }
+.scale { display: grid; grid-template-columns: 70px 1fr 64px; gap: 10px; align-items: center; font-size: 12.5px; }
+.scale b { font-family: var(--font-num); font-weight: 600; }
+.scale .r { text-align: right; color: var(--ink-2); }
+
+.ex { display: grid; grid-template-columns: 40px 1fr auto; gap: 10px; align-items: center; padding: 10px 0; }
+.ex + .ex { border-top: 1px solid var(--line-2); }
+.ex .ic-box { width: 40px; height: 40px; border-radius: var(--r); background: var(--primary-soft); color: var(--primary); display: grid; place-items: center; }
+.ex b { font-size: 14px; display: block; }
+.ex .s { font-size: 12px; color: var(--ink-3); }
+.breath { grid-column: 1 / -1; display: grid; grid-template-columns: 84px 1fr; gap: 14px; align-items: center; background: var(--surface-2); border-radius: var(--r); padding: 12px; margin-top: 4px; }
+.breath .ring { width: 84px; height: 84px; border-radius: 50%; display: grid; place-items: center; background: radial-gradient(circle at 35% 30%, var(--orb-1), var(--orb-2) 75%); color: var(--on-primary); font-family: var(--font-num); font-weight: 700; font-size: 22px; transform: scale(.72); transition: transform 1s linear; }
+.breath .ph { font-weight: 600; font-size: 15px; }
+.breath .s { font-size: 12px; color: var(--ink-3); }
+
+textarea.input { height: 112px; padding: 10px 12px; resize: vertical; line-height: 1.6; }
+.note-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; font-size: 12px; color: var(--ink-3); }
+.saved { display: grid; gap: 6px; margin-top: 12px; }
+.saved div { font-size: 12.5px; color: var(--ink-2); background: var(--surface-2); border-radius: var(--r-sm); padding: 8px 10px; }
+.saved time { color: var(--ink-4); font-family: var(--font-num); margin-right: 6px; }
+
+.modal { position: fixed; z-index: 95; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(460px, calc(100vw - 32px)); background: var(--surface); border-radius: var(--r-xl); box-shadow: var(--shadow-lg); padding: 24px; }
+.modal h2 { margin: 0 0 6px; font-size: 20px; }
+.modal p { margin: 0 0 16px; color: var(--ink-2); }
+.hot { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 4px 12px; padding: 12px 14px; border-radius: var(--r); background: var(--surface-2); border: 1px solid var(--line-2); }
+.hot + .hot { margin-top: 8px; }
+.hot b { font-size: 20px; font-family: var(--font-num); color: var(--risk); }
+.hot .n { font-size: 13px; color: var(--ink-2); }
+.modal .acts { display: flex; gap: 10px; margin-top: 18px; justify-content: flex-end; }
+
+@media (max-width: 1100px) { .layout { grid-template-columns: 1fr; } }
+@media (max-width: 900px) {
+  .web-top nav, .top-right .search { display: none; }
+  .stage { height: 360px; }
+  .self { width: 130px; height: 96px; }
+  .controls { flex-wrap: wrap; gap: 6px; }
+  .controls .sp { display: none; }
+  .callbar { flex-wrap: wrap; }
+  .vsep { display: none; }
+}
+</style>
+</head>
+<body>
+<header class="web-top"><div class="in">
+  <a class="brand" href="web-home.html"><span class="brand-mark"><svg class="ic"><use href="#i-leaf"/></svg></span>听屿</a>
+  <nav aria-label="主导航">
+    <a href="web-home.html">首页</a>
+    <a href="web-voice.html">小屿接待</a>
+    <a href="web-counselors.html">找咨询师</a>
+    <a href="web-assess.html">心理测评</a>
+    <a href="web-creator.html">达人专区</a>
+  </nav>
+  <div class="top-right">
+    <label class="search"><svg class="ic ic-sm"><use href="#i-search"/></svg><input type="search" placeholder="搜索咨询师、话题、测评" aria-label="搜索"></label>
+    <a class="icon-btn" href="web-me.html" aria-label="消息，2 条未读"><svg class="ic"><use href="#i-bell"/></svg><span class="badge">2</span></a>
+    <a href="web-me.html" aria-label="个人中心"><img class="avatar" src="../assets/u-asian-man.jpg" alt="小周"></a>
+  </div>
+</div></header>
+
+<main class="web-main">
+  <div class="sess-head">
+    <a class="back" href="web-me.html"><svg class="ic ic-sm"><use href="#i-back"/></svg>我的预约</a>
+    <h1 class="display">咨询室 · 林知夏</h1>
+    <div class="meta">
+      <span class="tag">第 1 次咨询</span>
+      <span class="tag tag-plain" id="modeTag">视频咨询</span>
+      <span class="tag tag-ok"><svg class="ic ic-sm" style="margin-right:4px"><use href="#i-lock"/></svg>端到端加密</span>
+      <span class="small muted">11 月 16 日 周一 · 20:00–20:50</span>
+    </div>
+    <button class="btn btn-sm sos" type="button" id="sosBtn"><svg class="ic ic-sm"><use href="#i-alert"/></svg>需要紧急帮助</button>
+  </div>
+
+  <div class="layout">
+    <section aria-label="通话">
+      <div class="card callbar">
+        <div class="timer"><b class="num" id="elapsed">18:42</b><span class="num">/ 50:00</span></div>
+        <div class="timer-bar">
+          <div class="bar"><i id="prog" style="width:37.4%"></i></div>
+          <div class="lbl"><span>本节进度</span><span id="remain">剩余 31 分钟 · 结束前 5 分钟会提醒</span></div>
+        </div>
+        <span class="vsep"></span>
+        <span class="qual"><span class="signal" aria-hidden="true"><i></i><i></i><i></i><i></i></span>网络良好 · <span class="num">42ms</span></span>
+        <span class="vsep"></span>
+        <span class="qual"><svg class="ic ic-sm" style="color:var(--ok)"><use href="#i-shield"/></svg>不录音 · 不录像</span>
+      </div>
+
+      <div class="stage" id="stage">
+        <div class="bg" aria-hidden="true"></div>
+        <div class="main-cam"><img src="../assets/c-lin.jpg" alt="林知夏老师的视频画面"></div>
+        <div class="voice-mode" id="voiceMode" hidden>
+          <img class="avatar" src="../assets/c-lin.jpg" alt="">
+          <div><b style="font-size:18px">林知夏</b><div style="font-size:13px;opacity:.8">语音通话中 · 画面已关闭</div></div>
+          <div class="wave" id="wave2" aria-hidden="true"></div>
+        </div>
+        <div class="ov tl"><span class="pill-dark"><span class="rec-dot"></span>林知夏 · 国家二级心理咨询师</span></div>
+        <div class="ov tr"><span class="pill-dark"><svg class="ic ic-sm"><use href="#i-lock"/></svg>加密通话 · 仅你和咨询师可见</span></div>
+        <div class="ov bl"><span class="pill-dark"><span class="wave" id="wave1" aria-hidden="true"></span><span id="speaking">林老师正在说话</span></span></div>
+        <div class="self" id="self">
+          <img src="../assets/u-asian-man.jpg" alt="我的画面" id="selfImg">
+          <div class="off" id="selfOff" hidden><img class="avatar" src="../assets/u-asian-man.jpg" alt=""><span>摄像头已关闭</span></div>
+          <span class="muted-ic" id="selfMute" hidden><svg class="ic ic-sm"><use href="#i-mic-off"/></svg></span>
+          <span class="who">我（小周）</span>
+        </div>
+      </div>
+
+      <div class="card controls" role="toolbar" aria-label="通话控制">
+        <button class="ctl" type="button" id="micBtn" aria-pressed="false"><span class="c"><svg class="ic ic-lg"><use href="#i-mic"/></svg></span><span class="l">静音</span></button>
+        <button class="ctl" type="button" id="camBtn" aria-pressed="false"><span class="c"><svg class="ic ic-lg"><use href="#i-video"/></svg></span><span class="l">关闭摄像头</span></button>
+        <button class="ctl" type="button" id="audioBtn"><span class="c"><svg class="ic ic-lg"><use href="#i-headphones"/></svg></span><span class="l">切换为语音</span></button>
+        <button class="ctl" type="button" id="spkBtn"><span class="c"><svg class="ic ic-lg"><use href="#i-volume"/></svg></span><span class="l">扬声器</span></button>
+        <button class="ctl" type="button" id="moreBtn"><span class="c"><svg class="ic ic-lg"><use href="#i-settings"/></svg></span><span class="l">设备设置</span></button>
+        <span class="sp"></span>
+        <button class="ctl end" type="button" id="endBtn"><span class="c"><svg class="ic ic-lg"><use href="#i-phone-off"/></svg></span><span>结束咨询</span></button>
+      </div>
+      <div class="assure">
+        <span><svg class="ic ic-sm"><use href="#i-shield"/></svg>咨询师遵守《心理咨询师职业伦理守则》保密原则</span>
+        <span><svg class="ic ic-sm"><use href="#i-clock"/></svg>网络中断 3 分钟内重连，时长自动顺延</span>
+        <span><svg class="ic ic-sm"><use href="#i-file"/></svg>本节结束后可在「我的预约」评价并预约下一次</span>
+      </div>
+    </section>
+
+    <aside class="side">
+      <section class="card" aria-labelledby="sumT">
+        <div class="between"><h3 id="sumT"><svg class="ic ic-sm" style="color:var(--primary)"><use href="#i-file"/></svg>接待小结</h3><span class="tag tag-plain">只读</span></div>
+        <div class="ai-note"><svg class="ic ic-sm"><use href="#i-sparkle"/></svg>由小屿 AI 于 11 月 15 日整理，已同步给林老师</div>
+        <dl class="kv">
+          <dt>主诉</dt><dd>职场压力大，入睡困难，白天没精神，偶尔莫名想哭</dd>
+          <dt>持续</dt><dd>1 个多月</dd>
+          <dt>风险评估</dt><dd><span class="tag tag-ok">低风险</span> <span class="small muted">未报告自伤念头</span></dd>
+          <dt>偏好</dt><dd>首选语音，晚间时段</dd>
+        </dl>
+        <div class="scales">
+          <div class="scale"><span>PHQ-9</span><div class="bar"><i style="width:33%"></i></div><span class="r"><b>9</b>/27 轻度</span></div>
+          <div class="scale"><span>GAD-7</span><div class="bar warn"><i style="width:52%"></i></div><span class="r"><b>11</b>/21 中度</span></div>
+          <div class="scale"><span>ISI</span><div class="bar warn"><i style="width:57%"></i></div><span class="r"><b>16</b>/28 中度</span></div>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="exT">
+        <div class="between"><h3 id="exT"><svg class="ic ic-sm" style="color:var(--primary)"><use href="#i-leaf"/></svg>林老师共享的练习</h3><span class="small muted num">20:14</span></div>
+        <div class="ex">
+          <span class="ic-box"><svg class="ic"><use href="#i-heart"/></svg></span>
+          <div><b>4-7-8 呼吸</b><span class="s">睡前 4 轮 · 约 2 分钟 · 降低入睡前的紧张</span></div>
+          <button class="btn btn-soft btn-sm" type="button" id="breathBtn">跟练</button>
+          <div class="breath" id="breath" hidden>
+            <div class="ring" id="ring">4</div>
+            <div><div class="ph" id="phase">吸气</div><div class="s" id="phaseNote">用鼻子安静地吸气 4 秒</div><div class="s num" id="round" style="margin-top:4px">第 1 / 4 轮</div></div>
+          </div>
+        </div>
+        <div class="ex">
+          <span class="ic-box"><svg class="ic"><use href="#i-moon"/></svg></span>
+          <div><b>睡眠日志</b><span class="s">连续 7 天 · 每天早上 2 分钟 · 下次咨询前完成</span></div>
+          <button class="btn btn-ghost btn-sm" type="button" id="logBtn">加入计划</button>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="noteT">
+        <div class="between"><h3 id="noteT"><svg class="ic ic-sm" style="color:var(--primary)"><use href="#i-edit"/></svg>私人笔记</h3><span class="small muted"><svg class="ic ic-sm" style="vertical-align:-3px"><use href="#i-lock"/></svg> 仅自己可见</span></div>
+        <form id="noteForm" style="margin-top:10px">
+          <textarea class="input" id="note" placeholder="记下此刻的想法，比如老师提到的「担忧时间」……" aria-label="私人笔记"></textarea>
+          <div class="note-foot"><span id="cnt" class="num">0 / 500</span><button class="btn btn-primary btn-sm" type="submit">保存</button></div>
+        </form>
+        <div class="saved" id="saved">
+          <div><time>20:09</time>睡不着时别一直看时间，起床到客厅坐一会儿再回来。</div>
+        </div>
+      </section>
+    </aside>
+  </div>
+</main>
+
+<div class="scrim" id="scrim" hidden></div>
+<div class="modal" id="sosModal" role="dialog" aria-modal="true" aria-labelledby="sosH" hidden>
+  <h2 id="sosH" class="display">我们在，先确保你的安全</h2>
+  <p>如果你此刻有伤害自己的想法，请立即联系以下热线。也可以一键通知平台值班咨询师，3 分钟内会有真人介入。</p>
+  <div class="hot"><div><b>12356</b><div class="n">全国心理援助热线 · 7×24 小时 · 免费</div></div><a class="btn btn-sm btn-risk" href="tel:12356"><svg class="ic ic-sm"><use href="#i-phone"/></svg>拨打</a></div>
+  <div class="hot"><div><b>400-161-9995</b><div class="n">希望 24 热线 · 7×24 小时</div></div><a class="btn btn-ghost btn-sm" href="tel:4001619995">拨打</a></div>
+  <div class="hot"><div><b>120 / 110</b><div class="n">有生命危险时立即拨打</div></div><a class="btn btn-ghost btn-sm" href="tel:120">拨打</a></div>
+  <div class="acts"><button class="btn btn-ghost" type="button" data-close>我现在安全</button><button class="btn btn-primary" type="button" id="dutyBtn">通知值班咨询师</button></div>
+</div>
+<div class="modal" id="endModal" role="dialog" aria-modal="true" aria-labelledby="endH" hidden>
+  <h2 id="endH" class="display">现在结束本次咨询？</h2>
+  <p>本节还剩 <b class="num" id="endRemain">31:18</b>。提前结束不会退还剩余时长，建议先和林老师说一声。</p>
+  <div class="acts"><button class="btn btn-ghost" type="button" data-close>继续咨询</button><a class="btn btn-risk" href="web-me.html">结束并评价</a></div>
+</div>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  // waves
+  ['wave1', 'wave2'].forEach(function (id) { var w = $(id); for (var i = 0; i < (id === 'wave1' ? 9 : 18); i++) w.appendChild(document.createElement('i')); });
+  var t0 = performance.now();
+  function anim(t) {
+    var k = (t - t0) / 1000;
+    document.querySelectorAll('.wave i').forEach(function (b, i) { b.style.height = (22 + 70 * Math.abs(Math.sin(k * 6 + i * .7) * Math.sin(k * 1.7 + i))) + '%'; });
+    requestAnimationFrame(anim);
+  }
+  requestAnimationFrame(anim);
+
+  // timer
+  var sec = 18 * 60 + 42, total = 50 * 60;
+  function fmt(s) { return String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); }
+  setInterval(function () {
+    if (sec >= total) return; sec++;
+    $('elapsed').textContent = fmt(sec);
+    $('prog').style.width = (sec / total * 100).toFixed(1) + '%';
+    $('remain').textContent = '剩余 ' + Math.ceil((total - sec) / 60) + ' 分钟 · 结束前 5 分钟会提醒';
+    $('endRemain').textContent = fmt(total - sec);
+  }, 1000);
+
+  // controls
+  $('micBtn').addEventListener('click', function () {
+    var on = this.classList.toggle('off'); this.setAttribute('aria-pressed', on);
+    this.querySelector('use').setAttribute('href', on ? '#i-mic-off' : '#i-mic');
+    this.querySelector('.l').textContent = on ? '取消静音' : '静音';
+    $('selfMute').hidden = !on; toast(on ? '你已静音，林老师听不到你的声音' : '已取消静音');
+  });
+  var camOff = false;
+  function setCam(off) {
+    camOff = off; var b = $('camBtn'); b.classList.toggle('off', off); b.setAttribute('aria-pressed', off);
+    b.querySelector('.l').textContent = off ? '开启摄像头' : '关闭摄像头';
+    $('selfImg').hidden = off; $('selfOff').hidden = !off;
+  }
+  $('camBtn').addEventListener('click', function () { setCam(!camOff); toast(camOff ? '摄像头已关闭' : '摄像头已开启'); });
+  var audio = false;
+  $('audioBtn').addEventListener('click', function () {
+    audio = !audio; $('stage').classList.toggle('audio', audio); $('voiceMode').hidden = !audio;
+    this.querySelector('.l').textContent = audio ? '切换为视频' : '切换为语音';
+    this.querySelector('use').setAttribute('href', audio ? '#i-video' : '#i-headphones');
+    $('modeTag').textContent = audio ? '语音咨询' : '视频咨询';
+    setCam(audio); $('self').hidden = audio;
+    toast(audio ? '已切换为语音，双方画面均已关闭' : '已切换为视频');
+  });
+  $('spkBtn').addEventListener('click', function () { var off = this.classList.toggle('off'); this.querySelector('use').setAttribute('href', off ? '#i-volume-off' : '#i-volume'); toast(off ? '扬声器已关闭' : '扬声器已开启'); });
+  $('moreBtn').addEventListener('click', function () { toast('麦克风：MacBook 内建 · 摄像头：FaceTime HD'); });
+
+  // modals
+  function open(m) { $('scrim').hidden = false; $(m).hidden = false; }
+  function close() { $('scrim').hidden = true; document.querySelectorAll('.modal').forEach(function (m) { m.hidden = true; }); }
+  $('sosBtn').addEventListener('click', function () { open('sosModal'); });
+  $('endBtn').addEventListener('click', function () { open('endModal'); });
+  $('scrim').addEventListener('click', close);
+  document.querySelectorAll('[data-close]').forEach(function (b) { b.addEventListener('click', close); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+  $('dutyBtn').addEventListener('click', function () { close(); toast('已通知值班咨询师，3 分钟内会联系你'); });
+
+  // breathing 4-7-8
+  var timer = null;
+  $('breathBtn').addEventListener('click', function () {
+    var box = $('breath');
+    if (timer) { clearInterval(timer); timer = null; box.hidden = true; this.textContent = '跟练'; return; }
+    box.hidden = false; this.textContent = '停止';
+    var phases = [['吸气', 4, '用鼻子安静地吸气 4 秒', 1], ['屏息', 7, '轻轻屏住呼吸 7 秒', 1], ['呼气', 8, '用嘴缓慢呼气 8 秒，发出「呼」声', .72]];
+    var p = 0, left = 4, round = 1;
+    function paint() { $('phase').textContent = phases[p][0]; $('phaseNote').textContent = phases[p][2]; $('ring').textContent = left; $('ring').style.transform = 'scale(' + phases[p][3] + ')'; $('round').textContent = '第 ' + round + ' / 4 轮'; }
+    paint();
+    timer = setInterval(function () {
+      left--;
+      if (left <= 0) { p = (p + 1) % 3; if (p === 0) round++; if (round > 4) { clearInterval(timer); timer = null; box.hidden = true; $('breathBtn').textContent = '跟练'; toast('完成 4 轮 4-7-8 呼吸'); return; } left = phases[p][1]; }
+      paint();
+    }, 1000);
+  });
+  $('logBtn').addEventListener('click', function () { this.textContent = '已加入'; this.disabled = true; toast('睡眠日志已加入计划，明早 8:00 提醒你'); });
+
+  // notes
+  $('note').addEventListener('input', function () { if (this.value.length > 500) this.value = this.value.slice(0, 500); $('cnt').textContent = this.value.length + ' / 500'; });
+  $('noteForm').addEventListener('submit', function (e) {
+    e.preventDefault(); var v = $('note').value.trim(); if (!v) { toast('先写点什么吧'); return; }
+    var d = new Date(), div = document.createElement('div'), t = document.createElement('time');
+    t.textContent = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0');
+    div.appendChild(t); div.appendChild(document.createTextNode(v)); $('saved').prepend(div);
+    $('note').value = ''; $('cnt').textContent = '0 / 500'; toast('笔记已保存，仅你自己可见');
+  });
+})();
+</script>
+</body>
+</html>

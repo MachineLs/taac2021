@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>听屿 App · 林知夏</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@500;600;900&display=swap">
+<link rel="stylesheet" href="ds.css">
+<script src="icons.js"></script>
+<style>
+/* App · 咨询师详情 —— tokens only (white text sits on a photo + black scrim) */
+.phone > .statusbar { position: absolute; top: 0; left: 0; right: 0; z-index: 12; color: #fff; transition: color .2s; }
+.topnav { position: absolute; top: 47px; left: 0; right: 0; z-index: 11; height: 48px; display: flex; align-items: center; gap: 8px; padding: 0 12px; }
+.topnav .nb { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; border: 0; padding: 0; background: rgba(0,0,0,.28); color: #fff; backdrop-filter: blur(8px); transition: background .2s, color .2s; }
+.topnav .ttl { flex: 1; text-align: center; font-weight: 600; font-size: 16px; opacity: 0; transition: opacity .2s; }
+.topnav .nb.fav.on { color: var(--accent); }
+.solid-bg { position: absolute; top: 0; left: 0; right: 0; height: 95px; z-index: 10; background: color-mix(in srgb, var(--surface) 95%, transparent); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line-2); opacity: 0; transition: opacity .2s; pointer-events: none; }
+.phone.solid > .statusbar { color: var(--ink); }
+.phone.solid .solid-bg, .phone.solid .topnav .ttl { opacity: 1; }
+.phone.solid .topnav .nb { background: transparent; color: var(--ink); }
+
+.hero { position: relative; height: 412px; background: var(--bg-2); }
+.hero img { width: 100%; height: 100%; object-fit: cover; object-position: center 22%; }
+.hero::before { content: ""; position: absolute; inset: 0 0 auto; height: 120px; background: linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,0)); z-index: 1; }
+.hero::after { content: ""; position: absolute; inset: auto 0 0; height: 240px; background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,.72)); }
+.hero .info { position: absolute; left: 18px; right: 18px; bottom: 34px; z-index: 2; color: #fff; }
+.hero .avail { display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 10px; border-radius: var(--r-pill); background: rgba(255,255,255,.2); backdrop-filter: blur(6px); font-size: 12px; }
+.hero .avail .dot { width: 6px; height: 6px; }
+.hero h1 { margin: 8px 0 2px; font-size: 30px; line-height: 1.2; display: flex; align-items: center; gap: 8px; }
+.hero h1 .vf { display: inline-flex; align-items: center; gap: 3px; height: 22px; padding: 0 7px; border-radius: 6px; background: rgba(255,255,255,.22); font-size: 11.5px; font-family: var(--font-body); font-weight: 500; letter-spacing: 0; }
+.hero h1 .vf .ic { width: 13px; height: 13px; }
+.hero .q { font-size: 13px; opacity: .9; }
+.hero .stats { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,.22); }
+.hero .stats div { display: grid; gap: 0; }
+.hero .stats b { font-family: var(--font-num); font-size: 18px; line-height: 1.3; display: flex; align-items: center; gap: 3px; }
+.hero .stats b .ic { width: 15px; height: 15px; fill: currentColor; stroke: none; }
+.hero .stats span { font-size: 11px; opacity: .78; }
+
+.body { position: relative; z-index: 3; margin-top: -20px; background: var(--bg); border-radius: var(--r-xl) var(--r-xl) 0 0; padding: 16px 16px 8px; display: grid; gap: 12px; }
+.match { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: var(--r-lg); background: var(--accent-soft); }
+.match .pct { font-family: var(--font-num); font-weight: 700; font-size: 22px; color: var(--accent); line-height: 1; }
+.match .pct small { display: block; font-size: 10.5px; font-weight: 500; color: var(--ink-3); font-family: var(--font-body); margin-top: 3px; }
+.match p { margin: 0; font-size: 12.5px; color: var(--ink-2); line-height: 1.55; }
+.card h2 { margin: 0 0 10px; font-size: 16px; font-family: var(--font-display); font-weight: var(--display-weight); display: flex; align-items: center; justify-content: space-between; }
+.card h2 small { font-family: var(--font-body); font-size: 12px; font-weight: 400; color: var(--ink-3); }
+.intro { margin: 0; font-size: 13.5px; color: var(--ink-2); line-height: 1.75; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.intro.open { -webkit-line-clamp: unset; display: block; }
+.more { border: 0; background: none; padding: 4px 0 0; color: var(--primary); font-size: 13px; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.modes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.modes div { border: 1px solid var(--line-2); background: var(--surface-2); border-radius: var(--r); padding: 10px; display: grid; justify-items: center; gap: 2px; font-size: 12px; color: var(--ink-3); }
+.modes div .ic { color: var(--primary); }
+.modes div b { color: var(--ink); font-size: 13px; }
+.edu { display: grid; gap: 12px; margin: 0; padding: 0; }
+.edu li { list-style: none; display: grid; grid-template-columns: 52px 1fr; gap: 10px; font-size: 13px; }
+.edu li .y { font-family: var(--font-num); color: var(--ink-3); font-size: 12px; padding-top: 1px; }
+.edu li b { font-weight: 500; display: block; }
+.edu li span { font-size: 12px; color: var(--ink-3); }
+.slots { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; }
+.slots::-webkit-scrollbar { display: none; }
+.slots button { flex-shrink: 0; border: 1px solid var(--line); background: var(--surface); border-radius: var(--r); padding: 8px 12px; text-align: left; line-height: 1.35; }
+.slots button b { display: block; font-family: var(--font-num); font-size: 15px; }
+.slots button span { font-size: 11.5px; color: var(--ink-3); }
+.slots button.on { border-color: var(--primary); background: var(--primary-soft); }
+.slots button.on b { color: var(--primary); }
+.rv { display: grid; gap: 14px; }
+.rv article + article { padding-top: 14px; border-top: 1px solid var(--line-2); }
+.rv .h { display: flex; align-items: center; gap: 8px; font-size: 12.5px; }
+.rv .h b { font-weight: 500; }
+.rv .h .d { margin-left: auto; color: var(--ink-4); font-size: 11.5px; }
+.rv .stars { color: var(--warn); display: inline-flex; }
+.rv .stars .ic { width: 12px; height: 12px; fill: currentColor; stroke: none; }
+.rv p { margin: 6px 0 0; font-size: 13px; color: var(--ink-2); line-height: 1.65; }
+.rv .tg { display: flex; gap: 6px; margin-top: 6px; }
+.safe { font-size: 11.5px; color: var(--ink-4); text-align: center; padding: 4px 0 10px; }
+
+.actionbar { flex-shrink: 0; display: flex; align-items: center; gap: 12px; padding: 10px 16px 34px; background: color-mix(in srgb, var(--surface) 96%, transparent); border-top: 1px solid var(--line-2); backdrop-filter: blur(10px); position: relative; z-index: 5; }
+.actionbar .p { line-height: 1.3; }
+.actionbar .p .price { font-size: 22px; }
+.actionbar .p .price small { font-size: 13px; }
+.actionbar .p div.small { color: var(--ink-3); }
+.actionbar .chat { width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface); display: grid; place-items: center; color: var(--ink-2); flex-shrink: 0; }
+
+.scrim { position: absolute; z-index: 60; opacity: 0; transition: opacity .25s; }
+.scrim.show { opacity: 1; }
+.tsheet { position: absolute; left: 0; right: 0; bottom: 0; z-index: 61; padding: 10px 18px 36px; transform: translateY(105%); transition: transform .3s cubic-bezier(.2,.8,.2,1); }
+.tsheet.show { transform: none; }
+.tsheet .grab { width: 38px; height: 5px; border-radius: 3px; background: var(--line); margin: 0 auto 12px; }
+.tsheet h3 { margin: 0; font-size: 18px; }
+.days { display: flex; gap: 8px; overflow-x: auto; margin: 14px -18px 0; padding: 0 18px; scrollbar-width: none; }
+.days::-webkit-scrollbar { display: none; }
+.days button { flex-shrink: 0; width: 56px; border: 1px solid var(--line); background: var(--surface); border-radius: var(--r); padding: 6px 0; display: grid; justify-items: center; line-height: 1.3; font-size: 11.5px; color: var(--ink-3); }
+.days button b { font-family: var(--font-num); font-size: 16px; color: var(--ink); }
+.days button.on { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+.days button.on b { color: var(--on-primary); }
+.times { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 12px; }
+.times button { height: 40px; border-radius: var(--r-sm); border: 1px solid var(--line); background: var(--surface); font-family: var(--font-num); font-weight: 600; font-size: 14px; }
+.times button.on { border-color: var(--primary); background: var(--primary-soft); color: var(--primary); }
+.times button[disabled] { background: var(--surface-2); color: var(--ink-4); border-color: var(--line-2); text-decoration: line-through; font-weight: 400; cursor: default; }
+</style>
+</head>
+<body>
+<div class="phone fixed" id="phone">
+  <div class="statusbar"></div>
+  <div class="solid-bg" aria-hidden="true"></div>
+  <nav class="topnav">
+    <a class="nb" href="app-counselors.html" aria-label="返回"><svg class="ic"><use href="#i-back"/></svg></a>
+    <span class="ttl">林知夏</span>
+    <button class="nb fav" type="button" id="fav" aria-label="收藏" aria-pressed="false"><svg class="ic"><use href="#i-heart"/></svg></button>
+    <button class="nb" type="button" id="share" aria-label="分享"><svg class="ic"><use href="#i-share"/></svg></button>
+  </nav>
+
+  <div class="scroll" id="scroll">
+    <section class="hero">
+      <img src="../assets/c-lin.jpg" alt="林知夏老师">
+      <div class="info">
+        <span class="avail"><span class="dot"></span>明天 20:00 可约 · 本周剩余 4 个时段</span>
+        <h1 class="display">林知夏<span class="vf"><svg class="ic"><use href="#i-shield"/></svg>资质已核验</span></h1>
+        <div class="q">国家二级心理咨询师 · 临床心理学硕士 · 认知行为疗法 CBT</div>
+        <div class="stats">
+          <div><b><svg class="ic"><use href="#i-star"/></svg>4.97</b><span>评分 · 612 条</span></div>
+          <div><b>2,310</b><span>咨询次数</span></div>
+          <div><b>8 年</b><span>从业经验</span></div>
+          <div><b>91%</b><span>来访续约率</span></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="body">
+      <div class="match">
+        <div class="pct">96%<small>匹配度</small></div>
+        <p>小屿根据你 11 月 15 日的接待小结推荐：失眠 + 职场压力，林老师在这两类问题上有 230+ 位来访者经验。</p>
+      </div>
+
+      <section class="card card-pad">
+        <h2>简介</h2>
+        <p class="intro" id="intro">我相信大多数的睡不着和停不下来的焦虑，都不是你不够努力，而是身体和大脑在用它们的方式提醒你。咨询中我会和你一起找到让你绷紧的那根弦，用循证的方法（CBT、CBT-I）做一些小而具体的改变：调整睡眠节律、识别自动化思维、练习在压力中照顾自己。我的来访者中有很多互联网和金融行业的职场人，节奏快、压力大，我们会把练习设计得尽量适合你的日程。</p>
+        <button class="more" type="button" id="more">展开全部</button>
+      </section>
+
+      <section class="card card-pad">
+        <h2>擅长领域</h2>
+        <div class="tags"><span class="tag">失眠</span><span class="tag">焦虑</span><span class="tag">职场压力</span><span class="tag">情绪低落</span><span class="tag tag-plain">拖延</span><span class="tag tag-plain">完美主义</span><span class="tag tag-plain">自我关怀</span><span class="tag tag-plain">CBT-I</span></div>
+      </section>
+
+      <section class="card card-pad">
+        <h2>咨询方式<small>50 分钟 / 次 · 三种方式同价</small></h2>
+        <div class="modes">
+          <div><svg class="ic"><use href="#i-phone"/></svg><b>语音</b>¥400</div>
+          <div><svg class="ic"><use href="#i-video"/></svg><b>视频</b>¥400</div>
+          <div><svg class="ic"><use href="#i-chat"/></svg><b>文字</b>¥400</div>
+        </div>
+      </section>
+
+      <section class="card card-pad">
+        <h2>近期可约<small>北京时间</small></h2>
+        <div class="slots" id="slots">
+          <button type="button" class="on" data-d="1" data-t="20:00"><b>20:00</b><span>明天 周一</span></button>
+          <button type="button" data-d="2" data-t="19:00"><b>19:00</b><span>11/17 周二</span></button>
+          <button type="button" data-d="3" data-t="21:00"><b>21:00</b><span>11/18 周三</span></button>
+          <button type="button" data-d="6" data-t="10:00"><b>10:00</b><span>11/21 周六</span></button>
+        </div>
+      </section>
+
+      <section class="card card-pad">
+        <h2>受训背景</h2>
+        <ul class="edu">
+          <li><span class="y">2014</span><div><b>北京师范大学 · 临床与咨询心理学硕士</b><span>研究方向：成人失眠的认知行为干预</span></div></li>
+          <li><span class="y">2016</span><div><b>国家二级心理咨询师</b><span>证书信息已由平台核验</span></div></li>
+          <li><span class="y">2018</span><div><b>CBT 认知行为治疗系统培训（两年制）</b><span>结业 · 含 CBT-I 失眠专项 48 学时</span></div></li>
+          <li><span class="y">至今</span><div><b>个人体验 150 小时 · 接受督导 260 小时</b><span>每月参加听屿平台团体督导</span></div></li>
+        </ul>
+      </section>
+
+      <section class="card card-pad">
+        <h2>来访者评价<small>好评率 99% · 612 条</small></h2>
+        <div class="rv">
+          <article>
+            <div class="h"><img class="avatar avatar-sm" src="../assets/u-asian-man.jpg" alt=""><b>匿名来访者</b><span class="stars"><svg class="ic"><use href="#i-star"/></svg><svg class="ic"><use href="#i-star"/></svg><svg class="ic"><use href="#i-star"/></svg><svg class="ic"><use href="#i-star"/></svg><svg class="ic"><use href="#i-star"/></svg></span><span class="d num">11 月 9 日</span></div>
+            <p>做了 6 次 CBT-I，入睡时间从一个多小时缩短到 20 分钟左右。林老师不会说空话，每次都会给一两个具体的小练习，压力大的那周也会帮我把计划调轻一点。</p>
+            <div class="tg"><span class="tag tag-plain">失眠</span><span class="tag tag-plain">第 6 次咨询</span></div>
+          </article>
+          <article>
+            <div class="h"><img class="avatar avatar-sm" src="../assets/u-woman-3.jpg" alt=""><b>匿名来访者</b><span class="stars"><svg class="ic"><use href="#i-star"/></svg><svg class="ic"><use href="#i-star"/></svg><svg class="ic"><use href="#i-star"/></svg><svg class="ic"><use href="#i-star"/></svg><svg class="ic"><use href="#i-star"/></svg></span><span class="d num">10 月 28 日</span></div>
+            <p>第一次咨询很紧张，但老师提前看过小屿的接待小结，开场就问到了我最在意的事，不用从头讲一遍。语音咨询也很安心。</p>
+            <div class="tg"><span class="tag tag-plain">职场焦虑</span><span class="tag tag-plain">第 1 次咨询</span></div>
+          </article>
+        </div>
+      </section>
+      <div class="safe">咨询内容受《精神卫生法》与平台保密协议保护 · 开始前 24 小时可免费改期</div>
+    </div>
+  </div>
+
+  <div class="actionbar">
+    <a class="chat" href="app-chat.html" aria-label="咨询前留言"><svg class="ic"><use href="#i-chat"/></svg></a>
+    <div class="p grow"><span class="price">¥400<small>/ 50 分钟</small></span><div class="small">新客首单立减 ¥50</div></div>
+    <button class="btn btn-primary btn-lg" type="button" id="pick">选择时间</button>
+  </div>
+  <span class="homebar" aria-hidden="true" style="z-index:70"></span>
+
+  <div class="scrim" id="scrim" hidden></div>
+  <section class="sheet tsheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="tTitle" hidden>
+    <div class="grab"></div>
+    <div class="between"><h3 class="display" id="tTitle">选择咨询时间</h3><span class="small muted">每节 50 分钟</span></div>
+    <div class="days" id="days"></div>
+    <div class="times" id="times"></div>
+    <div class="between" style="margin-top:16px">
+      <div class="small muted">已选 <b id="picked" style="color:var(--ink)">明天 20:00</b></div>
+      <a class="btn btn-primary btn-lg" href="app-booking.html" id="next" style="min-width:150px">下一步</a>
+    </div>
+  </section>
+</div>
+<script>
+(function () {
+  var phone = document.getElementById('phone'), scroll = document.getElementById('scroll');
+  scroll.addEventListener('scroll', function () { phone.classList.toggle('solid', scroll.scrollTop > 300); });
+  document.getElementById('more').addEventListener('click', function () {
+    var i = document.getElementById('intro'), o = i.classList.toggle('open');
+    this.textContent = o ? '收起' : '展开全部';
+  });
+  var fav = document.getElementById('fav');
+  fav.addEventListener('click', function () { var on = fav.classList.toggle('on'); fav.setAttribute('aria-pressed', on); toast(on ? '已收藏林知夏老师' : '已取消收藏'); });
+  document.getElementById('share').addEventListener('click', function () { toast('已复制林知夏老师的主页链接'); });
+
+  var DAYS = [['今天', 15, '周日'], ['明天', 16, '周一'], ['周二', 17, '11/17'], ['周三', 18, '11/18'], ['周四', 19, '11/19'], ['周五', 20, '11/20'], ['周六', 21, '11/21']];
+  var TIMES = ['10:00', '14:00', '15:00', '16:00', '19:00', '20:00', '21:00', '22:00'];
+  var FULL = { 0: [0, 1, 2, 3, 4, 5, 6, 7], 1: [0, 1, 4, 7], 2: [0, 2, 3, 5, 6, 7], 3: [1, 2, 4, 5, 7], 4: [0, 1, 2, 3, 4, 5, 6, 7], 5: [3, 4, 5], 6: [1, 2, 6, 7] };
+  var sel = { d: 1, t: '20:00' };
+  var days = document.getElementById('days'), times = document.getElementById('times');
+  function label() { return (sel.d === 1 ? '明天' : sel.d === 0 ? '今天' : DAYS[sel.d][2]) + ' ' + sel.t; }
+  function paint() {
+    days.innerHTML = DAYS.map(function (d, i) { return '<button type="button" data-i="' + i + '" class="' + (i === sel.d ? 'on' : '') + '">' + d[0] + '<b>' + d[1] + '</b></button>'; }).join('');
+    times.innerHTML = TIMES.map(function (t, i) {
+      var full = FULL[sel.d].indexOf(i) >= 0;
+      return '<button type="button" data-t="' + t + '"' + (full ? ' disabled aria-label="' + t + ' 已约满"' : '') + ' class="' + (!full && t === sel.t ? 'on' : '') + '">' + t + '</button>';
+    }).join('');
+    var ok = !!times.querySelector('.on');
+    document.getElementById('picked').textContent = ok ? label() : '请选择时段';
+    document.getElementById('next').style.pointerEvents = ok ? '' : 'none';
+    document.getElementById('next').style.opacity = ok ? '' : '.45';
+    document.getElementById('next').href = 'app-booking.html?d=' + sel.d + '&t=' + encodeURIComponent(sel.t);
+  }
+  days.addEventListener('click', function (e) { var b = e.target.closest('button'); if (!b) return; sel.d = +b.dataset.i; sel.t = ''; paint(); });
+  times.addEventListener('click', function (e) { var b = e.target.closest('button'); if (!b || b.disabled) return; sel.t = b.dataset.t; paint(); });
+  document.querySelectorAll('#slots button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      document.querySelectorAll('#slots button').forEach(function (x) { x.classList.remove('on'); });
+      b.classList.add('on'); sel.d = +b.dataset.d; sel.t = b.dataset.t; open();
+    });
+  });
+
+  var scrim = document.getElementById('scrim'), sheet = document.getElementById('sheet');
+  function open() {
+    paint(); scrim.hidden = false; sheet.hidden = false;
+    requestAnimationFrame(function () { requestAnimationFrame(function () { scrim.classList.add('show'); sheet.classList.add('show'); }); });
+  }
+  function close() { scrim.classList.remove('show'); sheet.classList.remove('show'); setTimeout(function () { scrim.hidden = true; sheet.hidden = true; }, 300); }
+  document.getElementById('pick').addEventListener('click', open);
+  scrim.addEventListener('click', close);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+})();
+</script>
+</body>
+</html>

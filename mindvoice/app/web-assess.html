@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>听屿 Web · 心理测评</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@500;600;900&display=swap">
+<link rel="stylesheet" href="ds.css">
+<script src="icons.js"></script>
+<style>
+/* Web · 心理测评 —— tokens only */
+.top-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+.top-right .search { width: 220px; height: 36px; }
+.icon-btn { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; border: 1px solid var(--line-2); background: var(--surface); color: var(--ink-2); position: relative; }
+.icon-btn .badge { position: absolute; top: -4px; right: -4px; }
+
+.page-h { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 18px; flex-wrap: wrap; }
+.page-h h1 { margin: 0; font-size: 26px; }
+.page-h p { margin: 2px 0 0; color: var(--ink-3); font-size: 13.5px; }
+
+.shell { display: grid; grid-template-columns: 300px minmax(0, 1fr) 280px; gap: 20px; align-items: start; }
+.shell > * { min-width: 0; }
+
+.cat { padding: 8px; }
+.cat h2 { font-size: 13px; color: var(--ink-3); font-weight: 500; margin: 8px 10px 6px; }
+.test { display: grid; grid-template-columns: 40px 1fr auto; gap: 4px 12px; align-items: center; padding: 12px 10px; border-radius: var(--r); border: 1px solid transparent; width: 100%; text-align: left; background: none; }
+.test:hover { background: var(--surface-2); }
+.test.on { background: var(--primary-soft); border-color: color-mix(in srgb, var(--primary) 25%, transparent); }
+.test .ab { width: 40px; height: 40px; border-radius: var(--r); display: grid; place-items: center; background: var(--surface-2); border: 1px solid var(--line-2); color: var(--primary); font-family: var(--font-num); font-weight: 700; font-size: 11px; letter-spacing: -.02em; grid-row: 1 / span 2; }
+.test.on .ab { background: var(--primary); color: var(--on-primary); border-color: var(--primary); }
+.test b { font-size: 14px; }
+.test .s { font-size: 12px; color: var(--ink-3); grid-column: 2 / -1; }
+.test .tag { grid-column: 3; grid-row: 1; }
+
+.qcard { padding: 28px 32px 24px; }
+.qtop { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.qtop .k { font-size: 13px; color: var(--ink-3); display: flex; align-items: center; gap: 8px; }
+.prog { display: flex; align-items: center; gap: 12px; margin: 14px 0 26px; }
+.prog .bar { flex: 1; height: 8px; border-radius: 4px; }
+.prog .bar > i { transition: width .3s; border-radius: 4px; }
+.prog .n { font-family: var(--font-num); font-weight: 600; font-size: 14px; min-width: 40px; text-align: right; }
+.steps { display: flex; gap: 6px; margin-bottom: 22px; }
+.steps button { width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface); font-family: var(--font-num); font-size: 12px; color: var(--ink-3); }
+.steps button.done { background: var(--primary-soft); color: var(--primary); border-color: transparent; }
+.steps button.cur { background: var(--primary); color: var(--on-primary); border-color: var(--primary); font-weight: 600; }
+.stem-k { font-size: 13px; color: var(--ink-3); margin: 0 0 8px; }
+.stem { margin: 0 0 24px; font-size: 26px; line-height: 1.4; }
+.opts { display: grid; gap: 10px; }
+.opt { display: grid; grid-template-columns: 28px 1fr auto; gap: 14px; align-items: center; padding: 16px 18px; border-radius: var(--r-lg); border: 1.5px solid var(--line); background: var(--surface); text-align: left; transition: border-color .15s, background .15s; }
+.opt:hover { border-color: var(--ink-4); }
+.opt .rd { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--ink-4); display: grid; place-items: center; }
+.opt .rd::after { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--primary); transform: scale(0); transition: transform .15s; }
+.opt b { font-size: 16px; font-weight: 500; }
+.opt .d { font-size: 12.5px; color: var(--ink-3); display: block; }
+.opt kbd { font-family: var(--font-num); font-size: 12px; color: var(--ink-4); border: 1px solid var(--line); border-radius: 5px; padding: 1px 7px; background: var(--surface-2); }
+.opt[aria-checked="true"] { border-color: var(--primary); background: var(--primary-soft); }
+.opt[aria-checked="true"] .rd { border-color: var(--primary); }
+.opt[aria-checked="true"] .rd::after { transform: scale(1); }
+.qnav { display: flex; align-items: center; justify-content: space-between; margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--line-2); }
+.qnav .small { color: var(--ink-3); }
+
+.aside { display: grid; gap: 14px; }
+.aside .card { padding: 16px; }
+.aside h3 { margin: 0 0 8px; font-size: 15px; }
+.aside p { margin: 0; font-size: 13px; color: var(--ink-2); }
+.aside ul { margin: 8px 0 0; padding-left: 18px; font-size: 13px; color: var(--ink-2); }
+.last { display: flex; align-items: baseline; gap: 8px; margin: 6px 0; }
+.last b { font-size: 28px; font-family: var(--font-num); }
+.hist { display: grid; gap: 8px; margin-top: 10px; }
+.hist div { display: flex; justify-content: space-between; font-size: 12.5px; color: var(--ink-2); }
+.hist .num { color: var(--ink); font-weight: 600; }
+.priv { display: flex; gap: 10px; align-items: flex-start; font-size: 12.5px; color: var(--ink-3); }
+.priv .ic { color: var(--ok); margin-top: 2px; }
+
+/* result */
+.res-top { display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center; }
+.score { width: 148px; height: 148px; border-radius: 50%; display: grid; place-items: center; align-content: center; background: conic-gradient(var(--warn) calc(var(--p) * 1%), var(--bg-2) 0); position: relative; }
+.score::before { content: ""; position: absolute; inset: 12px; border-radius: 50%; background: var(--surface); }
+.score b, .score span { position: relative; }
+.score b { font-size: 44px; font-family: var(--font-num); line-height: 1; }
+.score span { font-size: 12px; color: var(--ink-3); }
+.res-top h2 { margin: 6px 0 6px; font-size: 26px; }
+.res-top p { margin: 0; color: var(--ink-2); }
+.bands { margin: 26px 0 8px; }
+.bands .row4 { display: grid; grid-template-columns: 5fr 5fr 5fr 7fr; gap: 3px; position: relative; }
+.bands .row4 i { height: 10px; border-radius: 3px; }
+.bands .lbls { display: grid; grid-template-columns: 5fr 5fr 5fr 7fr; gap: 3px; margin-top: 8px; font-size: 12px; color: var(--ink-3); }
+.bands .lbls span b { color: var(--ink-2); font-weight: 600; display: block; }
+.marker { position: absolute; top: -26px; transform: translateX(-50%); font-family: var(--font-num); font-size: 12px; font-weight: 700; background: var(--ink); color: var(--surface); padding: 1px 7px; border-radius: 5px; }
+.marker::after { content: ""; position: absolute; left: 50%; bottom: -4px; transform: translateX(-50%); border: 4px solid transparent; border-bottom: 0; border-top-color: var(--ink); }
+.items { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 24px; margin-top: 22px; }
+.items div { display: grid; grid-template-columns: 1fr 72px; gap: 10px; align-items: center; font-size: 13px; color: var(--ink-2); }
+.items .dots { display: flex; gap: 3px; justify-content: flex-end; }
+.items .dots i { width: 14px; height: 6px; border-radius: 2px; background: var(--bg-2); }
+.items .dots i.f { background: var(--warn); }
+.sugg { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 24px; }
+.sg { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; padding: 18px; border-radius: var(--r-lg); border: 1px solid var(--line-2); background: var(--surface-2); align-items: center; }
+.sg .orb { width: 52px; height: 52px; grid-row: 1 / span 2; display: grid; place-items: center; color: var(--on-primary); }
+.sg .avatar { grid-row: 1 / span 2; }
+.sg b { font-size: 15px; }
+.sg p { margin: 0; font-size: 12.5px; color: var(--ink-3); }
+.sg .btn { grid-column: 1 / -1; margin-top: 8px; }
+.note { margin-top: 18px; font-size: 12px; color: var(--ink-4); }
+
+@media (max-width: 1180px) { .shell { grid-template-columns: 260px minmax(0, 1fr); } .aside { grid-column: 1 / -1; grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 900px) {
+  .web-top nav, .top-right .search { display: none; }
+  .shell { grid-template-columns: 1fr; }
+  .aside { grid-template-columns: 1fr; }
+  .qcard { padding: 20px 16px; }
+  .stem { font-size: 21px; }
+  .res-top, .sugg, .items { grid-template-columns: 1fr; }
+  .steps { flex-wrap: wrap; }
+}
+</style>
+</head>
+<body>
+<header class="web-top"><div class="in">
+  <a class="brand" href="web-home.html"><span class="brand-mark"><svg class="ic"><use href="#i-leaf"/></svg></span>听屿</a>
+  <nav aria-label="主导航">
+    <a href="web-home.html">首页</a>
+    <a href="web-voice.html">小屿接待</a>
+    <a href="web-counselors.html">找咨询师</a>
+    <a href="web-assess.html" class="on" aria-current="page">心理测评</a>
+    <a href="web-creator.html">达人专区</a>
+  </nav>
+  <div class="top-right">
+    <label class="search"><svg class="ic ic-sm"><use href="#i-search"/></svg><input type="search" placeholder="搜索咨询师、话题、测评" aria-label="搜索"></label>
+    <a class="icon-btn" href="web-me.html" aria-label="消息，2 条未读"><svg class="ic"><use href="#i-bell"/></svg><span class="badge">2</span></a>
+    <a href="web-me.html" aria-label="个人中心"><img class="avatar" src="../assets/u-asian-man.jpg" alt="小周"></a>
+  </div>
+</div></header>
+
+<main class="web-main">
+  <div class="page-h">
+    <div><h1 class="display">心理测评</h1><p>国际通用标准化量表，约 2–8 分钟。结果仅用于自我了解与初筛，不构成诊断。</p></div>
+    <a class="btn btn-ghost btn-sm" href="web-me.html#reports"><svg class="ic ic-sm"><use href="#i-file"/></svg>我的测评报告 · 3</a>
+  </div>
+
+  <div class="shell">
+    <nav class="card cat" aria-label="测评目录">
+      <h2>情绪与睡眠</h2>
+      <button class="test" type="button" data-t="PHQ-9"><span class="ab">PHQ</span><b>PHQ-9 抑郁筛查</b><span class="tag tag-warn">9 · 轻度</span><span class="s">9 题 · 约 2 分钟 · 上次 11/15</span></button>
+      <button class="test on" type="button" aria-current="true"><span class="ab">GAD</span><b>GAD-7 焦虑筛查</b><span class="tag" id="catTag">进行中</span><span class="s" id="catSub">7 题 · 约 2 分钟 · 已答 3 题</span></button>
+      <button class="test" type="button" data-t="ISI"><span class="ab">ISI</span><b>ISI 失眠严重度</b><span class="tag tag-warn">16 · 中度</span><span class="s">7 题 · 约 2 分钟 · 上次 11/15</span></button>
+      <h2>压力与关系</h2>
+      <button class="test" type="button" data-t="PSS-10"><span class="ab">PSS</span><b>PSS 压力感知</b><span class="tag tag-plain">推荐</span><span class="s">10 题 · 约 3 分钟 · 适合职场压力</span></button>
+      <button class="test" type="button" data-t="ECR"><span class="ab">ECR</span><b>ECR 亲密关系经历</b><span class="tag tag-plain">未测</span><span class="s">36 题 · 约 8 分钟 · 依恋类型</span></button>
+    </nav>
+
+    <section class="card qcard" id="quiz" aria-label="GAD-7 作答">
+      <div class="qtop">
+        <span class="k"><span class="tag">GAD-7</span>广泛性焦虑障碍量表 · 7 题</span>
+        <button class="btn btn-text btn-sm" type="button" id="saveExit">保存并退出</button>
+      </div>
+      <div class="prog"><div class="bar"><i id="pbar" style="width:57.1%"></i></div><span class="n" id="pnum">4/7</span></div>
+      <div class="steps" id="steps" aria-label="题目导航"></div>
+      <p class="stem-k">在过去两周里，你有多少时间受到以下问题困扰？</p>
+      <h2 class="stem display" id="stem">很难放松下来</h2>
+      <div class="opts" role="radiogroup" aria-labelledby="stem" id="opts"></div>
+      <div class="qnav">
+        <button class="btn btn-ghost" type="button" id="prev"><svg class="ic ic-sm"><use href="#i-back"/></svg>上一题</button>
+        <span class="small">可用键盘 1–4 选择 · 选择后自动进入下一题</span>
+        <button class="btn btn-primary" type="button" id="next">下一题<svg class="ic ic-sm"><use href="#i-chevron"/></svg></button>
+      </div>
+    </section>
+
+    <section class="card qcard" id="result" aria-label="GAD-7 结果" hidden>
+      <div class="qtop">
+        <span class="k"><span class="tag tag-ok"><svg class="ic ic-sm" style="margin-right:4px"><use href="#i-check"/></svg>已完成</span>GAD-7 广泛性焦虑障碍量表</span>
+        <button class="btn btn-text btn-sm" type="button" id="redo">重新作答</button>
+      </div>
+      <div class="res-top" style="margin-top:20px">
+        <div class="score" id="scoreRing" style="--p:52"><b id="rScore">11</b><span>/ 21 分</span></div>
+        <div>
+          <span class="tag tag-warn" id="rTag">中度焦虑</span>
+          <h2 class="display" id="rTitle">你最近承受的焦虑感比较明显</h2>
+          <p id="rText">过去两周里，紧张、担忧和难以放松的感觉出现得比较频繁，可能已经影响到睡眠和工作效率。这在长期高压的职场人中很常见，通常通过 6–8 次认知行为咨询可以明显缓解。</p>
+          <p class="small muted" style="margin-top:8px" id="rCmp">与 11/15 相比：持平（11 分）</p>
+        </div>
+      </div>
+      <div class="bands">
+        <div class="row4" id="row4">
+          <i style="background:var(--ok-soft)"></i><i style="background:var(--primary-soft)"></i><i style="background:var(--warn-soft)"></i><i style="background:var(--risk-soft)"></i>
+          <span class="marker" id="marker" style="left:52%">11</span>
+        </div>
+        <div class="lbls"><span><b>无明显焦虑</b>0–4</span><span><b>轻度</b>5–9</span><span><b>中度</b>10–14</span><span><b>重度</b>15–21</span></div>
+      </div>
+      <div class="items" id="items"></div>
+      <div class="sugg">
+        <div class="sg">
+          <span class="orb" style="--lv:.2"><svg class="ic"><use href="#i-mic"/></svg></span>
+          <b>和小屿聊聊</b><p>3 分钟语音接待，把测评结果和最近的状态一起整理成小结。</p>
+          <a class="btn btn-soft btn-block" href="web-voice.html">开始语音接待</a>
+        </div>
+        <div class="sg">
+          <img class="avatar avatar-lg" src="../assets/c-lin.jpg" alt="">
+          <b>预约咨询师 · 林知夏</b><p>焦虑 · 失眠 · CBT · 明天 20:00 已预约，可把本次结果同步给老师。</p>
+          <a class="btn btn-primary btn-block" href="web-counselors.html" id="bookBtn">查看擅长焦虑的咨询师</a>
+        </div>
+      </div>
+      <p class="note">GAD-7 由 Spitzer 等编制，中文版信效度良好。本结果仅反映近两周的自评状态，不能替代专业诊断。如果你有伤害自己的想法，请立即拨打 12356 全国心理援助热线（7×24 小时 · 免费）。</p>
+    </section>
+
+    <aside class="aside">
+      <div class="card">
+        <h3>关于 GAD-7</h3>
+        <p>用于评估近两周广泛性焦虑的严重程度。每题 0–3 分，总分 0–21 分。</p>
+        <ul><li>请根据真实感受作答，不用想太久</li><li>没有对错，中途可以保存退出</li></ul>
+      </div>
+      <div class="card">
+        <h3>上次结果</h3>
+        <div class="last"><b>11</b><span class="muted">/ 21</span><span class="tag tag-warn">中度</span></div>
+        <div class="hist"><div><span>11/15 小屿接待后</span><span class="num">11</span></div><div><span>11/08 每周随访</span><span class="num">12</span></div><div><span>11/01 首次测评</span><span class="num">13</span></div></div>
+      </div>
+      <div class="card priv"><svg class="ic"><use href="#i-lock"/></svg><span>测评结果加密保存，仅你本人可见。你可以在「隐私与安全」中选择是否同步给咨询师。</span></div>
+    </aside>
+  </div>
+</main>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var Q = ['感觉紧张、焦虑或烦躁', '不能停止或控制担忧', '对各种各样的事情担忧过多', '很难放松下来', '由于不安而无法静坐', '变得容易烦恼或急躁', '感到似乎将有可怕的事情发生而害怕'];
+  var SHORT = ['紧张焦虑', '无法控制担忧', '担忧过多', '难以放松', '坐立不安', '易烦躁', '害怕不好的事'];
+  var O = [['完全不会', '过去两周没有出现'], ['好几天', '1–6 天'], ['一半以上的天数', '7–11 天'], ['几乎每天', '12 天及以上']];
+  var ans = [2, 2, 1, null, null, null, null];
+  var cur = 3, timer = null;
+
+  function render() {
+    $('stem').textContent = Q[cur];
+    var done = ans.filter(function (a) { return a != null; }).length;
+    $('pbar').style.width = ((cur + 1) / 7 * 100).toFixed(1) + '%';
+    $('pnum').textContent = (cur + 1) + '/7';
+    $('catSub').textContent = '7 题 · 约 2 分钟 · 已答 ' + done + ' 题';
+    $('steps').innerHTML = Q.map(function (_, i) { return '<button type="button" class="' + (i === cur ? 'cur' : ans[i] != null ? 'done' : '') + '" data-i="' + i + '" aria-label="第 ' + (i + 1) + ' 题">' + (i + 1) + '</button>'; }).join('');
+    $('opts').innerHTML = O.map(function (o, v) {
+      return '<button type="button" class="opt" role="radio" aria-checked="' + (ans[cur] === v) + '" data-v="' + v + '"><span class="rd"></span><span><b>' + o[0] + '</b><span class="d">' + o[1] + '</span></span><kbd>' + (v + 1) + '</kbd></button>';
+    }).join('');
+    $('prev').disabled = cur === 0;
+    var last = cur === 6;
+    $('next').innerHTML = last ? '查看结果<svg class="ic ic-sm"><use href="#i-check"/></svg>' : '下一题<svg class="ic ic-sm"><use href="#i-chevron"/></svg>';
+    $('next').disabled = ans[cur] == null;
+  }
+  function pick(v) {
+    ans[cur] = v; render();
+    clearTimeout(timer);
+    if (cur < 6) timer = setTimeout(function () { cur++; render(); }, 320);
+  }
+  $('opts').addEventListener('click', function (e) { var b = e.target.closest('.opt'); if (b) pick(+b.getAttribute('data-v')); });
+  $('steps').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return; var i = +b.getAttribute('data-i');
+    var firstOpen = ans.indexOf(null); if (firstOpen !== -1 && i > firstOpen) { toast('请先完成第 ' + (firstOpen + 1) + ' 题'); return; }
+    clearTimeout(timer); cur = i; render();
+  });
+  $('prev').addEventListener('click', function () { clearTimeout(timer); if (cur > 0) { cur--; render(); } });
+  $('next').addEventListener('click', function () { clearTimeout(timer); if (ans[cur] == null) return; if (cur < 6) { cur++; render(); } else showResult(); });
+  document.addEventListener('keydown', function (e) {
+    if ($('quiz').hidden || /INPUT|TEXTAREA/.test(document.activeElement.tagName)) return;
+    if (e.key >= '1' && e.key <= '4') pick(+e.key - 1);
+    else if (e.key === 'ArrowLeft') $('prev').click();
+    else if (e.key === 'ArrowRight' || e.key === 'Enter') $('next').click();
+  });
+  $('saveExit').addEventListener('click', function () { toast('已保存进度，下次从第 ' + (cur + 1) + ' 题继续'); });
+  document.querySelectorAll('.test[data-t]').forEach(function (b) { b.addEventListener('click', function () { toast(b.getAttribute('data-t') + '：先完成当前的 GAD-7 吧（还剩 ' + ans.filter(function (a) { return a == null; }).length + ' 题）'); }); });
+
+  var LEVELS = [
+    { max: 4, tag: '无明显焦虑', cls: 'tag-ok', color: 'var(--ok)', title: '你最近的焦虑水平在正常范围', text: '过去两周里，紧张和担忧的感觉不太影响你的日常生活。继续保持规律作息，可以每两周复测一次。' },
+    { max: 9, tag: '轻度焦虑', cls: 'tag', color: 'var(--primary)', title: '你最近有一些焦虑感', text: '偶尔的紧张和担忧是可以理解的。可以试试 4-7-8 呼吸和固定的「担忧时间」，如果持续两周以上或影响睡眠，建议和咨询师聊聊。' },
+    { max: 14, tag: '中度焦虑', cls: 'tag-warn', color: 'var(--warn)', title: '你最近承受的焦虑感比较明显', text: '过去两周里，紧张、担忧和难以放松的感觉出现得比较频繁，可能已经影响到睡眠和工作效率。这在长期高压的职场人中很常见，通常通过 6–8 次认知行为咨询可以明显缓解。' },
+    { max: 21, tag: '重度焦虑', cls: 'tag-risk', color: 'var(--risk)', title: '你最近的焦虑程度较重，建议尽快寻求专业帮助', text: '焦虑已经明显影响到你的生活。建议本周内预约咨询师，必要时由精神科医生评估。你不需要一个人扛着。' }
+  ];
+  function showResult() {
+    var s = ans.reduce(function (a, b) { return a + b; }, 0);
+    var L = LEVELS.filter(function (l) { return s <= l.max; })[0];
+    $('quiz').hidden = true; $('result').hidden = false;
+    $('rScore').textContent = s;
+    $('scoreRing').style.setProperty('--p', Math.round(s / 21 * 100));
+    $('scoreRing').style.background = 'conic-gradient(' + L.color + ' ' + Math.round(s / 21 * 100) + '%, var(--bg-2) 0)';
+    $('rTag').className = 'tag ' + L.cls; $('rTag').textContent = L.tag;
+    $('rTitle').textContent = L.title; $('rText').textContent = L.text;
+    var d = s - 11; $('rCmp').textContent = '与 11/15 相比：' + (d === 0 ? '持平（11 分）' : (d < 0 ? '下降 ' + (-d) : '上升 ' + d) + ' 分（上次 11 分）');
+    // marker: bands 0–4, 5–9, 10–14, 15–21 over widths 5,5,5,7 of 22
+    var pos = s <= 14 ? (s + .5) / 15 * (15 / 22) : (15 + (s - 15 + .5) / 7 * 7) / 22;
+    $('marker').style.left = (pos * 100).toFixed(1) + '%'; $('marker').textContent = s;
+    $('items').innerHTML = ans.map(function (a, i) { return '<div><span>' + (i + 1) + '. ' + SHORT[i] + ' · ' + O[a][0] + '</span><span class="dots">' + [0, 1, 2].map(function (k) { return '<i class="' + (k < a ? 'f' : '') + '"></i>'; }).join('') + '</span></div>'; }).join('');
+    $('catTag').className = 'tag ' + L.cls; $('catTag').textContent = s + ' · ' + L.tag.replace('焦虑', '');
+    $('catSub').textContent = '7 题 · 约 2 分钟 · 刚刚完成';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    toast('结果已保存到「我的测评报告」');
+  }
+  $('redo').addEventListener('click', function () { ans = [null, null, null, null, null, null, null]; cur = 0; $('result').hidden = true; $('quiz').hidden = false; $('catTag').className = 'tag'; $('catTag').textContent = '进行中'; render(); });
+
+  render();
+  if (location.hash === '#result') { ans = [2, 2, 1, 2, 1, 2, 1]; showResult(); }
+})();
+</script>
+</body>
+</html>

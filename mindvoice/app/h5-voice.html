@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>听屿 H5 · 语音接待</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@500;600;900&display=swap">
+<link rel="stylesheet" href="ds.css">
+<script src="icons.js"></script>
+<style>
+/* H5 · 语音接待 —— tokens only */
+.phone { overflow: clip; display: flex; flex-direction: column; min-height: max(844px, 100vh); background: linear-gradient(180deg, var(--primary-soft) 0%, var(--bg) 360px); }
+.h5-top { background: color-mix(in srgb, var(--surface) 90%, transparent); backdrop-filter: blur(12px); }
+.h5-top .nb { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; border: 0; background: none; color: var(--ink); }
+.h5-top .ttl { flex: 1; text-align: center; line-height: 1.25; }
+.h5-top .ttl b { display: block; font-size: 16px; }
+.h5-top .ttl span { font-size: 11px; color: var(--ink-3); display: inline-flex; align-items: center; gap: 4px; }
+.h5-top .nb.off { color: var(--ink-4); }
+
+.crisis { position: sticky; top: 52px; z-index: 9; margin: 10px 14px 0; padding: 12px 14px; border-radius: var(--r-lg); background: var(--risk-soft); border: 1px solid color-mix(in srgb, var(--risk) 30%, transparent); color: var(--ink); box-shadow: var(--shadow); }
+.crisis .h { display: flex; align-items: center; gap: 8px; color: var(--risk); font-weight: 700; font-size: 14px; }
+.crisis p { margin: 4px 0 10px; font-size: 12.5px; color: var(--ink-2); }
+.crisis .acts { display: grid; grid-template-columns: 1.4fr 1fr; gap: 8px; }
+.crisis .btn-risk { background: var(--risk); color: var(--surface); }
+.crisis .x { position: absolute; right: 8px; top: 8px; border: 0; background: none; color: var(--ink-3); width: 28px; height: 28px; display: grid; place-items: center; }
+
+.stage { display: grid; justify-items: center; padding: 22px 16px 6px; text-align: center; }
+.src { display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0 10px 0 4px; border-radius: var(--r-pill); background: var(--surface); border: 1px solid var(--line-2); font-size: 12px; color: var(--ink-2); }
+.src img { width: 18px; height: 18px; border-radius: 50%; }
+.stage .orb { width: 132px; height: 132px; margin: 26px 0 18px; }
+.state { font-size: 17px; font-weight: 600; font-family: var(--font-display); }
+.substate { font-size: 12px; color: var(--ink-3); margin-top: 2px; display: flex; align-items: center; gap: 8px; }
+.substate .num { color: var(--ink-2); }
+
+.feed { padding: 16px 14px 8px; flex: 1; }
+.feed .chat { gap: 12px; }
+.msg { display: flex; gap: 8px; align-items: flex-start; }
+.msg .avatar-xiaoyu { width: 28px; height: 28px; font-size: 12px; flex-shrink: 0; margin-top: 2px; }
+.msg.user { justify-content: flex-end; }
+.msg .bubble { max-width: 78%; }
+.bubble.typing::after { content: ""; display: inline-block; width: 6px; height: 14px; margin-left: 2px; vertical-align: -2px; background: currentColor; opacity: .5; animation: blink 1s steps(2) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.day { text-align: center; font-size: 11.5px; color: var(--ink-4); }
+
+.quick { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 4px 36px; }
+.quick button.chip { cursor: pointer; }
+.quick .lab { width: 100%; font-size: 11.5px; color: var(--ink-4); }
+
+.dock { position: sticky; bottom: 0; z-index: 10; padding: 12px 18px 14px; background: color-mix(in srgb, var(--surface) 94%, transparent); backdrop-filter: blur(14px); border-top: 1px solid var(--line-2); border-radius: var(--r-xl) var(--r-xl) 0 0; box-shadow: 0 -10px 30px -18px color-mix(in srgb, var(--ink) 40%, transparent); }
+.ctrl { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; }
+.side { display: grid; justify-items: center; gap: 4px; font-size: 11.5px; color: var(--ink-3); border: 0; background: none; }
+.side span.c { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: var(--surface-2); border: 1px solid var(--line-2); color: var(--ink-2); }
+.side.end span.c { color: var(--risk); }
+.mic { width: 78px; height: 78px; border-radius: 50%; border: 0; background: var(--primary); color: var(--on-primary); display: grid; place-items: center; position: relative; box-shadow: 0 12px 28px -10px color-mix(in srgb, var(--primary) 70%, transparent); }
+.mic .ic { width: 30px; height: 30px; }
+.mic::before { content: ""; position: absolute; inset: -8px; border-radius: 50%; border: 2px solid color-mix(in srgb, var(--primary) 35%, transparent); opacity: 0; }
+.mic.live::before { animation: ring 1.4s ease-out infinite; }
+@keyframes ring { 0% { transform: scale(.9); opacity: .9; } 100% { transform: scale(1.35); opacity: 0; } }
+.mic.live { background: var(--accent); color: var(--on-accent); }
+.wave { justify-content: center; height: 22px; margin: 2px auto 8px; }
+.wave i { background: var(--primary); }
+.typebar { display: flex; justify-content: center; margin-top: 8px; }
+.typebar button { border: 0; background: none; color: var(--primary); font-size: 13px; display: inline-flex; align-items: center; gap: 4px; }
+.typeform { display: flex; gap: 8px; margin-top: 10px; }
+.typeform .input { height: 42px; border-radius: var(--r-pill); background: var(--surface-2); }
+.typeform .btn { height: 42px; width: 42px; padding: 0; }
+.dock .fine { text-align: center; font-size: 11px; color: var(--ink-4); margin-top: 8px; display: flex; align-items: center; justify-content: center; gap: 4px; }
+
+.sheet-wrap { position: fixed; left: 0; right: 0; bottom: 0; z-index: 95; display: flex; justify-content: center; pointer-events: none; }
+.sheet { width: 100%; max-width: 390px; padding: 8px 18px 18px; pointer-events: auto; max-height: 86vh; overflow-y: auto; animation: up .32s cubic-bezier(.2,.8,.2,1); }
+@keyframes up { from { transform: translateY(100%); } to { transform: none; } }
+.sheet .grab { width: 38px; height: 5px; border-radius: 3px; background: var(--line); margin: 0 auto 14px; }
+.sheet .hd { display: flex; align-items: center; gap: 10px; }
+.sheet .hd .ok { width: 36px; height: 36px; border-radius: 50%; background: var(--ok-soft); color: var(--ok); display: grid; place-items: center; }
+.sheet .hd h2 { margin: 0; font-size: 18px; line-height: 1.3; }
+.sheet .hd span { font-size: 12px; color: var(--ink-3); }
+.sgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 14px 0 12px; }
+.sgrid div { background: var(--surface-2); border: 1px solid var(--line-2); border-radius: var(--r); padding: 9px 10px; display: grid; gap: 2px; }
+.sgrid small { font-size: 11px; color: var(--ink-3); }
+.sgrid b { font-size: 14px; }
+.stopics { display: flex; gap: 6px; flex-wrap: wrap; }
+.sscales { display: grid; gap: 8px; margin: 14px 0; }
+.sscales .r { display: grid; grid-template-columns: 96px 1fr 58px; gap: 10px; align-items: center; font-size: 12px; color: var(--ink-2); }
+.sscales .r span:last-child { text-align: right; }
+.smatch { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: center; padding: 12px; border-radius: var(--r-lg); background: var(--primary-soft); }
+.smatch .avatar { object-position: top; }
+.smatch b { font-size: 14.5px; }
+.smatch .t { font-size: 11.5px; color: var(--ink-3); }
+.sheet .acts { display: grid; grid-template-columns: 1fr 2fr; gap: 10px; margin-top: 14px; }
+.sheet .note { font-size: 11px; color: var(--ink-4); text-align: center; margin-top: 10px; }
+</style>
+</head>
+<body>
+<div class="phone">
+  <header class="h5-top">
+    <a class="nb" href="h5-landing.html" aria-label="返回"><svg class="ic"><use href="#i-back"/></svg></a>
+    <div class="ttl"><b>小屿 · 语音接待</b><span><span class="dot"></span><span id="modeTxt">AI 接待助手 · 不做诊断</span></span></div>
+    <button class="nb" type="button" id="soundBtn" aria-label="关闭声音" aria-pressed="true"><svg class="ic"><use href="#i-volume"/></svg></button>
+  </header>
+
+  <div class="crisis" id="crisis" role="alert" hidden>
+    <button class="x" type="button" id="crisisClose" aria-label="关闭"><svg class="ic ic-sm"><use href="#i-close"/></svg></button>
+    <div class="h"><svg class="ic"><use href="#i-alert"/></svg>你现在安全吗？我们很担心你</div>
+    <p>值班咨询师会在 3 分钟内联系你。也可以现在就打给专业热线；如有生命危险请拨打 120 / 110。</p>
+    <div class="acts">
+      <a class="btn btn-risk btn-sm" href="tel:12356"><svg class="ic ic-sm"><use href="#i-phone"/></svg>拨打 12356 · 7×24 免费</a>
+      <a class="btn btn-ghost btn-sm" href="tel:120">拨打 120</a>
+    </div>
+  </div>
+
+  <section class="stage">
+    <span class="src"><img src="../assets/u-woman-5.jpg" alt="">来自「睡眠研究所阿屿」的推荐</span>
+    <span class="orb" id="orb" aria-hidden="true"></span>
+    <div class="state" id="state" aria-live="polite">点一下麦克风，开始和小屿说说</div>
+    <div class="substate"><span id="sub">匿名 · 免费 · 约 3 分钟</span><span>·</span><span class="num" id="timer">00:00</span></div>
+  </section>
+
+  <section class="feed">
+    <div class="day">今天 23:08 · 对话已加密</div>
+    <div class="chat" id="chat" style="margin-top:12px"></div>
+    <div class="quick" id="quick">
+      <span class="lab">不知道从哪说起？点一个试试</span>
+      <button class="chip" type="button">最近总是睡不着</button>
+      <button class="chip" type="button">工作压力特别大</button>
+      <button class="chip" type="button">情绪很低落</button>
+      <button class="chip" type="button">说不清，就是累</button>
+    </div>
+  </section>
+
+  <footer class="dock">
+    <div class="wave" id="wave" aria-hidden="true"></div>
+    <div class="ctrl">
+      <button class="side end" type="button" id="endBtn"><span class="c"><svg class="ic"><use href="#i-phone-off"/></svg></span>结束接待</button>
+      <button class="mic" type="button" id="mic" aria-label="开始说话"><svg class="ic"><use href="#i-mic"/></svg></button>
+      <button class="side" type="button" id="kbBtn"><span class="c"><svg class="ic"><use href="#i-edit"/></svg></span>打字</button>
+    </div>
+    <div class="typebar"><button type="button" id="typeToggle">也可以打字<svg class="ic ic-sm"><use href="#i-chevron-down"/></svg></button></div>
+    <form class="typeform" id="typeForm" hidden>
+      <input class="input" id="typeInput" placeholder="写下你想说的，小屿会认真看" maxlength="500" autocomplete="off">
+      <button class="btn btn-primary" type="submit" aria-label="发送"><svg class="ic"><use href="#i-send"/></svg></button>
+    </form>
+    <div class="fine"><svg class="ic ic-sm"><use href="#i-lock"/></svg>仅你和为你服务的咨询师可见</div>
+  </footer>
+</div>
+
+<div class="scrim" id="scrim" hidden></div>
+<div class="sheet-wrap" id="sheetWrap" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sumTitle">
+    <div class="grab"></div>
+    <div class="hd">
+      <span class="ok"><svg class="ic"><use href="#i-check"/></svg></span>
+      <div class="grow"><h2 class="display" id="sumTitle">接待完成，这是小屿的简要小结</h2><span id="sumMeta">接待时长 3 分 26 秒 · 已加密保存</span></div>
+    </div>
+    <div class="sgrid">
+      <div><small>当前情绪</small><b id="sMood">焦虑 · 疲惫</b></div>
+      <div><small>持续时间</small><b id="sDur">1 个多月</b></div>
+      <div><small>风险分级</small><b><span class="tag tag-ok" id="sRisk">低风险</span></b></div>
+    </div>
+    <div class="stopics" id="sTopics"></div>
+    <div class="sscales" id="sScales"></div>
+    <a class="smatch" href="h5-counselor.html" id="sMatch"></a>
+    <div class="acts">
+      <button class="btn btn-ghost" type="button" id="keepTalk">继续聊聊</button>
+      <a class="btn btn-primary" href="h5-summary.html">查看完整小结<svg class="ic ic-sm"><use href="#i-chevron"/></svg></a>
+    </div>
+    <div class="note">小结仅作接待初筛参考，不构成诊断 · 咨询由持证咨询师完成</div>
+  </div>
+</div>
+
+<script src="../voice.js"></script>
+<script>
+(function () {
+  var vr = TingyuVoice.create();
+  var $ = function (id) { return document.getElementById(id); };
+  var chat = $('chat'), orb = $('orb'), mic = $('mic');
+  var GREETING = TingyuVoice.DEMO_SCRIPT[0].text;
+  var bubbles = {};
+  var started = 0, tick = null;
+
+  // wave bars
+  var wave = $('wave'), bars = [];
+  for (var i = 0; i < 28; i++) { var b = document.createElement('i'); wave.appendChild(b); bars.push(b); }
+
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function addBubble(role, text, id) {
+    var row = document.createElement('div'); row.className = 'msg ' + role;
+    if (role === 'ai') row.innerHTML = '<span class="avatar avatar-xiaoyu">屿</span>';
+    var bb = document.createElement('div'); bb.className = 'bubble ' + role; bb.textContent = text;
+    row.appendChild(bb); chat.appendChild(row);
+    if (id) bubbles[id] = bb;
+    return bb;
+  }
+  function follow() { if (started) window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' }); }
+
+  // opening line on load (never blank)
+  var greet = addBubble('ai', GREETING); greet.dataset.greeting = '1';
+
+  function startTimer() {
+    if (started) return; started = Date.now();
+    tick = setInterval(function () { var s = Math.floor((Date.now() - started) / 1000); $('timer').textContent = String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); }, 500);
+    $('quick').hidden = true;
+  }
+
+  var STATE = {
+    idle: ['点一下麦克风，开始和小屿说说', '匿名 · 免费 · 约 3 分钟', '开始说话', 'mic'],
+    listening: ['正在听你说…', '说完停顿一下，小屿会接着回应', '停止', 'mic'],
+    thinking: ['小屿正在想…', '整理你刚才说的内容', '打断', 'pause'],
+    speaking: ['小屿正在说', '点麦克风可以随时打断', '打断', 'pause']
+  };
+  vr.on('state', function (s) {
+    var m = STATE[s] || STATE.idle;
+    $('state').textContent = m[0]; $('sub').textContent = m[1];
+    mic.setAttribute('aria-label', m[2]);
+    mic.classList.toggle('live', s === 'listening');
+    mic.innerHTML = '<svg class="ic"><use href="#i-' + m[3] + '"/></svg>';
+  });
+  vr.on('mode', function (m) { $('modeTxt').textContent = m === 'live' ? '实时语音 · AI 接待助手' : 'AI 接待助手 · 不做诊断'; });
+  vr.on('level', function (l) {
+    orb.style.setProperty('--lv', l.toFixed(3));
+    var t = performance.now() / 1000;
+    for (var i = 0; i < bars.length; i++) {
+      var h = 14 + l * 86 * Math.abs(Math.sin(t * 4 + i * .55) * Math.cos(t * 1.3 + i * .21));
+      bars[i].style.height = Math.min(100, h).toFixed(1) + '%';
+    }
+  });
+  vr.on('partial', function (p) {
+    var bb = bubbles[p.id];
+    if (!bb && p.role === 'ai' && greet && greet.dataset.greeting && GREETING.indexOf(p.text) === 0 && chat.children.length === 1) {
+      bb = bubbles[p.id] = greet; greet.dataset.greeting = '';
+    }
+    if (!bb) bb = addBubble(p.role, '', p.id);
+    bb.textContent = p.text; bb.classList.add('typing');
+    follow();
+  });
+  vr.on('message', function (m) {
+    var bb = bubbles[m.id] || addBubble(m.role, m.text, m.id);
+    bb.textContent = m.text; bb.classList.remove('typing');
+    if (greet && m.role === 'user' && greet.dataset.greeting) greet.dataset.greeting = '';
+    follow();
+  });
+  vr.on('reset', function () { chat.innerHTML = ''; bubbles = {}; greet = null; });
+  vr.on('crisis', function () { showCrisis(); });
+  vr.on('summary', function (s) { openSheet(s); });
+  vr.on('sound', function (on) { paintSound(on); });
+
+  mic.addEventListener('click', function () { startTimer(); vr.toggle(); });
+  $('endBtn').addEventListener('click', function () {
+    if (!started) { toast('先和小屿聊几句，再结束接待'); return; }
+    vr.stop(); vr.summarize();
+  });
+  function toggleType() {
+    var f = $('typeForm'); f.hidden = !f.hidden;
+    $('typeToggle').innerHTML = (f.hidden ? '也可以打字' : '收起键盘') + '<svg class="ic ic-sm"><use href="#i-chevron-down"/></svg>';
+    if (!f.hidden) $('typeInput').focus();
+  }
+  $('typeToggle').addEventListener('click', toggleType);
+  $('kbBtn').addEventListener('click', toggleType);
+  $('typeForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var v = $('typeInput').value.trim(); if (!v) return;
+    startTimer(); vr.send(v); $('typeInput').value = '';
+  });
+  document.querySelectorAll('#quick .chip').forEach(function (c) {
+    c.addEventListener('click', function () { startTimer(); vr.send(c.textContent); });
+  });
+
+  function paintSound(on) {
+    var b = $('soundBtn');
+    b.classList.toggle('off', !on); b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    b.setAttribute('aria-label', on ? '关闭声音' : '打开声音');
+    b.innerHTML = '<svg class="ic"><use href="#i-' + (on ? 'volume' : 'volume-off') + '"/></svg>';
+  }
+  $('soundBtn').addEventListener('click', function () { var on = !vr.sound; vr.setSound(on); paintSound(on); toast(on ? '已打开声音，小屿会读出回复' : '已静音，只显示字幕'); });
+
+  function showCrisis() { $('crisis').hidden = false; window.scrollTo({ top: 0, behavior: 'smooth' }); }
+  $('crisisClose').addEventListener('click', function () { $('crisis').hidden = true; });
+
+  function openSheet(s) {
+    var c = vr.counselor(s.counselor);
+    if (started) { var sec = Math.floor((Date.now() - started) / 1000); $('sumMeta').textContent = '接待时长 ' + Math.floor(sec / 60) + ' 分 ' + (sec % 60) + ' 秒 · 已加密保存'; }
+    $('sMood').textContent = s.mood; $('sDur').textContent = s.duration;
+    var r = $('sRisk'); r.textContent = s.riskLabel; r.className = 'tag ' + (s.risk === 'high' ? 'tag-risk' : s.risk === 'medium' ? 'tag-warn' : 'tag-ok');
+    $('sTopics').innerHTML = (s.topics || []).map(function (t) { return '<span class="tag">' + esc(t) + '</span>'; }).join('') + '<span class="tag tag-plain">' + esc(s.modality) + '</span>';
+    $('sScales').innerHTML = (s.scales || []).map(function (x) {
+      var cls = x.value / x.max > .5 ? 'risk' : x.value / x.max > .3 ? 'warn' : 'ok';
+      return '<div class="r"><span>' + esc(x.name.split(' ')[0]) + '</span><div class="bar ' + cls + '"><i style="width:' + Math.round(x.value / x.max * 100) + '%"></i></div><span><b class="num">' + x.value + '</b> · ' + esc(x.label) + '</span></div>';
+    }).join('');
+    $('sMatch').innerHTML = '<img class="avatar" src="../' + c.img + '" alt=""><div class="grow"><b>为你匹配 ' + esc(c.name) + '</b><div class="t">' + esc(c.method) + ' · ' + c.years + ' 年 · ' + esc(s.slot || '明天 20:00') + ' 可约</div></div><span class="price">¥' + c.price + '<small>/次</small></span>';
+    $('scrim').hidden = false; $('sheetWrap').hidden = false;
+  }
+  function closeSheet() { $('scrim').hidden = true; $('sheetWrap').hidden = true; }
+  $('scrim').addEventListener('click', closeSheet);
+  $('keepTalk').addEventListener('click', closeSheet);
+
+  if (location.hash === '#crisis') showCrisis();
+  if (location.hash === '#summary') openSheet(TingyuVoice.DEMO_SUMMARY);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>听屿 App · 预约咨询</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@500;600;900&display=swap">
+<link rel="stylesheet" href="ds.css">
+<script src="icons.js"></script>
+<style>
+/* App · 预约咨询 —— tokens only */
+.wrap { padding: 4px 16px 16px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+.who { display: flex; align-items: center; gap: 12px; padding: 12px 14px; }
+.who b { font-size: 16px; }
+.who .t { font-size: 12px; color: var(--ink-3); }
+.who .tag { margin-left: auto; }
+.sec h3 { margin: 0 0 10px; font-size: 14.5px; font-weight: 600; display: flex; align-items: center; justify-content: space-between; }
+.sec h3 small { font-weight: 400; color: var(--ink-3); font-size: 12px; }
+.seg.full { display: grid; grid-template-columns: repeat(3, 1fr); width: 100%; }
+.seg.full button { height: 34px; display: inline-flex; align-items: center; justify-content: center; gap: 5px; font-size: 13.5px; }
+.seg.full button .ic { width: 16px; height: 16px; }
+.mode-note { font-size: 12px; color: var(--ink-3); margin-top: 8px; display: flex; gap: 6px; align-items: center; }
+.mode-note .ic { width: 14px; height: 14px; color: var(--primary); }
+.days { display: flex; gap: 8px; overflow-x: auto; margin: 0 -14px; padding: 0 14px 2px; scrollbar-width: none; }
+.days::-webkit-scrollbar { display: none; }
+.days button { flex-shrink: 0; width: 54px; border: 1px solid var(--line); background: var(--surface); border-radius: var(--r); padding: 6px 0 5px; display: grid; justify-items: center; line-height: 1.3; font-size: 11.5px; color: var(--ink-3); }
+.days button b { font-family: var(--font-num); font-size: 17px; color: var(--ink); }
+.days button i { font-style: normal; font-size: 10px; color: var(--ok); }
+.days button.full i { color: var(--ink-4); }
+.days button.on { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+.days button.on b, .days button.on i { color: var(--on-primary); }
+.times { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 12px; }
+.times button { height: 44px; border-radius: var(--r-sm); border: 1px solid var(--line); background: var(--surface); display: grid; place-content: center; line-height: 1.15; padding: 0; }
+.times button b { font-family: var(--font-num); font-weight: 600; font-size: 14.5px; }
+.times button span { font-size: 10px; color: var(--ink-4); }
+.times button.on { border-color: var(--primary); background: var(--primary-soft); color: var(--primary); }
+.times button.on span { color: var(--primary); }
+.times button[disabled] { background: var(--surface-2); border-color: var(--line-2); color: var(--ink-4); cursor: default; }
+.times button[disabled] b { font-weight: 400; text-decoration: line-through; }
+.legend { display: flex; gap: 14px; margin-top: 10px; font-size: 11.5px; color: var(--ink-3); }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; border: 1px solid var(--line); background: var(--surface); margin-right: 4px; vertical-align: -1px; }
+.legend i.on { background: var(--primary-soft); border-color: var(--primary); }
+.legend i.off { background: var(--surface-2); border-color: var(--line-2); }
+
+.list-item b { font-size: 14px; font-weight: 500; display: block; }
+.list-item .s { font-size: 12px; color: var(--ink-3); line-height: 1.45; }
+.list-item .ico { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; background: var(--primary-soft); color: var(--primary); flex-shrink: 0; }
+.list-item .ico .ic { color: inherit; }
+.list-item .ico.acc { background: var(--accent-soft); color: var(--accent); }
+.list-item .switch { margin-left: auto; flex-shrink: 0; }
+.list-item .cp { margin-left: auto; display: flex; align-items: center; gap: 2px; color: var(--accent); font-weight: 600; font-family: var(--font-num); }
+.list-item .cp .ic { color: var(--ink-4); }
+.bill { display: grid; gap: 8px; font-size: 13.5px; }
+.bill .between span:first-child { color: var(--ink-2); }
+.bill .num { font-weight: 500; }
+.bill .disc { color: var(--accent); }
+.bill .total { padding-top: 10px; border-top: 1px dashed var(--line); font-weight: 600; }
+.bill .total .num { font-size: 18px; color: var(--accent); font-weight: 700; }
+.policy { font-size: 11.5px; color: var(--ink-4); line-height: 1.6; padding: 0 4px; }
+
+.paybar { flex-shrink: 0; display: flex; align-items: center; gap: 12px; padding: 10px 16px 34px; background: color-mix(in srgb, var(--surface) 96%, transparent); border-top: 1px solid var(--line-2); backdrop-filter: blur(10px); }
+.paybar .sum { line-height: 1.3; }
+.paybar .sum b { font-size: 14px; }
+.paybar .sum div { font-size: 11.5px; color: var(--ink-3); }
+.paybar .btn { margin-left: auto; min-width: 170px; }
+
+.scrim { position: absolute; z-index: 60; opacity: 0; transition: opacity .25s; }
+.scrim.show { opacity: 1; }
+.psheet { position: absolute; left: 0; right: 0; bottom: 0; z-index: 61; padding: 10px 18px 36px; transform: translateY(105%); transition: transform .3s cubic-bezier(.2,.8,.2,1); }
+.psheet.show { transform: none; }
+.psheet .grab { width: 38px; height: 5px; border-radius: 3px; background: var(--line); margin: 0 auto 10px; }
+.psheet .hd { display: flex; align-items: center; }
+.psheet .hd h3 { flex: 1; margin: 0; text-align: center; font-size: 16px; padding-left: 32px; }
+.psheet .hd .x { width: 32px; height: 32px; border-radius: 50%; border: 0; background: var(--bg-2); color: var(--ink-3); display: grid; place-items: center; padding: 0; }
+.psheet .amt { text-align: center; margin: 14px 0 4px; font-family: var(--font-num); font-weight: 700; font-size: 38px; line-height: 1.1; }
+.psheet .amt small { font-size: 20px; margin-right: 2px; }
+.psheet .for { text-align: center; font-size: 12.5px; color: var(--ink-3); }
+.pays { margin-top: 16px; }
+.pays label { cursor: pointer; }
+.pays input { position: absolute; opacity: 0; pointer-events: none; }
+.pays .logo { width: 34px; height: 34px; border-radius: 9px; display: grid; place-items: center; flex-shrink: 0; }
+.pays .logo .ic { color: inherit; }
+.pays .logo.wx { background: var(--ok-soft); color: var(--ok); }
+.pays .logo.ali { background: var(--primary-soft); color: var(--primary); }
+.pays .logo.ap { background: var(--ink); color: var(--surface); }
+.pays .radio { margin-left: auto; width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--ink-4); display: grid; place-items: center; color: var(--on-primary); }
+.pays .radio .ic { width: 12px; height: 12px; stroke-width: 3; opacity: 0; color: inherit; }
+.pays input:checked ~ .radio { background: var(--primary); border-color: var(--primary); }
+.pays input:checked ~ .radio .ic { opacity: 1; }
+.pays input:focus-visible ~ .radio { outline: 2px solid var(--primary); outline-offset: 2px; }
+.psheet .btn-block { margin-top: 16px; }
+.psheet .sec-note { text-align: center; font-size: 11.5px; color: var(--ink-4); margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 4px; }
+.psheet .sec-note .ic { width: 13px; height: 13px; }
+.spin { width: 18px; height: 18px; border-radius: 50%; border: 2px solid color-mix(in srgb, var(--on-primary) 35%, transparent); border-top-color: var(--on-primary); animation: spin .8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+<div class="phone fixed">
+  <div class="statusbar"></div>
+  <header class="navbar">
+    <a class="nb-btn" href="app-counselor.html" aria-label="返回"><svg class="ic"><use href="#i-back"/></svg></a>
+    <h1>预约咨询</h1>
+    <span style="width:36px"></span>
+  </header>
+
+  <div class="scroll">
+    <div class="wrap">
+      <div class="card who">
+        <img class="avatar avatar-lg" src="../assets/c-lin.jpg" alt="林知夏">
+        <div><b>林知夏</b><div class="t">国家二级心理咨询师 · CBT · 8 年</div></div>
+        <span class="tag tag-accent">匹配 96%</span>
+      </div>
+
+      <section class="card card-pad sec">
+        <h3>咨询方式<small>50 分钟 · 三种方式同价</small></h3>
+        <div class="seg full" id="mode" role="group" aria-label="咨询方式">
+          <button type="button" class="on" data-m="语音"><svg class="ic"><use href="#i-phone"/></svg>语音</button>
+          <button type="button" data-m="视频"><svg class="ic"><use href="#i-video"/></svg>视频</button>
+          <button type="button" data-m="文字"><svg class="ic"><use href="#i-chat"/></svg>文字</button>
+        </div>
+        <div class="mode-note" id="modeNote"><svg class="ic"><use href="#i-headphones"/></svg>不露脸，戴上耳机就能开始，适合在家或车里</div>
+      </section>
+
+      <section class="card card-pad sec">
+        <h3>选择时间<small>北京时间 · 11 月</small></h3>
+        <div class="days" id="days"></div>
+        <div class="times" id="times"></div>
+        <div class="legend"><span><i></i>可预约</span><span><i class="on"></i>已选</span><span><i class="off"></i>已约满</span></div>
+      </section>
+
+      <div class="list">
+        <div class="list-item">
+          <span class="ico"><svg class="ic"><use href="#i-file"/></svg></span>
+          <div class="grow"><b>同步接待小结给林老师</b><span class="s">含情绪、量表与困扰，第一次咨询不用从头讲</span></div>
+          <button class="switch on" type="button" role="switch" aria-checked="true" aria-label="同步接待小结" id="syncSw"></button>
+        </div>
+        <a class="list-item" href="#" id="coupon">
+          <span class="ico acc"><svg class="ic"><use href="#i-gift"/></svg></span>
+          <div class="grow"><b>优惠券</b><span class="s">新客首单立减 · 11 月 30 日前有效</span></div>
+          <span class="cp">-¥50<svg class="ic ic-sm"><use href="#i-chevron"/></svg></span>
+        </a>
+      </div>
+
+      <section class="card card-pad">
+        <div class="bill">
+          <div class="between"><span>咨询费 · <span id="billMode">语音</span> 50 分钟</span><span class="num">¥400.00</span></div>
+          <div class="between"><span>新客首单优惠</span><span class="num disc" id="billDisc">-¥50.00</span></div>
+          <div class="between total"><span>实付</span><span class="num" id="billTotal">¥350.00</span></div>
+        </div>
+      </section>
+      <p class="policy">开始前 24 小时可免费取消或改期；24 小时内取消将收取 50% 费用。咨询由持证咨询师完成，小屿仅负责预约提醒与随访。</p>
+    </div>
+  </div>
+
+  <div class="paybar">
+    <div class="sum"><b id="sumLine">明天 20:00 · 语音</b><div>11 月 16 日 周一 · 50 分钟</div></div>
+    <button class="btn btn-accent btn-lg" type="button" id="payBtn">确认支付 ¥350</button>
+  </div>
+  <span class="homebar" aria-hidden="true" style="z-index:70"></span>
+
+  <div class="scrim" id="scrim" hidden></div>
+  <section class="sheet psheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="payTitle" hidden>
+    <div class="grab"></div>
+    <div class="hd"><h3 id="payTitle">选择支付方式</h3><button class="x" type="button" id="close" aria-label="关闭"><svg class="ic ic-sm"><use href="#i-close"/></svg></button></div>
+    <div class="amt"><small>¥</small><span id="amt">350.00</span></div>
+    <div class="for" id="for">林知夏 · 明天 20:00 语音咨询 · 已减 ¥50</div>
+    <div class="list pays" role="radiogroup" aria-label="支付方式">
+      <label class="list-item"><span class="logo wx"><svg class="ic" viewBox="0 0 24 24"><path d="M9.5 4C5.4 4 2 6.8 2 10.2c0 1.9 1 3.6 2.7 4.7L4 17.5l2.8-1.4c.8.2 1.7.4 2.7.4"/><path d="M15.5 9.5c-3.6 0-6.5 2.4-6.5 5.3s2.9 5.2 6.5 5.2c.8 0 1.5-.1 2.2-.3l2.3 1.3-.6-2.2c1.6-1 2.6-2.5 2.6-4 0-2.9-2.9-5.3-6.5-5.3Z"/></svg></span><div class="grow"><b>微信支付</b><span class="s">推荐 · 已绑定</span></div><input type="radio" name="pay" value="微信支付" checked><span class="radio"><svg class="ic"><use href="#i-check"/></svg></span></label>
+      <label class="list-item"><span class="logo ali"><svg class="ic"><use href="#i-wallet"/></svg></span><div class="grow"><b>支付宝</b><span class="s">花呗可用</span></div><input type="radio" name="pay" value="支付宝"><span class="radio"><svg class="ic"><use href="#i-check"/></svg></span></label>
+      <label class="list-item"><span class="logo ap"><svg class="ic" viewBox="0 0 24 24"><path d="M16.4 12.6c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.9-3.5.9s-1.8-.9-3-.8C7 7.4 5.5 8.3 4.7 9.8c-1.7 2.9-.4 7.2 1.2 9.5.8 1.1 1.7 2.4 2.9 2.3 1.2 0 1.6-.7 3-.7s1.8.7 3 .7c1.3 0 2.1-1.1 2.8-2.3.9-1.3 1.3-2.6 1.3-2.7-.1 0-2.5-1-2.5-4Z"/><path d="M14.2 5.6c.6-.8 1-1.8.9-2.9-.9 0-2 .6-2.7 1.4-.6.7-1.1 1.7-1 2.8 1 .1 2.1-.5 2.8-1.3Z"/></svg></span><div class="grow"><b>Apple Pay</b><span class="s">招商银行储蓄卡 (8821)</span></div><input type="radio" name="pay" value="Apple Pay"><span class="radio"><svg class="ic"><use href="#i-check"/></svg></span></label>
+    </div>
+    <button class="btn btn-primary btn-lg btn-block" type="button" id="confirm">确认支付 ¥350.00</button>
+    <div class="sec-note"><svg class="ic"><use href="#i-lock"/></svg>支付由第三方加密处理，听屿不保存你的支付信息</div>
+  </section>
+</div>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var DAYS = [['今天', 15, '周日', '11/15'], ['明天', 16, '周一', '11/16'], ['周二', 17, '周二', '11/17'], ['周三', 18, '周三', '11/18'], ['周四', 19, '周四', '11/19'], ['周五', 20, '周五', '11/20'], ['周六', 21, '周六', '11/21']];
+  var TIMES = ['10:00', '14:00', '15:00', '16:00', '19:00', '20:00', '21:00', '22:00'];
+  var FULL = { 0: [0, 1, 2, 3, 4, 5, 6, 7], 1: [0, 1, 4, 7], 2: [0, 2, 3, 5, 6, 7], 3: [1, 2, 4, 5, 7], 4: [0, 1, 2, 3, 4, 5, 6, 7], 5: [3, 4, 5], 6: [1, 2, 6, 7] };
+  var NOTES = { '语音': ['headphones', '不露脸，戴上耳机就能开始，适合在家或车里'], '视频': ['video', '面对面交流更充分，请提前检查摄像头与网络'], '文字': ['chat', '以实时文字对话进行，适合不方便说话的环境'] };
+  var qs = new URLSearchParams(location.search);
+  var sel = { d: qs.has('d') ? +qs.get('d') : 1, t: qs.get('t') || '20:00', m: '语音', coupon: true };
+  if (!(sel.d in FULL) || FULL[sel.d].indexOf(TIMES.indexOf(sel.t)) >= 0) { sel.d = 1; sel.t = '20:00'; }
+
+  function dayLabel() { return sel.d < 2 ? DAYS[sel.d][0] : DAYS[sel.d][3] + ' ' + DAYS[sel.d][2]; }
+  function total() { return 400 - (sel.coupon ? 50 : 0); }
+  function paint() {
+    $('days').innerHTML = DAYS.map(function (d, i) {
+      var left = TIMES.length - FULL[i].length;
+      return '<button type="button" data-i="' + i + '" class="' + (i === sel.d ? 'on' : '') + (left ? '' : ' full') + '">' + d[0] + '<b>' + d[1] + '</b><i>' + (left ? '余 ' + left : '约满') + '</i></button>';
+    }).join('');
+    $('times').innerHTML = TIMES.map(function (t, i) {
+      var full = FULL[sel.d].indexOf(i) >= 0, end = (+t.slice(0, 2)) + ':50';
+      return '<button type="button" data-t="' + t + '"' + (full ? ' disabled' : '') + ' class="' + (!full && t === sel.t ? 'on' : '') + '" aria-label="' + t + (full ? ' 已约满' : '') + '"><b>' + t + '</b><span>' + (full ? '已约满' : '至 ' + end) + '</span></button>';
+    }).join('');
+    var ok = !!sel.t;
+    var price = '¥' + total();
+    $('sumLine').textContent = ok ? dayLabel() + ' ' + sel.t + ' · ' + sel.m : '请选择时间';
+    $('sumLine').nextElementSibling.textContent = '11 月 ' + DAYS[sel.d][1] + ' 日 ' + DAYS[sel.d][2] + ' · 50 分钟';
+    $('payBtn').textContent = '确认支付 ' + price;
+    $('payBtn').disabled = !ok;
+    $('billMode').textContent = sel.m;
+    $('billDisc').textContent = sel.coupon ? '-¥50.00' : '¥0.00';
+    $('billTotal').textContent = price + '.00';
+    $('amt').textContent = total() + '.00';
+    $('confirm').textContent = '确认支付 ' + price + '.00';
+    $('for').textContent = '林知夏 · ' + dayLabel() + ' ' + sel.t + ' ' + sel.m + '咨询' + (sel.coupon ? ' · 已减 ¥50' : '');
+  }
+  $('days').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    sel.d = +b.dataset.i;
+    var free = TIMES.filter(function (t, i) { return FULL[sel.d].indexOf(i) < 0; });
+    sel.t = free.indexOf(sel.t) >= 0 ? sel.t : '';
+    if (!free.length) toast(DAYS[sel.d][0] + '已约满，可以试试其他日期');
+    paint();
+  });
+  $('times').addEventListener('click', function (e) { var b = e.target.closest('button'); if (!b || b.disabled) return; sel.t = b.dataset.t; paint(); });
+  document.querySelectorAll('#mode button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      document.querySelectorAll('#mode button').forEach(function (x) { x.classList.remove('on'); });
+      b.classList.add('on'); sel.m = b.dataset.m;
+      $('modeNote').innerHTML = '<svg class="ic"><use href="#i-' + NOTES[sel.m][0] + '"/></svg>' + NOTES[sel.m][1];
+      paint();
+    });
+  });
+  $('syncSw').addEventListener('click', function () {
+    var on = this.classList.toggle('on'); this.setAttribute('aria-checked', on);
+    toast(on ? '接待小结将在支付后同步给林老师' : '不同步小结，咨询时需要重新介绍情况');
+  });
+  $('coupon').addEventListener('click', function (e) {
+    e.preventDefault(); sel.coupon = !sel.coupon;
+    this.querySelector('.cp').firstChild.textContent = sel.coupon ? '-¥50' : '不使用';
+    paint();
+  });
+
+  var scrim = $('scrim'), sheet = $('sheet');
+  function open() {
+    scrim.hidden = false; sheet.hidden = false;
+    requestAnimationFrame(function () { requestAnimationFrame(function () { scrim.classList.add('show'); sheet.classList.add('show'); }); });
+  }
+  function close() { scrim.classList.remove('show'); sheet.classList.remove('show'); setTimeout(function () { scrim.hidden = true; sheet.hidden = true; }, 300); }
+  $('payBtn').addEventListener('click', open);
+  $('close').addEventListener('click', close);
+  scrim.addEventListener('click', close);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+  $('confirm').addEventListener('click', function () {
+    var b = this, way = document.querySelector('input[name=pay]:checked').value;
+    b.disabled = true; b.innerHTML = '<span class="spin"></span>正在调起' + way + '…';
+    setTimeout(function () { location.href = 'app-paid.html?d=' + sel.d + '&t=' + encodeURIComponent(sel.t) + '&m=' + encodeURIComponent(sel.m) + '&p=' + total(); }, 1100);
+  });
+  paint();
+})();
+</script>
+</body>
+</html>

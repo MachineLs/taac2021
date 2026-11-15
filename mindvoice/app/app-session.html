@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>听屿 App · 咨询室</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@500;600;900&display=swap">
+<link rel="stylesheet" href="ds.css">
+<script src="icons.js"></script>
+<style>
+/* App · 咨询室（视频进行中）。画面上的文字用与皮肤无关的白色 + 黑色半透明遮罩，其余只用 token */
+.phone.fixed { background: rgba(0,0,0,1); color: rgba(255,255,255,.96); }
+.feed { position: absolute; inset: 0; z-index: 0; }
+.feed img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 22%; }
+.feed::after { content: ""; position: absolute; inset: 0; background: linear-gradient(rgba(0,0,0,.55) 0%, rgba(0,0,0,.08) 26%, rgba(0,0,0,.05) 52%, rgba(0,0,0,.72) 100%); }
+.phone > *:not(.feed) { position: relative; z-index: 1; }
+.statusbar { color: rgba(255,255,255,.96); }
+.homebar { position: absolute !important; background: rgba(255,255,255,.9); z-index: 2 !important; }
+
+.top { padding: 4px 14px 0; display: flex; align-items: flex-start; gap: 10px; }
+.glass { background: rgba(0,0,0,.32); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,.14); }
+.top .mini { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; color: inherit; flex-shrink: 0; }
+.meta { display: grid; gap: 6px; }
+.timer { display: inline-flex; align-items: center; gap: 8px; height: 30px; padding: 0 12px; border-radius: var(--r-pill); font-size: 15px; font-weight: 600; width: max-content; }
+.timer i { width: 8px; height: 8px; border-radius: 50%; background: var(--risk); animation: blink 1.6s infinite; }
+@keyframes blink { 50% { opacity: .35; } }
+.pills { display: flex; gap: 6px; flex-wrap: wrap; }
+.pill { display: inline-flex; align-items: center; gap: 4px; height: 22px; padding: 0 8px; border-radius: var(--r-pill); font-size: 11px; }
+.pill .ic { width: 13px; height: 13px; }
+.sig { display: inline-flex; align-items: flex-end; gap: 1.5px; height: 10px; }
+.sig b { width: 2.5px; background: var(--ok); border-radius: 1px; }
+
+.self { position: absolute !important; right: 14px; top: 100px; width: 104px; height: 148px; border-radius: var(--r-lg); overflow: hidden; border: 2px solid rgba(255,255,255,.7); box-shadow: 0 10px 30px rgba(0,0,0,.45); }
+.self img { width: 100%; height: 100%; object-fit: cover; }
+.self span { position: absolute; left: 6px; bottom: 6px; font-size: 10.5px; padding: 1px 6px; border-radius: var(--r-pill); background: rgba(0,0,0,.45); }
+.self.off img { opacity: 0; }
+.self.off::before { content: "摄像头已关闭"; position: absolute; inset: 0; display: grid; place-items: center; font-size: 11px; background: rgba(20,20,20,.92); }
+
+.spacer { flex: 1; }
+.who { padding: 0 18px 10px; display: flex; align-items: center; gap: 10px; }
+.who b { font-size: 20px; font-family: var(--font-display); font-weight: var(--display-weight); }
+.who .ok { font-size: 12px; opacity: .85; display: flex; align-items: center; gap: 6px; }
+.who .ok .dot { width: 7px; height: 7px; }
+.cap { margin: 0 14px 12px; padding: 10px 12px; border-radius: var(--r); font-size: 13.5px; line-height: 1.55; display: flex; gap: 8px; }
+.cap .lb { flex-shrink: 0; font-size: 11px; height: 18px; padding: 0 6px; border-radius: 4px; background: rgba(255,255,255,.2); display: inline-flex; align-items: center; margin-top: 1px; }
+.remain { padding: 0 18px 14px; display: flex; align-items: center; gap: 10px; font-size: 12px; opacity: .9; }
+.remain .track { flex: 1; height: 3px; border-radius: 2px; background: rgba(255,255,255,.22); overflow: hidden; }
+.remain .track i { display: block; height: 100%; background: var(--primary-soft); width: 37%; }
+
+.ctrls { padding: 0 14px; display: grid; grid-template-columns: repeat(5, 1fr); justify-items: center; }
+.cbtn { display: grid; justify-items: center; gap: 6px; font-size: 11px; border: 0; background: none; color: inherit; padding: 0; }
+.cbtn .c { width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; }
+.cbtn .c .ic { width: 24px; height: 24px; }
+.cbtn.off .c { background: rgba(255,255,255,.92); color: rgba(0,0,0,.88); border-color: transparent; }
+.cbtn.end .c { background: var(--risk); border: 0; color: rgba(255,255,255,1); width: 64px; height: 64px; margin-top: -4px; }
+.cbtn.end { gap: 2px; }
+.sos-row { display: flex; justify-content: center; padding: 16px 0 38px; }
+.sos { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 14px; border-radius: var(--r-pill); font-size: 12.5px; color: inherit; }
+.sos .ic { color: var(--risk); width: 15px; height: 15px; }
+
+/* sheets (normal surfaces, tokens) */
+.scrim { position: absolute !important; inset: 0; z-index: 20 !important; }
+.sheet { position: absolute !important; left: 0; right: 0; bottom: 0; z-index: 21 !important; padding: 10px 18px 36px; color: var(--ink); }
+.sheet .grab { width: 36px; height: 5px; border-radius: 3px; background: var(--line); margin: 0 auto 14px; }
+.sheet h3 { margin: 0 0 6px; font-size: 18px; }
+.sheet p { margin: 0 0 14px; color: var(--ink-3); font-size: 13px; }
+.hot { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: var(--r); background: var(--risk-soft); color: var(--risk); margin-bottom: 8px; }
+.hot b { font-size: 20px; font-family: var(--font-num); }
+.hot span { font-size: 12px; }
+.hot .btn { margin-left: auto; background: var(--risk); color: var(--on-primary); }
+.more-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 14px; }
+.more-grid button { border: 0; background: none; display: grid; justify-items: center; gap: 6px; font-size: 12px; color: var(--ink-2); padding: 0; }
+.more-grid span { width: 52px; height: 52px; border-radius: var(--r-lg); background: var(--surface-2); border: 1px solid var(--line-2); display: grid; place-items: center; color: var(--primary); }
+</style>
+</head>
+<body>
+<div class="phone fixed" id="phone">
+  <div class="feed" aria-hidden="true"><img src="../assets/c-lin.jpg" alt=""></div>
+  <div class="statusbar"></div>
+
+  <div class="top">
+    <a class="mini glass" href="app-messages.html" aria-label="最小化咨询室"><svg class="ic"><use href="#i-chevron-down"/></svg></a>
+    <div class="meta">
+      <span class="timer glass num" aria-live="off"><i></i><span id="clock">18:42</span><span style="opacity:.6;font-weight:500">/ 50:00</span></span>
+      <span class="pills">
+        <span class="pill glass"><svg class="ic"><use href="#i-lock"/></svg>端到端加密</span>
+        <span class="pill glass"><span class="sig"><b style="height:4px"></b><b style="height:6px"></b><b style="height:8px"></b><b style="height:10px"></b></span>网络良好</span>
+      </span>
+    </div>
+  </div>
+
+  <div class="self" id="self"><img src="../assets/u-asian-woman.jpg" alt="我的画面"><span>我</span></div>
+
+  <div class="spacer"></div>
+
+  <div class="who"><div class="grow"><b>林知夏</b><div class="ok"><span class="dot"></span>视频咨询 · 第 1 次 · 认知行为疗法 CBT</div></div><button class="pill glass" id="capBtn" type="button" style="height:28px;padding:0 10px;color:inherit;font-size:12px">字幕 开</button></div>
+  <div class="cap glass" id="cap"><span class="lb">林知夏</span><span id="capText">我们先回到你刚才说的，周日晚上那种心慌的感觉，通常是从几点开始的？</span></div>
+  <div class="remain"><span class="num">剩余 31 分钟</span><span class="track"><i id="prog"></i></span><span>结束前 5 分钟提醒</span></div>
+
+  <div class="ctrls">
+    <button class="cbtn" type="button" id="mic"><span class="c glass"><svg class="ic"><use href="#i-mic"/></svg></span><span class="lb">静音</span></button>
+    <button class="cbtn" type="button" id="cam"><span class="c glass"><svg class="ic"><use href="#i-camera"/></svg></span><span class="lb">关摄像头</span></button>
+    <button class="cbtn end" type="button" id="end"><span class="c"><svg class="ic"><use href="#i-phone-off"/></svg></span><span>挂断</span></button>
+    <button class="cbtn" type="button" id="spk"><span class="c glass"><svg class="ic"><use href="#i-volume"/></svg></span><span class="lb">扬声器</span></button>
+    <button class="cbtn" type="button" id="more"><span class="c glass"><svg class="ic"><use href="#i-more"/></svg></span><span>更多</span></button>
+  </div>
+  <div class="sos-row"><button class="sos glass" type="button" id="sosBtn"><svg class="ic"><use href="#i-alert"/></svg>需要紧急帮助</button></div>
+
+  <div class="scrim" id="scrim" hidden></div>
+  <div class="sheet" id="sheetSos" hidden role="dialog" aria-label="紧急帮助">
+    <div class="grab"></div>
+    <h3 class="display">需要紧急帮助？</h3>
+    <p>如果你此刻有伤害自己的想法，或感到无法保证安全，请立即联系下列热线。值班咨询师会在 3 分钟内介入。</p>
+    <div class="hot"><div class="grow"><b>12356</b><br><span>全国心理援助热线 · 7×24 小时免费</span></div><a class="btn btn-sm" href="tel:12356">拨打</a></div>
+    <div class="hot"><div class="grow"><b>120 / 110</b><br><span>有生命危险时立即拨打</span></div><a class="btn btn-sm" href="tel:120">拨打</a></div>
+    <button class="btn btn-ghost btn-block" type="button" data-close>我现在是安全的，继续咨询</button>
+  </div>
+  <div class="sheet" id="sheetMore" hidden role="dialog" aria-label="更多">
+    <div class="grab"></div>
+    <div class="more-grid">
+      <button type="button" onclick="toast('已切换为语音模式，画面已关闭')"><span><svg class="ic"><use href="#i-headphones"/></svg></span>转为语音</button>
+      <button type="button" onclick="toast('文字输入已打开，对方会看到你的文字')"><span><svg class="ic"><use href="#i-chat"/></svg></span>文字辅助</button>
+      <button type="button" onclick="toast('已打开 4-7-8 呼吸练习卡片')"><span><svg class="ic"><use href="#i-leaf"/></svg></span>呼吸练习</button>
+      <button type="button" onclick="toast('已反馈网络问题，正在优化线路')"><span><svg class="ic"><use href="#i-flag"/></svg></span>问题反馈</button>
+    </div>
+    <p style="display:flex;gap:6px;align-items:center"><svg class="ic ic-sm"><use href="#i-shield"/></svg>本次咨询不录音、不录像，平台无法查看通话内容</p>
+    <button class="btn btn-ghost btn-block" type="button" data-close>取消</button>
+  </div>
+  <div class="sheet" id="sheetEnd" hidden role="dialog" aria-label="结束咨询">
+    <div class="grab"></div>
+    <h3 class="display">现在结束本次咨询？</h3>
+    <p>还剩 31 分钟。提前结束不会自动退款，如因网络问题中断，可在 10 分钟内重新进入。</p>
+    <div class="stack" style="gap:8px">
+      <a class="btn btn-block btn-lg" style="background:var(--risk);color:var(--on-primary)" href="app-orders.html">结束咨询</a>
+      <button class="btn btn-ghost btn-block btn-lg" type="button" data-close>继续咨询</button>
+    </div>
+  </div>
+  <span class="homebar" aria-hidden="true"></span>
+</div>
+<script>
+var sec = 18 * 60 + 42, clock = document.getElementById('clock'), prog = document.getElementById('prog');
+var lines = [
+  ['林知夏', '我们先回到你刚才说的，周日晚上那种心慌的感觉，通常是从几点开始的？'],
+  ['我', '大概九点多吧，一想到周一早上的周会就开始紧张。'],
+  ['林知夏', '嗯，所以身体比你更早开始为周一做准备。那时候你一般在做什么？'],
+  ['我', '躺在床上刷手机，越刷越清醒。'],
+  ['林知夏', '这个很常见。我们待会儿可以一起设计一个周日晚上的小流程。']
+], li = 0, capOn = true;
+setInterval(function () {
+  sec++; var m = Math.floor(sec / 60), s = sec % 60;
+  clock.textContent = (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+  prog.style.width = (sec / 3000 * 100).toFixed(1) + '%';
+  document.querySelector('.remain .num').textContent = '剩余 ' + Math.ceil((3000 - sec) / 60) + ' 分钟';
+}, 1000);
+setInterval(function () {
+  li = (li + 1) % lines.length;
+  document.querySelector('#cap .lb').textContent = lines[li][0];
+  document.getElementById('capText').textContent = lines[li][1];
+}, 4200);
+document.getElementById('capBtn').addEventListener('click', function () {
+  capOn = !capOn; document.getElementById('cap').hidden = !capOn; this.textContent = capOn ? '字幕 开' : '字幕 关';
+});
+function toggle(id, onLabel, offLabel, msg) {
+  var b = document.getElementById(id);
+  b.addEventListener('click', function () {
+    var off = b.classList.toggle('off'); b.querySelector('.lb').textContent = off ? offLabel : onLabel;
+    if (msg) toast(off ? msg[0] : msg[1]);
+    if (id === 'cam') document.getElementById('self').classList.toggle('off', off);
+    if (id === 'mic') b.querySelector('use').setAttribute('href', off ? '#i-mic-off' : '#i-mic');
+    if (id === 'spk') b.querySelector('use').setAttribute('href', off ? '#i-volume-off' : '#i-volume');
+  });
+}
+toggle('mic', '静音', '已静音', ['你已静音，林老师听不到你', '麦克风已打开']);
+toggle('cam', '关摄像头', '开摄像头', ['摄像头已关闭，可继续语音交流', '摄像头已打开']);
+toggle('spk', '扬声器', '听筒', ['已切换到听筒', '已切换到扬声器']);
+var scrim = document.getElementById('scrim');
+function open(id) { scrim.hidden = false; document.querySelectorAll('.sheet').forEach(function (s) { s.hidden = s.id !== id; }); }
+function closeAll() { scrim.hidden = true; document.querySelectorAll('.sheet').forEach(function (s) { s.hidden = true; }); }
+document.getElementById('sosBtn').onclick = function () { open('sheetSos'); };
+document.getElementById('more').onclick = function () { open('sheetMore'); };
+document.getElementById('end').onclick = function () { open('sheetEnd'); };
+scrim.onclick = closeAll;
+document.querySelectorAll('[data-close]').forEach(function (b) { b.addEventListener('click', closeAll); });
+</script>
+</body>
+</html>

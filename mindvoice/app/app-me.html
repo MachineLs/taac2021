@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>听屿 App · 我的</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@500;600;900&display=swap">
+<link rel="stylesheet" href="ds.css">
+<script src="icons.js"></script>
+<style>
+/* App · 我的 —— tokens only */
+.top-act { display: flex; justify-content: flex-end; gap: 6px; padding: 0 12px; height: 40px; align-items: center; }
+.top-act .nb-btn { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; border: 0; background: none; color: var(--ink-2); position: relative; }
+.top-act .nb-btn .badge { position: absolute; top: 0; right: -2px; }
+.wrap { padding: 0 16px 28px; display: grid; gap: 14px; }
+.me { display: flex; align-items: center; gap: 14px; padding: 2px 4px 4px; }
+.me .avatar { width: 68px; height: 68px; border: 3px solid var(--surface); box-shadow: var(--shadow); }
+.me h1 { margin: 0; font-size: 24px; line-height: 1.25; display: flex; align-items: center; gap: 8px; }
+.me .vip { display: inline-flex; align-items: center; gap: 4px; height: 22px; padding: 0 8px; border-radius: var(--r-pill); background: var(--accent-soft); color: var(--accent); font-size: 11.5px; font-weight: 600; font-family: var(--font-body); }
+.me p { margin: 3px 0 0; font-size: 12.5px; color: var(--ink-3); }
+.me .chev { margin-left: auto; color: var(--ink-4); }
+
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); padding: 14px 0; }
+.stats a { display: grid; justify-items: center; gap: 0; }
+.stats a + a { border-left: 1px solid var(--line-2); }
+.stats b { font-size: 24px; line-height: 1.25; font-weight: 700; color: var(--ink); }
+.stats b small { font-size: 12px; font-weight: 500; color: var(--ink-3); margin-left: 2px; }
+.stats span { font-size: 12px; color: var(--ink-3); }
+
+.vipcard { border-radius: var(--r-xl); padding: 16px 16px 14px; background: var(--primary); color: var(--on-primary); position: relative; overflow: hidden; }
+.vipcard::before { content: ""; position: absolute; right: -50px; top: -80px; width: 220px; height: 220px; border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--orb-3) 50%, transparent), transparent 70%); }
+.vipcard .r1 { display: flex; align-items: center; gap: 8px; position: relative; }
+.vipcard h2 { margin: 0; font-size: 18px; }
+.vipcard .r1 .until { font-size: 12px; opacity: .8; margin-left: auto; }
+.vipcard .perks { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 14px 0 12px; position: relative; }
+.vipcard .perks span { display: grid; justify-items: center; gap: 4px; font-size: 11px; text-align: center; opacity: .92; }
+.vipcard .perks i { width: 36px; height: 36px; border-radius: var(--r); display: grid; place-items: center; background: color-mix(in srgb, var(--on-primary) 14%, transparent); }
+.vipcard .r3 { display: flex; align-items: center; justify-content: space-between; position: relative; padding-top: 10px; border-top: 1px solid color-mix(in srgb, var(--on-primary) 20%, transparent); font-size: 12px; }
+.vipcard .r3 .btn { background: var(--on-primary); color: var(--primary); height: 30px; font-size: 12.5px; }
+
+.grp-t { font-size: 12px; color: var(--ink-3); padding: 0 6px; margin-bottom: -6px; }
+.list-item .ib { width: 30px; height: 30px; border-radius: var(--r-sm); display: grid; place-items: center; flex-shrink: 0; }
+.list-item .ib .ic { width: 18px; height: 18px; color: inherit; }
+.ib.p { background: var(--primary-soft); color: var(--primary); }
+.ib.a { background: var(--accent-soft); color: var(--accent); }
+.ib.o { background: var(--ok-soft); color: var(--ok); }
+.ib.w { background: var(--warn-soft); color: var(--warn); }
+.ib.r { background: var(--risk-soft); color: var(--risk); }
+.ib.n { background: var(--surface-2); color: var(--ink-2); border: 1px solid var(--line-2); }
+.list-item .lb { flex: 1; font-size: 15px; }
+.list-item .val { font-size: 12.5px; color: var(--ink-3); }
+.list-item .val.hl { color: var(--primary); font-weight: 600; }
+.list-item .chev { margin-left: 0; }
+.list-item .faces { display: flex; }
+.list-item .faces img { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--surface); margin-left: -6px; object-fit: cover; }
+.ver { text-align: center; font-size: 11.5px; color: var(--ink-4); line-height: 1.8; padding-top: 4px; }
+</style>
+</head>
+<body>
+<div class="phone fixed">
+  <div class="statusbar"></div>
+  <div class="scroll">
+    <div class="top-act">
+      <button class="nb-btn" type="button" aria-label="扫一扫" onclick="toast('扫描咨询师或达人的二维码')"><svg class="ic"><use href="#i-grid"/></svg></button>
+      <a class="nb-btn" href="app-messages.html" aria-label="消息，3 条未读"><svg class="ic"><use href="#i-bell"/></svg><span class="badge">3</span></a>
+    </div>
+    <div class="wrap">
+      <a class="me" href="#" onclick="toast('编辑资料：昵称、头像、紧急联系人');return false">
+        <img class="avatar" src="../assets/u-asian-woman.jpg" alt="小周的头像">
+        <div class="grow">
+          <h1 class="display">小周<span class="vip"><svg class="ic ic-sm"><use href="#i-sparkle"/></svg>屿伴会员</span></h1>
+          <p class="num">ID 2026 0381 · 会员 2026-12-12 到期</p>
+        </div>
+        <svg class="ic chev"><use href="#i-chevron"/></svg>
+      </a>
+
+      <div class="card stats">
+        <a href="app-orders.html"><b class="num">3<small>次</small></b><span>咨询</span></a>
+        <a href="app-diary.html"><b class="num">26<small>天</small></b><span>打卡</span></a>
+        <a href="app-assess.html"><b class="num">4<small>份</small></b><span>测评</span></a>
+      </div>
+
+      <section class="vipcard">
+        <div class="r1"><svg class="ic"><use href="#i-sparkle"/></svg><h2 class="display">屿伴会员</h2><span class="until num">剩余 27 天 · 自动续费已关闭</span></div>
+        <div class="perks">
+          <span><i><svg class="ic"><use href="#i-headphones"/></svg></i>助眠音频<br>全库畅听</span>
+          <span><i><svg class="ic"><use href="#i-chart"/></svg></i>每周<br>情绪报告</span>
+          <span><i><svg class="ic"><use href="#i-file"/></svg></i>完整测评<br>解读</span>
+          <span><i><svg class="ic"><use href="#i-calendar"/></svg></i>热门时段<br>优先预约</span>
+        </div>
+        <div class="r3"><span><b class="num" style="font-size:15px">¥39</b>/月 · 本月已省 ¥68</span><button class="btn btn-sm" type="button" onclick="toast('续费 1 个月 ¥39，到期日延至 2027-01-12')">立即续费</button></div>
+      </section>
+
+      <div class="list">
+        <a class="list-item" href="app-orders.html"><span class="ib p"><svg class="ic"><use href="#i-calendar"/></svg></span><span class="lb">我的预约</span><span class="val hl">明天 20:00</span><svg class="ic ic-sm chev"><use href="#i-chevron"/></svg></a>
+        <a class="list-item" href="app-assess.html"><span class="ib a"><svg class="ic"><use href="#i-file"/></svg></span><span class="lb">测评报告</span><span class="val">GAD-7 待复测</span><svg class="ic ic-sm chev"><use href="#i-chevron"/></svg></a>
+        <a class="list-item" href="app-diary.html"><span class="ib o"><svg class="ic"><use href="#i-chart"/></svg></span><span class="lb">情绪日记</span><span class="val">今天还没打卡</span><svg class="ic ic-sm chev"><use href="#i-chevron"/></svg></a>
+        <a class="list-item" href="app-player.html"><span class="ib w"><svg class="ic"><use href="#i-headphones"/></svg></span><span class="lb">助眠音频</span><span class="val">海浪与月光</span><svg class="ic ic-sm chev"><use href="#i-chevron"/></svg></a>
+        <a class="list-item" href="app-feed.html"><span class="ib n"><svg class="ic"><use href="#i-heart"/></svg></span><span class="lb">我关注的达人</span><span class="faces"><img src="../assets/u-woman-5.jpg" alt=""><img src="../assets/u-man-3.jpg" alt=""><img src="../assets/u-woman-6.jpg" alt=""></span><svg class="ic ic-sm chev"><use href="#i-chevron"/></svg></a>
+      </div>
+
+      <div class="grp-t">安全与隐私</div>
+      <div class="list">
+        <a class="list-item" href="#" onclick="toast('咨询记录与语音仅你和咨询师可见，可随时导出或删除');return false"><span class="ib p"><svg class="ic"><use href="#i-shield"/></svg></span><span class="lb">隐私与数据</span><span class="val">已加密</span><svg class="ic ic-sm chev"><use href="#i-chevron"/></svg></a>
+        <a class="list-item" href="#" onclick="toast('紧急联系人：周女士（母亲）138****6021');return false"><span class="ib r"><svg class="ic"><use href="#i-phone"/></svg></span><span class="lb">紧急联系人</span><span class="val">已设置 1 位</span><svg class="ic ic-sm chev"><use href="#i-chevron"/></svg></a>
+      </div>
+
+      <div class="list">
+        <a class="list-item" href="#" onclick="toast('通知、深色模式、语音设置');return false"><span class="ib n"><svg class="ic"><use href="#i-settings"/></svg></span><span class="lb">设置</span><svg class="ic ic-sm chev"><use href="#i-chevron"/></svg></a>
+        <a class="list-item" href="#" onclick="toast('客服工作时间 9:00–22:00，紧急情况请拨打 12356');return false"><span class="ib n"><svg class="ic"><use href="#i-chat"/></svg></span><span class="lb">帮助与反馈</span><svg class="ic ic-sm chev"><use href="#i-chevron"/></svg></a>
+      </div>
+
+      <div class="ver">听屿 v2.6.0（26111）· 用户协议 · 隐私政策<br>全国心理援助热线 12356 · 7×24 小时免费</div>
+    </div>
+  </div>
+
+  <nav class="tabbar" aria-label="主导航">
+    <a href="app-home.html"><svg class="ic"><use href="#i-home"/></svg>首页</a>
+    <a href="app-counselors.html"><svg class="ic"><use href="#i-users"/></svg>咨询师</a>
+    <a class="tab-voice" href="app-voice.html" aria-label="小屿语音接待"><span class="orb" style="--lv:.2"><svg class="ic"><use href="#i-mic"/></svg></span></a>
+    <a href="app-messages.html"><svg class="ic"><use href="#i-chat"/></svg>消息</a>
+    <a class="on" href="app-me.html" aria-current="page"><svg class="ic"><use href="#i-user"/></svg>我的</a>
+  </nav>
+  <span class="homebar" aria-hidden="true"></span>
+</div>
+</body>
+</html>

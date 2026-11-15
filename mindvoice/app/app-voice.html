@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>听屿 App · 小屿语音接待</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@500;600;900&display=swap">
+<link rel="stylesheet" href="ds.css">
+<script src="icons.js"></script>
+<style>
+/* App · 小屿语音接待 —— immersive, tokens only */
+.phone.voice { background:
+  radial-gradient(120% 60% at 50% 26%, color-mix(in srgb, var(--orb-1) 32%, transparent), transparent 70%),
+  radial-gradient(90% 40% at 50% 100%, color-mix(in srgb, var(--orb-3) 18%, transparent), transparent 70%),
+  var(--bg); }
+.vtop { height: 52px; display: grid; grid-template-columns: 40px 1fr 40px; align-items: center; padding: 0 14px; flex-shrink: 0; }
+.vtop .rb { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; border: 1px solid var(--line-2); background: color-mix(in srgb, var(--surface) 75%, transparent); color: var(--ink); padding: 0; }
+.vtop .t { text-align: center; line-height: 1.25; }
+.vtop .t b { font-size: 16px; display: block; }
+.vtop .t span { font-size: 11.5px; color: var(--ink-3); display: inline-flex; align-items: center; gap: 4px; }
+.vtop .t span .ic { width: 12px; height: 12px; }
+
+.crisis-bar { margin: 2px 14px 0; padding: 10px 12px; border-radius: var(--r); background: var(--risk-soft); color: var(--risk); display: flex; align-items: center; gap: 10px; font-size: 13px; line-height: 1.45; border: 1px solid color-mix(in srgb, var(--risk) 25%, transparent); flex-shrink: 0; }
+.crisis-bar b { display: block; font-size: 13.5px; }
+.crisis-bar span.s { color: var(--ink-2); font-size: 12px; }
+.crisis-bar a.call { margin-left: auto; height: 32px; padding: 0 12px; border-radius: var(--r-pill); background: var(--risk); color: var(--surface); font-weight: 600; font-size: 13px; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
+
+.stage { flex-shrink: 0; display: grid; justify-items: center; padding: 18px 0 8px; }
+.stage .orb { width: 172px; height: 172px; cursor: pointer; border: 0; padding: 0; }
+.stage .orb.busy::before { content: ""; position: absolute; inset: -30px; border-radius: 50%; border: 1px solid color-mix(in srgb, var(--orb-2) 22%, transparent); animation: ring 2.4s ease-out infinite; }
+@keyframes ring { from { transform: scale(.85); opacity: .9; } to { transform: scale(1.25); opacity: 0; } }
+.state { margin-top: 26px; font-size: 18px; font-weight: 600; display: flex; align-items: center; gap: 8px; min-height: 28px; }
+.state .wave { height: 18px; gap: 2px; }
+.state .wave i { width: 2.5px; }
+.state-sub { font-size: 12.5px; color: var(--ink-3); margin-top: 2px; min-height: 20px; text-align: center; padding: 0 30px; }
+
+.captions { flex: 1; min-height: 0; overflow-y: auto; padding: 8px 18px 10px; display: flex; flex-direction: column; gap: 10px;
+  -webkit-mask-image: linear-gradient(transparent, #000 34px); mask-image: linear-gradient(transparent, #000 34px); scrollbar-width: none; }
+.captions::-webkit-scrollbar { display: none; }
+.captions .spacer { flex: 1; }
+.captions .bubble { font-size: 14.5px; max-width: 88%; box-shadow: var(--shadow-sm); }
+.captions .bubble.ai { background: color-mix(in srgb, var(--surface) 92%, transparent); }
+.captions .who { font-size: 11px; color: var(--ink-4); margin-bottom: -6px; }
+.captions .who.u { align-self: flex-end; }
+.captions .bubble.live::after { content: ""; display: inline-block; width: 2px; height: 1em; margin-left: 2px; vertical-align: -2px; background: currentColor; animation: blink 1s steps(2) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+
+.controls { flex-shrink: 0; padding: 6px 28px 40px; display: grid; grid-template-columns: 56px 1fr 56px; align-items: center; }
+.controls .side { display: grid; justify-items: center; gap: 4px; font-size: 11px; color: var(--ink-3); }
+.controls .side button { width: 50px; height: 50px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface); color: var(--ink-2); display: grid; place-items: center; padding: 0; }
+.mic-wrap { display: grid; justify-items: center; gap: 8px; }
+.mic { width: 80px; height: 80px; border-radius: 50%; border: 0; background: var(--primary); color: var(--on-primary); display: grid; place-items: center; box-shadow: 0 12px 28px -10px color-mix(in srgb, var(--primary) 70%, transparent); position: relative; padding: 0; }
+.mic .ic { width: 32px; height: 32px; }
+.mic.on { background: var(--accent); color: var(--on-accent); box-shadow: 0 0 0 8px color-mix(in srgb, var(--accent) 18%, transparent), 0 12px 28px -10px color-mix(in srgb, var(--accent) 70%, transparent); }
+.mic-wrap span { font-size: 12px; color: var(--ink-3); }
+
+.typebar { flex-shrink: 0; padding: 8px 14px 38px; display: flex; gap: 8px; align-items: center; }
+.typebar .rb { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface); color: var(--ink-2); display: grid; place-items: center; flex-shrink: 0; padding: 0; }
+.typebar form { flex: 1; display: flex; gap: 8px; align-items: center; height: 44px; padding: 0 6px 0 16px; border-radius: var(--r-pill); background: var(--surface); border: 1px solid var(--line); }
+.typebar input { flex: 1; min-width: 0; border: 0; outline: 0; background: none; font-size: 15px; color: var(--ink); }
+.typebar .send { width: 34px; height: 34px; border-radius: 50%; border: 0; background: var(--primary); color: var(--on-primary); display: grid; place-items: center; padding: 0; }
+.typebar .send .ic { width: 17px; height: 17px; }
+
+/* sheets */
+.scrim { position: absolute; z-index: 60; opacity: 0; transition: opacity .25s; }
+.scrim.show { opacity: 1; }
+.vsheet { position: absolute; left: 0; right: 0; bottom: 0; z-index: 61; padding: 10px 18px 36px; transform: translateY(105%); transition: transform .3s cubic-bezier(.2,.8,.2,1); max-height: 86%; overflow-y: auto; }
+.vsheet.show { transform: none; }
+.vsheet .grab { width: 38px; height: 5px; border-radius: 3px; background: var(--line); margin: 0 auto 14px; }
+.vsheet h2 { margin: 0; font-size: 19px; }
+.vsheet .sh-head { display: flex; align-items: center; gap: 10px; }
+.vsheet .sh-head .x { margin-left: auto; width: 32px; height: 32px; border-radius: 50%; border: 0; background: var(--bg-2); color: var(--ink-3); display: grid; place-items: center; padding: 0; }
+.sum-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+.sum-cell { background: var(--surface-2); border: 1px solid var(--line-2); border-radius: var(--r); padding: 10px 12px; }
+.sum-cell .k { font-size: 11.5px; color: var(--ink-3); }
+.sum-cell .v { font-size: 15px; font-weight: 600; margin-top: 2px; }
+.sum-cell .v .num { font-size: 20px; }
+.sum-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.sum-scales { margin-top: 12px; display: grid; gap: 8px; }
+.sum-scales .r { display: grid; grid-template-columns: 96px 1fr 70px; gap: 10px; align-items: center; font-size: 12.5px; }
+.sum-scales .r b { font-weight: 500; color: var(--ink-2); }
+.sum-scales .r span { text-align: right; color: var(--ink-3); }
+.sum-match { margin-top: 14px; display: flex; gap: 12px; align-items: center; padding: 12px; border-radius: var(--r-lg); background: var(--primary-soft); }
+.sum-match b { font-size: 15px; }
+.sum-match .m { font-size: 12px; color: var(--ink-2); }
+.sum-match .pct { margin-left: auto; text-align: right; color: var(--primary); font-family: var(--font-num); font-weight: 700; font-size: 20px; line-height: 1.1; }
+.sum-match .pct small { display: block; font-size: 11px; font-weight: 500; color: var(--ink-3); font-family: var(--font-body); }
+.sh-actions { display: grid; grid-template-columns: 1fr 1.3fr; gap: 10px; margin-top: 16px; }
+.sh-note { margin-top: 10px; font-size: 11.5px; color: var(--ink-4); text-align: center; }
+
+.crisis .lead { margin: 10px 0 0; font-size: 14px; color: var(--ink-2); line-height: 1.6; }
+.crisis .ico { width: 40px; height: 40px; border-radius: 50%; background: var(--risk-soft); color: var(--risk); display: grid; place-items: center; flex-shrink: 0; }
+.hot { margin-top: 14px; }
+.hot .list-item b { display: block; font-size: 15px; }
+.hot .list-item .n { font-size: 12px; color: var(--ink-3); }
+.hot .list-item .call { margin-left: auto; }
+.hot .list-item.main { background: var(--risk-soft); }
+.hot .list-item.main b.num { color: var(--risk); font-size: 22px; line-height: 1.2; }
+.duty { margin-top: 12px; display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: var(--r-lg); border: 1px solid var(--line-2); background: var(--surface-2); font-size: 13px; }
+.duty b { display: block; font-size: 14px; }
+.btn-risk { background: var(--risk); color: var(--surface); }
+</style>
+</head>
+<body>
+<div class="phone fixed voice">
+  <div class="statusbar"></div>
+  <header class="vtop">
+    <a class="rb" href="app-home.html" aria-label="关闭"><svg class="ic"><use href="#i-close"/></svg></a>
+    <div class="t"><b>小屿 · 语音接待</b><span id="modeLabel"><svg class="ic"><use href="#i-lock"/></svg>端到端加密 · 演示模式</span></div>
+    <button class="rb" id="soundBtn" type="button" aria-label="关闭声音" aria-pressed="true"><svg class="ic"><use href="#i-volume"/></svg></button>
+  </header>
+
+  <div class="crisis-bar" id="crisisBar" role="alert" hidden>
+    <svg class="ic"><use href="#i-alert"/></svg>
+    <div><b>我们很关心你的安全</b><span class="s">全国心理援助热线 7×24 小时免费</span></div>
+    <a class="call" href="tel:12356"><svg class="ic ic-sm"><use href="#i-phone"/></svg>12356</a>
+  </div>
+
+  <section class="stage">
+    <button class="orb" id="orb" type="button" aria-label="开始或暂停语音接待"></button>
+    <div class="state" id="state" aria-live="polite">点一下，开始说话</div>
+    <div class="state-sub" id="stateSub">小屿只做接待和匹配，不做诊断或治疗</div>
+  </section>
+
+  <div class="captions" id="captions" aria-live="polite" aria-label="对话字幕">
+    <div class="spacer"></div>
+  </div>
+
+  <div class="controls" id="controls">
+    <div class="side"><button type="button" id="kbBtn" aria-label="切换到打字输入"><svg class="ic"><use href="#i-edit"/></svg></button>打字</div>
+    <div class="mic-wrap">
+      <button class="mic" id="mic" type="button" aria-label="开始说话"><svg class="ic"><use href="#i-mic"/></svg></button>
+      <span id="micLabel">点击开始</span>
+    </div>
+    <div class="side"><button type="button" id="endBtn" aria-label="结束接待并生成小结"><svg class="ic"><use href="#i-file"/></svg></button>结束</div>
+  </div>
+
+  <div class="typebar" id="typebar" hidden>
+    <button class="rb" type="button" id="voiceBtn" aria-label="切换到语音"><svg class="ic"><use href="#i-mic"/></svg></button>
+    <form id="typeForm" autocomplete="off">
+      <input id="typeInput" type="text" placeholder="打字告诉小屿…" aria-label="输入消息" maxlength="500">
+      <button class="send" type="submit" aria-label="发送"><svg class="ic"><use href="#i-send"/></svg></button>
+    </form>
+  </div>
+  <span class="homebar" aria-hidden="true"></span>
+
+  <div class="scrim" id="scrim" hidden></div>
+
+  <!-- summary sheet -->
+  <section class="sheet vsheet" id="sumSheet" role="dialog" aria-modal="true" aria-labelledby="sumTitle" hidden>
+    <div class="grab"></div>
+    <div class="sh-head">
+      <span class="orb orb-sm" style="--lv:.15;width:36px;height:36px"></span>
+      <div><h2 class="display" id="sumTitle">接待小结</h2><div class="small muted" id="sumMeta">刚刚 · 小屿生成 · 仅你和咨询师可见</div></div>
+      <button class="x" type="button" data-close aria-label="关闭"><svg class="ic ic-sm"><use href="#i-close"/></svg></button>
+    </div>
+    <div class="sum-grid">
+      <div class="sum-cell"><div class="k">当前情绪</div><div class="v" id="sMood">焦虑 · 疲惫</div></div>
+      <div class="sum-cell"><div class="k">情绪指数</div><div class="v"><span class="num" id="sScore">38</span><span class="small muted"> / 100</span></div></div>
+    </div>
+    <div class="sum-tags" id="sTags"></div>
+    <div class="sum-scales" id="sScales"></div>
+    <div class="sum-match">
+      <img class="avatar avatar-lg" id="sImg" src="../assets/c-lin.jpg" alt="">
+      <div><b id="sName">林知夏</b><div class="m" id="sSlot">明天 20:00 可约 · 语音咨询</div></div>
+      <div class="pct">96%<small>匹配度</small></div>
+    </div>
+    <div class="sh-actions">
+      <a class="btn btn-ghost btn-lg" href="app-summary.html">查看完整小结</a>
+      <a class="btn btn-primary btn-lg" href="app-counselor.html" id="sBook">预约林知夏</a>
+    </div>
+    <div class="sh-note">初筛结果不构成诊断，后续评估与咨询由持证咨询师完成</div>
+  </section>
+
+  <!-- crisis panel -->
+  <section class="sheet vsheet crisis" id="crisisSheet" role="alertdialog" aria-modal="true" aria-labelledby="crisisTitle" hidden>
+    <div class="grab"></div>
+    <div class="sh-head">
+      <span class="ico"><svg class="ic"><use href="#i-heart"/></svg></span>
+      <h2 class="display" id="crisisTitle">你不是一个人</h2>
+      <button class="x" type="button" data-close aria-label="关闭"><svg class="ic ic-sm"><use href="#i-close"/></svg></button>
+    </div>
+    <p class="lead">如果你现在有伤害自己的想法，请马上联系下面的热线。值班咨询师会在 <b>3 分钟内</b>介入。</p>
+    <div class="list hot" id="hotlines"></div>
+    <div class="duty">
+      <img class="avatar" src="../assets/c-he.jpg" alt="">
+      <div class="grow"><b>值班咨询师 · 何清</b><span class="muted small">在线 · 正在为你接通，预计 1 分 40 秒</span></div>
+      <button class="btn btn-sm btn-primary" type="button" id="dutyBtn">接通</button>
+    </div>
+    <div class="sh-actions" style="grid-template-columns:1fr">
+      <button class="btn btn-ghost btn-lg" type="button" data-close>我现在是安全的，继续和小屿聊</button>
+    </div>
+  </section>
+</div>
+<script src="../voice.js"></script>
+<script>
+(function () {
+  var vr = TingyuVoice.create();
+  var GREETING = TingyuVoice.DEMO_SCRIPT[0].text;
+  var $ = function (id) { return document.getElementById(id); };
+  var cap = $('captions'), orb = $('orb'), mic = $('mic');
+  var nodes = {};           // id -> bubble element
+  var greetEl = null;
+
+  function addBubble(role, text, id) {
+    var who = document.createElement('div');
+    who.className = 'who' + (role === 'user' ? ' u' : '');
+    who.textContent = role === 'user' ? '我' : '小屿';
+    var b = document.createElement('div');
+    b.className = 'bubble ' + (role === 'user' ? 'user' : 'ai');
+    b.textContent = text;
+    cap.appendChild(who); cap.appendChild(b);
+    if (id) nodes[id] = b;
+    cap.scrollTop = cap.scrollHeight;
+    return b;
+  }
+  function greet() { greetEl = addBubble('ai', GREETING); }
+  greet();
+
+  function bubbleFor(m) {
+    if (nodes[m.id]) return nodes[m.id];
+    // the scripted demo re-speaks the greeting: reuse the bubble already on screen
+    if (m.role === 'ai' && greetEl && cap.querySelectorAll('.bubble').length === 1 && GREETING.indexOf(m.text) === 0) {
+      nodes[m.id] = greetEl; greetEl = null; return nodes[m.id];
+    }
+    return addBubble(m.role, '', m.id);
+  }
+  vr.on('partial', function (m) {
+    var b = bubbleFor(m);
+    b.textContent = m.text; b.classList.add('live');
+    cap.scrollTop = cap.scrollHeight;
+  });
+  vr.on('message', function (m) {
+    var b = bubbleFor(m);
+    b.textContent = m.text; b.classList.remove('live');
+    cap.scrollTop = cap.scrollHeight;
+  });
+  vr.on('reset', function () {
+    nodes = {};
+    Array.prototype.slice.call(cap.children).forEach(function (c) { if (!c.classList.contains('spacer')) c.remove(); });
+    greet();
+  });
+
+  var bars = '<span class="wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>';
+  var STATES = {
+    idle: ['点一下，开始说话', '小屿只做接待和匹配，不做诊断或治疗', '点击开始', 'mic'],
+    listening: ['倾听中' + bars, '慢慢说，说完停顿一下就好', '点击暂停', 'pause'],
+    thinking: ['思考中…', '小屿在整理你说的话', '点击打断', 'pause'],
+    speaking: ['小屿正在说话' + bars, '随时可以点击打断她', '点击打断', 'pause']
+  };
+  var waveBars = [];
+  vr.on('state', function (s) {
+    var c = STATES[s] || STATES.idle;
+    $('state').innerHTML = c[0];
+    $('stateSub').textContent = c[1];
+    $('micLabel').textContent = c[2];
+    mic.innerHTML = '<svg class="ic"><use href="#i-' + c[3] + '"/></svg>';
+    mic.classList.toggle('on', s !== 'idle');
+    mic.setAttribute('aria-label', s === 'idle' ? '开始说话' : '暂停');
+    orb.classList.toggle('busy', s !== 'idle');
+    waveBars = Array.prototype.slice.call(document.querySelectorAll('#state .wave i'));
+  });
+  vr.on('level', function (l) {
+    orb.style.setProperty('--lv', l.toFixed(3));
+    for (var i = 0; i < waveBars.length; i++) waveBars[i].style.height = Math.max(18, Math.min(100, l * 100 * (0.55 + 0.45 * Math.abs(Math.sin(i * 1.7 + l * 9))))) + '%';
+  });
+  vr.on('mode', function (m) {
+    $('modeLabel').innerHTML = '<svg class="ic"><use href="#i-lock"/></svg>端到端加密 · ' + (m === 'live' ? '实时对话' : '演示模式');
+  });
+  vr.on('sound', function (on) { paintSound(on); });
+
+  // controls — toggle() must be called synchronously inside the click
+  mic.addEventListener('click', function () { vr.toggle(); });
+  orb.addEventListener('click', function () { vr.toggle(); });
+  function paintSound(on) {
+    $('soundBtn').innerHTML = '<svg class="ic"><use href="#i-' + (on ? 'volume' : 'volume-off') + '"/></svg>';
+    $('soundBtn').setAttribute('aria-pressed', on);
+    $('soundBtn').setAttribute('aria-label', on ? '关闭声音' : '打开声音');
+  }
+  $('soundBtn').addEventListener('click', function () {
+    var on = !vr.sound; vr.setSound(on); paintSound(on); toast(on ? '已打开声音' : '已静音，小屿的回复只显示文字');
+  });
+  $('kbBtn').addEventListener('click', function () { $('controls').hidden = true; $('typebar').hidden = false; $('typeInput').focus(); });
+  $('voiceBtn').addEventListener('click', function () { $('typebar').hidden = true; $('controls').hidden = false; });
+  $('typeForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var v = $('typeInput').value.trim(); if (!v) return;
+    vr.send(v); $('typeInput').value = '';
+  });
+  $('endBtn').addEventListener('click', function () {
+    vr.stop();
+    toast('小屿正在生成接待小结…');
+    vr.summarize();
+  });
+
+  // sheets
+  var scrim = $('scrim'), open = null;
+  function show(sheet) {
+    if (open && open !== sheet) hide(true);
+    open = sheet; scrim.hidden = false; sheet.hidden = false;
+    requestAnimationFrame(function () { requestAnimationFrame(function () { scrim.classList.add('show'); sheet.classList.add('show'); }); });
+  }
+  function hide(keepScrim) {
+    if (!open) return;
+    var s = open; open = null; s.classList.remove('show');
+    if (!keepScrim) scrim.classList.remove('show');
+    setTimeout(function () { s.hidden = true; if (!open) scrim.hidden = true; }, 300);
+  }
+  scrim.addEventListener('click', function () { hide(); });
+  document.querySelectorAll('[data-close]').forEach(function (b) { b.addEventListener('click', function () { hide(); }); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') hide(); });
+
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  vr.on('summary', function (s) {
+    $('sMood').textContent = s.mood;
+    $('sScore').textContent = s.moodScore;
+    var riskCls = s.risk === 'high' ? 'tag-risk' : s.risk === 'medium' ? 'tag-warn' : 'tag-ok';
+    $('sTags').innerHTML = '<span class="tag ' + riskCls + '">' + esc(s.riskLabel) + '</span>' +
+      (s.topics || []).map(function (t) { return '<span class="tag">' + esc(t) + '</span>'; }).join('') +
+      '<span class="tag tag-plain">持续 ' + esc(s.duration) + '</span>';
+    $('sScales').innerHTML = (s.scales || []).map(function (x) {
+      var pct = Math.round(x.value / x.max * 100), cls = x.label === '轻度' ? 'ok' : x.label === '中度' ? 'warn' : 'risk';
+      return '<div class="r"><b>' + esc(x.name.split(' ')[0]) + '</b><div class="bar ' + cls + '"><i style="width:' + pct + '%"></i></div><span><span class="num">' + x.value + '/' + x.max + '</span> ' + esc(x.label) + '</span></div>';
+    }).join('');
+    var c = vr.counselor(s.counselor);
+    $('sImg').src = '../' + c.img; $('sImg').alt = c.name;
+    $('sName').textContent = c.name + ' · ' + c.method.replace(/\s.*$/, '');
+    $('sSlot').textContent = (s.slot || '明天 20:00') + ' 可约 · ' + (s.modality || '语音咨询') + ' · ¥' + c.price;
+    $('sBook').textContent = '预约' + c.name;
+    setTimeout(function () { show($('sumSheet')); }, 300);
+  });
+
+  function renderHotlines(list) {
+    $('hotlines').innerHTML = list.map(function (h, i) {
+      var tel = h.number.split('/')[0].replace(/\D/g, '');
+      return '<div class="list-item' + (i === 0 ? ' main' : '') + '"><div><b class="' + (i === 0 ? 'num' : '') + '">' + esc(i === 0 ? h.number : h.name) + '</b><span class="n">' + esc(i === 0 ? h.name + ' · ' + h.note : h.number + ' · ' + h.note) + '</span></div>' +
+        '<a class="btn btn-sm call ' + (i === 0 ? 'btn-risk' : 'btn-ghost') + '" href="tel:' + tel + '"><svg class="ic ic-sm"><use href="#i-phone"/></svg>拨打</a></div>';
+    }).join('');
+  }
+  function crisis(c) {
+    renderHotlines((c && c.hotlines) || TingyuVoice.HOTLINES);
+    $('crisisBar').hidden = false;
+    show($('crisisSheet'));
+  }
+  vr.on('crisis', crisis);
+  $('crisisBar').addEventListener('click', function (e) { if (!e.target.closest('a')) show($('crisisSheet')); });
+  $('dutyBtn').addEventListener('click', function () { toast('正在为你接通值班咨询师，请保持在线'); $('dutyBtn').textContent = '接通中'; $('dutyBtn').disabled = true; });
+  if (location.hash === '#crisis') crisis();
+  window.addEventListener('hashchange', function () { if (location.hash === '#crisis') crisis(); });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>听屿 Web · 首页</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@500;600;900&display=swap">
+<link rel="stylesheet" href="ds.css">
+<script src="icons.js"></script>
+<style>
+/* ---------- shared web top bar ---------- */
+.web-top .in { gap: 24px; }
+.brand-mark { font-size: 15px; font-weight: 700; }
+.top-r { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.top-search { width: 250px; height: 36px; font-size: 13px; }
+.icon-btn { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; color: var(--ink-2); position: relative; border: 1px solid var(--line-2); background: var(--surface); }
+.icon-btn .badge { position: absolute; top: -3px; right: -3px; }
+.me { position: relative; }
+.me-btn { display: flex; align-items: center; gap: 8px; border: 0; background: none; padding: 3px 8px 3px 3px; border-radius: var(--r-pill); color: var(--ink); font-weight: 500; font-size: 14px; }
+.me-btn:hover { background: var(--bg-2); }
+.menu { position: absolute; right: 0; top: calc(100% + 8px); width: 230px; background: var(--surface); border: 1px solid var(--line-2); border-radius: var(--r); box-shadow: var(--shadow-lg); padding: 6px; z-index: 30; }
+.menu a { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: var(--r-sm); color: var(--ink-2); font-size: 13.5px; }
+.menu a:hover { background: var(--surface-2); color: var(--ink); }
+.menu .mh { padding: 8px 10px 12px; display: flex; gap: 10px; align-items: center; border-bottom: 1px solid var(--line-2); margin-bottom: 4px; }
+.menu .mh b { display: block; font-size: 14px; } .menu .mh span { font-size: 12px; color: var(--ink-3); }
+.web-foot { max-width: 1240px; margin: 8px auto 0; padding: 20px 24px 36px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 12px; color: var(--ink-4); border-top: 1px solid var(--line-2); }
+
+/* ---------- page ---------- */
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 24px; align-items: start; }
+.col { display: grid; gap: 20px; min-width: 0; }
+.hello { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; }
+.hello h1 { margin: 0; font-size: 26px; line-height: 1.3; }
+.hello p { margin: 2px 0 0; color: var(--ink-3); font-size: 13.5px; }
+.hello .streak { display: flex; gap: 16px; font-size: 12.5px; color: var(--ink-3); }
+.hello .streak b { color: var(--ink); font-size: 16px; margin-right: 2px; }
+
+.voice-card { border-radius: var(--r-xl); background: var(--primary); color: var(--on-primary); padding: 26px 28px; position: relative; overflow: hidden; display: grid; grid-template-columns: 1fr 210px; gap: 0 24px; }
+.voice-card::before { content: ""; position: absolute; right: -80px; top: -120px; width: 420px; height: 420px; border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--orb-1) 50%, transparent), transparent 68%); }
+.voice-card > * { position: relative; }
+.voice-card .k { font-size: 12.5px; opacity: .85; display: flex; align-items: center; gap: 6px; }
+.voice-card h2 { margin: 6px 0 6px; font-size: 28px; line-height: 1.25; }
+.voice-card p { margin: 0; font-size: 14px; opacity: .88; max-width: 460px; }
+.voice-card .acts { display: flex; gap: 10px; margin-top: 18px; }
+.btn-on-primary { background: var(--on-primary); color: var(--primary); }
+.btn-outline-light { background: transparent; color: var(--on-primary); border-color: color-mix(in srgb, var(--on-primary) 40%, transparent); }
+.voice-card .orb-wrap { display: grid; place-items: center; grid-row: 1 / span 2; grid-column: 2; }
+.voice-card .orb { width: 150px; height: 150px; display: grid; place-items: center; color: var(--on-primary); }
+.voice-card .orb .ic { width: 36px; height: 36px; }
+.voice-card .last { grid-column: 1 / -1; margin-top: 22px; padding: 14px 16px; border-radius: var(--r); background: color-mix(in srgb, var(--on-primary) 10%, transparent); border: 1px solid color-mix(in srgb, var(--on-primary) 16%, transparent); display: grid; grid-template-columns: auto 1fr auto; gap: 18px; align-items: center; font-size: 13px; }
+.voice-card .last .lbl { opacity: .75; font-size: 12px; }
+.voice-card .last .facts { display: flex; gap: 22px; flex-wrap: wrap; }
+.voice-card .last .facts span { display: grid; line-height: 1.35; }
+.voice-card .last .facts small { opacity: .7; font-size: 11.5px; }
+.voice-card .last .facts b { font-size: 14px; font-weight: 600; }
+.voice-card .last a { font-weight: 600; display: inline-flex; align-items: center; gap: 2px; white-space: nowrap; }
+
+.pair { display: grid; grid-template-columns: 1.15fr 1fr; gap: 20px; }
+.card-h { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 16px 18px 0; }
+.card-h h3 { margin: 0; font-size: 16px; font-family: var(--font-display); font-weight: var(--display-weight); }
+.card-h a { font-size: 12.5px; color: var(--ink-3); display: inline-flex; align-items: center; }
+
+.appt { padding: 16px 18px 18px; display: grid; gap: 14px; }
+.appt .who { display: grid; grid-template-columns: auto 1fr auto; gap: 14px; align-items: center; }
+.appt .who b { font-size: 16px; }
+.appt .who .meta { font-size: 12.5px; color: var(--ink-3); }
+.appt .when { display: grid; grid-template-columns: 1.3fr 1fr .9fr; background: var(--surface-2); border: 1px solid var(--line-2); border-radius: var(--r); }
+.appt .when > div { padding: 10px 14px; display: grid; gap: 1px; }
+.appt .when > div + div { border-left: 1px solid var(--line-2); }
+.appt .when small { font-size: 11.5px; color: var(--ink-3); }
+.appt .when b { font-size: 14px; font-weight: 600; }
+.countdown { display: flex; align-items: center; gap: 14px; }
+.countdown .t { display: flex; gap: 6px; align-items: baseline; }
+.countdown .t b { font-size: 26px; font-weight: 700; color: var(--primary); line-height: 1; }
+.countdown .t span { font-size: 12px; color: var(--ink-3); margin-right: 4px; }
+.appt .note { display: flex; gap: 8px; align-items: center; font-size: 12.5px; color: var(--ok); background: var(--ok-soft); border-radius: var(--r-sm); padding: 8px 10px; }
+.appt .acts { display: flex; gap: 8px; }
+
+.moodbox { padding: 14px 18px 18px; display: grid; gap: 12px; }
+.mood { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+.mood button { border: 1px solid var(--line-2); background: var(--surface); border-radius: var(--r); padding: 10px 0 8px; display: grid; justify-items: center; gap: 6px; font-size: 12px; color: var(--ink-2); }
+.mood i { width: 24px; height: 24px; border-radius: 50%; display: block; }
+.mood button.on { border-color: var(--primary); background: var(--primary-soft); color: var(--primary); font-weight: 600; }
+.factors { display: flex; gap: 6px; flex-wrap: wrap; }
+.factors .chip { height: 26px; font-size: 12px; padding: 0 10px; }
+.moodbox textarea { width: 100%; resize: none; height: 54px; padding: 8px 12px; border-radius: var(--r); border: 1px solid var(--line); background: var(--surface-2); font-size: 13px; outline: none; }
+.moodbox textarea:focus { border-color: var(--primary); }
+
+.cgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.cs { overflow: hidden; display: grid; grid-template-rows: auto 1fr; grid-template-columns: minmax(0, 1fr); min-width: 0; transition: box-shadow .15s, transform .15s; }
+.cs:hover { box-shadow: var(--shadow); transform: translateY(-2px); }
+.cs .ph { position: relative; }
+.cs img { width: 100%; height: 168px; object-fit: cover; object-position: top; }
+.cs .match { position: absolute; left: 10px; top: 10px; background: color-mix(in srgb, var(--surface) 92%, transparent); color: var(--primary); font-size: 11.5px; font-weight: 600; padding: 2px 8px; border-radius: var(--r-pill); }
+.cs .in { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 6px; }
+.cs .in .between { margin-top: auto; }
+.cs .nm { display: flex; align-items: baseline; gap: 6px; } .cs .nm b { font-size: 16px; } .cs .nm span { font-size: 12px; color: var(--ink-3); }
+.cs .t { font-size: 12px; color: var(--ink-3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cs .tags { display: flex; gap: 4px; flex-wrap: wrap; }
+.cs .slot { font-size: 12px; color: var(--ok); display: flex; align-items: center; gap: 4px; }
+
+.feed-tabs { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.feed { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.post { overflow: hidden; display: grid; grid-template-rows: auto 1fr; }
+.post .cov { position: relative; height: 150px; }
+.post .cov img { width: 100%; height: 100%; object-fit: cover; }
+.post .cov .ty { position: absolute; left: 10px; bottom: 10px; display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: var(--r-pill); background: rgba(0,0,0,.55); color: #fff; font-size: 11.5px; }
+.post .cov .ty .ic { width: 12px; height: 12px; }
+.post .in { padding: 12px 14px 14px; display: grid; gap: 8px; align-content: start; }
+.post h4 { margin: 0; font-size: 14.5px; line-height: 1.5; }
+.post .by { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--ink-3); }
+.post .by b { color: var(--ink-2); font-weight: 500; }
+.post .stat { font-size: 11.5px; color: var(--ink-4); }
+
+/* sidebar */
+.side { display: grid; gap: 16px; }
+.side .card { padding: 16px 18px; }
+.side h3 { margin: 0; font-size: 15px; font-family: var(--font-display); font-weight: var(--display-weight); }
+.chart svg { width: 100%; height: auto; display: block; margin-top: 8px; }
+.chart .grid-l { stroke: var(--line-2); stroke-width: 1; }
+.chart .area { fill: var(--primary-soft); }
+.chart .ln { fill: none; stroke: var(--primary); stroke-width: 2.2; stroke-linejoin: round; stroke-linecap: round; }
+.chart .pt { fill: var(--surface); stroke: var(--primary); stroke-width: 2; }
+.chart .pt.today { fill: var(--accent); stroke: var(--accent); }
+.chart .ax { fill: var(--ink-4); font-size: 10px; font-family: var(--font-num); }
+.chart .val { fill: var(--ink-2); font-size: 10px; font-family: var(--font-num); font-weight: 600; }
+.chart .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
+.chart .stats div { background: var(--surface-2); border-radius: var(--r-sm); padding: 8px 10px; display: grid; }
+.chart .stats small { font-size: 11px; color: var(--ink-3); } .chart .stats b { font-size: 15px; }
+.task { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: start; padding: 12px 0; }
+.task + .task { border-top: 1px solid var(--line-2); }
+.task .ico { width: 38px; height: 38px; border-radius: var(--r); display: grid; place-items: center; background: var(--warn-soft); color: var(--warn); }
+.task .ico.p { background: var(--primary-soft); color: var(--primary); }
+.task b { font-size: 14px; display: block; }
+.task p { margin: 2px 0 8px; font-size: 12px; color: var(--ink-3); }
+.vip { background: linear-gradient(135deg, var(--accent-soft), var(--surface) 70%); }
+.vip .lv { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; color: var(--accent); font-weight: 600; }
+.vip .days { display: flex; align-items: baseline; gap: 4px; margin: 6px 0 8px; }
+.vip .days b { font-size: 30px; line-height: 1; color: var(--ink); }
+.vip ul { margin: 12px 0 14px; padding: 0; list-style: none; display: grid; gap: 6px; font-size: 12.5px; color: var(--ink-2); }
+.vip li { display: flex; gap: 6px; align-items: center; } .vip li .ic { color: var(--ok); }
+.plan { list-style: none; margin: 10px 0 0; padding: 0; display: grid; }
+.plan li { display: flex; align-items: center; gap: 12px; padding: 10px 0; }
+.plan li + li { border-top: 1px solid var(--line-2); }
+.plan .d { width: 42px; height: 46px; border-radius: var(--r-sm); background: var(--surface-2); border: 1px solid var(--line-2); display: grid; place-items: center; align-content: center; font-size: 11px; color: var(--ink-3); line-height: 1.2; }
+.plan .d b { font-size: 16px; color: var(--ink); }
+.plan .grow b { display: block; font-size: 13.5px; font-weight: 600; } .plan .grow small { font-size: 12px; color: var(--ink-3); }
+.sos { background: var(--risk-soft); border-color: transparent; }
+.sos .h { display: flex; align-items: center; gap: 8px; color: var(--risk); font-weight: 700; font-size: 14px; }
+.sos .no { font-size: 32px; font-weight: 700; color: var(--risk); line-height: 1.1; margin: 8px 0 2px; }
+.sos p { margin: 0 0 12px; font-size: 12.5px; color: var(--ink-2); }
+.btn-risk { background: var(--risk); color: var(--surface); }
+.sos .acts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+@media (max-width: 1100px) { .cgrid { grid-template-columns: repeat(2, 1fr); } .feed { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 960px) {
+  .web-top nav, .top-search, .me-btn .nm { display: none; }
+  .layout, .pair, .voice-card { grid-template-columns: 1fr; }
+  .voice-card .orb-wrap { display: none; }
+  .voice-card .last { grid-template-columns: 1fr; }
+  .side { position: static; }
+  .hello { flex-direction: column; align-items: flex-start; }
+}
+@media (max-width: 560px) { .cgrid, .feed { grid-template-columns: 1fr; } .appt .when { grid-template-columns: 1fr; } .appt .when > div + div { border-left: 0; border-top: 1px solid var(--line-2); } .web-main { padding: 16px; } }
+</style>
+</head>
+<body>
+<header class="web-top"><div class="in">
+  <a class="brand" href="web-home.html"><span class="brand-mark">屿</span>听屿</a>
+  <nav aria-label="主导航">
+    <a class="on" href="web-home.html" aria-current="page">首页</a>
+    <a href="web-voice.html">小屿接待</a>
+    <a href="web-counselors.html">找咨询师</a>
+    <a href="web-assess.html">心理测评</a>
+    <a href="web-creator.html">达人专区</a>
+  </nav>
+  <div class="top-r">
+    <form class="search top-search" role="search" action="web-counselors.html"><svg class="ic ic-sm"><use href="#i-search"/></svg><input name="q" placeholder="搜索咨询师、困扰、文章" aria-label="搜索"></form>
+    <a class="icon-btn" href="web-me.html#messages" aria-label="消息，2 条未读"><svg class="ic"><use href="#i-bell"/></svg><span class="badge">2</span></a>
+    <div class="me">
+      <button class="me-btn" type="button" aria-haspopup="true" aria-expanded="false"><img class="avatar avatar-sm" src="../assets/u-asian-man.jpg" alt=""><span class="nm">小周</span><svg class="ic ic-sm"><use href="#i-chevron-down"/></svg></button>
+      <div class="menu" hidden>
+        <div class="mh"><img class="avatar" src="../assets/u-asian-man.jpg" alt=""><div><b>小周</b><span>屿伴会员 · 剩余 12 天</span></div></div>
+        <a href="web-me.html"><svg class="ic ic-sm"><use href="#i-user"/></svg>个人中心</a>
+        <a href="web-me.html#orders"><svg class="ic ic-sm"><use href="#i-calendar"/></svg>我的预约</a>
+        <a href="web-me.html#records"><svg class="ic ic-sm"><use href="#i-file"/></svg>接待小结与测评</a>
+        <a href="web-me.html#settings"><svg class="ic ic-sm"><use href="#i-settings"/></svg>账号与隐私</a>
+        <a href="web-desk.html"><svg class="ic ic-sm"><use href="#i-grid"/></svg>咨询师工作台</a>
+        <a href="web-home.html" data-logout><svg class="ic ic-sm"><use href="#i-logout"/></svg>退出登录</a>
+      </div>
+    </div>
+  </div>
+</div></header>
+
+<main class="web-main">
+  <div class="layout">
+    <div class="col">
+      <div class="hello">
+        <div>
+          <h1 class="display">晚上好，小周</h1>
+          <p>11 月 15 日 周日 · 明晚 20:00 是你和林知夏老师的第一次咨询</p>
+        </div>
+        <div class="streak"><span><b class="num">6</b>天 连续打卡</span><span><b class="num">2</b>次 小屿接待</span><span><b class="num">3</b>份 测评报告</span></div>
+      </div>
+
+      <section class="voice-card" aria-label="小屿语音接待">
+        <div>
+          <span class="k"><span class="dot"></span>小屿在线 · 平均 3 秒接通 · 全程加密</span>
+          <h2 class="display">和小屿说说</h2>
+          <p>不用组织语言，想到哪说到哪。小屿会帮你梳理困扰、完成初筛，再为你匹配合适的持证咨询师。小屿只做接待，不做咨询。</p>
+          <div class="acts">
+            <a class="btn btn-lg btn-on-primary" href="web-voice.html"><svg class="ic"><use href="#i-mic"/></svg>开始语音接待</a>
+            <a class="btn btn-lg btn-outline-light" href="web-voice.html#text"><svg class="ic"><use href="#i-chat"/></svg>打字聊聊</a>
+          </div>
+        </div>
+        <div class="orb-wrap"><a class="orb" id="homeOrb" href="web-voice.html" aria-label="开始语音接待" style="--lv:.25"><svg class="ic"><use href="#i-mic"/></svg></a></div>
+        <div class="last">
+          <span class="lbl">上次接待<br><span class="num">11 月 12 日 22:14</span> · 6 分 38 秒</span>
+          <span class="facts">
+            <span><small>情绪</small><b>焦虑 · 疲惫</b></span>
+            <span><small>PHQ-9</small><b class="num">9 · 轻度</b></span>
+            <span><small>GAD-7</small><b class="num">11 · 中度</b></span>
+            <span><small>ISI 失眠</small><b class="num">16 · 中度</b></span>
+            <span><small>风险分级</small><b>低风险</b></span>
+          </span>
+          <a href="web-me.html#records">查看小结<svg class="ic ic-sm"><use href="#i-chevron"/></svg></a>
+        </div>
+      </section>
+
+      <div class="pair">
+        <section class="card" aria-labelledby="apptH">
+          <div class="card-h"><h3 id="apptH">我的下一次预约</h3><a href="web-me.html#orders">全部预约<svg class="ic ic-sm"><use href="#i-chevron"/></svg></a></div>
+          <div class="appt">
+            <div class="who">
+              <img class="avatar avatar-lg" src="../assets/c-lin.jpg" alt="林知夏">
+              <div><b>林知夏</b> <span class="tag tag-plain">第 1 次</span><div class="meta">国家二级心理咨询师 · CBT · 8 年</div></div>
+              <span class="tag tag-ok">已支付 ¥350</span>
+            </div>
+            <div class="when">
+              <div><small>日期</small><b class="num">明天 · 11/16 周一</b></div>
+              <div><small>时间</small><b class="num">20:00–20:50</b></div>
+              <div><small>方式</small><b>语音咨询</b></div>
+            </div>
+            <div class="countdown">
+              <span class="muted small">距离开始</span>
+              <span class="t num" id="cd"><b>22</b><span>时</span><b>41</b><span>分</span><b>52</b><span>秒</span></span>
+            </div>
+            <div class="note"><svg class="ic ic-sm"><use href="#i-check-circle"/></svg>接待小结已同步给林老师，咨询时不用再从头讲一遍</div>
+            <div class="acts">
+              <a class="btn btn-primary" href="web-session.html"><svg class="ic ic-sm"><use href="#i-headphones"/></svg>进入咨询室</a>
+              <button class="btn btn-ghost" type="button" id="reschedule"><svg class="ic ic-sm"><use href="#i-calendar"/></svg>改约</button>
+              <a class="btn btn-text" href="web-session.html#prepare">咨询前准备</a>
+            </div>
+          </div>
+        </section>
+
+        <section class="card" aria-labelledby="moodH">
+          <div class="card-h"><h3 id="moodH">今日情绪打卡</h3><span class="small muted" id="moodState">今天还没打卡</span></div>
+          <div class="moodbox">
+            <div class="mood" role="group" aria-label="今天的心情">
+              <button type="button" data-v="20"><i style="background:var(--risk-soft);border:2px solid var(--risk)"></i>很差</button>
+              <button type="button" data-v="38"><i style="background:var(--warn-soft);border:2px solid var(--warn)"></i>低落</button>
+              <button type="button" data-v="55"><i style="background:var(--bg-2);border:2px solid var(--ink-4)"></i>一般</button>
+              <button type="button" data-v="72"><i style="background:var(--primary-soft);border:2px solid var(--primary)"></i>不错</button>
+              <button type="button" data-v="88"><i style="background:var(--ok-soft);border:2px solid var(--ok)"></i>很好</button>
+            </div>
+            <div><div class="small muted" style="margin-bottom:6px">主要和什么有关（可多选）</div>
+              <div class="factors"><button class="chip on" type="button">工作</button><button class="chip on" type="button">睡眠</button><button class="chip" type="button">人际</button><button class="chip" type="button">身体</button><button class="chip" type="button">家庭</button><button class="chip" type="button">感情</button></div>
+            </div>
+            <textarea id="moodNote" placeholder="写一句今天的心情（仅自己可见）" aria-label="心情备注">周会被追问排期，晚上又有点睡不着。</textarea>
+            <div class="between"><span class="small muted">记录会出现在右侧的情绪曲线里</span><button class="btn btn-primary btn-sm" type="button" id="saveMood">保存打卡</button></div>
+          </div>
+        </section>
+      </div>
+
+      <section>
+        <div class="section-title"><h2>为你推荐的咨询师</h2><a href="web-counselors.html">根据 11/12 接待小结匹配 · 查看全部<svg class="ic ic-sm"><use href="#i-chevron"/></svg></a></div>
+        <div class="cgrid">
+          <a class="card cs" href="web-counselor.html"><div class="ph"><img src="../assets/c-lin.jpg" alt=""><span class="match num">匹配 96%</span></div><div class="in"><div class="nm"><b>林知夏</b><span>8 年 · CBT</span></div><span class="t">国家二级心理咨询师 · 临床心理学硕士</span><div class="tags"><span class="tag">焦虑</span><span class="tag">失眠</span><span class="tag">职场压力</span></div><div class="between"><span class="rating"><svg class="ic ic-sm" style="fill:currentColor;stroke:none"><use href="#i-star"/></svg>4.97</span><span class="price">¥400<small>/次</small></span></div><span class="slot"><svg class="ic ic-sm"><use href="#i-clock"/></svg>已预约 明天 20:00</span></div></a>
+          <a class="card cs" href="web-counselors.html"><div class="ph"><img src="../assets/c-fang.jpg" alt=""><span class="match num">匹配 91%</span></div><div class="in"><div class="nm"><b>方宁</b><span>7 年 · 焦点解决</span></div><span class="t">企业 EAP 顾问 · 职业发展教练</span><div class="tags"><span class="tag">职业倦怠</span><span class="tag">领导力</span><span class="tag">团队冲突</span></div><div class="between"><span class="rating"><svg class="ic ic-sm" style="fill:currentColor;stroke:none"><use href="#i-star"/></svg>4.94</span><span class="price">¥420<small>/次</small></span></div><span class="slot"><svg class="ic ic-sm"><use href="#i-clock"/></svg>最近可约 11/17 19:00</span></div></a>
+          <a class="card cs" href="web-counselors.html"><div class="ph"><img src="../assets/c-he.jpg" alt=""><span class="match num">匹配 88%</span></div><div class="in"><div class="nm"><b>何清</b><span>9 年 · ACT</span></div><span class="t">正念减压导师 · ACT 治疗师</span><div class="tags"><span class="tag">情绪调节</span><span class="tag">正念</span><span class="tag">自我关怀</span></div><div class="between"><span class="rating"><svg class="ic ic-sm" style="fill:currentColor;stroke:none"><use href="#i-star"/></svg>4.96</span><span class="price">¥450<small>/次</small></span></div><span class="slot"><svg class="ic ic-sm"><use href="#i-clock"/></svg>最近可约 明天 21:00</span></div></a>
+          <a class="card cs" href="web-counselors.html"><div class="ph"><img src="../assets/c-chen.jpg" alt=""><span class="match num">匹配 82%</span></div><div class="in"><div class="nm"><b>陈牧</b><span>15 年 · 精神科</span></div><span class="t">精神科主治医师 · 医学博士</span><div class="tags"><span class="tag">抑郁评估</span><span class="tag">药物咨询</span></div><div class="between"><span class="rating"><svg class="ic ic-sm" style="fill:currentColor;stroke:none"><use href="#i-star"/></svg>4.96</span><span class="price">¥800<small>/次</small></span></div><span class="slot"><svg class="ic ic-sm"><use href="#i-clock"/></svg>最近可约 11/18 10:00</span></div></a>
+        </div>
+      </section>
+
+      <section>
+        <div class="feed-tabs">
+          <div class="section-title" style="margin:0"><h2>达人推荐</h2></div>
+          <div class="row">
+            <div class="seg" role="tablist" aria-label="内容分类" id="feedSeg"><button class="on" type="button" data-k="all">为你推荐</button><button type="button" data-k="睡眠">睡眠</button><button type="button" data-k="职场">职场</button><button type="button" data-k="情感">情感</button></div>
+            <a class="btn btn-text btn-sm" href="web-creator.html">达人专区<svg class="ic ic-sm"><use href="#i-chevron"/></svg></a>
+          </div>
+        </div>
+        <div class="feed" id="feed">
+          <a class="card post" href="web-creator.html" data-k="睡眠"><div class="cov"><img src="../assets/moon.jpg" alt=""><span class="ty"><svg class="ic"><use href="#i-play"/></svg><span class="num">06:12</span></span></div><div class="in"><h4>凌晨三点还睡不着？试试这个 4-7-8 呼吸法</h4><div class="by"><img class="avatar avatar-sm" src="../assets/u-woman-5.jpg" alt=""><b>睡眠研究所阿屿</b><span class="tag tag-plain">心理科普</span></div><div class="stat">3.2 万人看过 · 1,284 人去和小屿聊了聊</div></div></a>
+          <a class="card post" href="web-creator.html" data-k="职场"><div class="cov"><img src="../assets/laptop-sweater.jpg" alt=""><span class="ty"><svg class="ic"><use href="#i-book"/></svg>5 分钟读完</span></div><div class="in"><h4>周日晚上的焦虑，其实是身体在提醒你</h4><div class="by"><img class="avatar avatar-sm" src="../assets/u-man-3.jpg" alt=""><b>打工人心理课</b><span class="tag tag-plain">职场</span></div><div class="stat">1.8 万人看过 · 906 人去和小屿聊了聊</div></div></a>
+          <a class="card post" href="web-creator.html" data-k="情感"><div class="cov"><img src="../assets/friends-sunset.jpg" alt=""><span class="ty"><svg class="ic"><use href="#i-play"/></svg><span class="num">08:40</span></span></div><div class="in"><h4>吵架后总是先道歉的人，心里在害怕什么</h4><div class="by"><img class="avatar avatar-sm" src="../assets/u-woman-6.jpg" alt=""><b>恋爱里的小心思</b><span class="tag tag-plain">情感</span></div><div class="stat">5.6 万人看过 · 2,031 人去和小屿聊了聊</div></div></a>
+          <a class="card post" href="web-creator.html" data-k="睡眠"><div class="cov"><img src="../assets/rain-window.jpg" alt=""><span class="ty"><svg class="ic"><use href="#i-headphones"/></svg><span class="num">12:05</span></span></div><div class="in"><h4>失眠第 30 天：把床还给睡眠的 3 个小改变</h4><div class="by"><img class="avatar avatar-sm" src="../assets/u-woman-5.jpg" alt=""><b>睡眠研究所阿屿</b><span class="tag tag-plain">心理科普</span></div><div class="stat">2.4 万人听过 · 屿伴会员免费</div></div></a>
+          <a class="card post" href="web-creator.html" data-k="职场"><div class="cov"><img src="../assets/office-team.jpg" alt=""><span class="ty"><svg class="ic"><use href="#i-play"/></svg><span class="num">09:18</span></span></div><div class="in"><h4>被领导当众否定之后，怎样不陷入自我攻击</h4><div class="by"><img class="avatar avatar-sm" src="../assets/u-man-3.jpg" alt=""><b>打工人心理课</b><span class="tag tag-plain">职场</span></div><div class="stat">4.1 万人看过 · 1,577 人去和小屿聊了聊</div></div></a>
+          <a class="card post" href="web-creator.html" data-k="睡眠"><div class="cov"><img src="../assets/lake-dock.jpg" alt=""><span class="ty"><svg class="ic"><use href="#i-headphones"/></svg><span class="num">10:00</span></span></div><div class="in"><h4>睡前 10 分钟身体扫描（跟练版）</h4><div class="by"><img class="avatar avatar-sm" src="../assets/u-woman-5.jpg" alt=""><b>睡眠研究所阿屿</b><span class="tag tag-plain">冥想</span></div><div class="stat">8.9 万次播放 · 屿伴会员免费</div></div></a>
+        </div>
+      </section>
+    </div>
+
+    <aside class="side">
+      <section class="card chart" aria-labelledby="chartH">
+        <div class="between"><h3 id="chartH">近 7 天情绪</h3><a class="small muted" href="web-me.html#mood">情绪日记 ›</a></div>
+        <svg id="chart" viewBox="0 0 300 130" role="img" aria-label="近 7 天情绪分数折线图"></svg>
+        <div class="stats">
+          <div><small>7 日均值</small><b class="num" id="avg">43</b></div>
+          <div><small>最低</small><b class="num">38<span class="small muted"> 11/12</span></b></div>
+          <div><small>平均睡眠</small><b class="num">5.4<span class="small muted"> 小时</span></b></div>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="taskH">
+        <div class="between"><h3 id="taskH">待完成的测评</h3><span class="tag tag-warn">1 项待做</span></div>
+        <div class="task">
+          <span class="ico"><svg class="ic"><use href="#i-file"/></svg></span>
+          <div><b>GAD-7 焦虑复测</b><p>上次 11/12 得分 11（中度）。建议咨询前复测，帮助林老师了解变化。7 题 · 约 2 分钟</p><a class="btn btn-soft btn-sm" href="web-assess.html#gad7">开始复测</a></div>
+        </div>
+        <div class="task">
+          <span class="ico p"><svg class="ic"><use href="#i-moon"/></svg></span>
+          <div><b>ISI 失眠严重度</b><p>已安排在 11/26 随访复测，小屿会提前一天提醒你</p></div>
+        </div>
+      </section>
+
+      <section class="card vip" aria-labelledby="vipH">
+        <div class="between"><span class="lv"><svg class="ic ic-sm"><use href="#i-sparkle"/></svg>屿伴会员</span><span class="small muted">¥39/月</span></div>
+        <div class="days"><b class="num" id="vipH">12</b><span class="muted">天后到期 · 11 月 27 日</span></div>
+        <div class="bar"><i style="width:60%"></i></div>
+        <ul>
+          <li><svg class="ic ic-sm"><use href="#i-check"/></svg>小屿接待与随访提醒不限次</li>
+          <li><svg class="ic ic-sm"><use href="#i-check"/></svg>全部助眠音频、正念课程免费</li>
+          <li><svg class="ic ic-sm"><use href="#i-check"/></svg>热门咨询师优先预约</li>
+        </ul>
+        <button class="btn btn-accent btn-sm btn-block" type="button" id="renew">续费 ¥39/月</button>
+      </section>
+
+      <section class="card" aria-labelledby="planH">
+        <div class="between"><h3 id="planH">本周安排</h3><a class="small muted" href="web-me.html#orders">日历 ›</a></div>
+        <ul class="plan">
+          <li><span class="d num"><b>16</b>周一</span><span class="grow"><b>林知夏 · 语音咨询</b><small class="num">20:00–20:50 · 第 1 次</small></span><span class="tag tag-ok">已支付</span></li>
+          <li><span class="d num"><b>17</b>周二</span><span class="grow"><b>小屿随访</b><small class="num">21:30 · 睡眠与情绪回访 3 分钟</small></span><span class="tag tag-plain">自动</span></li>
+          <li><span class="d num"><b>19</b>周四</span><span class="grow"><b>CBT-I 睡眠日记</b><small>林老师布置 · 每天起床后填写</small></span><span class="tag tag-plain">待开始</span></li>
+        </ul>
+      </section>
+
+      <section class="card sos" aria-labelledby="sosH">
+        <div class="h" id="sosH"><svg class="ic"><use href="#i-phone"/></svg>紧急求助</div>
+        <div class="no num">12356</div>
+        <p>全国心理援助热线，7×24 小时免费。如果你此刻有伤害自己的念头，真人值班咨询师 3 分钟内介入；有生命危险请立即拨打 120 / 110。</p>
+        <div class="acts"><a class="btn btn-risk btn-sm" href="tel:12356">拨打 12356</a><a class="btn btn-ghost btn-sm" href="web-voice.html#crisis">联系值班咨询师</a></div>
+      </section>
+    </aside>
+  </div>
+</main>
+<footer class="web-foot"><span>听屿 · 小屿 AI 只做接待、初筛与匹配，咨询与治疗由持证咨询师完成</span><span>隐私政策 · 用户协议 · 咨询师入驻 · 心理援助热线 12356</span></footer>
+
+<script>
+(function () {
+  // avatar menu
+  var mb = document.querySelector('.me-btn'), menu = document.querySelector('.menu');
+  mb.addEventListener('click', function (e) { e.stopPropagation(); menu.hidden = !menu.hidden; mb.setAttribute('aria-expanded', String(!menu.hidden)); });
+  document.addEventListener('click', function (e) { if (!menu.contains(e.target)) { menu.hidden = true; mb.setAttribute('aria-expanded', 'false'); } });
+  document.querySelector('[data-logout]').addEventListener('click', function (e) { e.preventDefault(); toast('原型演示：已保持登录状态'); });
+
+  // countdown to tomorrow 20:00
+  var left = 22 * 3600 + 41 * 60 + 52, cd = document.getElementById('cd');
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+  setInterval(function () {
+    left = Math.max(0, left - 1);
+    cd.innerHTML = '<b>' + pad(Math.floor(left / 3600)) + '</b><span>时</span><b>' + pad(Math.floor(left % 3600 / 60)) + '</b><span>分</span><b>' + pad(left % 60) + '</b><span>秒</span>';
+  }, 1000);
+  document.getElementById('reschedule').addEventListener('click', function () { toast('开始前 24 小时可免费改约，正在打开林老师的可约时间'); setTimeout(function () { location.href = 'web-counselor.html#book'; }, 900); });
+
+  // chart
+  var days = ['11/9', '11/10', '11/11', '11/12', '11/13', '11/14', '今天'];
+  var vals = [52, 46, 41, 38, 44, 47, null];
+  var svg = document.getElementById('chart');
+  function draw() {
+    var x0 = 18, x1 = 286, y0 = 18, y1 = 104, n = days.length;
+    var X = function (i) { return x0 + (x1 - x0) * i / (n - 1); }, Y = function (v) { return y1 - (y1 - y0) * (v - 30) / 30; };
+    var h = '';
+    [35, 45, 55].forEach(function (g) { h += '<line class="grid-l" x1="' + x0 + '" x2="' + x1 + '" y1="' + Y(g) + '" y2="' + Y(g) + '"/>'; });
+    var pts = vals.map(function (v, i) { return v == null ? null : [X(i), Y(v)]; }).filter(Boolean);
+    var line = pts.map(function (p, i) { return (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1); }).join(' ');
+    h += '<path class="area" d="' + line + ' L' + pts[pts.length - 1][0] + ' ' + y1 + ' L' + pts[0][0] + ' ' + y1 + ' Z"/>';
+    h += '<path class="ln" d="' + line + '"/>';
+    vals.forEach(function (v, i) {
+      h += '<text class="ax" text-anchor="middle" x="' + X(i) + '" y="124">' + days[i] + '</text>';
+      if (v == null) { h += '<circle cx="' + X(i) + '" cy="' + Y(45) + '" r="4" class="pt" style="stroke-dasharray:2 2"/>'; return; }
+      h += '<circle class="pt' + (i === n - 1 ? ' today' : '') + '" cx="' + X(i) + '" cy="' + Y(v) + '" r="' + (i === n - 1 ? 4.5 : 3.5) + '"/>';
+      h += '<text class="val" text-anchor="middle" x="' + X(i) + '" y="' + (Y(v) - 8) + '">' + v + '</text>';
+    });
+    svg.innerHTML = h;
+    var f = vals.filter(function (v) { return v != null; });
+    document.getElementById('avg').textContent = Math.round(f.reduce(function (a, b) { return a + b; }, 0) / f.length);
+  }
+  draw();
+
+  // mood check-in
+  var picked = null;
+  document.querySelectorAll('.mood button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      document.querySelectorAll('.mood button').forEach(function (x) { x.classList.remove('on'); });
+      b.classList.add('on'); picked = b;
+    });
+  });
+  document.querySelector('.mood button[data-v="38"]').click();
+  document.querySelectorAll('.factors .chip').forEach(function (c) { c.addEventListener('click', function () { c.classList.toggle('on'); }); });
+  document.getElementById('saveMood').addEventListener('click', function () {
+    if (!picked) { toast('先选一个今天的心情'); return; }
+    vals[6] = +picked.dataset.v; draw();
+    document.getElementById('moodState').textContent = '已打卡 · ' + picked.textContent.trim();
+    toast('已记录今天的心情：' + picked.textContent.trim());
+  });
+
+  // feed filter
+  document.querySelectorAll('#feedSeg button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      document.querySelectorAll('#feedSeg button').forEach(function (x) { x.classList.toggle('on', x === b); });
+      document.querySelectorAll('#feed .post').forEach(function (p) { p.hidden = b.dataset.k !== 'all' && p.dataset.k !== b.dataset.k; });
+    });
+  });
+
+  document.getElementById('renew').addEventListener('click', function () { toast('已为你打开续费：屿伴会员 ¥39/月'); });
+
+  // gentle orb breathing
+  var orb = document.getElementById('homeOrb'), t0 = performance.now();
+  (function f(t) { orb.style.setProperty('--lv', (0.18 + 0.1 * Math.sin((t - t0) / 700)).toFixed(3)); requestAnimationFrame(f); })(t0);
+})();
+</script>
+</body>
+</html>

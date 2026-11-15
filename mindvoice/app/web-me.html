@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>听屿 Web · 个人中心</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@500;600;900&display=swap">
+<link rel="stylesheet" href="ds.css">
+<script src="icons.js"></script>
+<style>
+/* Web · 个人中心 —— tokens only */
+.top-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+.top-right .search { width: 220px; height: 36px; }
+.icon-btn { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; border: 1px solid var(--line-2); background: var(--surface); color: var(--ink-2); position: relative; }
+.icon-btn .badge { position: absolute; top: -4px; right: -4px; }
+.me-av { border-radius: 50%; box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--primary); }
+
+.shell { display: grid; grid-template-columns: 232px minmax(0, 1fr); gap: 24px; align-items: start; }
+.side { position: sticky; top: 88px; display: grid; gap: 12px; }
+.prof { padding: 18px; display: grid; justify-items: center; text-align: center; gap: 4px; }
+.prof b { font-size: 17px; margin-top: 8px; }
+.prof .small { color: var(--ink-3); }
+.prof .stats { display: grid; grid-template-columns: repeat(3, 1fr); width: 100%; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line-2); }
+.prof .stats div { display: grid; font-size: 11.5px; color: var(--ink-3); }
+.prof .stats b { margin: 0; font-size: 17px; color: var(--ink); font-family: var(--font-num); }
+.menu { padding: 6px; display: grid; gap: 2px; }
+.menu a { display: flex; align-items: center; gap: 10px; height: 40px; padding: 0 12px; border-radius: var(--r); color: var(--ink-2); font-size: 14px; }
+.menu a:hover { background: var(--surface-2); }
+.menu a.on { background: var(--primary-soft); color: var(--primary); font-weight: 600; }
+.menu a .ic { color: currentColor; }
+.menu a .tag, .menu a .badge { margin-left: auto; }
+.menu hr { border: 0; height: 1px; background: var(--line-2); margin: 4px 8px; }
+
+.main { display: grid; gap: 20px; min-width: 0; }
+.sec { scroll-margin-top: 88px; }
+.card-h { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 20px; border-bottom: 1px solid var(--line-2); }
+.card-h h2 { margin: 0; font-size: 17px; display: flex; align-items: center; gap: 8px; }
+.card-b { padding: 16px 20px; }
+
+.next { display: grid; grid-template-columns: auto 1fr auto; gap: 16px; align-items: center; padding: 18px 20px; background: var(--primary); color: var(--on-primary); border-radius: var(--r-lg); position: relative; overflow: hidden; }
+.next::after { content: ""; position: absolute; right: -80px; top: -120px; width: 320px; height: 320px; border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--orb-1) 45%, transparent), transparent 70%); pointer-events: none; }
+.next .k { font-size: 12.5px; opacity: .8; display: flex; align-items: center; gap: 6px; }
+.next h2 { margin: 2px 0; font-size: 20px; }
+.next p { margin: 0; font-size: 13px; opacity: .85; }
+.next .acts { display: flex; gap: 10px; position: relative; z-index: 1; }
+.next .btn-on { background: var(--on-primary); color: var(--primary); }
+.next .btn-line { background: transparent; color: var(--on-primary); border-color: color-mix(in srgb, var(--on-primary) 45%, transparent); }
+.next .cd { display: grid; justify-items: center; padding: 6px 14px; border-left: 1px solid color-mix(in srgb, var(--on-primary) 25%, transparent); position: relative; z-index: 1; }
+.next .cd b { font-size: 24px; font-family: var(--font-num); line-height: 1.2; }
+.next .cd span { font-size: 11.5px; opacity: .8; }
+.next-grid { display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: center; }
+
+table.tb { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+.tb th { text-align: left; font-weight: 500; color: var(--ink-3); font-size: 12.5px; padding: 10px 20px; background: var(--surface-2); border-bottom: 1px solid var(--line-2); white-space: nowrap; }
+.tb td { padding: 14px 20px; border-bottom: 1px solid var(--line-2); vertical-align: middle; }
+.tb tr:last-child td { border-bottom: 0; }
+.tb .who { display: flex; align-items: center; gap: 10px; }
+.tb .who b { display: block; font-size: 14px; }
+.tb .who span { font-size: 12px; color: var(--ink-3); }
+.tb .acts { display: flex; gap: 8px; justify-content: flex-end; }
+.tb .r { text-align: right; }
+.tbl-wrap { overflow-x: auto; }
+
+.two { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); gap: 20px; }
+.two > * { min-width: 0; }
+
+.mood-head { display: flex; gap: 22px; padding: 14px 20px 0; flex-wrap: wrap; }
+.mood-head div { display: grid; font-size: 12px; color: var(--ink-3); }
+.mood-head b { font-size: 20px; color: var(--ink); font-family: var(--font-num); font-weight: 600; }
+.chart { position: relative; padding: 8px 12px 6px 4px; }
+.chart svg { width: 100%; height: auto; display: block; overflow: visible; }
+.chart .grid line { stroke: var(--line-2); stroke-width: 1; }
+.chart .ylab { fill: var(--ink-4); font-size: 11px; font-family: var(--font-body); }
+.chart .xlab { fill: var(--ink-4); font-size: 11px; font-family: var(--font-num); }
+.chart .area { fill: color-mix(in srgb, var(--primary) 10%, transparent); }
+.chart .line { fill: none; stroke: var(--primary); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.chart .pt { fill: var(--surface); stroke: var(--primary); stroke-width: 2; }
+.chart .pt.miss { fill: var(--surface); stroke: var(--ink-4); stroke-dasharray: 2 2; stroke-width: 1.5; }
+.chart .pt.ev { fill: var(--accent); stroke: var(--surface); }
+.chart .xh { stroke: var(--ink-4); stroke-width: 1; stroke-dasharray: 3 3; }
+.chart .ann { fill: var(--accent); font-size: 11px; font-family: var(--font-body); }
+.tip { position: absolute; pointer-events: none; background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow); border-radius: var(--r-sm); padding: 6px 10px; font-size: 12px; white-space: nowrap; transform: translate(-50%, -110%); }
+.tip b { font-family: var(--font-num); }
+.legend { display: flex; gap: 14px; padding: 0 20px 14px; font-size: 12px; color: var(--ink-3); flex-wrap: wrap; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--primary); background: var(--surface); }
+.legend i.m { border: 1.5px dashed var(--ink-4); }
+.legend i.e { background: var(--accent); border-color: var(--accent); }
+
+.rep { display: grid; grid-template-columns: 1fr auto; gap: 6px 12px; padding: 14px 20px; align-items: center; }
+.rep + .rep { border-top: 1px solid var(--line-2); }
+.rep .nm b { font-size: 14px; }
+.rep .nm span { font-size: 12px; color: var(--ink-3); margin-left: 6px; }
+.rep .sc { display: flex; align-items: baseline; gap: 6px; justify-self: end; }
+.rep .sc b { font-size: 22px; font-family: var(--font-num); font-weight: 700; }
+.rep .sc span { font-size: 12px; color: var(--ink-3); }
+.rep .seg5 { grid-column: 1 / -1; display: grid; gap: 2px; position: relative; height: 6px; }
+.rep .seg5 i { border-radius: 2px; background: var(--bg-2); }
+.rep .seg5 i.f { background: var(--primary); }
+.rep .seg5 i.f.w { background: var(--warn); }
+.rep .tr { grid-column: 1 / -1; display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--ink-3); }
+.spark { width: 72px; height: 22px; }
+.spark polyline { fill: none; stroke: var(--ink-3); stroke-width: 1.5; }
+.spark circle { fill: var(--primary); }
+.down { color: var(--ok); display: inline-flex; align-items: center; gap: 2px; font-weight: 600; }
+
+.vip { padding: 20px; border-radius: var(--r-lg); background: linear-gradient(135deg, var(--primary), var(--primary-ink)); color: var(--on-primary); position: relative; overflow: hidden; display: grid; gap: 12px; }
+.vip::after { content: ""; position: absolute; right: -60px; bottom: -90px; width: 240px; height: 240px; border-radius: 50%; border: 30px solid color-mix(in srgb, var(--orb-1) 22%, transparent); }
+.vip .t { display: flex; align-items: center; gap: 8px; font-size: 13px; opacity: .85; }
+.vip h3 { margin: 0; font-size: 22px; }
+.vip ul { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; font-size: 13px; position: relative; z-index: 1; }
+.vip li { display: flex; align-items: center; gap: 6px; }
+.vip .f { display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; padding-top: 12px; border-top: 1px solid color-mix(in srgb, var(--on-primary) 22%, transparent); position: relative; z-index: 1; }
+.vip .btn-on { background: var(--on-primary); color: var(--primary); }
+
+.set { display: grid; grid-template-columns: 1fr auto; gap: 4px 16px; align-items: center; padding: 14px 20px; }
+.set + .set { border-top: 1px solid var(--line-2); }
+.set b { font-size: 14px; font-weight: 500; }
+.set p { margin: 0; font-size: 12.5px; color: var(--ink-3); grid-column: 1; }
+.set .switch { grid-row: 1 / span 2; grid-column: 2; }
+.data-acts { display: flex; gap: 10px; padding: 14px 20px; border-top: 1px solid var(--line-2); background: var(--surface-2); border-radius: 0 0 var(--r-lg) var(--r-lg); flex-wrap: wrap; align-items: center; }
+.btn-risk-ghost { background: var(--surface); border-color: var(--line); color: var(--risk); }
+.btn-risk { background: var(--risk); color: var(--on-accent); }
+
+.skins { display: flex; gap: 8px; flex-wrap: wrap; }
+.skins button { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border-radius: var(--r-pill); border: 1px solid var(--line); background: var(--surface); font-size: 13px; color: var(--ink-2); }
+.skins button.on { border-color: var(--primary); color: var(--primary); background: var(--primary-soft); font-weight: 600; }
+
+.modal { position: fixed; z-index: 95; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(440px, calc(100vw - 32px)); background: var(--surface); border-radius: var(--r-xl); box-shadow: var(--shadow-lg); padding: 24px; }
+.modal h2 { margin: 0 0 8px; font-size: 20px; }
+.modal p { margin: 0 0 14px; color: var(--ink-2); }
+.modal .acts { display: flex; gap: 10px; justify-content: flex-end; margin-top: 16px; }
+
+@media (max-width: 1100px) { .two { grid-template-columns: 1fr; } }
+@media (max-width: 900px) {
+  .web-top nav, .top-right .search { display: none; }
+  .shell { grid-template-columns: 1fr; }
+  .side { position: static; }
+  .next { grid-template-columns: 1fr; }
+  .next .cd { border-left: 0; justify-items: start; padding: 0; }
+  .next .acts { flex-wrap: wrap; }
+  .vip ul { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<header class="web-top"><div class="in">
+  <a class="brand" href="web-home.html"><span class="brand-mark"><svg class="ic"><use href="#i-leaf"/></svg></span>听屿</a>
+  <nav aria-label="主导航">
+    <a href="web-home.html">首页</a>
+    <a href="web-voice.html">小屿接待</a>
+    <a href="web-counselors.html">找咨询师</a>
+    <a href="web-assess.html">心理测评</a>
+    <a href="web-creator.html">达人专区</a>
+  </nav>
+  <div class="top-right">
+    <label class="search"><svg class="ic ic-sm"><use href="#i-search"/></svg><input type="search" placeholder="搜索咨询师、话题、测评" aria-label="搜索"></label>
+    <a class="icon-btn" href="#appts" aria-label="消息，2 条未读"><svg class="ic"><use href="#i-bell"/></svg><span class="badge">2</span></a>
+    <a href="web-me.html" aria-label="个人中心" aria-current="page"><img class="avatar me-av" src="../assets/u-asian-man.jpg" alt="小周"></a>
+  </div>
+</div></header>
+
+<main class="web-main">
+  <div class="shell">
+    <aside class="side">
+      <div class="card prof">
+        <img class="avatar avatar-lg" src="../assets/u-asian-man.jpg" alt="">
+        <b>小周</b>
+        <span class="small">手机 138****6620 · 已实名</span>
+        <span class="tag tag-accent" style="margin-top:4px"><svg class="ic ic-sm" style="margin-right:4px"><use href="#i-gift"/></svg>屿伴会员</span>
+        <div class="stats"><div><b>2</b>接待</div><div><b>24</b>打卡</div><div><b>3</b>测评</div></div>
+      </div>
+      <nav class="card menu" aria-label="个人中心菜单">
+        <a href="#appts" class="on"><svg class="ic"><use href="#i-calendar"/></svg>我的预约<span class="badge">1</span></a>
+        <a href="#orders"><svg class="ic"><use href="#i-card"/></svg>订单与发票</a>
+        <a href="#mood"><svg class="ic"><use href="#i-chart"/></svg>情绪档案</a>
+        <a href="#reports"><svg class="ic"><use href="#i-file"/></svg>测评报告</a>
+        <a href="#vip"><svg class="ic"><use href="#i-gift"/></svg>会员<span class="tag tag-accent">屿伴</span></a>
+        <a href="#privacy"><svg class="ic"><use href="#i-shield"/></svg>隐私与安全</a>
+        <a href="#settings"><svg class="ic"><use href="#i-settings"/></svg>设置</a>
+        <hr>
+        <a href="#" id="logout"><svg class="ic"><use href="#i-logout"/></svg>退出登录</a>
+      </nav>
+    </aside>
+
+    <div class="main">
+      <div class="next">
+        <div class="next-grid">
+          <img class="avatar avatar-lg" src="../assets/c-lin.jpg" alt="林知夏" style="box-shadow:0 0 0 2px var(--on-primary)">
+          <div>
+            <span class="k"><svg class="ic ic-sm"><use href="#i-calendar"/></svg>下一次咨询 · 接待小结已同步，不用再讲一遍</span>
+            <h2 class="display">明天 20:00 · 林知夏 · 语音咨询</h2>
+            <p>11 月 16 日 周一 20:00–20:50 · 第 1 次 · 认知行为疗法 CBT</p>
+          </div>
+        </div>
+        <div class="cd"><b class="num">23:41</b><span>小时后开始</span></div>
+        <div class="acts">
+          <a class="btn btn-on" href="web-session.html"><svg class="ic ic-sm"><use href="#i-headphones"/></svg>进入咨询室</a>
+          <button class="btn btn-line" type="button" data-toast="已为你打开改约：可选 11/17 20:00、11/18 19:00">改约</button>
+        </div>
+      </div>
+
+      <section class="card sec" id="appts" aria-labelledby="apH">
+        <div class="card-h">
+          <h2 id="apH" class="display"><svg class="ic" style="color:var(--primary)"><use href="#i-calendar"/></svg>我的预约</h2>
+          <div class="seg" role="tablist" id="apTabs">
+            <button class="on" type="button" role="tab" data-t="up">即将开始 · 2</button>
+            <button type="button" role="tab" data-t="done">已完成 · 2</button>
+            <button type="button" role="tab" data-t="cancel">已取消 · 1</button>
+          </div>
+        </div>
+        <div class="tbl-wrap">
+        <table class="tb">
+          <thead><tr><th>服务</th><th>时间</th><th>方式</th><th>金额</th><th>状态</th><th class="r">操作</th></tr></thead>
+          <tbody data-t="up">
+            <tr><td><div class="who"><img class="avatar" src="../assets/c-lin.jpg" alt=""><div><b>林知夏 · 个体咨询</b><span>第 1 次 · 50 分钟</span></div></div></td><td class="num">11/16 周一 20:00</td><td>语音</td><td class="num">¥400.00</td><td><span class="tag tag-ok">已支付</span></td><td><div class="acts"><button class="btn btn-ghost btn-sm" type="button" data-toast="已向林老师发送留言入口">给老师留言</button><a class="btn btn-primary btn-sm" href="web-session.html">咨询室</a></div></td></tr>
+            <tr><td><div class="who"><span class="avatar avatar-xiaoyu">屿</span><div><b>小屿 · 一周随访</b><span>睡眠与情绪复测 · 约 5 分钟</span></div></div></td><td class="num">11/22 周日 21:00</td><td>语音</td><td>免费</td><td><span class="tag">已提醒</span></td><td><div class="acts"><button class="btn btn-ghost btn-sm" type="button" data-toast="随访已改到 11/22 22:00">调整时间</button></div></td></tr>
+          </tbody>
+          <tbody data-t="done" hidden>
+            <tr><td><div class="who"><span class="avatar avatar-xiaoyu">屿</span><div><b>小屿 · 语音接待</b><span>匹配到林知夏 · 18 分钟</span></div></div></td><td class="num">11/15 周日 21:12</td><td>语音</td><td>免费</td><td><span class="tag tag-plain">已完成</span></td><td><div class="acts"><a class="btn btn-ghost btn-sm" href="web-voice.html">查看小结</a></div></td></tr>
+            <tr><td><div class="who"><span class="avatar avatar-xiaoyu">屿</span><div><b>小屿 · 语音接待</b><span>焦虑、疲惫 · 9 分钟</span></div></div></td><td class="num">11/12 周四 23:40</td><td>语音</td><td>免费</td><td><span class="tag tag-plain">已完成</span></td><td><div class="acts"><a class="btn btn-ghost btn-sm" href="web-voice.html">查看小结</a></div></td></tr>
+          </tbody>
+          <tbody data-t="cancel" hidden>
+            <tr><td><div class="who"><img class="avatar" src="../assets/c-fang.jpg" alt=""><div><b>方宁 · 个体咨询</b><span>时间冲突，本人取消</span></div></div></td><td class="num">11/14 周六 14:00</td><td>视频</td><td class="num">¥420.00</td><td><span class="tag tag-plain">已全额退款</span></td><td><div class="acts"><a class="btn btn-ghost btn-sm" href="web-counselor.html">再次预约</a></div></td></tr>
+          </tbody>
+        </table>
+        </div>
+      </section>
+
+      <div class="two">
+        <section class="card sec" id="mood" aria-labelledby="moodH">
+          <div class="card-h">
+            <h2 id="moodH" class="display"><svg class="ic" style="color:var(--primary)"><use href="#i-chart"/></svg>情绪档案 · 近 30 天</h2>
+            <a class="small muted" href="web-voice.html">去打卡 ›</a>
+          </div>
+          <div class="mood-head">
+            <div><span>打卡天数</span><b>24<span class="small muted" style="font-weight:400"> / 30</span></b></div>
+            <div><span>平均心情</span><b>2.6<span class="small muted" style="font-weight:400"> / 5</span></b></div>
+            <div><span>近 7 天</span><b style="color:var(--ok)">↑ 0.6</b></div>
+            <div><span>最常见标签</span><b style="font-size:15px;font-family:var(--font-body);line-height:2">疲惫 · 焦虑 · 失眠</b></div>
+          </div>
+          <div class="chart" id="moodChart"></div>
+          <div class="legend"><span><i></i>已打卡</span><span><i class="m"></i>未打卡（按前后插值）</span><span><i class="e"></i>和小屿聊过</span></div>
+        </section>
+
+        <section class="card sec" id="reports" aria-labelledby="repH">
+          <div class="card-h">
+            <h2 id="repH" class="display"><svg class="ic" style="color:var(--primary)"><use href="#i-file"/></svg>测评报告</h2>
+            <a class="small muted" href="web-assess.html">重新测评 ›</a>
+          </div>
+          <div class="rep">
+            <div class="nm"><b>PHQ-9</b><span>抑郁筛查 · 11/15</span></div>
+            <div class="sc"><b>9</b><span>/27</span><span class="tag tag-warn">轻度</span></div>
+            <div class="seg5" style="grid-template-columns:5fr 5fr 5fr 5fr 8fr"><i class="f"></i><i class="f w"></i><i></i><i></i><i></i></div>
+            <div class="tr"><svg class="spark" viewBox="0 0 72 22"><polyline points="4,5 36,10 68,13"/><circle cx="68" cy="13" r="3"/></svg>12 → 10 → 9<span class="down">↓ 3</span><span style="margin-left:auto">近 3 周</span></div>
+          </div>
+          <div class="rep">
+            <div class="nm"><b>GAD-7</b><span>焦虑筛查 · 11/15</span></div>
+            <div class="sc"><b>11</b><span>/21</span><span class="tag tag-warn">中度</span></div>
+            <div class="seg5" style="grid-template-columns:5fr 5fr 5fr 7fr"><i class="f"></i><i class="f"></i><i class="f w"></i><i></i></div>
+            <div class="tr"><svg class="spark" viewBox="0 0 72 22"><polyline points="4,6 36,9 68,12"/><circle cx="68" cy="12" r="3"/></svg>13 → 12 → 11<span class="down">↓ 2</span><span style="margin-left:auto">近 3 周</span></div>
+          </div>
+          <div class="rep">
+            <div class="nm"><b>ISI</b><span>失眠严重度 · 11/15</span></div>
+            <div class="sc"><b>16</b><span>/28</span><span class="tag tag-warn">中度</span></div>
+            <div class="seg5" style="grid-template-columns:8fr 7fr 7fr 7fr"><i class="f"></i><i class="f"></i><i class="f w"></i><i></i></div>
+            <div class="tr"><svg class="spark" viewBox="0 0 72 22"><polyline points="4,4 36,9 68,11"/><circle cx="68" cy="11" r="3"/></svg>19 → 17 → 16<span class="down">↓ 3</span><span style="margin-left:auto">近 3 周</span></div>
+          </div>
+          <div class="card-b small muted" style="border-top:1px solid var(--line-2);padding-top:12px">量表结果仅用于初筛与随访，不构成诊断。具体评估以咨询师面谈为准。</div>
+        </section>
+      </div>
+
+      <div class="two">
+        <section class="card sec" id="orders" aria-labelledby="ordH">
+          <div class="card-h">
+            <h2 id="ordH" class="display"><svg class="ic" style="color:var(--primary)"><use href="#i-card"/></svg>订单与发票</h2>
+            <span class="small muted">支持开具增值税电子普通发票</span>
+          </div>
+          <div class="tbl-wrap">
+          <table class="tb">
+            <thead><tr><th>订单</th><th>金额</th><th>状态</th><th class="r">发票</th></tr></thead>
+            <tbody>
+              <tr><td><b style="font-weight:500">林知夏 · 个体咨询 50 分钟</b><div class="small muted num">TY2611152138 · 11/15 21:38</div></td><td class="num">¥400.00</td><td><span class="tag tag-ok">已支付</span></td><td class="r"><button class="btn btn-ghost btn-sm" type="button" data-toast="咨询完成后可开票">咨询后可开</button></td></tr>
+              <tr><td><b style="font-weight:500">屿伴会员 · 连续包月</b><div class="small muted num">TY2611030904 · 11/03 09:04</div></td><td class="num">¥39.00</td><td><span class="tag tag-ok">已支付</span></td><td class="r"><button class="btn btn-soft btn-sm" type="button" data-toast="发票已发送至 zhou***@163.com">申请开票</button></td></tr>
+              <tr><td><b style="font-weight:500">方宁 · 个体咨询 50 分钟</b><div class="small muted num">TY2611131022 · 11/13 10:22</div></td><td class="num">¥420.00</td><td><span class="tag tag-plain">已退款</span></td><td class="r small muted">—</td></tr>
+            </tbody>
+          </table>
+          </div>
+        </section>
+
+        <section class="sec" id="vip" aria-label="屿伴会员">
+          <div class="vip">
+            <span class="t"><svg class="ic ic-sm"><use href="#i-gift"/></svg>屿伴会员 · 连续包月</span>
+            <h3 class="display">¥39<span style="font-size:14px;font-weight:400;opacity:.8"> / 月 · 已陪伴你 13 天</span></h3>
+            <ul>
+              <li><svg class="ic ic-sm"><use href="#i-check"/></svg>小屿语音接待不限次</li>
+              <li><svg class="ic ic-sm"><use href="#i-check"/></svg>咨询每次立减 ¥20</li>
+              <li><svg class="ic ic-sm"><use href="#i-check"/></svg>助眠音频全部解锁</li>
+              <li><svg class="ic ic-sm"><use href="#i-check"/></svg>月度情绪报告解读</li>
+            </ul>
+            <div class="f"><span>下次扣费 12/03 · ¥39 · 随时可取消</span><button class="btn btn-on btn-sm" type="button" data-toast="已打开会员管理">管理</button></div>
+          </div>
+        </section>
+      </div>
+
+      <section class="card sec" id="privacy" aria-labelledby="pvH">
+        <div class="card-h">
+          <h2 id="pvH" class="display"><svg class="ic" style="color:var(--primary)"><use href="#i-shield"/></svg>数据与隐私</h2>
+          <span class="tag tag-ok"><svg class="ic ic-sm" style="margin-right:4px"><use href="#i-lock"/></svg>数据加密存储于境内服务器</span>
+        </div>
+        <div class="set"><b>接待记录同步给咨询师</b><p>预约后，小屿的接待小结与量表结果会提供给你选择的咨询师，减少重复讲述。原始语音不会同步。</p><button class="switch on" type="button" role="switch" aria-checked="true" aria-label="接待记录同步给咨询师" data-k="接待记录同步"></button></div>
+        <div class="set"><b>咨询师可查看我的情绪曲线</b><p>开启后，林知夏老师可以在咨询前查看近 30 天的打卡趋势。</p><button class="switch" type="button" role="switch" aria-checked="false" aria-label="咨询师可查看情绪曲线" data-k="情绪曲线共享"></button></div>
+        <div class="set"><b>小屿随访提醒</b><p>每周日 21:00 提醒复测与打卡，可随时关闭。</p><button class="switch on" type="button" role="switch" aria-checked="true" aria-label="小屿随访提醒" data-k="随访提醒"></button></div>
+        <div class="set"><b>用对话内容改进服务</b><p>去标识化后用于改进小屿的接待质量，默认关闭。</p><button class="switch" type="button" role="switch" aria-checked="false" aria-label="用对话内容改进服务" data-k="改进服务"></button></div>
+        <div class="data-acts">
+          <button class="btn btn-ghost btn-sm" type="button" data-toast="导出任务已创建，完成后发送到你的邮箱（约 10 分钟）"><svg class="ic ic-sm"><use href="#i-file"/></svg>导出我的数据</button>
+          <button class="btn btn-risk-ghost btn-sm" type="button" id="delBtn">删除全部数据</button>
+          <span class="small muted" style="margin-left:auto">最近一次登录：11/15 21:05 · Chrome · 上海</span>
+        </div>
+      </section>
+
+      <section class="card sec" id="settings" aria-labelledby="stH">
+        <div class="card-h"><h2 id="stH" class="display"><svg class="ic" style="color:var(--primary)"><use href="#i-settings"/></svg>设置</h2></div>
+        <div class="set"><b>界面外观</b><p>切换后在所有页面生效。</p><div class="skins" id="skins" style="grid-row:1 / span 2;grid-column:2">
+          <button type="button" data-s="clinic">专业</button><button type="button" data-s="mist">晨雾</button><button type="button" data-s="night">夜航</button><button type="button" data-s="palm">掌心</button><button type="button" data-s="pitch">路演</button>
+        </div></div>
+        <div class="set"><b>咨询开始前提醒</b><p>提前 30 分钟短信 + App 推送</p><button class="switch on" type="button" role="switch" aria-checked="true" aria-label="咨询开始前提醒" data-k="咨询提醒"></button></div>
+      </section>
+    </div>
+  </div>
+</main>
+
+<div class="scrim" id="scrim" hidden></div>
+<div class="modal" id="delModal" role="dialog" aria-modal="true" aria-labelledby="delH" hidden>
+  <h2 id="delH" class="display">删除全部数据？</h2>
+  <p>将永久删除你的接待记录、情绪打卡、测评报告和私人笔记，无法恢复。已支付订单的财务凭证依法保留 3 年。</p>
+  <p class="small muted">提示：明天 20:00 的咨询不受影响，但林老师将无法查看接待小结。</p>
+  <div class="acts"><button class="btn btn-ghost" type="button" data-close>再想想</button><button class="btn btn-risk" type="button" id="delOk">确认删除</button></div>
+</div>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  // toasts
+  document.querySelectorAll('[data-toast]').forEach(function (b) { b.addEventListener('click', function (e) { e.preventDefault(); toast(b.getAttribute('data-toast')); }); });
+  // appointment tabs
+  document.querySelectorAll('#apTabs button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      document.querySelectorAll('#apTabs button').forEach(function (x) { x.classList.toggle('on', x === b); x.setAttribute('aria-selected', x === b); });
+      document.querySelectorAll('#appts tbody').forEach(function (tb) { tb.hidden = tb.getAttribute('data-t') !== b.getAttribute('data-t'); });
+    });
+  });
+  // menu highlight
+  var links = Array.prototype.slice.call(document.querySelectorAll('.menu a[href^="#"]')).filter(function (a) { return a.getAttribute('href').length > 1; });
+  links.forEach(function (a) { a.addEventListener('click', function () { links.forEach(function (x) { x.classList.toggle('on', x === a); }); }); });
+  $('logout').addEventListener('click', function (e) { e.preventDefault(); toast('原型演示：已保持登录'); });
+  // switches
+  document.querySelectorAll('.switch').forEach(function (s) {
+    s.addEventListener('click', function () { var on = s.classList.toggle('on'); s.setAttribute('aria-checked', on); toast((s.getAttribute('data-k') || '设置') + (on ? '已开启' : '已关闭')); });
+  });
+  // skins
+  function paintSkins() { var cur = TingyuSkin.get(); document.querySelectorAll('#skins button').forEach(function (b) { b.classList.toggle('on', b.getAttribute('data-s') === cur); }); }
+  document.querySelectorAll('#skins button').forEach(function (b) { b.addEventListener('click', function () { TingyuSkin.set(b.getAttribute('data-s')); paintSkins(); }); });
+  paintSkins();
+  // delete modal
+  function close() { $('scrim').hidden = true; $('delModal').hidden = true; }
+  $('delBtn').addEventListener('click', function () { $('scrim').hidden = false; $('delModal').hidden = false; });
+  $('scrim').addEventListener('click', close);
+  document.querySelector('[data-close]').addEventListener('click', close);
+  $('delOk').addEventListener('click', function () { close(); toast('已提交删除申请，7 天冷静期内可撤销'); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+
+  // mood chart: 30 days 10/17 – 11/15, 1–5 scale, null = missed check-in
+  var vals = [3, 3, 2.5, null, 3, 2.5, 2, 2, null, 2.5, 3, 2, 1.5, 2, null, 2, 2.5, 3, 2.5, 2, 2, null, 1.5, 2, 2.5, null, 3, 3, 3.5, 3];
+  var events = { 26: '和小屿聊了 9 分钟', 29: '和小屿聊了 18 分钟 · 匹配林知夏' };
+  var W = 640, H = 240, L = 40, R = 12, T = 16, B = 28;
+  var n = vals.length, xs = function (i) { return L + i * (W - L - R) / (n - 1); }, ys = function (v) { return T + (5 - v) * (H - T - B) / 4; };
+  var filled = vals.map(function (v, i) {
+    if (v != null) return v; var a = i - 1, b = i + 1; while (vals[a] == null) a--; while (vals[b] == null) b++;
+    return vals[a] + (vals[b] - vals[a]) * (i - a) / (b - a);
+  });
+  function date(i) { var d = new Date(2026, 9, 17 + i); return (d.getMonth() + 1) + '/' + d.getDate(); }
+  var labels = ['很差', '低落', '一般', '不错', '很好'];
+  var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="近 30 天情绪曲线，平均 2.6 分，最近一周回升"><g class="grid">';
+  for (var v = 1; v <= 5; v++) svg += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + ys(v) + '" y2="' + ys(v) + '"/><text class="ylab" x="' + (L - 8) + '" y="' + (ys(v) + 4) + '" text-anchor="end">' + labels[v - 1] + '</text>';
+  svg += '</g>';
+  [0, 7, 14, 21, 29].forEach(function (i) { svg += '<text class="xlab" x="' + xs(i) + '" y="' + (H - 6) + '" text-anchor="middle">' + date(i) + '</text>'; });
+  var pts = filled.map(function (v, i) { return xs(i).toFixed(1) + ',' + ys(v).toFixed(1); });
+  svg += '<path class="area" d="M' + xs(0) + ',' + ys(1) + ' L' + pts.join(' L') + ' L' + xs(n - 1) + ',' + ys(1) + 'Z"/>';
+  svg += '<polyline class="line" points="' + pts.join(' ') + '"/>';
+  svg += '<line class="xh" id="xh" y1="' + T + '" y2="' + ys(1) + '" x1="-10" x2="-10"/>';
+  filled.forEach(function (v, i) { svg += '<circle class="pt' + (vals[i] == null ? ' miss' : '') + (events[i] ? ' ev' : '') + '" cx="' + xs(i) + '" cy="' + ys(v) + '" r="' + (events[i] ? 5.5 : 4) + '"/>'; });
+  svg += '<text class="ann" x="' + (xs(29) - 4) + '" y="' + (ys(filled[29]) - 12) + '" text-anchor="end">11/15 匹配林知夏</text>';
+  svg += '<rect id="hit" x="' + L + '" y="0" width="' + (W - L - R) + '" height="' + H + '" fill="transparent"/></svg><div class="tip" id="tip" hidden></div>';
+  var box = $('moodChart'); box.innerHTML = svg;
+  var s = box.querySelector('svg'), tip = $('tip'), xh = $('xh');
+  s.addEventListener('mousemove', function (e) {
+    var r = s.getBoundingClientRect(), x = (e.clientX - r.left) * W / r.width;
+    var i = Math.max(0, Math.min(n - 1, Math.round((x - L) / ((W - L - R) / (n - 1)))));
+    xh.setAttribute('x1', xs(i)); xh.setAttribute('x2', xs(i));
+    tip.hidden = false; tip.style.left = (xs(i) * r.width / W + 4) + 'px'; tip.style.top = (ys(filled[i]) * r.height / H + 8) + 'px';
+    tip.innerHTML = '<span class="num">' + date(i) + '</span> · ' + (vals[i] == null ? '未打卡' : '<b>' + vals[i] + '</b> 分 · ' + labels[Math.round(vals[i]) - 1]) + (events[i] ? '<br>' + events[i] : '');
+  });
+  s.addEventListener('mouseleave', function () { tip.hidden = true; xh.setAttribute('x1', -10); xh.setAttribute('x2', -10); });
+})();
+</script>
+</body>
+</html>

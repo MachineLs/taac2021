@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>听屿 App · 接待小结</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@500;600;900&display=swap">
+<link rel="stylesheet" href="ds.css">
+<script src="icons.js"></script>
+<style>
+/* App · 接待小结 —— tokens only */
+.meta-line { padding: 0 16px 10px; display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--ink-3); }
+.meta-line .ic { width: 14px; height: 14px; }
+.wrap { padding: 0 16px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+.card h3 { margin: 0; font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+.card h3 .ic { width: 18px; height: 18px; color: var(--primary); }
+.card .hd { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+.card .hd .small { color: var(--ink-3); }
+
+.mood { display: grid; grid-template-columns: 104px 1fr; gap: 16px; align-items: center; }
+.ring { position: relative; width: 104px; height: 104px; }
+.ring svg { width: 104px; height: 104px; transform: rotate(-90deg); }
+.ring .track { stroke: var(--bg-2); }
+.ring .val { stroke: var(--warn); stroke-linecap: round; transition: stroke-dashoffset 1s ease; }
+.ring .c { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; line-height: 1.1; }
+.ring .c b { font-family: var(--font-num); font-size: 30px; font-weight: 700; }
+.ring .c span { font-size: 11px; color: var(--ink-3); margin-top: 2px; }
+.mood .k { font-size: 12px; color: var(--ink-3); }
+.mood .big { font-size: 22px; margin: 2px 0 6px; line-height: 1.3; }
+.mood .quote { font-size: 12.5px; color: var(--ink-2); background: var(--surface-2); border-left: 3px solid var(--primary); border-radius: 0 var(--r-sm) var(--r-sm) 0; padding: 6px 10px; line-height: 1.55; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line-2); }
+
+.scale { display: grid; gap: 12px; }
+.scale .r { display: grid; grid-template-columns: 1fr auto; gap: 6px 10px; align-items: center; }
+.scale .r .n { font-size: 13.5px; font-weight: 500; }
+.scale .r .n small { color: var(--ink-3); font-weight: 400; margin-left: 4px; font-size: 12px; }
+.scale .r .v { display: flex; align-items: center; gap: 8px; }
+.scale .r .v .num { font-weight: 600; font-size: 14px; }
+.scale .r .v .num small { color: var(--ink-4); font-weight: 500; font-size: 12px; }
+.scale .r .bar { grid-column: 1 / -1; height: 6px; }
+.disc { margin-top: 12px; font-size: 11.5px; color: var(--ink-4); display: flex; gap: 4px; align-items: flex-start; }
+.disc .ic { width: 13px; height: 13px; margin-top: 2px; }
+
+.risk { display: flex; gap: 12px; align-items: flex-start; }
+.risk .lv { width: 44px; height: 44px; border-radius: 12px; background: var(--ok-soft); color: var(--ok); display: grid; place-items: center; flex-shrink: 0; }
+.risk p { margin: 4px 0 0; font-size: 13px; color: var(--ink-2); line-height: 1.6; }
+.risk .steps { display: flex; gap: 4px; margin-top: 8px; }
+.risk .steps i { flex: 1; height: 4px; border-radius: 2px; background: var(--bg-2); }
+.risk .steps i.on { background: var(--ok); }
+.risk .steps-l { display: flex; justify-content: space-between; font-size: 11px; color: var(--ink-4); margin-top: 4px; }
+
+.tl { position: relative; display: grid; gap: 14px; padding-left: 4px; }
+.tl li { list-style: none; display: grid; grid-template-columns: 26px 1fr; gap: 12px; position: relative; }
+.tl li:not(:last-child)::before { content: ""; position: absolute; left: 12px; top: 28px; bottom: -14px; width: 2px; background: var(--line-2); }
+.tl .no { width: 26px; height: 26px; border-radius: 50%; background: var(--primary-soft); color: var(--primary); display: grid; place-items: center; font-family: var(--font-num); font-weight: 700; font-size: 12px; }
+.tl li:first-child .no { background: var(--primary); color: var(--on-primary); }
+.tl b { font-size: 14px; display: block; }
+.tl span { font-size: 12px; color: var(--ink-3); }
+ul.tl { margin: 0; padding: 0 0 0 4px; }
+
+.match { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; }
+.match b { font-size: 16px; }
+.match .t { font-size: 12px; color: var(--ink-3); }
+.match .pct { text-align: center; color: var(--accent); }
+.match .pct b { font-family: var(--font-num); font-size: 24px; display: block; line-height: 1.1; }
+.match .pct span { font-size: 11px; color: var(--ink-3); }
+.reasons { grid-column: 1 / -1; display: grid; gap: 6px; padding: 10px 12px; border-radius: var(--r); background: var(--surface-2); }
+.reasons div { display: flex; gap: 6px; align-items: center; font-size: 12.5px; color: var(--ink-2); }
+.reasons .ic { width: 15px; height: 15px; color: var(--ok); }
+.alts { grid-column: 1 / -1; display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--ink-3); }
+.alts img { margin-left: -6px; border: 2px solid var(--surface); }
+.alts img:first-child { margin-left: 0; }
+.alts a { margin-left: auto; color: var(--primary); }
+.endnote { padding: 14px 16px 20px; text-align: center; font-size: 11.5px; color: var(--ink-4); }
+
+.actionbar { flex-shrink: 0; display: flex; gap: 10px; padding: 10px 16px 34px; background: color-mix(in srgb, var(--surface) 96%, transparent); border-top: 1px solid var(--line-2); backdrop-filter: blur(10px); }
+.actionbar .ghost { width: 50px; height: 50px; border-radius: 50%; display: grid; place-items: center; border: 1px solid var(--line); background: var(--surface); color: var(--ink-2); flex-shrink: 0; }
+</style>
+</head>
+<body>
+<div class="phone fixed">
+  <div class="statusbar"></div>
+  <header class="navbar">
+    <a class="nb-btn" href="app-voice.html" aria-label="返回"><svg class="ic"><use href="#i-back"/></svg></a>
+    <h1>接待小结</h1>
+    <button class="nb-btn" type="button" id="share" aria-label="导出小结"><svg class="ic"><use href="#i-share"/></svg></button>
+  </header>
+
+  <div class="scroll">
+    <div class="meta-line"><svg class="ic"><use href="#i-clock"/></svg><span class="num">11 月 15 日 21:36</span> · 接待 <span class="num">6 分 42 秒</span><span style="margin-left:auto" class="row"><svg class="ic"><use href="#i-lock"/></svg>仅你和咨询师可见</span></div>
+    <div class="wrap">
+      <section class="card card-pad">
+        <div class="mood">
+          <div class="ring" role="img" aria-label="情绪指数 38，满分 100">
+            <svg viewBox="0 0 104 104"><circle class="track" cx="52" cy="52" r="44" fill="none" stroke-width="10"/><circle class="val" id="ringVal" cx="52" cy="52" r="44" fill="none" stroke-width="10" stroke-dasharray="276.46" stroke-dashoffset="276.46"/></svg>
+            <div class="c"><b>38</b><span>情绪指数</span></div>
+          </div>
+          <div>
+            <div class="k">当前情绪 · 持续 1 个多月</div>
+            <div class="big display">焦虑 · 疲惫</div>
+            <div class="quote">“一躺下脑子就停不下来，白天也没精神。”</div>
+          </div>
+        </div>
+        <div class="tags"><span class="small muted" style="margin-right:2px">主要困扰</span><span class="tag">职场压力</span><span class="tag">失眠</span><span class="tag">情绪低落</span><span class="tag tag-plain">偏好语音</span></div>
+      </section>
+
+      <section class="card card-pad">
+        <div class="hd"><h3><svg class="ic"><use href="#i-file"/></svg>量表初筛</h3><span class="small">接待中自动完成 · 3 项</span></div>
+        <div class="scale">
+          <div class="r"><span class="n">PHQ-9<small>抑郁筛查</small></span><span class="v"><span class="num">9<small>/27</small></span><span class="tag tag-ok">轻度</span></span><div class="bar ok"><i style="width:33%"></i></div></div>
+          <div class="r"><span class="n">GAD-7<small>焦虑筛查</small></span><span class="v"><span class="num">11<small>/21</small></span><span class="tag tag-warn">中度</span></span><div class="bar warn"><i style="width:52%"></i></div></div>
+          <div class="r"><span class="n">ISI<small>失眠严重度</small></span><span class="v"><span class="num">16<small>/28</small></span><span class="tag tag-warn">中度</span></span><div class="bar warn"><i style="width:57%"></i></div></div>
+        </div>
+        <div class="disc"><svg class="ic"><use href="#i-alert"/></svg>初筛结果仅供参考，不构成诊断；正式评估由咨询师在首次咨询中完成。</div>
+      </section>
+
+      <section class="card card-pad">
+        <div class="risk">
+          <span class="lv"><svg class="ic ic-lg"><use href="#i-shield"/></svg></span>
+          <div class="grow">
+            <div class="between"><h3 style="margin:0">风险等级</h3><span class="tag tag-ok">低风险</span></div>
+            <p>未报告自伤念头，建议常规咨询。小屿会每周跟进一次你的状态，情况变化时可随时拨打 <b class="num">12356</b>。</p>
+            <div class="steps" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
+            <div class="steps-l"><span>低风险</span><span>需关注</span><span>高风险</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card card-pad">
+        <div class="hd"><h3><svg class="ic"><use href="#i-flag"/></svg>建议方案</h3><span class="tag tag-accent">由咨询师执行</span></div>
+        <ul class="tl">
+          <li><span class="no">1</span><div><b>睡眠与压力评估</b><span>首次咨询 · 50 分钟 · 明确失眠类型和压力来源</span></div></li>
+          <li><span class="no">2</span><div><b>CBT-I 失眠认知行为干预 · 6 次</b><span>每周 1 次 · 睡眠日记、刺激控制、认知重建</span></div></li>
+          <li><span class="no">3</span><div><b>每周情绪追踪</b><span>小屿每周日提醒填写 PHQ-9 / ISI，结果同步咨询师</span></div></li>
+        </ul>
+      </section>
+
+      <section class="card card-pad">
+        <div class="hd"><h3><svg class="ic"><use href="#i-users"/></svg>为你匹配的咨询师</h3><a class="small" href="app-counselors.html" style="color:var(--ink-3)">换一位</a></div>
+        <a class="match" href="app-counselor.html">
+          <img class="avatar avatar-lg" src="../assets/c-lin.jpg" alt="林知夏">
+          <div><b>林知夏</b> <span class="rating" style="font-size:12px"><svg class="ic ic-sm" style="fill:currentColor;stroke:none"><use href="#i-star"/></svg>4.97</span><div class="t">国家二级心理咨询师 · 8 年 · CBT</div><div class="t"><span class="price" style="font-size:13px">¥400</span> / 50 分钟 · 明天 20:00 可约</div></div>
+          <div class="pct"><b>96%</b><span>匹配度</span></div>
+          <div class="reasons">
+            <div><svg class="ic"><use href="#i-check"/></svg>擅长失眠 CBT-I 干预，已帮助 230+ 位失眠来访者</div>
+            <div><svg class="ic"><use href="#i-check"/></svg>职场压力是她的主要方向之一</div>
+            <div><svg class="ic"><use href="#i-check"/></svg>支持语音咨询，明晚 20:00 有空档</div>
+          </div>
+        </a>
+        <div class="alts" style="margin-top:12px">
+          <img class="avatar avatar-sm" src="../assets/c-he.jpg" alt=""><img class="avatar avatar-sm" src="../assets/c-fang.jpg" alt="">
+          <span>备选：何清 89% · 方宁 85%</span>
+          <a href="app-counselors.html">查看</a>
+        </div>
+      </section>
+    </div>
+    <div class="endnote">小结由 AI 接待助手小屿生成，经你同意后才会同步给咨询师</div>
+  </div>
+
+  <div class="actionbar">
+    <a class="ghost" href="app-voice.html" aria-label="继续和小屿聊"><svg class="ic"><use href="#i-mic"/></svg></a>
+    <a class="btn btn-primary btn-lg grow" href="app-counselor.html">预约林知夏老师</a>
+  </div>
+  <span class="homebar" aria-hidden="true"></span>
+</div>
+<script>
+requestAnimationFrame(function () {
+  var c = 2 * Math.PI * 44;
+  document.getElementById('ringVal').style.strokeDashoffset = (c * (1 - .38)).toFixed(2);
+});
+document.getElementById('share').addEventListener('click', function () { toast('已生成 PDF，可分享给你信任的人'); });
+</script>
+</body>
+</html>

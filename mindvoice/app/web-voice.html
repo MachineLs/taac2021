@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>听屿 Web · 小屿接待</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@500;600;900&display=swap">
+<link rel="stylesheet" href="ds.css">
+<script src="icons.js"></script>
+<style>
+/* ---------- shared web top bar ---------- */
+.web-top .in { gap: 24px; }
+.brand-mark { font-size: 15px; font-weight: 700; }
+.top-r { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.top-search { width: 250px; height: 36px; font-size: 13px; }
+.icon-btn { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; color: var(--ink-2); position: relative; border: 1px solid var(--line-2); background: var(--surface); }
+.icon-btn .badge { position: absolute; top: -3px; right: -3px; }
+.me { position: relative; }
+.me-btn { display: flex; align-items: center; gap: 8px; border: 0; background: none; padding: 3px 8px 3px 3px; border-radius: var(--r-pill); color: var(--ink); font-weight: 500; font-size: 14px; }
+.me-btn:hover { background: var(--bg-2); }
+.menu { position: absolute; right: 0; top: calc(100% + 8px); width: 230px; background: var(--surface); border: 1px solid var(--line-2); border-radius: var(--r); box-shadow: var(--shadow-lg); padding: 6px; z-index: 30; }
+.menu a { display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: var(--r-sm); color: var(--ink-2); font-size: 13.5px; }
+.menu a:hover { background: var(--surface-2); color: var(--ink); }
+.menu .mh { padding: 8px 10px 12px; display: flex; gap: 10px; align-items: center; border-bottom: 1px solid var(--line-2); margin-bottom: 4px; }
+.menu .mh b { display: block; font-size: 14px; } .menu .mh span { font-size: 12px; color: var(--ink-3); }
+
+/* ---------- page ---------- */
+.web-main { padding-top: 20px; padding-bottom: 24px; }
+.vlayout { display: grid; grid-template-columns: 256px minmax(0, 1fr) 368px; gap: 20px; height: calc(100vh - 64px - 44px); min-height: 780px; }
+.pane { background: var(--surface); border: 1px solid var(--line-2); border-radius: var(--r-lg); box-shadow: var(--shadow-sm); display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
+.pane-h { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 16px 18px 12px; border-bottom: 1px solid var(--line-2); flex-shrink: 0; }
+.pane-h h2 { margin: 0; font-size: 15px; font-family: var(--font-display); font-weight: var(--display-weight); }
+.pane-b { padding: 16px 18px; overflow-y: auto; flex: 1; min-height: 0; }
+.lbl { font-size: 11.5px; color: var(--ink-3); letter-spacing: .02em; margin: 0 0 8px; font-weight: 500; }
+
+/* left */
+.meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 18px; }
+.meta-grid div { background: var(--surface-2); border: 1px solid var(--line-2); border-radius: var(--r-sm); padding: 8px 10px; display: grid; }
+.meta-grid small { font-size: 11px; color: var(--ink-3); } .meta-grid b { font-size: 14px; }
+.steps { list-style: none; margin: 0 0 20px; padding: 0; display: grid; gap: 4px; }
+.steps li { display: grid; grid-template-columns: 28px 1fr; gap: 10px; padding: 10px; border-radius: var(--r); position: relative; }
+.steps li:not(:last-child)::after { content: ""; position: absolute; left: 23px; top: 40px; bottom: -6px; width: 2px; background: var(--line-2); }
+.steps .n { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font-size: 12.5px; font-weight: 600; background: var(--surface-2); border: 1px solid var(--line); color: var(--ink-3); position: relative; z-index: 1; }
+.steps b { font-size: 14px; display: block; color: var(--ink-3); }
+.steps small { font-size: 12px; color: var(--ink-4); line-height: 1.5; display: block; }
+.steps li.done .n { background: var(--ok-soft); color: var(--ok); border-color: transparent; }
+.steps li.done b { color: var(--ink-2); }
+.steps li.done::after { background: var(--ok); opacity: .4; }
+.steps li.cur { background: var(--primary-soft); }
+.steps li.cur .n { background: var(--primary); color: var(--on-primary); border-color: var(--primary); box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 18%, transparent); }
+.steps li.cur b { color: var(--primary); } .steps li.cur small { color: var(--ink-2); }
+.steps .now { font-size: 11px; color: var(--primary); font-weight: 600; margin-left: 6px; }
+.priv { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.priv li { display: grid; grid-template-columns: 18px 1fr; gap: 8px; font-size: 12.5px; color: var(--ink-2); line-height: 1.5; }
+.priv .ic { color: var(--ok); margin-top: 1px; }
+.left-foot { border-top: 1px solid var(--line-2); padding: 12px 18px; font-size: 12px; color: var(--ink-3); display: flex; justify-content: space-between; flex-shrink: 0; }
+.left-foot a { color: var(--primary); }
+
+/* center */
+.center-h { display: flex; align-items: center; gap: 10px; padding: 12px 18px; border-bottom: 1px solid var(--line-2); flex-shrink: 0; }
+.center-h .who b { font-size: 14.5px; display: block; line-height: 1.3; }
+.center-h .who small { font-size: 12px; color: var(--ink-3); }
+.st { display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 10px; border-radius: var(--r-pill); background: var(--surface-2); border: 1px solid var(--line-2); font-size: 12px; color: var(--ink-2); }
+.st i { width: 7px; height: 7px; border-radius: 50%; background: var(--ink-4); }
+.st[data-s="listening"] i { background: var(--accent); } .st[data-s="speaking"] i { background: var(--primary); } .st[data-s="thinking"] i { background: var(--warn); }
+.timer { font-size: 13px; color: var(--ink-3); display: inline-flex; align-items: center; gap: 4px; }
+.crisis { margin: 12px 18px 0; border-radius: var(--r); background: var(--risk-soft); border: 1px solid color-mix(in srgb, var(--risk) 35%, transparent); padding: 12px 14px; display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; flex-shrink: 0; }
+.crisis .ic-w { width: 36px; height: 36px; border-radius: 50%; background: var(--risk); color: var(--surface); display: grid; place-items: center; }
+.crisis b { color: var(--risk); font-size: 14px; display: block; }
+.crisis p { margin: 2px 0 0; font-size: 12.5px; color: var(--ink-2); }
+.crisis .lines { display: flex; gap: 14px; margin-top: 6px; font-size: 12.5px; flex-wrap: wrap; }
+.crisis .lines span b { display: inline; font-size: 13.5px; }
+.crisis .acts { display: grid; gap: 6px; }
+.btn-risk { background: var(--risk); color: var(--surface); }
+.stage { display: grid; justify-items: center; gap: 10px; padding: 22px 0 10px; flex-shrink: 0; }
+.stage .orb { width: 150px; height: 150px; border: 0; padding: 0; display: grid; place-items: center; color: var(--on-primary); }
+.stage .orb .ic { width: 34px; height: 34px; }
+.stage .cap { font-size: 13px; color: var(--ink-3); height: 20px; }
+.stage .wave { height: 28px; }
+.chat { flex: 1; min-height: 0; overflow-y: auto; padding: 8px 22px 16px; scroll-behavior: smooth; }
+.msg { display: flex; gap: 8px; align-items: flex-start; }
+.msg.user { justify-content: flex-end; }
+.msg .bubble { max-width: 76%; }
+.msg .avatar-xiaoyu { font-size: 12px; margin-top: 2px; }
+.chat .sep { text-align: center; font-size: 11.5px; color: var(--ink-4); margin: 2px 0 4px; }
+.ctrl { border-top: 1px solid var(--line-2); padding: 12px 16px; display: flex; align-items: center; gap: 10px; flex-shrink: 0; background: var(--surface-2); }
+.mic { width: 52px; height: 52px; border-radius: 50%; border: 0; background: var(--primary); color: var(--on-primary); display: grid; place-items: center; flex-shrink: 0; box-shadow: 0 6px 16px -6px color-mix(in srgb, var(--primary) 70%, transparent); }
+.mic.on { background: var(--accent); color: var(--on-accent); }
+.mic .ic { width: 24px; height: 24px; }
+.ctrl form { flex: 1; display: flex; gap: 8px; min-width: 0; }
+.ctrl .input { height: 42px; border-radius: var(--r-pill); }
+
+/* right */
+.sum-h .tag { gap: 4px; }
+.live-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; display: inline-block; animation: pulse 1.2s infinite; }
+@keyframes pulse { 50% { opacity: .3; } }
+@keyframes shimmer { 0% { background-position: -200px 0; } 100% { background-position: 200px 0; } }
+.sk { height: 10px; border-radius: 5px; background: linear-gradient(90deg, var(--bg-2) 0, var(--line-2) 50%, var(--bg-2) 100%); background-size: 400px 100%; animation: shimmer 1.6s infinite linear; }
+.sk + .sk { margin-top: 8px; }
+.sec { padding: 14px 0; border-top: 1px solid var(--line-2); }
+.sec:first-child { border-top: 0; padding-top: 0; }
+.sec .lbl { display: flex; justify-content: space-between; }
+.points { display: flex; gap: 6px; flex-wrap: wrap; min-height: 22px; }
+.points .empty { font-size: 12px; color: var(--ink-4); }
+.mood-big { display: flex; align-items: baseline; gap: 10px; margin-bottom: 8px; }
+.mood-big b { font-size: 20px; font-family: var(--font-display); font-weight: var(--display-weight); }
+.scale { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; align-items: center; }
+.scale + .scale { margin-top: 10px; }
+.scale span { font-size: 13px; color: var(--ink-2); }
+.scale .v { font-size: 13px; }
+.scale .bar { grid-column: 1 / -1; }
+.risk-row { display: flex; align-items: center; gap: 10px; }
+.risk-row p { margin: 0; font-size: 12.5px; color: var(--ink-2); }
+.plan { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; counter-reset: s; }
+.plan li { display: grid; grid-template-columns: 22px 1fr; gap: 8px; font-size: 13px; color: var(--ink-2); }
+.plan li::before { counter-increment: s; content: counter(s); width: 22px; height: 22px; border-radius: 50%; background: var(--primary-soft); color: var(--primary); font-size: 11.5px; font-weight: 600; display: grid; place-items: center; font-family: var(--font-num); }
+.match { border: 1px solid var(--line); border-radius: var(--r); padding: 12px; display: grid; gap: 10px; background: var(--surface-2); }
+.match .top { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: center; }
+.match .top b { font-size: 15px; } .match .top small { font-size: 11.5px; color: var(--ink-3); display: block; line-height: 1.4; }
+.match .slot { display: flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--ok); }
+.match .acts { display: grid; grid-template-columns: 1fr auto; gap: 8px; }
+.sum-foot { border-top: 1px solid var(--line-2); padding: 12px 18px; display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 12.5px; color: var(--ink-2); flex-shrink: 0; }
+.disclaim { font-size: 11.5px; color: var(--ink-4); margin-top: 8px; }
+
+@media (max-width: 1180px) { .vlayout { grid-template-columns: 220px minmax(0, 1fr) 320px; } }
+@media (max-width: 960px) {
+  .web-top nav, .top-search, .me-btn .nm { display: none; }
+  .vlayout { grid-template-columns: 1fr; height: auto; }
+  .pane.center { height: 760px; }
+  .pane { overflow: visible; }
+  .web-main { padding: 16px; }
+}
+</style>
+</head>
+<body>
+<header class="web-top"><div class="in">
+  <a class="brand" href="web-home.html"><span class="brand-mark">屿</span>听屿</a>
+  <nav aria-label="主导航">
+    <a href="web-home.html">首页</a>
+    <a class="on" href="web-voice.html" aria-current="page">小屿接待</a>
+    <a href="web-counselors.html">找咨询师</a>
+    <a href="web-assess.html">心理测评</a>
+    <a href="web-creator.html">达人专区</a>
+  </nav>
+  <div class="top-r">
+    <form class="search top-search" role="search" action="web-counselors.html"><svg class="ic ic-sm"><use href="#i-search"/></svg><input name="q" placeholder="搜索咨询师、困扰、文章" aria-label="搜索"></form>
+    <a class="icon-btn" href="web-me.html#messages" aria-label="消息，2 条未读"><svg class="ic"><use href="#i-bell"/></svg><span class="badge">2</span></a>
+    <div class="me">
+      <button class="me-btn" type="button" aria-haspopup="true" aria-expanded="false"><img class="avatar avatar-sm" src="../assets/u-asian-man.jpg" alt=""><span class="nm">小周</span><svg class="ic ic-sm"><use href="#i-chevron-down"/></svg></button>
+      <div class="menu" hidden>
+        <div class="mh"><img class="avatar" src="../assets/u-asian-man.jpg" alt=""><div><b>小周</b><span>屿伴会员 · 剩余 12 天</span></div></div>
+        <a href="web-me.html"><svg class="ic ic-sm"><use href="#i-user"/></svg>个人中心</a>
+        <a href="web-me.html#orders"><svg class="ic ic-sm"><use href="#i-calendar"/></svg>我的预约</a>
+        <a href="web-me.html#records"><svg class="ic ic-sm"><use href="#i-file"/></svg>接待小结与测评</a>
+        <a href="web-me.html#settings"><svg class="ic ic-sm"><use href="#i-settings"/></svg>账号与隐私</a>
+        <a href="web-desk.html"><svg class="ic ic-sm"><use href="#i-grid"/></svg>咨询师工作台</a>
+        <a href="web-home.html"><svg class="ic ic-sm"><use href="#i-logout"/></svg>退出登录</a>
+      </div>
+    </div>
+  </div>
+</div></header>
+
+<main class="web-main">
+  <div class="vlayout">
+    <!-- left: progress + privacy -->
+    <aside class="pane" aria-label="本次接待进度">
+      <div class="pane-h"><h2>本次接待</h2><span class="tag tag-plain num" id="modeTag">演示模式</span></div>
+      <div class="pane-b">
+        <div class="meta-grid">
+          <div><small>接待编号</small><b class="num">RX-0418</b></div>
+          <div><small>第几次</small><b class="num">第 3 次</b></div>
+        </div>
+        <p class="lbl">接待进度</p>
+        <ol class="steps" id="steps">
+          <li><span class="n num">1</span><span><b>倾听</b><small>说说最近的困扰，小屿复述确认</small></span></li>
+          <li><span class="n num">2</span><span><b>初筛</b><small>根据对话估算 PHQ-9 / GAD-7 / ISI</small></span></li>
+          <li><span class="n num">3</span><span><b>风险分级</b><small>识别自伤风险，必要时转真人值班</small></span></li>
+          <li><span class="n num">4</span><span><b>匹配</b><small>按困扰、流派与可约时间推荐咨询师</small></span></li>
+        </ol>
+        <p class="lbl">你的隐私</p>
+        <ul class="priv">
+          <li><svg class="ic ic-sm"><use href="#i-lock"/></svg><span>对话全程加密传输与存储</span></li>
+          <li><svg class="ic ic-sm"><use href="#i-shield"/></svg><span>小结仅你和你预约的咨询师可见，需你授权才会同步</span></li>
+          <li><svg class="ic ic-sm"><use href="#i-mic-off"/></svg><span>原始录音 7 天后自动删除，也可随时手动删除</span></li>
+          <li><svg class="ic ic-sm"><use href="#i-users"/></svg><span>小屿只做接待和初筛，不做诊断与治疗；咨询由持证咨询师完成</span></li>
+        </ul>
+      </div>
+      <div class="left-foot"><span>遇到紧急情况</span><a href="tel:12356">拨打 12356</a></div>
+    </aside>
+
+    <!-- center: orb + live captions + controls -->
+    <section class="pane center" aria-label="语音接待">
+      <div class="center-h">
+        <span class="avatar avatar-xiaoyu">屿</span>
+        <div class="who grow"><b>小屿 · 接待助手</b><small>AI 接待，不做咨询 · 有需要会转给真人</small></div>
+        <span class="st" id="stTag" data-s="idle"><i></i><span>待开始</span></span>
+        <span class="timer num"><svg class="ic ic-sm"><use href="#i-clock"/></svg><span id="timer">00:00</span></span>
+      </div>
+      <div class="crisis" id="crisis" hidden role="alert">
+        <span class="ic-w"><svg class="ic"><use href="#i-phone"/></svg></span>
+        <div>
+          <b>你的安全最重要，我们现在就在</b>
+          <p>真人值班咨询师将在 <span class="num" id="dutyCd">03:00</span> 内接入。也可以立即拨打热线：</p>
+          <div class="lines"><span>全国心理援助热线 <b class="num">12356</b> · 7×24 免费</span><span>希望 24 热线 <b class="num">400-161-9995</b></span><span>有生命危险 <b class="num">120 / 110</b></span></div>
+        </div>
+        <div class="acts"><a class="btn btn-risk btn-sm" href="tel:12356">拨打 12356</a><button class="btn btn-ghost btn-sm" type="button" id="callDuty">呼叫值班咨询师</button></div>
+      </div>
+      <div class="stage">
+        <button class="orb" id="orb" type="button" aria-label="开始或停止语音接待"><svg class="ic"><use href="#i-mic"/></svg></button>
+        <div class="wave" id="wave" aria-hidden="true"></div>
+        <div class="cap" id="cap">点击声音球开始，小屿会先问候你</div>
+      </div>
+      <div class="chat" id="chat" aria-live="polite"></div>
+      <div class="ctrl">
+        <button class="btn btn-ghost btn-icon" type="button" id="soundBtn" aria-label="关闭声音" title="声音开关"><svg class="ic"><use href="#i-volume"/></svg></button>
+        <button class="mic" type="button" id="micBtn" aria-label="开始说话"><svg class="ic"><use href="#i-mic"/></svg></button>
+        <form id="textForm"><input class="input" id="textIn" placeholder="不方便说话？在这里打字，回车发送" aria-label="文字输入" autocomplete="off"><button class="btn btn-primary btn-icon" type="submit" aria-label="发送"><svg class="ic"><use href="#i-send"/></svg></button></form>
+        <button class="btn btn-ghost" type="button" id="endBtn">结束并生成小结</button>
+      </div>
+    </section>
+
+    <!-- right: live summary -->
+    <aside class="pane" aria-label="接待小结">
+      <div class="pane-h sum-h"><h2>接待小结</h2><span class="tag tag-plain" id="sumTag"><span class="live-dot"></span>接待中实时生成</span></div>
+      <div class="pane-b" id="sumBody">
+        <div class="sec">
+          <p class="lbl"><span>实时要点</span><span class="num" id="ptCount">0 条</span></p>
+          <div class="points" id="points"><span class="empty">小屿听到的关键信息会出现在这里</span></div>
+        </div>
+        <div id="skeleton">
+          <div class="sec"><p class="lbl">情绪状态</p><div class="sk" style="width:46%"></div><div class="sk" style="width:100%;height:6px"></div></div>
+          <div class="sec"><p class="lbl">量表初筛 · PHQ-9 / GAD-7 / ISI</p><div class="sk" style="width:70%"></div><div class="sk" style="width:100%;height:6px"></div><div class="sk" style="width:62%"></div><div class="sk" style="width:100%;height:6px"></div><div class="sk" style="width:66%"></div><div class="sk" style="width:100%;height:6px"></div></div>
+          <div class="sec"><p class="lbl">风险分级</p><div class="sk" style="width:30%;height:20px"></div><div class="sk" style="width:80%"></div></div>
+          <div class="sec"><p class="lbl">建议方案</p><div class="sk" style="width:90%"></div><div class="sk" style="width:75%"></div><div class="sk" style="width:60%"></div></div>
+          <div class="sec"><p class="lbl">为你匹配的咨询师</p><div class="row"><div class="sk" style="width:48px;height:48px;border-radius:50%;flex-shrink:0"></div><div class="grow"><div class="sk" style="width:50%"></div><div class="sk" style="width:85%"></div></div></div></div>
+        </div>
+        <div id="filled" hidden></div>
+      </div>
+      <div class="sum-foot"><span>结束后同步给预约的咨询师</span><button class="switch on" type="button" id="syncSw" aria-pressed="true" aria-label="同步小结给咨询师"></button></div>
+    </aside>
+  </div>
+</main>
+
+<script src="../voice.js"></script>
+<script>
+(function () {
+  // avatar menu
+  var mb = document.querySelector('.me-btn'), menu = document.querySelector('.menu');
+  mb.addEventListener('click', function (e) { e.stopPropagation(); menu.hidden = !menu.hidden; mb.setAttribute('aria-expanded', String(!menu.hidden)); });
+  document.addEventListener('click', function (e) { if (!menu.contains(e.target)) { menu.hidden = true; mb.setAttribute('aria-expanded', 'false'); } });
+
+  var TV = window.TingyuVoice, vr = TV.create();
+  var GREETING = TV.DEMO_SCRIPT[0].text;
+  var $ = function (id) { return document.getElementById(id); };
+  var chat = $('chat'), orb = $('orb'), wave = $('wave'), cap = $('cap');
+  var bubbles = {}, msgCount = 0, staticGreeting = null, summarized = false;
+
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function addBubble(role, text, id) {
+    var row = document.createElement('div'); row.className = 'msg ' + role;
+    row.innerHTML = (role === 'ai' ? '<span class="avatar avatar-sm avatar-xiaoyu">屿</span>' : '') + '<div class="bubble ' + role + '"></div>';
+    row.querySelector('.bubble').textContent = text;
+    chat.appendChild(row); if (id) bubbles[id] = row;
+    chat.scrollTop = chat.scrollHeight;
+    return row;
+  }
+  function initChat() {
+    chat.innerHTML = '<div class="sep num">今天 21:18 · 对话内容已加密</div>';
+    staticGreeting = addBubble('ai', GREETING); msgCount = 1; setStep();
+  }
+
+  // wave bars
+  var bars = [];
+  for (var i = 0; i < 28; i++) { var b = document.createElement('i'); wave.appendChild(b); bars.push(b); }
+
+  // steps
+  function setStep() {
+    var cur = summarized ? 4 : msgCount >= 7 ? 3 : msgCount >= 5 ? 2 : msgCount >= 4 ? 1 : 0;
+    document.querySelectorAll('#steps li').forEach(function (li, i) {
+      li.className = i < cur ? 'done' : i === cur ? 'cur' : '';
+      var n = li.querySelector('.n'); n.innerHTML = i < cur ? '<svg class="ic ic-sm"><use href="#i-check"/></svg>' : String(i + 1);
+      var old = li.querySelector('.now'); if (old) old.remove();
+      if (i === cur) li.querySelector('b').insertAdjacentHTML('beforeend', '<span class="now">进行中</span>');
+    });
+  }
+
+  // live key points
+  var RULES = [[/工作|加班|领导|职场/, '职场压力'], [/睡不着|失眠|睡不好/, '入睡困难'], [/想哭|低落|没精神|累/, '情绪低落 · 疲惫'], [/一个多月|一个月|几周/, '持续 1 个多月'], [/没有/, '未报告自伤念头'], [/语音/, '偏好语音咨询'], [/视频/, '偏好视频咨询'], [/焦虑|紧张|慌/, '焦虑']];
+  var points = [];
+  function scanPoints(text) {
+    RULES.forEach(function (r) { if (r[0].test(text) && points.indexOf(r[1]) < 0) points.push(r[1]); });
+    $('points').innerHTML = points.length ? points.map(function (p) { return '<span class="tag' + (p.indexOf('未报告') === 0 ? ' tag-ok' : '') + '">' + esc(p) + '</span>'; }).join('') : '<span class="empty">小屿听到的关键信息会出现在这里</span>';
+    $('ptCount').textContent = points.length + ' 条';
+  }
+
+  // timer
+  var started = 0, tmr = null;
+  function startTimer() { if (tmr) return; started = Date.now(); tmr = setInterval(function () { var s = Math.floor((Date.now() - started) / 1000); $('timer').textContent = (s / 60 < 10 ? '0' : '') + Math.floor(s / 60) + ':' + (s % 60 < 10 ? '0' : '') + s % 60; }, 1000); }
+
+  // engine events
+  var CAP = { idle: '点击声音球开始，小屿会先问候你', listening: '小屿在听，慢慢说', thinking: '小屿在整理你说的话…', speaking: '小屿正在说话 · 点击可打断' };
+  var ST = { idle: '待开始', listening: '正在倾听', thinking: '思考中', speaking: '正在说话' };
+  vr.on('state', function (s) {
+    $('stTag').dataset.s = s; $('stTag').querySelector('span').textContent = summarized && s === 'idle' ? '已结束' : ST[s];
+    cap.textContent = summarized && s === 'idle' ? '接待已结束，小结在右侧' : CAP[s];
+    var active = s !== 'idle';
+    $('micBtn').classList.toggle('on', active);
+    $('micBtn').innerHTML = '<svg class="ic"><use href="#i-' + (active ? 'pause' : 'mic') + '"/></svg>';
+    $('micBtn').setAttribute('aria-label', active ? '停止' : '开始说话');
+    orb.innerHTML = '<svg class="ic"><use href="#i-' + (s === 'listening' ? 'mic' : s === 'idle' ? 'mic' : s === 'thinking' ? 'more' : 'volume') + '"/></svg>';
+    if (active) startTimer();
+  });
+  vr.on('mode', function (m) { $('modeTag').textContent = m === 'live' ? '实时语音' : '演示模式'; $('modeTag').className = 'tag num ' + (m === 'live' ? 'tag-ok' : 'tag-plain'); });
+  vr.on('level', function (l) {
+    orb.style.setProperty('--lv', l.toFixed(3));
+    var t = performance.now() / 1000;
+    for (var i = 0; i < bars.length; i++) bars[i].style.height = Math.round(14 + 86 * l * (0.35 + 0.65 * Math.abs(Math.sin(t * 3 + i * 0.55)))) + '%';
+  });
+  vr.on('partial', function (p) {
+    if (staticGreeting && p.role === 'ai' && GREETING.indexOf(p.text) === 0 && msgCount === 1) { staticGreeting.remove(); staticGreeting = null; msgCount = 0; }
+    var row = bubbles[p.id];
+    if (!row) row = addBubble(p.role, p.text, p.id);
+    var b = row.querySelector('.bubble'); b.textContent = p.text; b.classList.add('typing');
+    chat.scrollTop = chat.scrollHeight;
+  });
+  vr.on('message', function (m) {
+    var row = bubbles[m.id];
+    if (!row) row = addBubble(m.role, m.text, m.id);
+    var b = row.querySelector('.bubble'); b.textContent = m.text; b.classList.remove('typing');
+    msgCount++; setStep();
+    if (m.role === 'user') scanPoints(m.text);
+    chat.scrollTop = chat.scrollHeight;
+  });
+  vr.on('reset', function () { bubbles = {}; chat.innerHTML = ''; msgCount = 0; staticGreeting = null; summarized = false; points = []; scanPoints(''); $('skeleton').hidden = false; $('filled').hidden = true; setSumTag(false); setStep(); });
+  vr.on('crisis', function () { showCrisis(); });
+  vr.on('summary', function (s) { renderSummary(s); });
+  vr.on('sound', function (on) { setSoundBtn(on); });
+
+  // controls (toggle must be called synchronously inside the click)
+  orb.addEventListener('click', function () { vr.toggle(); });
+  $('micBtn').addEventListener('click', function () { vr.toggle(); });
+  function setSoundBtn(on) { $('soundBtn').innerHTML = '<svg class="ic"><use href="#i-' + (on ? 'volume' : 'volume-off') + '"/></svg>'; $('soundBtn').setAttribute('aria-label', on ? '关闭声音' : '打开声音'); }
+  $('soundBtn').addEventListener('click', function () { vr.setSound(!vr.sound); setSoundBtn(vr.sound); toast(vr.sound ? '已打开声音' : '已静音，字幕会继续显示'); });
+  $('textForm').addEventListener('submit', function (e) { e.preventDefault(); var v = $('textIn').value.trim(); if (!v) return; vr.send(v); $('textIn').value = ''; startTimer(); });
+  $('endBtn').addEventListener('click', function () { vr.stop(); cap.textContent = '正在生成接待小结…'; vr.summarize(); });
+  $('syncSw').addEventListener('click', function () { var on = this.classList.toggle('on'); this.setAttribute('aria-pressed', String(on)); toast(on ? '小结将同步给你预约的咨询师' : '已关闭同步，小结只保存在你的账户中'); });
+
+  // crisis
+  var dutyLeft = 180, dutyT = null;
+  function showCrisis() {
+    $('crisis').hidden = false;
+    if (dutyT) return;
+    dutyT = setInterval(function () { dutyLeft = Math.max(0, dutyLeft - 1); $('dutyCd').textContent = '0' + Math.floor(dutyLeft / 60) + ':' + (dutyLeft % 60 < 10 ? '0' : '') + dutyLeft % 60; }, 1000);
+    var r = document.querySelector('#filled .risk-row');
+    if (r) r.innerHTML = '<span class="tag tag-risk">高风险</span><p>已通知真人值班咨询师，3 分钟内介入</p>';
+  }
+  $('callDuty').addEventListener('click', function () { toast('已呼叫值班咨询师，请保持页面打开'); });
+
+  // summary
+  function setSumTag(done) { $('sumTag').className = 'tag ' + (done ? 'tag-ok' : 'tag-plain'); $('sumTag').innerHTML = done ? '<svg class="ic ic-sm"><use href="#i-check"/></svg>已生成' : '<span class="live-dot"></span>接待中实时生成'; }
+  function lvlClass(label) { return /重|高/.test(label) ? 'risk' : /中/.test(label) ? 'warn' : 'ok'; }
+  function renderSummary(s) {
+    summarized = true; setStep(); setSumTag(true);
+    (s.topics || []).forEach(function (t) { if (points.indexOf(t) < 0) points.push(t); }); scanPoints('');
+    var c = vr.counselor(s.counselor);
+    var img = '../' + c.img.replace(/^\.\.\//, '');
+    var risk = s.risk === 'high' ? 'tag-risk' : s.risk === 'medium' ? 'tag-warn' : 'tag-ok';
+    var moodLbl = s.moodScore < 40 ? '偏低' : s.moodScore < 60 ? '一般' : '良好';
+    var h = '';
+    h += '<div class="sec"><p class="lbl"><span>情绪状态</span><span class="num">' + s.moodScore + ' / 100 · ' + moodLbl + '</span></p><div class="mood-big"><b>' + esc(s.mood) + '</b><span class="small muted">持续 ' + esc(s.duration) + '</span></div><div class="bar warn"><i style="width:' + s.moodScore + '%"></i></div></div>';
+    h += '<div class="sec"><p class="lbl"><span>量表初筛</span><span>依据对话估算</span></p>' + s.scales.map(function (x) { var k = lvlClass(x.label); return '<div class="scale"><span>' + esc(x.name) + '</span><span class="v num"><b>' + x.value + '</b><span class="muted"> / ' + x.max + '</span> <span class="tag tag-' + k + '">' + esc(x.label) + '</span></span><div class="bar ' + k + '"><i style="width:' + Math.round(x.value / x.max * 100) + '%"></i></div></div>'; }).join('') + '<div class="disclaim">初筛仅用于匹配与随访参考，不构成诊断</div></div>';
+    h += '<div class="sec"><p class="lbl">风险分级</p><div class="risk-row"><span class="tag ' + risk + '">' + esc(s.riskLabel) + '</span><p>' + esc(s.riskNote) + '</p></div></div>';
+    h += '<div class="sec"><p class="lbl"><span>建议方案</span><span>' + esc(s.modality) + '</span></p><ol class="plan">' + String(s.plan).split(/\s*→\s*/).map(function (p) { return '<li>' + esc(p) + '</li>'; }).join('') + '</ol></div>';
+    h += '<div class="sec"><p class="lbl"><span>为你匹配的咨询师</span><span class="num">匹配度 96%</span></p><div class="match"><div class="top"><img class="avatar avatar-lg" src="' + img + '" alt=""><div><b>' + esc(c.name) + '</b><small>' + esc(c.title) + '</small><small>' + c.years + ' 年 · ' + esc(c.method) + '</small></div><span class="price num">¥' + c.price + '<small>/次</small></span></div><div class="row" style="flex-wrap:wrap;gap:4px">' + c.tags.map(function (t) { return '<span class="tag">' + esc(t) + '</span>'; }).join('') + '<span class="rating" style="margin-left:auto"><svg class="ic ic-sm" style="fill:currentColor;stroke:none"><use href="#i-star"/></svg>' + c.rating + '</span></div><div class="slot"><svg class="ic ic-sm"><use href="#i-clock"/></svg>' + esc(s.slot) + ' 可约 · ' + esc(s.modality) + ' · 50 分钟</div><div class="acts"><a class="btn btn-primary btn-sm" href="web-counselor.html#book">预约 ' + esc(s.slot) + '</a><a class="btn btn-ghost btn-sm" href="web-counselors.html">换一位</a></div></div></div>';
+    $('filled').innerHTML = h; $('filled').hidden = false; $('skeleton').hidden = true;
+    $('stTag').querySelector('span').textContent = '已结束'; cap.textContent = '接待已结束，小结在右侧';
+    if (!$('crisis').hidden) showCrisis();
+  }
+
+  initChat(); setSoundBtn(vr.sound);
+  // deep links: #crisis shows the crisis banner, #summary shows a finished intake, #text focuses typing
+  var hash = location.hash;
+  if (hash === '#summary') {
+    chat.innerHTML = '<div class="sep num">今天 21:18 · 对话内容已加密</div>'; staticGreeting = null;
+    TV.DEMO_SCRIPT.forEach(function (l) { addBubble(l.role, l.text); if (l.role === 'user') scanPoints(l.text); });
+    msgCount = TV.DEMO_SCRIPT.length; $('timer').textContent = '04:52';
+    renderSummary(TV.DEMO_SUMMARY);
+    chat.scrollTop = chat.scrollHeight;
+  }
+  if (hash === '#crisis') showCrisis();
+  if (hash === '#text') $('textIn').focus();
+})();
+</script>
+</body>
+</html>

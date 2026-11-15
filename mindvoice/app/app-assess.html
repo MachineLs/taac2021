@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>听屿 App · 心理测评</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@500;600;900&display=swap">
+<link rel="stylesheet" href="ds.css">
+<script src="icons.js"></script>
+<style>
+/* App · 心理测评 —— tokens only */
+.wrap { padding: 4px 16px 28px; display: grid; gap: 12px; }
+.remind { padding: 14px; background: var(--accent-soft); border-color: transparent; display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; }
+.remind .ib { grid-row: span 2; width: 44px; height: 44px; border-radius: var(--r); background: var(--surface); color: var(--accent); display: grid; place-items: center; }
+.remind b { font-size: 15px; display: flex; align-items: center; gap: 6px; }
+.remind p { margin: 0; font-size: 12.5px; color: var(--ink-2); line-height: 1.55; }
+.remind .ft { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; margin-top: 10px; font-size: 12px; color: var(--ink-3); }
+.remind .ft .btn { background: var(--accent); color: var(--on-accent); }
+.sum { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.sum div { background: var(--surface); border: 1px solid var(--line-2); border-radius: var(--r); padding: 10px 12px; display: grid; }
+.sum span { font-size: 11.5px; color: var(--ink-3); }
+.sum b { font-size: 17px; font-family: var(--font-num); line-height: 1.35; }
+.sum b small { font-size: 11px; color: var(--ink-3); font-weight: 500; margin-left: 2px; }
+.sc { padding: 14px; display: grid; grid-template-columns: auto 1fr auto; gap: 4px 12px; align-items: center; }
+.sc .ab { grid-row: span 3; align-self: start; width: 46px; height: 46px; border-radius: var(--r); display: grid; place-items: center; font-family: var(--font-num); font-weight: 700; font-size: 11.5px; letter-spacing: -.01em; }
+.ab.p { background: var(--primary-soft); color: var(--primary); }
+.ab.a { background: var(--accent-soft); color: var(--accent); }
+.ab.o { background: var(--ok-soft); color: var(--ok); }
+.ab.w { background: var(--warn-soft); color: var(--warn); }
+.ab.n { background: var(--surface-2); color: var(--ink-2); border: 1px solid var(--line-2); }
+.sc b { font-size: 15px; }
+.sc .d { grid-column: 2; font-size: 12px; color: var(--ink-3); }
+.sc .m { grid-column: 2 / -1; display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--ink-3); margin-top: 4px; flex-wrap: wrap; }
+.sc .m .sep { width: 1px; height: 10px; background: var(--line); }
+.sc .btn { grid-row: 1 / span 2; grid-column: 3; }
+.disc { font-size: 11.5px; color: var(--ink-4); text-align: center; line-height: 1.7; padding-top: 4px; }
+
+/* quiz */
+.quiz { padding: 6px 20px 28px; display: grid; gap: 16px; }
+.qp { display: flex; align-items: center; gap: 10px; font-size: 12.5px; color: var(--ink-3); }
+.qp .bar { flex: 1; height: 6px; }
+.qp .bar i { transition: width .25s; }
+.lead { font-size: 13px; color: var(--ink-3); background: var(--surface-2); border-radius: var(--r); padding: 10px 12px; border: 1px solid var(--line-2); }
+.qno { font-size: 13px; color: var(--primary); font-weight: 600; font-family: var(--font-num); }
+.qtext { margin: -8px 0 0; font-size: 22px; line-height: 1.45; min-height: 64px; }
+.opts { display: grid; gap: 10px; }
+.opt { display: flex; align-items: center; gap: 12px; padding: 0 16px; height: 56px; border-radius: var(--r-lg); border: 1.5px solid var(--line); background: var(--surface); font-size: 15px; color: var(--ink); text-align: left; }
+.opt .r { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--line); flex-shrink: 0; display: grid; place-items: center; }
+.opt .sc2 { margin-left: auto; font-size: 12px; color: var(--ink-4); font-family: var(--font-num); }
+.opt.on { border-color: var(--primary); background: var(--primary-soft); color: var(--primary); font-weight: 600; }
+.opt.on .r { border-color: var(--primary); background: var(--primary); box-shadow: inset 0 0 0 3px var(--surface); }
+.qnav { display: grid; grid-template-columns: 1fr 2fr; gap: 10px; padding-top: 6px; }
+.qnote { font-size: 11.5px; color: var(--ink-4); text-align: center; display: flex; justify-content: center; gap: 4px; align-items: center; }
+
+/* result */
+.res { padding: 6px 16px 28px; display: grid; gap: 12px; }
+.score { padding: 20px 16px 16px; display: grid; justify-items: center; text-align: center; gap: 6px; }
+.ring { width: 150px; height: 150px; position: relative; }
+.ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.ring .bg2 { fill: none; stroke: var(--bg-2); stroke-width: 12; }
+.ring .fg { fill: none; stroke: var(--primary); stroke-width: 12; stroke-linecap: round; transition: stroke-dashoffset .8s; }
+.ring .fg.warn { stroke: var(--warn); } .ring .fg.risk { stroke: var(--risk); } .ring .fg.ok { stroke: var(--ok); }
+.ring .c { position: absolute; inset: 0; display: grid; place-content: center; }
+.ring .c b { font-size: 44px; line-height: 1.1; font-family: var(--font-num); }
+.ring .c span { font-size: 12px; color: var(--ink-3); }
+.score h2 { margin: 6px 0 0; font-size: 20px; }
+.score .cmp { font-size: 12.5px; color: var(--ink-3); }
+.scale { display: grid; grid-template-columns: 5fr 5fr 5fr 7fr; gap: 3px; width: 100%; margin-top: 8px; }
+.scale i { height: 6px; border-radius: 3px; opacity: .35; }
+.scale i.on { opacity: 1; }
+.scale-l { display: grid; grid-template-columns: 5fr 5fr 5fr 7fr; gap: 3px; width: 100%; font-size: 10.5px; color: var(--ink-3); }
+.adv { padding: 14px 16px; display: grid; gap: 10px; }
+.adv h3 { margin: 0; font-size: 15px; }
+.adv .it { display: flex; gap: 10px; font-size: 13px; color: var(--ink-2); line-height: 1.55; }
+.adv .it .ic { color: var(--primary); margin-top: 2px; }
+.syncn { display: flex; gap: 8px; align-items: center; font-size: 12px; color: var(--ink-3); background: var(--surface-2); border-radius: var(--r); padding: 10px 12px; }
+</style>
+</head>
+<body>
+<div class="phone fixed">
+  <div class="statusbar"></div>
+  <header class="navbar">
+    <a class="nb-btn" href="app-me.html" id="back" aria-label="返回"><svg class="ic"><use href="#i-back"/></svg></a>
+    <h1 id="navt">心理测评</h1>
+    <button class="nb-btn" type="button" aria-label="测评记录" onclick="toast('已完成 4 份测评，报告可在「我的 · 测评报告」查看')"><svg class="ic"><use href="#i-clock"/></svg></button>
+  </header>
+
+  <div class="scroll" id="scroll">
+    <!-- list -->
+    <div class="wrap" id="list">
+      <section class="card remind">
+        <span class="ib"><svg class="ic ic-lg"><use href="#i-bell"/></svg></span>
+        <b>GAD-7 复测提醒<span class="tag tag-accent">咨询前</span></b>
+        <p>明晚和林知夏老师第一次咨询。花 2 分钟复测，林老师可以对比 11 月 12 日接待时的结果。</p>
+        <div class="ft"><span class="num">7 题 · 约 2 分钟 · 结果仅你和咨询师可见</span><button class="btn btn-sm" type="button" data-start>开始复测</button></div>
+      </section>
+
+      <div class="sum">
+        <div><span>PHQ-9 抑郁</span><b>9<small>/27 轻度</small></b></div>
+        <div><span>GAD-7 焦虑</span><b>11<small>/21 中度</small></b></div>
+        <div><span>ISI 失眠</span><b>16<small>/28 中度</small></b></div>
+      </div>
+
+      <div class="section-title" style="margin:6px 0 0"><h2>全部量表</h2><a href="#" onclick="toast('量表均为国际通用版本，由平台临床团队审核');return false">关于量表<svg class="ic ic-sm"><use href="#i-chevron"/></svg></a></div>
+
+      <article class="card sc">
+        <span class="ab a">GAD-7</span>
+        <b>广泛性焦虑量表</b>
+        <span class="d">最近两周的紧张、担忧和放松困难</span>
+        <button class="btn btn-primary btn-sm" type="button" data-start>开始</button>
+        <span class="m"><span class="num">7 题</span><i class="sep"></i><span>约 2 分钟</span><i class="sep"></i><span>上次 <b class="num" style="font-size:12px;color:var(--ink-2)">11 分</b></span><span class="tag tag-warn">中度</span><span class="num">11/12</span></span>
+      </article>
+      <article class="card sc">
+        <span class="ab p">PHQ-9</span>
+        <b>抑郁症筛查量表</b>
+        <span class="d">情绪低落、兴趣减退、睡眠与精力</span>
+        <button class="btn btn-soft btn-sm" type="button" onclick="toast('PHQ-9 报告：9 分 · 轻度，建议 2 周后复测')">报告</button>
+        <span class="m"><span class="num">9 题</span><i class="sep"></i><span>约 2 分钟</span><i class="sep"></i><span>上次 <b class="num" style="font-size:12px;color:var(--ink-2)">9 分</b></span><span class="tag">轻度</span><span class="num">11/12</span></span>
+      </article>
+      <article class="card sc">
+        <span class="ab w">ISI</span>
+        <b>失眠严重程度指数</b>
+        <span class="d">入睡困难、夜醒、早醒及白天影响</span>
+        <button class="btn btn-soft btn-sm" type="button" onclick="toast('ISI 报告：16 分 · 中度失眠，已同步给林知夏老师')">报告</button>
+        <span class="m"><span class="num">7 题</span><i class="sep"></i><span>约 2 分钟</span><i class="sep"></i><span>上次 <b class="num" style="font-size:12px;color:var(--ink-2)">16 分</b></span><span class="tag tag-warn">中度</span><span class="num">11/12</span></span>
+      </article>
+      <article class="card sc">
+        <span class="ab o">PSS</span>
+        <b>知觉压力量表 PSS-10</b>
+        <span class="d">最近一个月感受到的压力与失控感</span>
+        <button class="btn btn-soft btn-sm" type="button" onclick="toast('PSS-10 报告：24 分 · 压力偏高')">报告</button>
+        <span class="m"><span class="num">10 题</span><i class="sep"></i><span>约 3 分钟</span><i class="sep"></i><span>上次 <b class="num" style="font-size:12px;color:var(--ink-2)">24 分</b></span><span class="tag tag-warn">偏高</span><span class="num">10/20</span></span>
+      </article>
+      <article class="card sc">
+        <span class="ab n">ECR</span>
+        <b>亲密关系经历量表</b>
+        <span class="d">了解你在亲密关系中的依恋风格</span>
+        <button class="btn btn-ghost btn-sm" type="button" onclick="toast('ECR 共 36 题，建议在安静时完成')">开始</button>
+        <span class="m"><span class="num">36 题</span><i class="sep"></i><span>约 8 分钟</span><i class="sep"></i><span>尚未测评</span></span>
+      </article>
+      <p class="disc">量表结果仅用于自我了解和初步筛查，不能替代专业诊断。<br>如有伤害自己的想法，请立即拨打 12356（7×24 小时免费）。</p>
+    </div>
+
+    <!-- quiz -->
+    <div class="quiz" id="quiz" hidden>
+      <div class="qp"><span class="num" id="qc">1 / 7</span><div class="bar"><i id="qbar" style="width:14%"></i></div><span>约 2 分钟</span></div>
+      <div class="lead">在过去<b>两周</b>里，你有多少时候受到以下问题困扰？</div>
+      <span class="qno" id="qno">第 1 题</span>
+      <h2 class="qtext display" id="qtext"></h2>
+      <div class="opts" id="opts"></div>
+      <div class="qnav"><button class="btn btn-ghost btn-lg" type="button" id="prev">上一题</button><button class="btn btn-primary btn-lg" type="button" id="next" disabled>下一题</button></div>
+      <p class="qnote"><svg class="ic ic-sm"><use href="#i-lock"/></svg>作答内容加密保存，仅你和你的咨询师可见</p>
+    </div>
+
+    <!-- result -->
+    <div class="res" id="res" hidden>
+      <section class="card score">
+        <div class="ring"><svg viewBox="0 0 150 150"><circle class="bg2" cx="75" cy="75" r="62"/><circle class="fg" id="arc" cx="75" cy="75" r="62" stroke-dasharray="389.6" stroke-dashoffset="389.6"/></svg><div class="c"><b id="rs">0</b><span>总分 / 21</span></div></div>
+        <h2 class="display" id="rl">轻度焦虑</h2>
+        <span class="cmp" id="rc">较 11 月 12 日（11 分）下降 3 分</span>
+        <div class="scale"><i data-k="0" style="background:var(--ok)"></i><i data-k="1" style="background:var(--primary)"></i><i data-k="2" style="background:var(--warn)"></i><i data-k="3" style="background:var(--risk)"></i></div>
+        <div class="scale-l num"><span>0–4 极轻</span><span>5–9 轻度</span><span>10–14 中度</span><span>15–21 重度</span></div>
+      </section>
+      <section class="card adv">
+        <h3>建议</h3>
+        <div id="advs"></div>
+      </section>
+      <div class="syncn"><svg class="ic ic-sm"><use href="#i-check-circle"/></svg>结果已同步给林知夏老师，明晚咨询时会一起看</div>
+      <div class="row"><button class="btn btn-ghost btn-lg grow" type="button" id="toList">返回测评列表</button><a class="btn btn-primary btn-lg grow" href="app-orders.html">查看我的预约</a></div>
+      <p class="disc">GAD-7 是焦虑症状的筛查工具，结果不等于诊断。</p>
+    </div>
+  </div>
+  <span class="homebar" aria-hidden="true"></span>
+</div>
+<script>
+var Q = ['感觉紧张、焦虑或急切', '不能够停止或控制担忧', '对各种各样的事情担忧过多', '很难放松下来', '由于不安而无法静坐', '变得容易烦恼或急躁', '感到似乎将有可怕的事情发生而害怕'];
+var O = ['完全不会', '好几天', '一半以上的日子', '几乎每天'];
+var ans = [], cur = 0, mode = 'list';
+var $ = function (id) { return document.getElementById(id); };
+function show(m) {
+  mode = m; $('list').hidden = m !== 'list'; $('quiz').hidden = m !== 'quiz'; $('res').hidden = m !== 'res';
+  $('navt').textContent = m === 'list' ? '心理测评' : m === 'quiz' ? 'GAD-7 焦虑自评' : '测评结果';
+  $('scroll').scrollTop = 0;
+}
+function renderQ() {
+  $('qc').textContent = (cur + 1) + ' / ' + Q.length;
+  $('qbar').style.width = ((cur + 1) / Q.length * 100) + '%';
+  $('qno').textContent = '第 ' + (cur + 1) + ' 题';
+  $('qtext').textContent = Q[cur];
+  $('opts').innerHTML = O.map(function (o, k) { return '<button class="opt' + (ans[cur] === k ? ' on' : '') + '" type="button" data-v="' + k + '"><span class="r"></span>' + o + '<span class="sc2">' + k + ' 分</span></button>'; }).join('');
+  $('prev').disabled = cur === 0;
+  $('next').disabled = ans[cur] == null;
+  $('next').textContent = cur === Q.length - 1 ? '查看结果' : '下一题';
+}
+$('opts').addEventListener('click', function (e) {
+  var b = e.target.closest('.opt'); if (!b) return;
+  ans[cur] = +b.dataset.v; renderQ();
+  if (cur < Q.length - 1) setTimeout(function () { if (mode === 'quiz' && ans[cur] != null) { cur++; renderQ(); } }, 280);
+});
+$('prev').addEventListener('click', function () { if (cur > 0) { cur--; renderQ(); } });
+$('next').addEventListener('click', function () { if (ans[cur] == null) return; if (cur < Q.length - 1) { cur++; renderQ(); } else result(); });
+document.querySelectorAll('[data-start]').forEach(function (b) { b.addEventListener('click', function () { ans = []; cur = 0; renderQ(); show('quiz'); }); });
+$('back').addEventListener('click', function (e) {
+  if (mode === 'quiz') { e.preventDefault(); if (cur > 0) { cur--; renderQ(); } else show('list'); }
+  else if (mode === 'res') { e.preventDefault(); show('list'); }
+});
+$('toList').addEventListener('click', function () { show('list'); });
+function result() {
+  var s = ans.reduce(function (a, b) { return a + b; }, 0);
+  var k = s <= 4 ? 0 : s <= 9 ? 1 : s <= 14 ? 2 : 3;
+  var L = ['无明显焦虑', '轻度焦虑', '中度焦虑', '重度焦虑'][k];
+  var A = [
+    ['继续保持现在的作息和情绪打卡，可在 2 周后复测。', '明天的咨询照常进行，可以和林老师聊聊这段时间做对了什么。'],
+    ['焦虑症状较轻，睡前 4-7-8 呼吸和固定起床时间会有帮助。', '明天的咨询可以重点聊聊周日晚上的担忧。', '建议 2 周后复测，观察变化。'],
+    ['焦虑已明显影响日常，建议按计划持续咨询，不要中断。', '把这次结果和「周日晚上最难受」的情况带到明天的咨询里。', '睡前一小时减少工作消息，可以试试助眠音频。'],
+    ['焦虑程度较重，建议尽快和咨询师沟通，必要时由林老师评估是否转介精神科。', '如果出现伤害自己的想法，请立即拨打 12356（7×24 小时免费），值班咨询师会在 3 分钟内介入。', '今晚可以先和小屿聊聊，缓解一下当下的紧张。']
+  ][k];
+  $('rs').textContent = s; $('rl').textContent = L;
+  var d = s - 11; $('rc').textContent = '较 11 月 12 日（11 分）' + (d === 0 ? '持平' : d < 0 ? '下降 ' + (-d) + ' 分' : '上升 ' + d + ' 分');
+  var arc = $('arc'); arc.setAttribute('class', 'fg ' + ['ok', '', 'warn', 'risk'][k]);
+  document.querySelectorAll('.scale i').forEach(function (i) { i.classList.toggle('on', +i.dataset.k === k); });
+  $('advs').innerHTML = A.map(function (a, j) { return '<div class="it"><svg class="ic ic-sm"><use href="#i-' + (k === 3 && j === 1 ? 'phone' : 'check-circle') + '"/></svg><span>' + a + '</span></div>'; }).join('');
+  show('res');
+  arc.style.strokeDashoffset = 389.6;
+  requestAnimationFrame(function () { requestAnimationFrame(function () { arc.style.strokeDashoffset = 389.6 * (1 - s / 21); }); });
+}
+</script>
+</body>
+</html>

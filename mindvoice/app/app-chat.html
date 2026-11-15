@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>听屿 App · 咨询师留言</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@500;600;900&display=swap">
+<link rel="stylesheet" href="ds.css">
+<script src="icons.js"></script>
+<style>
+/* App · 与咨询师的文字沟通 —— tokens only */
+.navbar { border-bottom: 1px solid var(--line-2); background: var(--surface); height: 54px; }
+.who { flex: 1; display: flex; align-items: center; gap: 10px; min-width: 0; }
+.who .avatar { width: 36px; height: 36px; }
+.who b { display: block; font-size: 16px; line-height: 1.25; }
+.who span { font-size: 11.5px; color: var(--ok); display: flex; align-items: center; gap: 4px; }
+.who span .dot { width: 6px; height: 6px; }
+.notice { display: flex; gap: 8px; align-items: flex-start; padding: 9px 14px; background: var(--warn-soft); color: var(--warn); font-size: 12px; line-height: 1.5; flex-shrink: 0; }
+.notice b { font-family: var(--font-num); }
+.notice a { margin-left: auto; font-weight: 600; white-space: nowrap; text-decoration: underline; }
+
+.msgs { padding: 14px 14px 18px; display: flex; flex-direction: column; gap: 12px; }
+.day { align-self: center; font-size: 11.5px; color: var(--ink-4); padding: 2px 10px; border-radius: var(--r-pill); background: var(--bg-2); font-family: var(--font-num); }
+.sys { align-self: center; font-size: 12px; color: var(--ink-3); text-align: center; max-width: 86%; }
+.m { display: flex; gap: 8px; align-items: flex-start; max-width: 100%; }
+.m .avatar { width: 34px; height: 34px; }
+.m.me { flex-direction: row-reverse; }
+.m .bubble { max-width: 76%; }
+.m.me .bubble { align-self: auto; }
+.m .col { display: grid; gap: 6px; max-width: 78%; }
+.m .col .bubble { max-width: 100%; justify-self: start; }
+.read { font-size: 11px; color: var(--ink-4); text-align: right; margin: -6px 44px 0 0; }
+
+.practice { overflow: hidden; width: 248px; padding: 0; }
+.practice .hd { padding: 12px 14px 10px; background: var(--primary-soft); display: flex; gap: 10px; align-items: center; }
+.practice .hd .ib { width: 38px; height: 38px; border-radius: var(--r); background: var(--surface); color: var(--primary); display: grid; place-items: center; }
+.practice .hd b { display: block; font-size: 14.5px; color: var(--ink); }
+.practice .hd span { font-size: 11.5px; color: var(--primary); }
+.practice .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 12px 14px 4px; text-align: center; }
+.practice .steps div { background: var(--surface-2); border-radius: var(--r-sm); padding: 6px 0; }
+.practice .steps .num { display: block; font-size: 18px; font-weight: 700; color: var(--primary); line-height: 1.2; }
+.practice .steps small { font-size: 11px; color: var(--ink-3); }
+.practice .ft { padding: 10px 14px 12px; display: flex; align-items: center; justify-content: space-between; font-size: 11.5px; color: var(--ink-3); }
+
+.apptcard { width: 262px; padding: 0; overflow: hidden; }
+.apptcard .hd { padding: 10px 14px; display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--ok); border-bottom: 1px solid var(--line-2); }
+.apptcard .bd { padding: 12px 14px; display: grid; gap: 6px; font-size: 13px; }
+.apptcard .bd .r { display: flex; justify-content: space-between; color: var(--ink-3); }
+.apptcard .bd .r b { color: var(--ink); font-weight: 500; }
+.apptcard .ft { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 0 14px 12px; }
+
+.quick { display: flex; gap: 8px; padding: 8px 12px 0; overflow-x: auto; scrollbar-width: none; flex-shrink: 0; background: var(--surface); border-top: 1px solid var(--line-2); }
+.quick::-webkit-scrollbar { display: none; }
+.quick .chip { height: 28px; font-size: 12.5px; background: var(--surface-2); }
+.composer { flex-shrink: 0; display: flex; align-items: center; gap: 8px; padding: 8px 10px 34px; background: var(--surface); }
+.composer .cb { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface); color: var(--ink-2); display: grid; place-items: center; flex-shrink: 0; padding: 0; }
+.composer input { flex: 1; min-width: 0; height: 40px; border-radius: var(--r-pill); border: 1px solid var(--line); background: var(--surface-2); padding: 0 14px; outline: none; color: var(--ink); }
+.composer input:focus { border-color: var(--primary); }
+.composer .send { background: var(--primary); color: var(--on-primary); border-color: var(--primary); }
+</style>
+</head>
+<body>
+<div class="phone fixed">
+  <div class="statusbar" style="background:var(--surface)"></div>
+  <header class="navbar">
+    <a class="nb-btn" href="app-messages.html" aria-label="返回"><svg class="ic"><use href="#i-back"/></svg></a>
+    <a class="who" href="app-counselor.html">
+      <img class="avatar" src="../assets/c-lin.jpg" alt="林知夏">
+      <span class="grow"><b>林知夏</b><span><i class="dot"></i>在线 · 国家二级心理咨询师</span></span>
+    </a>
+    <a class="nb-btn" href="app-session.html" aria-label="视频咨询"><svg class="ic"><use href="#i-video"/></svg></a>
+    <button class="nb-btn" type="button" aria-label="语音通话" onclick="toast('语音通话仅在预约时段内开放，明天 19:45 起可进入')"><svg class="ic"><use href="#i-phone"/></svg></button>
+  </header>
+  <div class="notice" role="note"><svg class="ic ic-sm" style="margin-top:2px"><use href="#i-alert"/></svg><span>咨询外的留言仅用于事务沟通，紧急情况请拨打 <b>12356</b></span><a href="tel:12356">拨打</a></div>
+
+  <div class="scroll" id="scroll">
+    <div class="msgs" id="msgs">
+      <span class="day">11月14日 周六 19:12</span>
+      <div class="m"><img class="avatar" src="../assets/c-lin.jpg" alt=""><div class="bubble ai">小周你好，我是林知夏。小屿整理的接待小结我已经看过了，了解到你最近一个多月入睡困难、白天容易疲惫。周一晚上见面前，不需要做额外准备。</div></div>
+      <div class="m me"><div class="bubble user">好的林老师，谢谢。第一次咨询大概会聊些什么呀？</div></div>
+      <div class="m"><img class="avatar" src="../assets/c-lin.jpg" alt=""><div class="bubble ai">第一次主要是互相认识，我会多听你说说最近的状态，再一起定一个小目标。你想到什么就说什么，不用提前组织。</div></div>
+      <span class="sys">你已预约林知夏老师的咨询，以下为预约信息</span>
+      <div class="m"><img class="avatar" src="../assets/c-lin.jpg" alt="">
+        <div class="card apptcard">
+          <div class="hd"><svg class="ic ic-sm"><use href="#i-check-circle"/></svg>预约成功 · 已支付</div>
+          <div class="bd">
+            <div class="r"><span>时间</span><b class="num">11月16日 周一 20:00–20:50</b></div>
+            <div class="r"><span>方式</span><b>语音咨询 · 第 1 次</b></div>
+            <div class="r"><span>费用</span><b class="num">¥400.00</b></div>
+          </div>
+          <div class="ft"><a class="btn btn-ghost btn-sm" href="app-orders.html">改约</a><a class="btn btn-primary btn-sm" href="app-session.html">进入咨询室</a></div>
+        </div>
+      </div>
+      <span class="day">今天 21:34</span>
+      <div class="m"><img class="avatar" src="../assets/c-lin.jpg" alt=""><div class="bubble ai">如果今晚还是很难入睡，可以先试试这个练习，做不好也没关系，熟悉一下就好。</div></div>
+      <div class="m"><img class="avatar" src="../assets/c-lin.jpg" alt="">
+        <a class="card practice" href="app-player.html">
+          <div class="hd"><span class="ib"><svg class="ic"><use href="#i-leaf"/></svg></span><span><b>4-7-8 呼吸练习</b><span>林知夏 布置 · 睡前练习 · 约 4 分钟</span></span></div>
+          <div class="steps"><div><span class="num">4</span><small>秒吸气</small></div><div><span class="num">7</span><small>秒屏息</small></div><div><span class="num">8</span><small>秒呼气</small></div></div>
+          <div class="ft"><span>重复 4 轮 · 完成后会记录到日记</span><span class="btn btn-soft btn-sm" style="height:28px">开始</span></div>
+        </a>
+      </div>
+      <div class="m"><img class="avatar" src="../assets/c-lin.jpg" alt=""><div class="bubble ai">明天 20:00 见，可以先试试呼吸练习。</div></div>
+    </div>
+  </div>
+
+  <div class="quick" id="quick">
+    <button class="chip" type="button">好的，今晚试一下</button>
+    <button class="chip" type="button">谢谢林老师</button>
+    <button class="chip" type="button">我想改一下时间</button>
+    <button class="chip" type="button">咨询前需要准备什么？</button>
+  </div>
+  <form class="composer" id="composer" autocomplete="off">
+    <button class="cb" type="button" aria-label="按住说话" onclick="toast('按住说话，松开发送')"><svg class="ic"><use href="#i-mic"/></svg></button>
+    <input id="text" type="text" placeholder="给林老师留言…" aria-label="留言内容" maxlength="300">
+    <button class="cb" type="button" id="plus" aria-label="更多"><svg class="ic"><use href="#i-plus"/></svg></button>
+  </form>
+  <span class="homebar" aria-hidden="true"></span>
+</div>
+<script>
+var msgs = document.getElementById('msgs'), sc = document.getElementById('scroll');
+var input = document.getElementById('text'), plus = document.getElementById('plus');
+function esc(s) { return s.replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+function bottom() { sc.scrollTop = sc.scrollHeight; }
+var replied = false;
+function send(text) {
+  text = text.trim(); if (!text) return;
+  var old = document.querySelector('.read'); if (old) old.remove();
+  msgs.insertAdjacentHTML('beforeend', '<div class="m me"><div class="bubble user">' + esc(text) + '</div></div><div class="read">已送达</div>');
+  input.value = ''; syncBtn(); bottom();
+  setTimeout(function () { var r = document.querySelector('.read'); if (r) r.textContent = '已读'; }, 1200);
+  if (!replied) {
+    replied = true;
+    setTimeout(function () {
+      msgs.insertAdjacentHTML('beforeend', '<span class="sys">林老师通常在 2 小时内回复事务类留言。想聊的内容可以留到明天的咨询里，我们慢慢说。</span>');
+      bottom();
+    }, 1600);
+  }
+}
+function syncBtn() {
+  var has = input.value.trim().length > 0;
+  plus.classList.toggle('send', has);
+  plus.setAttribute('aria-label', has ? '发送' : '更多');
+  plus.innerHTML = '<svg class="ic"><use href="#i-' + (has ? 'send' : 'plus') + '"/></svg>';
+}
+input.addEventListener('input', syncBtn);
+document.getElementById('composer').addEventListener('submit', function (e) { e.preventDefault(); send(input.value); });
+plus.addEventListener('click', function () { if (input.value.trim()) send(input.value); else toast('可发送图片、睡眠记录或测评报告'); });
+document.querySelectorAll('#quick .chip').forEach(function (c) { c.addEventListener('click', function () { send(c.textContent); }); });
+bottom();
+</script>
+</body>
+</html>

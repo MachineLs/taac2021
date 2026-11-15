@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>听屿 Web · 达人专区</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@500;600;900&display=swap">
+<link rel="stylesheet" href="ds.css">
+<script src="icons.js"></script>
+<style>
+/* Web · 达人专区 —— tokens only; white text only over black-tinted imagery */
+.top-right { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+.top-right .search { width: 220px; height: 36px; }
+.icon-btn { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; border: 1px solid var(--line-2); background: var(--surface); color: var(--ink-2); position: relative; }
+.icon-btn .badge { position: absolute; top: -4px; right: -4px; }
+
+.view-bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 16px; flex-wrap: wrap; }
+.crumb { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--ink-3); }
+.crumb b { color: var(--ink); font-weight: 600; }
+.seg button .ic { width: 15px; height: 15px; vertical-align: -3px; margin-right: 4px; }
+
+/* ---- profile ---- */
+.hero { position: relative; border-radius: var(--r-xl); overflow: hidden; background: var(--surface); border: 1px solid var(--line-2); box-shadow: var(--shadow-sm); }
+.hero .cover { height: 220px; position: relative; }
+.hero .cover img { width: 100%; height: 100%; object-fit: cover; object-position: center 60%; }
+.hero .cover::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,.05), rgba(0,0,0,.45)); }
+.hero .cover .series { position: absolute; right: 20px; bottom: 16px; z-index: 1; color: #fff; font-size: 13px; display: flex; gap: 8px; }
+.hero .cover .series span { background: rgba(0,0,0,.4); backdrop-filter: blur(6px); padding: 4px 10px; border-radius: var(--r-pill); }
+.hero .info { display: grid; grid-template-columns: auto 1fr auto; gap: 20px; padding: 0 28px 22px; align-items: end; }
+.hero .info .avatar { width: 112px; height: 112px; margin-top: -48px; border: 4px solid var(--surface); box-shadow: var(--shadow); position: relative; z-index: 1; }
+.hero h1 { margin: 14px 0 2px; font-size: 26px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.verified { display: inline-flex; align-items: center; gap: 4px; height: 24px; padding: 0 10px; border-radius: var(--r-pill); background: var(--primary); color: var(--on-primary); font-size: 12px; font-family: var(--font-body); font-weight: 600; letter-spacing: 0; }
+.hero .bio { margin: 4px 0 10px; color: var(--ink-2); font-size: 14px; max-width: 640px; }
+.hero .plat { display: flex; gap: 8px; flex-wrap: wrap; }
+.hero .nums { display: flex; gap: 28px; padding-bottom: 4px; }
+.hero .nums div { display: grid; font-size: 12px; color: var(--ink-3); text-align: right; }
+.hero .nums b { font-size: 22px; font-family: var(--font-num); color: var(--ink); font-weight: 700; line-height: 1.2; }
+.hero .acts { grid-column: 3; display: flex; gap: 10px; justify-content: flex-end; }
+.hero .right { display: grid; gap: 14px; justify-items: end; }
+
+.pgrid { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 20px; margin-top: 20px; align-items: start; }
+.pgrid > * { min-width: 0; }
+.feed-h { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; gap: 12px; }
+.feed-h h2 { margin: 0; font-size: 18px; }
+.cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.post { overflow: hidden; display: grid; transition: transform .15s, box-shadow .15s; }
+.post:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+.post .cv { position: relative; aspect-ratio: 4 / 3; overflow: hidden; }
+.post .cv img { width: 100%; height: 100%; object-fit: cover; }
+.post .cv .ty { position: absolute; left: 10px; top: 10px; background: rgba(0,0,0,.5); color: #fff; font-size: 11.5px; padding: 2px 8px; border-radius: var(--r-pill); display: inline-flex; align-items: center; gap: 4px; backdrop-filter: blur(6px); }
+.post .cv .ty .ic { width: 12px; height: 12px; }
+.post .cv .du { position: absolute; right: 10px; bottom: 10px; background: rgba(0,0,0,.55); color: #fff; font-size: 11.5px; padding: 1px 7px; border-radius: 5px; font-family: var(--font-num); }
+.post .in { padding: 12px 14px 14px; display: grid; gap: 8px; }
+.post h3 { margin: 0; font-size: 14.5px; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 2.9em; }
+.post .st { display: flex; gap: 10px; font-size: 12px; color: var(--ink-3); flex-wrap: wrap; }
+.post .st span { display: inline-flex; align-items: center; gap: 3px; }
+.post .st .ic { width: 13px; height: 13px; }
+.post .go { font-size: 12px; color: var(--primary); background: var(--primary-soft); border-radius: var(--r-sm); padding: 5px 8px; display: flex; align-items: center; gap: 6px; }
+.post .go .ic { width: 14px; height: 14px; }
+
+.side { display: grid; gap: 16px; }
+.entry { padding: 20px; border-radius: var(--r-xl); background: var(--primary); color: var(--on-primary); position: relative; overflow: hidden; display: grid; gap: 10px; }
+.entry::before { content: ""; position: absolute; right: -70px; top: -80px; width: 240px; height: 240px; border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--orb-1) 55%, transparent), transparent 70%); }
+.entry .top { display: flex; align-items: center; gap: 10px; position: relative; }
+.entry .top .avatar { box-shadow: 0 0 0 2px var(--on-primary); }
+.entry .top span { font-size: 12.5px; opacity: .85; }
+.entry h3 { margin: 0; font-size: 20px; position: relative; }
+.entry p { margin: 0; font-size: 13px; opacity: .88; position: relative; }
+.entry .quote { font-size: 13px; background: color-mix(in srgb, var(--on-primary) 12%, transparent); border-radius: var(--r); padding: 10px 12px; position: relative; }
+.entry .row2 { display: flex; align-items: center; gap: 14px; position: relative; }
+.entry .orb { width: 56px; height: 56px; display: grid; place-items: center; color: var(--on-primary); flex-shrink: 0; }
+.entry .btn-on { background: var(--on-primary); color: var(--primary); flex: 1; }
+.entry .fine { font-size: 11.5px; opacity: .75; position: relative; }
+
+.side .card { padding: 16px; }
+.side h3 { margin: 0 0 4px; font-size: 15px; }
+.cs { display: grid; grid-template-columns: auto 1fr auto; gap: 2px 12px; align-items: center; padding: 12px 0; }
+.cs + .cs { border-top: 1px solid var(--line-2); }
+.cs .avatar { grid-row: 1 / span 2; }
+.cs b { font-size: 14px; }
+.cs .t { font-size: 12px; color: var(--ink-3); grid-column: 2; }
+.cs .price { grid-row: 1; grid-column: 3; font-size: 15px; }
+.cs .rating { grid-row: 2; grid-column: 3; justify-self: end; }
+.why { font-size: 12px; color: var(--ink-3); background: var(--surface-2); border-radius: var(--r-sm); padding: 8px 10px; margin-top: 4px; }
+.kol { display: flex; align-items: center; gap: 10px; padding: 8px 0; }
+.kol b { font-size: 13.5px; display: block; }
+.kol span { font-size: 12px; color: var(--ink-3); }
+.kol .btn { margin-left: auto; }
+
+.owner { margin-top: 20px; display: flex; align-items: center; gap: 14px; padding: 14px 18px; border: 1px dashed var(--line); border-radius: var(--r-lg); background: var(--surface-2); font-size: 13px; color: var(--ink-2); }
+.owner .btn { margin-left: auto; }
+.foot-note { text-align: center; color: var(--ink-4); font-size: 12px; margin: 22px 0 6px; }
+
+/* ---- studio ---- */
+.studio-h { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; flex-wrap: wrap; }
+.studio-h h1 { margin: 0; font-size: 24px; }
+.studio-h .avatar { box-shadow: 0 0 0 2px var(--surface), 0 0 0 3px var(--primary); }
+.studio-h .r { margin-left: auto; display: flex; gap: 10px; align-items: center; }
+.kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.kpi { padding: 18px; display: grid; gap: 4px; }
+.kpi .k { font-size: 13px; color: var(--ink-3); display: flex; align-items: center; gap: 6px; }
+.kpi .k .ic { width: 16px; height: 16px; color: var(--primary); }
+.kpi b { font-size: 30px; font-family: var(--font-num); font-weight: 700; letter-spacing: -.01em; line-height: 1.25; }
+.kpi .d { font-size: 12.5px; color: var(--ink-3); display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.up { color: var(--ok); font-weight: 600; }
+.kpi.money { background: var(--accent-soft); border-color: transparent; }
+.kpi.money b { color: var(--accent); }
+
+.sgrid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 16px; margin-top: 16px; }
+.sgrid > * { min-width: 0; }
+.card-h { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 20px 0; flex-wrap: wrap; }
+.card-h h2 { margin: 0; font-size: 16px; }
+.card-h .small { color: var(--ink-3); }
+
+.funnel { padding: 16px 20px 20px; display: grid; gap: 14px; }
+.fstep { display: grid; grid-template-columns: 28px 1fr; gap: 4px 12px; align-items: center; }
+.fstep .no { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--primary-soft); color: var(--primary); font-family: var(--font-num); font-weight: 700; font-size: 13px; grid-row: 1 / span 2; }
+.fstep .lb { display: flex; justify-content: space-between; font-size: 13px; color: var(--ink-2); gap: 10px; }
+.fstep .lb b { font-family: var(--font-num); color: var(--ink); font-size: 15px; }
+.fstep .fb { height: 22px; border-radius: 6px; background: var(--bg-2); overflow: hidden; }
+.fstep .fb i { display: block; height: 100%; background: var(--primary); border-radius: 6px; }
+.fstep:nth-child(2) .fb i { background: color-mix(in srgb, var(--primary) 75%, var(--surface)); }
+.fstep:nth-child(3) .fb i { background: color-mix(in srgb, var(--primary) 55%, var(--surface)); }
+.fstep:nth-child(4) .fb i { background: var(--accent); }
+.fstep .cv { grid-column: 2; font-size: 12px; color: var(--ink-3); }
+.model { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; padding: 12px 20px 16px; border-top: 1px solid var(--line-2); font-size: 12.5px; color: var(--ink-2); }
+.model span.step { background: var(--surface-2); border: 1px solid var(--line-2); padding: 3px 9px; border-radius: var(--r-pill); }
+.model .ic { width: 14px; height: 14px; color: var(--ink-4); }
+
+.chart { position: relative; padding: 10px 16px 14px 4px; }
+.chart svg { width: 100%; height: auto; display: block; overflow: visible; }
+.chart .grid line { stroke: var(--line-2); }
+.chart .lab { fill: var(--ink-4); font-size: 11px; font-family: var(--font-num); }
+.chart .area { fill: color-mix(in srgb, var(--primary) 10%, transparent); }
+.chart .line { fill: none; stroke: var(--primary); stroke-width: 2; stroke-linejoin: round; }
+.chart .dot { fill: var(--primary); stroke: var(--surface); stroke-width: 2; }
+.chart .xh { stroke: var(--ink-4); stroke-dasharray: 3 3; }
+.chart .ev { fill: var(--accent); stroke: var(--surface); stroke-width: 2; }
+.chart .evl { fill: var(--ink-3); font-size: 11px; font-family: var(--font-body); }
+.tip { position: absolute; pointer-events: none; background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow); border-radius: var(--r-sm); padding: 6px 10px; font-size: 12px; white-space: nowrap; transform: translate(-50%, -115%); }
+
+table.tb { width: 100%; border-collapse: collapse; font-size: 13px; }
+.tb th { text-align: left; font-weight: 500; color: var(--ink-3); font-size: 12px; padding: 10px 14px; background: var(--surface-2); border-bottom: 1px solid var(--line-2); white-space: nowrap; }
+.tb th.r, .tb td.r { text-align: right; }
+.tb td { padding: 11px 14px; border-bottom: 1px solid var(--line-2); }
+.tb tr:last-child td { border-bottom: 0; }
+.tb .ct { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.tb .ct img { width: 48px; height: 36px; border-radius: 6px; object-fit: cover; flex-shrink: 0; }
+.tb .ct b { font-weight: 500; display: block; max-width: 280px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tb .rk { font-family: var(--font-num); font-weight: 700; color: var(--ink-4); width: 18px; }
+.tb tr:nth-child(-n+3) .rk { color: var(--accent); }
+.tb .num { white-space: nowrap; }
+.mini { display: inline-block; width: 60px; height: 6px; border-radius: 3px; background: var(--bg-2); vertical-align: middle; margin-left: 6px; overflow: hidden; }
+.mini i { display: block; height: 100%; background: var(--primary); }
+.tbl-wrap { overflow-x: auto; margin-top: 12px; }
+
+.link-card { padding: 16px 20px; display: grid; gap: 10px; }
+.link-box { display: flex; align-items: center; gap: 8px; height: 40px; padding: 0 6px 0 12px; border-radius: var(--r); border: 1px solid var(--line); background: var(--surface-2); font-family: var(--font-num); font-size: 13px; }
+.link-box span { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rule { font-size: 12.5px; color: var(--ink-2); display: grid; gap: 6px; padding: 12px 14px; background: var(--surface-2); border-radius: var(--r); }
+.rule div { display: flex; gap: 8px; }
+.rule .ic { width: 15px; height: 15px; color: var(--primary); margin-top: 3px; }
+
+@media (max-width: 1100px) { .cards { grid-template-columns: repeat(2, 1fr); } .kpis { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 900px) {
+  .web-top nav, .top-right .search { display: none; }
+  .pgrid, .sgrid { grid-template-columns: 1fr; }
+  .hero .info { grid-template-columns: 1fr; padding: 0 16px 18px; }
+  .hero .right { justify-items: start; }
+  .hero .nums div { text-align: left; }
+  .hero .acts { grid-column: 1; justify-content: flex-start; }
+  .cards { grid-template-columns: 1fr; }
+  .kpis { grid-template-columns: 1fr; }
+  .owner { flex-wrap: wrap; }
+  .studio-h .r { margin-left: 0; }
+}
+</style>
+</head>
+<body>
+<header class="web-top"><div class="in">
+  <a class="brand" href="web-home.html"><span class="brand-mark"><svg class="ic"><use href="#i-leaf"/></svg></span>听屿</a>
+  <nav aria-label="主导航">
+    <a href="web-home.html">首页</a>
+    <a href="web-voice.html">小屿接待</a>
+    <a href="web-counselors.html">找咨询师</a>
+    <a href="web-assess.html">心理测评</a>
+    <a href="web-creator.html" class="on" aria-current="page">达人专区</a>
+  </nav>
+  <div class="top-right">
+    <label class="search"><svg class="ic ic-sm"><use href="#i-search"/></svg><input type="search" placeholder="搜索咨询师、话题、测评" aria-label="搜索"></label>
+    <a class="icon-btn" href="web-me.html" aria-label="消息，2 条未读"><svg class="ic"><use href="#i-bell"/></svg><span class="badge">2</span></a>
+    <a href="web-me.html" aria-label="个人中心"><img class="avatar" src="../assets/u-asian-man.jpg" alt="小周"></a>
+  </div>
+</div></header>
+
+<main class="web-main">
+  <div class="view-bar">
+    <div class="crumb" id="crumb"><a href="web-creator.html">达人专区</a><svg class="ic ic-sm"><use href="#i-chevron"/></svg><b>睡眠研究所阿屿</b></div>
+    <div class="seg" role="tablist" aria-label="视角切换">
+      <button type="button" role="tab" class="on" data-v="profile" aria-selected="true"><svg class="ic"><use href="#i-user"/></svg>达人主页</button>
+      <button type="button" role="tab" data-v="studio" aria-selected="false"><svg class="ic"><use href="#i-chart"/></svg>切换到达人后台</button>
+    </div>
+  </div>
+
+  <!-- ============ 达人主页 ============ -->
+  <section id="profile" aria-label="达人主页">
+    <div class="hero">
+      <div class="cover"><img src="../assets/night-sky.jpg" alt=""><div class="series"><span>系列 · 30 天睡眠修复计划</span><span>每周三 21:00 更新</span></div></div>
+      <div class="info">
+        <img class="avatar" src="../assets/u-woman-5.jpg" alt="睡眠研究所阿屿">
+        <div>
+          <h1 class="display">睡眠研究所阿屿 <span class="verified"><svg class="ic ic-sm"><use href="#i-check-circle"/></svg>听屿合作达人</span></h1>
+          <p class="bio">应用心理学硕士 · 睡眠科普作者。用 3 分钟讲清一个睡眠问题：入睡困难、早醒、周日焦虑。内容仅作科普，需要帮助请找专业咨询师。</p>
+          <div class="plat"><span class="tag tag-plain">抖音 @睡眠研究所阿屿</span><span class="tag tag-plain">小红书 @阿屿睡不着</span><span class="tag tag-plain">B 站 · 阿屿的睡眠实验室</span><span class="tag">心理科普</span></div>
+        </div>
+        <div class="right">
+          <div class="nums">
+            <div><b>46.8万</b>粉丝</div>
+            <div><b>312万</b>获赞</div>
+            <div><b>186</b>内容</div>
+            <div><b>2.4万</b>人经她找到小屿</div>
+          </div>
+          <div class="acts"><button class="btn btn-primary" type="button" id="follow"><svg class="ic ic-sm"><use href="#i-plus"/></svg>关注</button><button class="btn btn-ghost" type="button" data-toast="已复制阿屿主页链接"><svg class="ic ic-sm"><use href="#i-share"/></svg>分享</button></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pgrid">
+      <div>
+        <div class="feed-h">
+          <h2 class="display">全部内容</h2>
+          <div class="seg" id="ftabs"><button class="on" type="button" data-f="all">全部 186</button><button type="button" data-f="video">视频 124</button><button type="button" data-f="article">文章 52</button><button type="button" data-f="audio">音频 10</button></div>
+        </div>
+        <div class="cards" id="cards"></div>
+        <div class="owner"><svg class="ic" style="color:var(--primary)"><use href="#i-chart"/></svg><span>你是阿屿？在达人后台查看每条内容带来的访问、接待与收益。</span><button class="btn btn-soft btn-sm" type="button" id="toStudio">切换到达人后台</button></div>
+      </div>
+
+      <aside class="side">
+        <div class="entry">
+          <div class="top"><img class="avatar avatar-sm" src="../assets/u-woman-5.jpg" alt=""><span>阿屿推荐你和小屿聊聊</span></div>
+          <h3 class="display">睡不着的晚上，先说出来</h3>
+          <p class="quote">「我自己失眠最严重的那段时间，也是先找人把话说出来，才慢慢好起来的。」—— 阿屿</p>
+          <div class="row2"><span class="orb" style="--lv:.3"><svg class="ic ic-lg"><use href="#i-mic"/></svg></span><a class="btn btn-on" href="web-voice.html?from=ayu">和小屿语音聊聊</a></div>
+          <span class="fine">免费 · 约 3 分钟 · 小屿只做接待和匹配，咨询由持证咨询师完成</span>
+        </div>
+
+        <div class="card">
+          <h3>阿屿推荐的咨询师</h3>
+          <div class="small muted">擅长睡眠与焦虑 · 均已持证并通过平台审核</div>
+          <a class="cs" href="web-counselor.html"><img class="avatar avatar-lg" src="../assets/c-lin.jpg" alt=""><b>林知夏</b><span class="price">¥400<small>/次</small></span><span class="t">焦虑 · 失眠 · CBT · 8 年</span><span class="rating"><svg class="ic ic-sm" style="fill:currentColor;stroke:none"><use href="#i-star"/></svg>4.97</span></a>
+          <a class="cs" href="web-counselor.html"><img class="avatar avatar-lg" src="../assets/c-he.jpg" alt=""><b>何清</b><span class="price">¥450<small>/次</small></span><span class="t">情绪调节 · 正念 · ACT · 9 年</span><span class="rating"><svg class="ic ic-sm" style="fill:currentColor;stroke:none"><use href="#i-star"/></svg>4.96</span></a>
+          <a class="cs" href="web-counselor.html"><img class="avatar avatar-lg" src="../assets/c-chen.jpg" alt=""><b>陈牧</b><span class="price">¥800<small>/次</small></span><span class="t">精神科主治医师 · 抑郁评估</span><span class="rating"><svg class="ic ic-sm" style="fill:currentColor;stroke:none"><use href="#i-star"/></svg>4.96</span></a>
+          <div class="why">阿屿说：失眠超过 1 个月、白天明显受影响，优先找做 CBT-I 的老师。</div>
+          <a class="btn btn-ghost btn-block btn-sm" style="margin-top:12px" href="web-counselors.html">查看全部 9 位咨询师</a>
+        </div>
+
+        <div class="card">
+          <h3>你可能也喜欢</h3>
+          <div class="kol"><img class="avatar" src="../assets/u-man-3.jpg" alt=""><div><b>打工人心理课</b><span>职场 · 23.1 万粉丝</span></div><button class="btn btn-ghost btn-sm" type="button" data-toast="已关注 打工人心理课">关注</button></div>
+          <div class="kol"><img class="avatar" src="../assets/u-woman-6.jpg" alt=""><div><b>恋爱里的小心思</b><span>情感 · 31.5 万粉丝</span></div><button class="btn btn-ghost btn-sm" type="button" data-toast="已关注 恋爱里的小心思">关注</button></div>
+        </div>
+      </aside>
+    </div>
+    <p class="foot-note">内容由合作达人提供，仅作心理科普，不构成诊疗建议 · 听屿对合作达人进行资质与内容审核</p>
+  </section>
+
+  <!-- ============ 达人后台 ============ -->
+  <section id="studio" aria-label="达人后台" hidden>
+    <div class="studio-h">
+      <img class="avatar avatar-lg" src="../assets/u-woman-5.jpg" alt="">
+      <div><h1 class="display">达人后台 · 数据看板</h1><div class="small muted">睡眠研究所阿屿 · 合作编号 KOL-0217 · 数据更新于 11/15 22:00</div></div>
+      <div class="r">
+        <div class="seg" id="range"><button class="on" type="button">本月</button><button type="button">上月</button><button type="button">近 90 天</button></div>
+        <button class="btn btn-ghost btn-sm" type="button" data-toast="已导出 11 月数据报表（.xlsx）"><svg class="ic ic-sm"><use href="#i-file"/></svg>导出</button>
+      </div>
+    </div>
+
+    <div class="kpis">
+      <div class="card kpi"><span class="k"><svg class="ic"><use href="#i-link"/></svg>本月带来的访问</span><b>18,420</b><span class="d"><span class="up">↑ 12.4%</span>较上月同期 · 新访客 81%</span></div>
+      <div class="card kpi"><span class="k"><svg class="ic"><use href="#i-mic"/></svg>开口接待（和小屿聊过）</span><b>3,106</b><span class="d">访问 → 接待 <b style="font-size:12.5px;color:var(--ink)">16.9%</b><span class="up">↑ 1.8pt</span></span></div>
+      <div class="card kpi"><span class="k"><svg class="ic"><use href="#i-users"/></svg>首单咨询（真人咨询师）</span><b>412</b><span class="d">接待 → 首单 <b style="font-size:12.5px;color:var(--ink)">13.3%</b> · 客单价 ¥450</span></div>
+      <div class="card kpi money"><span class="k"><svg class="ic"><use href="#i-wallet"/></svg>分成收入（预估）</span><b>¥18,540</b><span class="d">首单实付 ¥185,400 × 10% 分成 · 12/10 结算</span></div>
+    </div>
+
+    <div class="sgrid">
+      <div class="card">
+        <div class="card-h">
+          <h2 class="display">近 30 天趋势</h2>
+          <div class="seg" id="metric"><button class="on" type="button" data-m="0">访问</button><button type="button" data-m="1">开口接待</button><button type="button" data-m="2">首单</button></div>
+        </div>
+        <div class="chart" id="trend"></div>
+      </div>
+      <div class="card">
+        <div class="card-h"><h2 class="display">转化漏斗 · 本月</h2><span class="small">引流 → 聚流 → 接待 → 真人服务</span></div>
+        <div class="funnel">
+          <div class="fstep"><span class="no">1</span><div class="lb"><span>达人内容曝光</span><b>126.3万</b></div><div class="fb"><i style="width:100%"></i></div><span class="cv">抖音 62% · 小红书 27% · B 站 11%</span></div>
+          <div class="fstep"><span class="no">2</span><div class="lb"><span>进入听屿（专属链接）</span><b>18,420</b></div><div class="fb"><i style="width:62%"></i></div><span class="cv">点击率 1.46%</span></div>
+          <div class="fstep"><span class="no">3</span><div class="lb"><span>和小屿开口接待</span><b>3,106</b></div><div class="fb"><i style="width:34%"></i></div><span class="cv">16.9% · 其中 41 人触发危机流程，已由值班咨询师跟进</span></div>
+          <div class="fstep"><span class="no">4</span><div class="lb"><span>首单咨询完成</span><b>412</b></div><div class="fb"><i style="width:14%"></i></div><span class="cv">13.3% · 复购第 2 次 58%（不计分成）</span></div>
+        </div>
+        <div class="model"><span class="step">达人宣传引流</span><svg class="ic"><use href="#i-chevron"/></svg><span class="step">平台聚流</span><svg class="ic"><use href="#i-chevron"/></svg><span class="step">小屿接待分流</span><svg class="ic"><use href="#i-chevron"/></svg><span class="step">持证咨询师服务</span></div>
+      </div>
+    </div>
+
+    <div class="sgrid">
+      <div class="card">
+        <div class="card-h"><h2 class="display">内容转化排行</h2><span class="small">按首单数排序 · 本月</span></div>
+        <div class="tbl-wrap">
+          <table class="tb">
+            <thead><tr><th></th><th>内容</th><th class="r">阅读/播放</th><th class="r">访问</th><th class="r">开口接待</th><th class="r">首单</th><th class="r">分成</th></tr></thead>
+            <tbody>
+              <tr><td class="rk">1</td><td><div class="ct"><img src="../assets/moon.jpg" alt=""><div><b>凌晨三点还睡不着？试试这个 4-7-8 呼吸法</b><span class="small muted">视频 · 11/04</span></div></div></td><td class="r num">32.1万</td><td class="r num">5,206</td><td class="r num">1,284</td><td class="r num">146<span class="mini"><i style="width:100%"></i></span></td><td class="r num">¥6,570</td></tr>
+              <tr><td class="rk">2</td><td><div class="ct"><img src="../assets/rain-window.jpg" alt=""><div><b>失眠一个月了，什么时候该找专业的人？</b><span class="small muted">文章 · 11/08</span></div></div></td><td class="r num">8.6万</td><td class="r num">3,940</td><td class="r num">702</td><td class="r num">98<span class="mini"><i style="width:67%"></i></span></td><td class="r num">¥4,410</td></tr>
+              <tr><td class="rk">3</td><td><div class="ct"><img src="../assets/laptop-sweater.jpg" alt=""><div><b>周日晚上睡不着，是大脑在「预演」周一</b><span class="small muted">视频 · 11/11</span></div></div></td><td class="r num">21.4万</td><td class="r num">3,512</td><td class="r num">516</td><td class="r num">71<span class="mini"><i style="width:49%"></i></span></td><td class="r num">¥3,195</td></tr>
+              <tr><td class="rk">4</td><td><div class="ct"><img src="../assets/tea-cup.jpg" alt=""><div><b>睡前别做这 5 件事（第 3 件很多人每天都做）</b><span class="small muted">视频 · 10/28</span></div></div></td><td class="r num">45.8万</td><td class="r num">2,870</td><td class="r num">301</td><td class="r num">48<span class="mini"><i style="width:33%"></i></span></td><td class="r num">¥2,160</td></tr>
+              <tr><td class="rk">5</td><td><div class="ct"><img src="../assets/headphones.jpg" alt=""><div><b>20 分钟身体扫描 · 跟着阿屿放松入睡</b><span class="small muted">音频 · 11/01</span></div></div></td><td class="r num">6.2万</td><td class="r num">1,966</td><td class="r num">188</td><td class="r num">31<span class="mini"><i style="width:21%"></i></span></td><td class="r num">¥1,395</td></tr>
+              <tr><td class="rk">6</td><td><div class="ct"><img src="../assets/notebook-pen.jpg" alt=""><div><b>我用了 7 天睡眠日志，发现了自己的「睡眠债」</b><span class="small muted">文章 · 11/13</span></div></div></td><td class="r num">3.9万</td><td class="r num">926</td><td class="r num">115</td><td class="r num">18<span class="mini"><i style="width:12%"></i></span></td><td class="r num">¥810</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-h"><h2 class="display">结算记录</h2><button class="btn btn-text btn-sm" type="button" data-toast="已打开收款账户设置">收款账户 ›</button></div>
+        <div class="tbl-wrap">
+          <table class="tb">
+            <thead><tr><th>周期</th><th class="r">首单</th><th class="r">分成</th><th>状态</th></tr></thead>
+            <tbody>
+              <tr><td>2026 年 11 月</td><td class="r num">412</td><td class="r num">¥18,540</td><td><span class="tag tag-warn">统计中 · 12/10</span></td></tr>
+              <tr><td>2026 年 10 月</td><td class="r num">339</td><td class="r num">¥15,255</td><td><span class="tag tag-ok">已打款 11/10</span></td></tr>
+              <tr><td>2026 年 9 月</td><td class="r num">264</td><td class="r num">¥11,880</td><td><span class="tag tag-ok">已打款 10/10</span></td></tr>
+              <tr><td>2026 年 8 月</td><td class="r num">198</td><td class="r num">¥8,910</td><td><span class="tag tag-ok">已打款 09/10</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="link-card">
+          <div class="link-box"><svg class="ic ic-sm" style="color:var(--ink-3)"><use href="#i-link"/></svg><span>tingyu.cn/r/ayu-sleep</span><button class="btn btn-soft btn-sm" type="button" id="copy">复制专属链接</button></div>
+          <div class="rule">
+            <div><svg class="ic"><use href="#i-check"/></svg><span>经专属链接进入的新用户，首单咨询实付金额的 10% 计入分成</span></div>
+            <div><svg class="ic"><use href="#i-check"/></svg><span>咨询完成且过 7 天无责退款期后入账，每月 10 日结算</span></div>
+            <div><svg class="ic"><use href="#i-shield"/></svg><span>你只能看到汇总数据，看不到任何来访者的身份与对话内容</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  document.querySelectorAll('[data-toast]').forEach(function (b) { b.addEventListener('click', function () { toast(b.getAttribute('data-toast')); }); });
+
+  // posts
+  var POSTS = [
+    { t: '凌晨三点还睡不着？试试这个 4-7-8 呼吸法', ty: 'video', du: '03:42', img: 'moon.jpg', v: '32.1万', l: '2.4万', x: '1,284' },
+    { t: '失眠一个月了，什么时候该找专业的人？', ty: 'article', du: '6 分钟', img: 'rain-window.jpg', v: '8.6万', l: '5,120', x: '702' },
+    { t: '周日晚上睡不着，是大脑在「预演」周一', ty: 'video', du: '04:15', img: 'laptop-sweater.jpg', v: '21.4万', l: '1.6万', x: '516' },
+    { t: '睡前别做这 5 件事（第 3 件很多人每天都做）', ty: 'video', du: '02:58', img: 'tea-cup.jpg', v: '45.8万', l: '3.8万', x: '301' },
+    { t: '20 分钟身体扫描 · 跟着阿屿放松入睡', ty: 'audio', du: '20:06', img: 'headphones.jpg', v: '6.2万', l: '4,310', x: '188' },
+    { t: '我用了 7 天睡眠日志，发现了自己的「睡眠债」', ty: 'article', du: '8 分钟', img: 'notebook-pen.jpg', v: '3.9万', l: '2,960', x: '115' },
+    { t: '早醒不是年纪大了：聊聊焦虑型早醒', ty: 'video', du: '05:20', img: 'mist-forest.jpg', v: '12.7万', l: '9,840', x: '264' },
+    { t: '午睡到底睡多久？20 分钟和 90 分钟的区别', ty: 'article', du: '5 分钟', img: 'lake-dock.jpg', v: '4.4万', l: '3,105', x: '62' },
+    { t: '「报复性熬夜」背后，是一天里没有属于自己的时间', ty: 'video', du: '03:36', img: 'night-sky.jpg', v: '28.9万', l: '2.1万', x: '433' }
+  ];
+  var TY = { video: ['视频', 'play'], article: ['文章', 'book'], audio: ['音频', 'headphones'] };
+  function renderPosts(f) {
+    $('cards').innerHTML = POSTS.filter(function (p) { return f === 'all' || p.ty === f; }).map(function (p) {
+      return '<a class="card post" href="web-voice.html?from=ayu"><div class="cv"><img src="../assets/' + p.img + '" alt="" loading="lazy"><span class="ty"><svg class="ic"><use href="#i-' + TY[p.ty][1] + '"/></svg>' + TY[p.ty][0] + '</span><span class="du">' + p.du + '</span></div>' +
+        '<div class="in"><h3>' + p.t + '</h3><div class="st"><span><svg class="ic"><use href="#i-' + (p.ty === 'article' ? 'book' : 'play') + '"/></svg>' + p.v + (p.ty === 'article' ? ' 阅读' : ' 播放') + '</span><span><svg class="ic"><use href="#i-heart"/></svg>' + p.l + '</span></div>' +
+        '<span class="go"><svg class="ic"><use href="#i-mic"/></svg>' + p.x + ' 人看完后和小屿聊了聊</span></div></a>';
+    }).join('');
+  }
+  renderPosts('all');
+  document.querySelectorAll('#ftabs button').forEach(function (b) { b.addEventListener('click', function () { document.querySelectorAll('#ftabs button').forEach(function (x) { x.classList.toggle('on', x === b); }); renderPosts(b.getAttribute('data-f')); }); });
+  $('follow').addEventListener('click', function () { var on = this.classList.toggle('btn-primary'); this.classList.toggle('btn-ghost', !on); this.innerHTML = on ? '<svg class="ic ic-sm"><use href="#i-plus"/></svg>关注' : '<svg class="ic ic-sm"><use href="#i-check"/></svg>已关注'; toast(on ? '已取消关注' : '已关注 睡眠研究所阿屿'); });
+
+  // view switch
+  function setView(v) {
+    $('profile').hidden = v !== 'profile'; $('studio').hidden = v !== 'studio';
+    document.querySelectorAll('.view-bar .seg button').forEach(function (b) { var on = b.getAttribute('data-v') === v; b.classList.toggle('on', on); b.setAttribute('aria-selected', on); });
+    $('crumb').querySelector('b').textContent = v === 'studio' ? '睡眠研究所阿屿 · 达人后台' : '睡眠研究所阿屿';
+    if (history.replaceState) history.replaceState(null, '', location.pathname + location.search + (v === 'studio' ? '#studio' : ''));
+    if (v === 'studio') drawTrend();
+  }
+  document.querySelectorAll('.view-bar .seg button').forEach(function (b) { b.addEventListener('click', function () { setView(b.getAttribute('data-v')); }); });
+  $('toStudio').addEventListener('click', function () { setView('studio'); window.scrollTo(0, 0); });
+  document.querySelectorAll('#range button').forEach(function (b) { b.addEventListener('click', function () { document.querySelectorAll('#range button').forEach(function (x) { x.classList.toggle('on', x === b); }); toast('原型演示：展示「本月」数据'); }); });
+  $('copy').addEventListener('click', function () { try { navigator.clipboard.writeText('https://tingyu.cn/r/ayu-sleep'); } catch (e) { /* ignore */ } toast('专属链接已复制'); });
+
+  // trend: 30 days 10/17 – 11/15
+  var visits = [420, 380, 455, 610, 520, 490, 470, 505, 530, 600, 585, 1420, 1180, 960, 820, 914, 884, 950, 1900, 1576, 1263, 1058, 986, 1155, 1082, 1491, 1299, 1155, 1395, 1312];
+  var series = [visits, visits.map(function (v, i) { return Math.round(v * (0.15 + 0.03 * Math.sin(i))); }), visits.map(function (v, i) { return Math.round(v * (0.15 + 0.03 * Math.sin(i)) * (0.12 + 0.02 * Math.cos(i))); })];
+  var names = ['访问', '开口接待', '首单'];
+  var EV = { 11: '「睡前别做这 5 件事」发布', 18: '「4-7-8 呼吸法」发布', 25: '「周日晚上睡不着」发布' };
+  var metric = 0;
+  function nice(m) { var p = Math.pow(10, Math.floor(Math.log10(m))); var s = [1, 2, 2.5, 5, 10].map(function (k) { return k * p; }).filter(function (k) { return k * 4 >= m; })[0]; return s; }
+  function date(i) { var d = new Date(2026, 9, 17 + i); return (d.getMonth() + 1) + '/' + d.getDate(); }
+  function drawTrend() {
+    var data = series[metric], W = 640, H = 250, L = 44, R = 12, T = 14, B = 26, n = data.length;
+    var step = nice(Math.max.apply(null, data)), max = step * 4;
+    var xs = function (i) { return L + i * (W - L - R) / (n - 1); }, ys = function (v) { return T + (1 - v / max) * (H - T - B); };
+    var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="近 30 天' + names[metric] + '趋势"><g class="grid">';
+    for (var k = 0; k <= 4; k++) { var y = ys(k * step); s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + y + '" y2="' + y + '"/><text class="lab" x="' + (L - 8) + '" y="' + (y + 4) + '" text-anchor="end">' + (k * step).toLocaleString() + '</text>'; }
+    s += '</g>';
+    [0, 7, 14, 21, 29].forEach(function (i) { s += '<text class="lab" x="' + xs(i) + '" y="' + (H - 4) + '" text-anchor="middle">' + date(i) + '</text>'; });
+    var pts = data.map(function (v, i) { return xs(i).toFixed(1) + ',' + ys(v).toFixed(1); });
+    s += '<path class="area" d="M' + xs(0) + ',' + ys(0) + ' L' + pts.join(' L') + ' L' + xs(n - 1) + ',' + ys(0) + 'Z"/><polyline class="line" points="' + pts.join(' ') + '"/>';
+    Object.keys(EV).forEach(function (i) { s += '<circle class="ev" cx="' + xs(+i) + '" cy="' + ys(data[i]) + '" r="5"/>'; });
+    s += '<text class="evl" x="' + xs(18) + '" y="' + (ys(data[18]) - 12) + '" text-anchor="middle">4-7-8 呼吸法发布</text>';
+    s += '<line class="xh" id="xh" x1="-10" x2="-10" y1="' + T + '" y2="' + ys(0) + '"/><circle class="dot" id="hd" r="4.5" cx="-10" cy="-10"/></svg><div class="tip" id="tip" hidden></div>';
+    var box = $('trend'); box.innerHTML = s;
+    var svg = box.querySelector('svg'), tip = $('tip');
+    svg.addEventListener('mousemove', function (e) {
+      var r = svg.getBoundingClientRect(), x = (e.clientX - r.left) * W / r.width;
+      var i = Math.max(0, Math.min(n - 1, Math.round((x - L) / ((W - L - R) / (n - 1)))));
+      $('xh').setAttribute('x1', xs(i)); $('xh').setAttribute('x2', xs(i)); $('hd').setAttribute('cx', xs(i)); $('hd').setAttribute('cy', ys(data[i]));
+      tip.hidden = false; tip.style.left = (xs(i) * r.width / W + 4) + 'px'; tip.style.top = (ys(data[i]) * r.height / H + 10) + 'px';
+      tip.innerHTML = '<span class="num">' + date(i) + '</span> · ' + names[metric] + ' <b class="num">' + data[i].toLocaleString() + '</b>' + (EV[i] ? '<br>' + EV[i] : '');
+    });
+    svg.addEventListener('mouseleave', function () { tip.hidden = true; $('xh').setAttribute('x1', -10); $('xh').setAttribute('x2', -10); $('hd').setAttribute('cx', -10); });
+  }
+  document.querySelectorAll('#metric button').forEach(function (b) { b.addEventListener('click', function () { document.querySelectorAll('#metric button').forEach(function (x) { x.classList.toggle('on', x === b); }); metric = +b.getAttribute('data-m'); drawTrend(); }); });
+
+  if (location.hash === '#studio') setView('studio');
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>听屿 App · 助眠音频</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@500;600;900&display=swap">
+<link rel="stylesheet" href="ds.css">
+<script src="icons.js"></script>
+<style>
+/* App · 助眠音频播放器。封面上的文字用与皮肤无关的白色 + 黑色半透明遮罩；播放列表面板只用 token */
+.phone.fixed { color: rgba(255,255,255,.96); background: rgba(0,0,0,1); }
+.bg { position: absolute; inset: 0; z-index: 0; }
+.bg img { width: 100%; height: 100%; object-fit: cover; transition: opacity .4s; }
+.bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(rgba(0,0,0,.45) 0%, rgba(0,0,0,.15) 30%, rgba(0,0,0,.55) 58%, rgba(0,0,0,.85) 100%); }
+.statusbar, .navbar, .scroll { position: relative; z-index: 1; }
+.statusbar { color: rgba(255,255,255,.96); }
+.navbar .nb-btn { color: inherit; }
+.navbar h1 { font-size: 14px; font-weight: 500; opacity: .9; }
+.homebar { background: rgba(255,255,255,.9); z-index: 3; }
+.glass { background: rgba(255,255,255,.14); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,.18); }
+
+.hero { height: 248px; display: flex; flex-direction: column; justify-content: flex-end; padding: 0 22px 12px; }
+.hero .k { display: flex; gap: 6px; }
+.hero .k span { display: inline-flex; align-items: center; gap: 4px; height: 24px; padding: 0 9px; border-radius: var(--r-pill); font-size: 11.5px; }
+.ttl { padding: 0 22px; display: flex; align-items: flex-end; gap: 12px; }
+.ttl h2 { margin: 0; font-size: 26px; line-height: 1.3; }
+.ttl h2 small { font-size: 15px; opacity: .7; font-weight: 500; font-family: var(--font-body); }
+.ttl .fav { margin-left: auto; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; color: inherit; flex-shrink: 0; }
+.ttl .fav.on .ic { fill: var(--accent); stroke: var(--accent); }
+.by { padding: 8px 22px 0; display: flex; align-items: center; gap: 8px; font-size: 13px; opacity: .92; }
+.by .avatar { width: 26px; height: 26px; border: 1.5px solid rgba(255,255,255,.6); }
+.by .dot { background: rgba(255,255,255,.5); width: 3px; height: 3px; }
+
+.prog { padding: 22px 22px 0; }
+.track { position: relative; height: 22px; display: flex; align-items: center; cursor: pointer; touch-action: none; }
+.track .rail { position: absolute; left: 0; right: 0; height: 4px; border-radius: 2px; background: rgba(255,255,255,.25); }
+.track .fill { position: absolute; left: 0; height: 4px; border-radius: 2px; background: var(--primary-soft); }
+.track .knob { position: absolute; width: 16px; height: 16px; margin-left: -8px; border-radius: 50%; background: rgba(255,255,255,1); box-shadow: 0 2px 8px rgba(0,0,0,.4); }
+.times { display: flex; justify-content: space-between; font-size: 12px; opacity: .75; margin-top: 2px; }
+
+.ctrl { display: flex; align-items: center; justify-content: space-between; padding: 10px 26px 0; }
+.ctrl button { border: 0; background: none; color: inherit; padding: 0; display: grid; place-items: center; }
+.ctrl .side { width: 40px; height: 40px; opacity: .8; }
+.ctrl .side.on { opacity: 1; color: var(--primary-soft); }
+.ctrl .skip { width: 48px; height: 48px; }
+.ctrl .skip .ic { width: 30px; height: 30px; }
+.ctrl .main { width: 76px; height: 76px; border-radius: 50%; background: rgba(255,255,255,1); color: rgba(0,0,0,.88); box-shadow: 0 12px 30px rgba(0,0,0,.4); }
+.ctrl .main .ic { width: 30px; height: 30px; }
+.ctrl .main .ic.pl { fill: currentColor; stroke: none; margin-left: 4px; }
+.ctrl .main .ic.pa { stroke-width: 3.2; }
+.ic-fill { fill: currentColor; stroke: none; }
+
+.timer { padding: 18px 22px 0; display: flex; align-items: center; gap: 8px; }
+.timer .lb { font-size: 12.5px; opacity: .8; display: flex; align-items: center; gap: 4px; margin-right: 2px; white-space: nowrap; }
+.timer .chip { height: 30px; color: inherit; background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.22); font-family: var(--font-num); }
+.timer .chip.on { background: rgba(255,255,255,1); color: rgba(0,0,0,.88); border-color: transparent; font-weight: 600; }
+.timer .left { margin-left: auto; font-size: 12px; opacity: .8; white-space: nowrap; }
+
+.plist { margin-top: 22px; background: var(--surface); color: var(--ink); border-radius: var(--r-xl) var(--r-xl) 0 0; padding: 16px 16px 36px; min-height: 420px; }
+.plist .grab { width: 36px; height: 4px; border-radius: 2px; background: var(--line); margin: -6px auto 12px; }
+.trk { display: flex; align-items: center; gap: 12px; padding: 9px 4px; border-radius: var(--r); cursor: pointer; }
+.trk + .trk { border-top: 1px solid var(--line-2); }
+.trk img { width: 48px; height: 48px; border-radius: var(--r-sm); object-fit: cover; }
+.trk b { display: block; font-size: 14.5px; font-weight: 600; }
+.trk span.s { font-size: 12px; color: var(--ink-3); }
+.trk .dur { font-size: 12px; color: var(--ink-3); font-family: var(--font-num); }
+.trk.on b { color: var(--primary); }
+.trk .eq { display: none; gap: 2px; align-items: flex-end; height: 14px; }
+.trk.on .eq { display: inline-flex; }
+.trk .eq i { width: 3px; background: var(--primary); border-radius: 1px; animation: eq 1s infinite ease-in-out; }
+.trk .eq i:nth-child(2) { animation-delay: .2s; } .trk .eq i:nth-child(3) { animation-delay: .4s; }
+@keyframes eq { 0%,100% { height: 30%; } 50% { height: 100%; } }
+.paused .trk .eq i { animation-play-state: paused; }
+.trk .lock { font-size: 10.5px; }
+</style>
+</head>
+<body>
+<div class="phone fixed" id="phone">
+  <div class="bg" aria-hidden="true"><img id="bgimg" src="../assets/ocean-aerial.jpg" alt=""></div>
+  <div class="statusbar"></div>
+  <header class="navbar">
+    <a class="nb-btn" href="app-me.html" aria-label="收起播放器"><svg class="ic"><use href="#i-chevron-down"/></svg></a>
+    <h1>正在播放 · 助眠歌单</h1>
+    <button class="nb-btn" type="button" aria-label="分享" onclick="toast('已生成分享卡片')"><svg class="ic"><use href="#i-share"/></svg></button>
+  </header>
+
+  <div class="scroll" id="scroll">
+    <div class="hero">
+      <div class="k"><span class="glass"><svg class="ic ic-sm"><use href="#i-moon"/></svg>睡前引导</span><span class="glass">屿伴会员</span><span class="glass num">1.2 万人今晚在听</span></div>
+    </div>
+    <div class="ttl">
+      <h2 class="display" id="title">海浪与月光 <small class="num" id="sub">· 20 分钟</small></h2>
+      <button class="fav glass on" type="button" id="fav" aria-label="收藏" aria-pressed="true"><svg class="ic"><use href="#i-heart"/></svg></button>
+    </div>
+    <div class="by"><img class="avatar" id="authorImg" src="../assets/c-he.jpg" alt=""><span id="author">何清 · 正念导师</span><i class="dot"></i><span>第 2 / 6 首</span></div>
+
+    <div class="prog">
+      <div class="track" id="track" role="slider" aria-label="播放进度" aria-valuemin="0" aria-valuemax="1200" tabindex="0">
+        <span class="rail"></span><span class="fill" id="fill"></span><span class="knob" id="knob"></span>
+      </div>
+      <div class="times num"><span id="cur">06:12</span><span id="tot">20:00</span></div>
+    </div>
+
+    <div class="ctrl">
+      <button class="side on" type="button" id="loop" aria-label="单曲循环"><svg class="ic"><use href="#i-trend"/></svg></button>
+      <button class="skip" type="button" id="prev" aria-label="上一首"><svg class="ic ic-fill" viewBox="0 0 24 24"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg></button>
+      <button class="main" type="button" id="play" aria-label="暂停"><svg class="ic pa"><use href="#i-pause"/></svg></button>
+      <button class="skip" type="button" id="next" aria-label="下一首"><svg class="ic ic-fill" viewBox="0 0 24 24"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg></button>
+      <button class="side" type="button" id="vol" aria-label="音量"><svg class="ic"><use href="#i-volume"/></svg></button>
+    </div>
+
+    <div class="timer">
+      <span class="lb"><svg class="ic ic-sm"><use href="#i-clock"/></svg>定时关闭</span>
+      <button class="chip" type="button" data-m="15">15 分</button>
+      <button class="chip on" type="button" data-m="30">30 分</button>
+      <button class="chip" type="button" data-m="45">45 分</button>
+      <span class="left num" id="left">29:48 后停止</span>
+    </div>
+
+    <section class="plist" id="plist">
+      <div class="grab"></div>
+      <div class="section-title"><h3>播放列表</h3><a href="#" onclick="toast('已开启：播完后自动渐弱停止');return false">渐弱停止 · 开</a></div>
+      <div id="tracks"></div>
+    </section>
+  </div>
+  <span class="homebar" aria-hidden="true"></span>
+</div>
+<script>
+var TR = [
+  { t: '睡前身体扫描', d: 900, a: '何清 · 正念导师', ai: '../assets/c-he.jpg', img: '../assets/lake-dock.jpg', s: '放松肩颈与呼吸' },
+  { t: '海浪与月光', d: 1200, a: '何清 · 正念导师', ai: '../assets/c-he.jpg', img: '../assets/ocean-aerial.jpg', s: '海浪白噪音 + 引导语' },
+  { t: '4-7-8 呼吸练习', d: 240, a: '林知夏 · 心理咨询师', ai: '../assets/c-lin.jpg', img: '../assets/beach-dawn.jpg', s: '林老师布置的睡前练习' },
+  { t: '雨夜窗边', d: 1800, a: '听屿声音实验室', ai: '../assets/u-woman-5.jpg', img: '../assets/rain-window.jpg', s: '纯雨声 · 无人声' },
+  { t: '放下今天的念头', d: 720, a: '何清 · 正念导师', ai: '../assets/c-he.jpg', img: '../assets/mist-forest.jpg', s: '适合思绪停不下来时' },
+  { t: '森林清晨', d: 1500, a: '睡眠研究所阿屿', ai: '../assets/u-woman-5.jpg', img: '../assets/forest-path.jpg', s: '鸟鸣与溪流' }
+];
+var idx = 1, pos = 372, playing = true, sleepLeft = 30 * 60 - 12;
+function fmt(s) { s = Math.max(0, Math.round(s)); var m = Math.floor(s / 60), x = s % 60; return (m < 10 ? '0' : '') + m + ':' + (x < 10 ? '0' : '') + x; }
+function render() {
+  var t = TR[idx], p = pos / t.d * 100;
+  document.getElementById('fill').style.width = p + '%';
+  document.getElementById('knob').style.left = p + '%';
+  document.getElementById('cur').textContent = fmt(pos);
+  document.getElementById('track').setAttribute('aria-valuenow', Math.round(pos));
+}
+function loadTrack(i, keep) {
+  idx = (i + TR.length) % TR.length; var t = TR[idx];
+  if (!keep) pos = 0;
+  document.getElementById('title').innerHTML = t.t + ' <small class="num">· ' + Math.round(t.d / 60) + ' 分钟</small>';
+  document.getElementById('author').textContent = t.a;
+  document.getElementById('authorImg').src = t.ai;
+  document.getElementById('bgimg').src = t.img;
+  document.getElementById('tot').textContent = fmt(t.d);
+  document.querySelector('.by span:last-child').textContent = '第 ' + (idx + 1) + ' / ' + TR.length + ' 首';
+  document.getElementById('track').setAttribute('aria-valuemax', t.d);
+  document.querySelectorAll('.trk').forEach(function (el, k) { el.classList.toggle('on', k === idx); });
+  render();
+}
+document.getElementById('tracks').innerHTML = TR.map(function (t, k) {
+  return '<div class="trk" data-i="' + k + '"><img src="' + t.img + '" alt=""><div class="grow"><b>' + t.t + '</b><span class="s">' + t.a.split(' · ')[0] + ' · ' + t.s + '</span></div><span class="eq"><i></i><i></i><i></i></span><span class="dur">' + fmt(t.d) + '</span></div>';
+}).join('');
+document.getElementById('tracks').addEventListener('click', function (e) { var el = e.target.closest('.trk'); if (el) { loadTrack(+el.dataset.i); setPlaying(true); } });
+loadTrack(1, true);
+
+function setPlaying(v) {
+  playing = v; var b = document.getElementById('play');
+  b.innerHTML = v ? '<svg class="ic pa"><use href="#i-pause"/></svg>' : '<svg class="ic pl"><use href="#i-play"/></svg>';
+  b.setAttribute('aria-label', v ? '暂停' : '播放');
+  document.getElementById('phone').classList.toggle('paused', !v);
+}
+document.getElementById('play').addEventListener('click', function () { setPlaying(!playing); });
+document.getElementById('prev').addEventListener('click', function () { if (pos > 5) { pos = 0; render(); } else loadTrack(idx - 1); });
+document.getElementById('next').addEventListener('click', function () { loadTrack(idx + 1); });
+document.getElementById('loop').addEventListener('click', function () { var on = this.classList.toggle('on'); toast(on ? '单曲循环' : '列表播放'); });
+document.getElementById('vol').addEventListener('click', function () { toast('音量 60% · 已开启夜间音量保护'); });
+document.getElementById('fav').addEventListener('click', function () { var on = this.classList.toggle('on'); this.setAttribute('aria-pressed', on); toast(on ? '已收藏到「我的助眠」' : '已取消收藏'); });
+setPlaying(true);
+
+setInterval(function () {
+  if (!playing) return;
+  pos += 1;
+  if (pos >= TR[idx].d) { if (document.getElementById('loop').classList.contains('on')) pos = 0; else loadTrack(idx + 1); }
+  render();
+  if (sleepLeft != null) {
+    sleepLeft--; document.getElementById('left').textContent = fmt(sleepLeft) + ' 后停止';
+    if (sleepLeft <= 0) { setPlaying(false); sleepLeft = null; document.getElementById('left').textContent = '已停止'; toast('定时结束，已渐弱停止'); }
+  }
+}, 1000);
+
+var track = document.getElementById('track'), drag = false;
+function seek(e) { var r = track.getBoundingClientRect(); var x = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)); pos = x * TR[idx].d; render(); }
+track.addEventListener('pointerdown', function (e) { drag = true; track.setPointerCapture(e.pointerId); seek(e); });
+track.addEventListener('pointermove', function (e) { if (drag) seek(e); });
+track.addEventListener('pointerup', function () { drag = false; });
+track.addEventListener('keydown', function (e) { if (e.key === 'ArrowRight') { pos = Math.min(TR[idx].d, pos + 15); render(); } if (e.key === 'ArrowLeft') { pos = Math.max(0, pos - 15); render(); } });
+
+document.querySelectorAll('.timer .chip').forEach(function (c) {
+  c.addEventListener('click', function () {
+    var was = c.classList.contains('on');
+    document.querySelectorAll('.timer .chip').forEach(function (x) { x.classList.remove('on'); });
+    if (was) { sleepLeft = null; document.getElementById('left').textContent = '未开启'; toast('已关闭定时'); return; }
+    c.classList.add('on'); sleepLeft = +c.dataset.m * 60;
+    document.getElementById('left').textContent = fmt(sleepLeft) + ' 后停止';
+    toast(c.dataset.m + ' 分钟后自动停止播放');
+  });
+});
+</script>
+</body>
+</html>

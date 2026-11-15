@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>听屿 App · 登录</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@500;600;900&display=swap">
+<link rel="stylesheet" href="ds.css">
+<script src="icons.js"></script>
+<style>
+/* App · 登录 —— tokens only */
+.navbar .help { font-size: 14px; color: var(--ink-2); padding: 0 6px; }
+.login { padding: 8px 24px 0; }
+.login .brand-mark { width: 48px; height: 48px; border-radius: 15px; }
+.login h1 { margin: 18px 0 4px; font-size: 26px; line-height: 1.3; }
+.login .sub { margin: 0; color: var(--ink-3); font-size: 13.5px; }
+
+form { margin-top: 26px; display: grid; gap: 12px; }
+.field { display: flex; align-items: center; gap: 10px; height: 52px; padding: 0 16px; border-radius: var(--r); background: var(--surface); border: 1px solid var(--line); transition: border-color .15s, box-shadow .15s; }
+.field:focus-within { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-soft); }
+.field input { flex: 1; min-width: 0; height: 100%; border: 0; outline: none; background: none; font-size: 16px; color: var(--ink); }
+.field input::placeholder { color: var(--ink-4); }
+.field .cc { display: inline-flex; align-items: center; gap: 2px; font-family: var(--font-num); font-weight: 600; color: var(--ink); padding-right: 10px; border-right: 1px solid var(--line); }
+.field .cc .ic { width: 14px; height: 14px; color: var(--ink-3); }
+.field .clear { border: 0; background: var(--bg-2); color: var(--ink-3); width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; padding: 0; }
+.field .clear .ic { width: 12px; height: 12px; stroke-width: 2.4; }
+.getcode { border: 0; background: none; color: var(--primary); font-weight: 600; font-size: 14px; padding: 0; white-space: nowrap; }
+.getcode[disabled] { color: var(--ink-4); cursor: default; }
+.hint { font-size: 12px; color: var(--ink-3); display: flex; align-items: center; gap: 6px; min-height: 18px; margin-top: -4px; }
+.hint .ic { width: 14px; height: 14px; color: var(--ok); }
+
+.agree { display: flex; gap: 8px; align-items: flex-start; font-size: 12.5px; color: var(--ink-3); line-height: 1.6; margin-top: 2px; cursor: pointer; }
+.agree input { position: absolute; opacity: 0; pointer-events: none; }
+.agree .box { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--ink-4); flex-shrink: 0; margin-top: 1px; display: grid; place-items: center; color: var(--on-primary); transition: background .15s, border-color .15s; }
+.agree .box .ic { width: 12px; height: 12px; stroke-width: 3; opacity: 0; }
+.agree input:checked + .box { background: var(--primary); border-color: var(--primary); }
+.agree input:checked + .box .ic { opacity: 1; }
+.agree input:focus-visible + .box { outline: 2px solid var(--primary); outline-offset: 2px; }
+.agree a { color: var(--primary); }
+.agree.shake { animation: shake .4s; }
+@keyframes shake { 20%, 60% { transform: translateX(-5px); } 40%, 80% { transform: translateX(5px); } }
+
+.onekey { margin-top: 4px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.onekey .num { font-weight: 600; }
+
+.others { margin-top: 30px; text-align: center; }
+.others .or { display: flex; align-items: center; gap: 12px; font-size: 12px; color: var(--ink-4); }
+.others .or::before, .others .or::after { content: ""; flex: 1; height: 1px; background: var(--line-2); }
+.others .btns { display: flex; justify-content: center; gap: 28px; margin-top: 16px; }
+.others .btns button { border: 1px solid var(--line); background: var(--surface); width: 50px; height: 50px; border-radius: 50%; display: grid; place-items: center; color: var(--ink); }
+.others .btns button.wx { color: var(--ok); }
+.others .btns label { display: grid; justify-items: center; gap: 6px; font-size: 11.5px; color: var(--ink-3); }
+.foot-note { position: absolute; left: 0; right: 0; bottom: 30px; text-align: center; font-size: 11.5px; color: var(--ink-4); display: flex; align-items: center; justify-content: center; gap: 4px; }
+.foot-note .ic { width: 13px; height: 13px; }
+.loading { position: absolute; inset: 0; background: color-mix(in srgb, var(--bg) 70%, transparent); display: grid; place-items: center; z-index: 50; }
+.loading .spin { width: 34px; height: 34px; border-radius: 50%; border: 3px solid var(--primary-soft); border-top-color: var(--primary); animation: spin .8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+<div class="phone fixed">
+  <div class="statusbar"></div>
+  <header class="navbar">
+    <a class="nb-btn" href="app-onboarding.html" aria-label="返回"><svg class="ic"><use href="#i-back"/></svg></a>
+    <h1></h1>
+    <a class="help" href="#" id="help">遇到问题</a>
+  </header>
+
+  <div class="scroll">
+    <section class="login">
+      <span class="brand-mark"><svg class="ic ic-lg"><use href="#i-leaf"/></svg></span>
+      <h1 class="display">登录听屿</h1>
+      <p class="sub">未注册的手机号验证后将自动创建账号</p>
+
+      <form id="form" novalidate>
+        <label class="field">
+          <span class="cc">+86<svg class="ic"><use href="#i-chevron-down"/></svg></span>
+          <input id="phone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="请输入手机号" value="138 2671 0452" maxlength="13" aria-label="手机号">
+          <button type="button" class="clear" id="clear" aria-label="清除手机号"><svg class="ic"><use href="#i-close"/></svg></button>
+        </label>
+        <label class="field">
+          <input id="code" type="text" inputmode="numeric" autocomplete="one-time-code" placeholder="6 位验证码" maxlength="6" aria-label="验证码">
+          <button type="button" class="getcode" id="getcode">获取验证码</button>
+        </label>
+        <div class="hint" id="hint" aria-live="polite"></div>
+
+        <label class="agree" id="agree">
+          <input type="checkbox" id="agreeBox">
+          <span class="box"><svg class="ic"><use href="#i-check"/></svg></span>
+          <span>我已阅读并同意 <a href="#">《用户协议》</a><a href="#">《隐私政策》</a><a href="#">《心理服务知情同意书》</a>，了解 AI 助手小屿不提供诊断与治疗</span>
+        </label>
+
+        <button class="btn btn-primary btn-lg btn-block" type="submit" id="submit">登录</button>
+        <button class="btn btn-soft btn-lg btn-block onekey" type="button" id="onekey"><svg class="ic"><use href="#i-phone"/></svg>本机号码一键登录 <span class="num">138****0452</span></button>
+      </form>
+
+      <div class="others">
+        <div class="or">其他登录方式</div>
+        <div class="btns">
+          <label><button type="button" class="wx" data-way="微信" aria-label="微信登录">
+            <svg class="ic ic-lg" viewBox="0 0 24 24"><path d="M9.5 4C5.4 4 2 6.8 2 10.2c0 1.9 1 3.6 2.7 4.7L4 17.5l2.8-1.4c.8.2 1.7.4 2.7.4"/><path d="M15.5 9.5c-3.6 0-6.5 2.4-6.5 5.3s2.9 5.2 6.5 5.2c.8 0 1.5-.1 2.2-.3l2.3 1.3-.6-2.2c1.6-1 2.6-2.5 2.6-4 0-2.9-2.9-5.3-6.5-5.3Z"/><path d="M6.8 8.5h.01M11.8 8.5h.01M13.3 14h.01M17.6 14h.01" stroke-width="2.6"/></svg>
+          </button>微信</label>
+          <label><button type="button" data-way="Apple" aria-label="通过 Apple 登录">
+            <svg class="ic ic-lg" viewBox="0 0 24 24"><path d="M16.4 12.6c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.9-3.5.9s-1.8-.9-3-.8C7 7.4 5.5 8.3 4.7 9.8c-1.7 2.9-.4 7.2 1.2 9.5.8 1.1 1.7 2.4 2.9 2.3 1.2 0 1.6-.7 3-.7s1.8.7 3 .7c1.3 0 2.1-1.1 2.8-2.3.9-1.3 1.3-2.6 1.3-2.7-.1 0-2.5-1-2.5-4Z"/><path d="M14.2 5.6c.6-.8 1-1.8.9-2.9-.9 0-2 .6-2.7 1.4-.6.7-1.1 1.7-1 2.8 1 .1 2.1-.5 2.8-1.3Z"/></svg>
+          </button>Apple</label>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div class="foot-note"><svg class="ic"><use href="#i-lock"/></svg>你的信息受端到端加密保护，不会用于广告推送</div>
+  <span class="homebar" aria-hidden="true"></span>
+  <div class="loading" id="loading" hidden><span class="spin" aria-label="登录中"></span></div>
+</div>
+<script>
+(function () {
+  var phone = document.getElementById('phone'), code = document.getElementById('code'), get = document.getElementById('getcode');
+  var hint = document.getElementById('hint'), agree = document.getElementById('agree'), box = document.getElementById('agreeBox');
+  var timer = null;
+  function digits() { return phone.value.replace(/\D/g, ''); }
+  phone.addEventListener('input', function () {
+    var d = digits().slice(0, 11);
+    phone.value = d.replace(/^(\d{3})(\d{0,4})(\d{0,4}).*/, function (_, a, b, c) { return [a, b, c].filter(Boolean).join(' '); });
+  });
+  document.getElementById('clear').addEventListener('click', function (e) { e.preventDefault(); phone.value = ''; phone.focus(); });
+  get.addEventListener('click', function () {
+    if (digits().length !== 11) { toast('请输入 11 位手机号'); phone.focus(); return; }
+    var n = 60; get.disabled = true; get.textContent = n + ' 秒后重发';
+    hint.innerHTML = '<svg class="ic"><use href="#i-check-circle"/></svg>验证码已发送至 ' + digits().replace(/^(\d{3})\d{4}(\d{4})$/, '$1****$2') + '，演示验证码 <b class="num">246810</b>';
+    timer = setInterval(function () {
+      n--; get.textContent = n + ' 秒后重发';
+      if (n <= 0) { clearInterval(timer); get.disabled = false; get.textContent = '重新获取'; }
+    }, 1000);
+    setTimeout(function () { if (!code.value) code.value = '246810'; }, 1500);
+    code.focus();
+  });
+  function needAgree() {
+    if (box.checked) return false;
+    agree.classList.remove('shake'); void agree.offsetWidth; agree.classList.add('shake');
+    toast('请先阅读并勾选协议');
+    return true;
+  }
+  function go(msg) {
+    document.getElementById('loading').hidden = false;
+    setTimeout(function () { location.href = 'app-home.html'; }, 900);
+    if (msg) toast(msg);
+  }
+  document.getElementById('form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (digits().length !== 11) { toast('请输入 11 位手机号'); return; }
+    if (!/^\d{6}$/.test(code.value)) { toast('请输入 6 位验证码'); code.focus(); return; }
+    if (needAgree()) return;
+    go();
+  });
+  document.getElementById('onekey').addEventListener('click', function () { if (!needAgree()) go('本机号码认证成功'); });
+  document.querySelectorAll('.others button').forEach(function (b) {
+    b.addEventListener('click', function () { if (!needAgree()) go('正在通过' + b.dataset.way + '授权…'); });
+  });
+  document.getElementById('help').addEventListener('click', function (e) { e.preventDefault(); toast('客服在线 9:00–24:00，可在登录后「我的 › 帮助」联系'); });
+  document.querySelectorAll('.agree a').forEach(function (a) { a.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); toast('协议全文将在新页面打开'); }); });
+})();
+</script>
+</body>
+</html>

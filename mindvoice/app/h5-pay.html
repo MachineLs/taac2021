@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>听屿 H5 · 确认支付</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@500;600;900&display=swap">
+<link rel="stylesheet" href="ds.css">
+<script src="icons.js"></script>
+<style>
+/* H5 · 确认支付 —— tokens only */
+.phone { overflow: clip; display: flex; flex-direction: column; }
+.phone > main { flex: 1; padding: 0 14px 18px; }
+.h5-top .nb { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; border: 0; background: none; color: var(--ink); }
+.h5-top h1 { flex: 1; margin: 0; text-align: center; font-size: 16px; font-weight: 600; }
+.h5-top .sp { width: 36px; }
+
+.timer { margin: 0 -14px; padding: 9px 14px; background: var(--warn-soft); color: var(--warn); font-size: 12.5px; display: flex; align-items: center; gap: 6px; }
+.timer .ic { width: 15px; height: 15px; }
+.timer b { font-family: var(--font-num); }
+
+.card + .card { margin-top: 12px; }
+.order { margin-top: 14px; padding: 16px; }
+.order .top { display: grid; grid-template-columns: 60px 1fr; gap: 12px; align-items: center; }
+.order .top img { width: 60px; height: 60px; border-radius: var(--r); object-fit: cover; object-position: top; }
+.order .top b { font-size: 16px; display: block; line-height: 1.35; }
+.order .top span { font-size: 12px; color: var(--ink-3); }
+.order dl { margin: 14px 0 0; display: grid; grid-template-columns: auto 1fr; gap: 9px 16px; font-size: 13px; padding-top: 14px; border-top: 1px solid var(--line-2); }
+.order dt { color: var(--ink-3); }
+.order dd { margin: 0; text-align: right; color: var(--ink); }
+.order dd .tag { margin-left: 6px; }
+.order .sync { margin-top: 12px; padding: 9px 12px; border-radius: var(--r); background: var(--primary-soft); color: var(--primary); font-size: 12px; display: flex; gap: 6px; align-items: center; }
+.order .sync .ic { width: 15px; height: 15px; }
+
+.coupon { padding: 0; overflow: hidden; display: grid; grid-template-columns: 92px 1fr auto; align-items: stretch; cursor: pointer; }
+.coupon .amt { background: var(--accent-soft); color: var(--accent); display: grid; place-content: center; text-align: center; position: relative; border-right: 1.5px dashed color-mix(in srgb, var(--accent) 35%, transparent); padding: 14px 0; }
+.coupon .amt b { font-family: var(--font-num); font-size: 26px; line-height: 1; }
+.coupon .amt b small { font-size: 14px; margin-right: 1px; }
+.coupon .amt span { font-size: 11px; margin-top: 4px; }
+.coupon .info { padding: 12px 12px; display: grid; align-content: center; gap: 2px; }
+.coupon .info b { font-size: 14px; }
+.coupon .info span { font-size: 11.5px; color: var(--ink-3); }
+.coupon .info .from { display: flex; align-items: center; gap: 5px; font-size: 11.5px; color: var(--ink-2); }
+.coupon .info .from img { width: 16px; height: 16px; border-radius: 50%; }
+.coupon .chk { display: grid; place-items: center; padding-right: 14px; }
+.radio { width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--ink-4); display: grid; place-items: center; color: transparent; flex-shrink: 0; }
+.radio .ic { width: 12px; height: 12px; stroke-width: 3; }
+.on > .radio, .on .radio { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+
+.sec { padding: 6px 16px; }
+.sec h3 { margin: 10px 0 4px; font-size: 14.5px; font-family: var(--font-display); font-weight: var(--display-weight); }
+.pm { display: flex; align-items: center; gap: 12px; padding: 12px 0; border: 0; background: none; width: 100%; text-align: left; }
+.pm + .pm { border-top: 1px solid var(--line-2); }
+.pm .lg { width: 32px; height: 32px; border-radius: 9px; display: grid; place-items: center; flex-shrink: 0; }
+.pm .lg.wx { background: var(--ok); color: var(--surface); }
+.pm .lg.ali { background: var(--primary); color: var(--on-primary); font-weight: 900; font-size: 16px; }
+.pm .lg .ic { width: 18px; height: 18px; stroke-width: 2.2; }
+.pm b { font-size: 14.5px; font-weight: 600; display: block; line-height: 1.35; }
+.pm span.s { font-size: 11.5px; color: var(--ink-3); }
+
+.bill { display: grid; gap: 10px; padding: 14px 16px; font-size: 13px; }
+.bill .r { display: flex; justify-content: space-between; color: var(--ink-2); }
+.bill .r .num { color: var(--ink); }
+.bill .r.dis .num { color: var(--accent); }
+.bill .tot { display: flex; justify-content: space-between; align-items: baseline; padding-top: 12px; border-top: 1px solid var(--line-2); }
+.bill .tot .price { font-size: 22px; }
+.notes { margin-top: 14px; font-size: 11.5px; color: var(--ink-3); line-height: 1.8; padding: 0 4px; }
+.notes b { color: var(--ink-2); font-weight: 600; }
+
+.fixed-bottom { z-index: 12; }
+.fixed-bottom .sum { display: flex; justify-content: space-between; align-items: baseline; font-size: 12px; color: var(--ink-3); margin-bottom: 8px; }
+.fixed-bottom .sum .price { font-size: 20px; }
+.fixed-bottom .sum .save { color: var(--accent); }
+.btn-pay { background: var(--ok); color: var(--surface); }
+.btn-pay.ali { background: var(--primary); color: var(--on-primary); }
+
+/* paying → success overlay */
+.payov { position: fixed; inset: 0; z-index: 96; display: grid; place-items: center; padding: 24px; }
+.payov .box { width: 280px; background: var(--surface); border-radius: var(--r-xl); padding: 28px 22px 24px; text-align: center; box-shadow: var(--shadow-lg); animation: pop .25s ease-out; }
+@keyframes pop { from { transform: scale(.92); opacity: 0; } to { transform: none; opacity: 1; } }
+.payov .ring { width: 72px; height: 72px; margin: 0 auto 14px; position: relative; }
+.payov .ring svg { width: 72px; height: 72px; }
+.payov .spin circle.trk { stroke: var(--primary-soft); }
+.payov .spin circle.arc { stroke: var(--primary); stroke-dasharray: 60 200; transform-origin: 36px 36px; animation: spin .9s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.payov .done circle { stroke: var(--ok); stroke-dasharray: 202; stroke-dashoffset: 202; animation: draw .5s ease-out forwards; }
+.payov .done path { stroke: var(--ok); stroke-dasharray: 48; stroke-dashoffset: 48; animation: draw .35s .45s ease-out forwards; }
+.payov .done { background: var(--ok-soft); border-radius: 50%; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+.payov b { display: block; font-size: 17px; }
+.payov span.s { display: block; font-size: 12.5px; color: var(--ink-3); margin-top: 4px; }
+.payov .amt { font-family: var(--font-num); font-size: 30px; font-weight: 700; margin-top: 8px; }
+.payov .steps { display: flex; justify-content: center; gap: 6px; margin-top: 16px; }
+.payov .steps i { width: 6px; height: 6px; border-radius: 3px; background: var(--line); transition: width .2s, background .2s; }
+.payov .steps i.on { width: 18px; background: var(--primary); }
+</style>
+</head>
+<body>
+<div class="phone">
+  <header class="h5-top">
+    <a class="nb" href="h5-counselor.html" aria-label="返回"><svg class="ic"><use href="#i-back"/></svg></a>
+    <h1>确认订单</h1>
+    <span class="sp"></span>
+  </header>
+
+  <main>
+    <div class="timer"><svg class="ic"><use href="#i-clock"/></svg>时段已为你保留，请在 <b id="hold">14:32</b> 内完成支付</div>
+
+    <section class="card order">
+      <div class="top">
+        <img src="../assets/c-lin.jpg" alt="林知夏">
+        <div><b>林知夏 · 第 1 次咨询</b><span>国家二级心理咨询师 · 认知行为疗法 CBT</span></div>
+      </div>
+      <dl>
+        <dt>咨询时间</dt><dd class="num" id="oWhen">明天 11/16 周一 20:00–20:50</dd>
+        <dt>咨询方式</dt><dd id="oMode">语音咨询 · 50 分钟</dd>
+        <dt>来访者</dt><dd>小周<span class="tag tag-plain">138****8246</span></dd>
+      </dl>
+      <div class="sync"><svg class="ic"><use href="#i-file"/></svg>接待小结（11/15 23:08）将在支付后同步给林老师</div>
+    </section>
+
+    <section class="card coupon on" id="coupon" role="checkbox" aria-checked="true" tabindex="0">
+      <div class="amt"><b><small>¥</small>50</b><span>无门槛</span></div>
+      <div class="info">
+        <b>新客首单立减券</b>
+        <span class="from"><img src="../assets/u-woman-5.jpg" alt="">睡眠研究所阿屿 粉丝专享</span>
+        <span>今日 23:59 到期 · 仅限首次咨询</span>
+      </div>
+      <div class="chk"><span class="radio"><svg class="ic"><use href="#i-check"/></svg></span></div>
+    </section>
+
+    <section class="card sec">
+      <h3>支付方式</h3>
+      <div id="pms" role="radiogroup" aria-label="支付方式">
+        <button class="pm on" type="button" role="radio" aria-checked="true" data-k="wx">
+          <span class="lg wx"><svg class="ic"><use href="#i-chat"/></svg></span>
+          <span class="grow"><b>微信支付</b><span class="s">推荐 · 已在微信中打开</span></span>
+          <span class="radio"><svg class="ic"><use href="#i-check"/></svg></span>
+        </button>
+        <button class="pm" type="button" role="radio" aria-checked="false" data-k="ali">
+          <span class="lg ali">支</span>
+          <span class="grow"><b>支付宝</b><span class="s">将跳转至支付宝完成支付</span></span>
+          <span class="radio"><svg class="ic"><use href="#i-check"/></svg></span>
+        </button>
+      </div>
+    </section>
+
+    <section class="card bill">
+      <div class="r"><span>咨询费（50 分钟 × 1）</span><span class="num" id="bFee">¥400.00</span></div>
+      <div class="r dis" id="bCouponRow"><span>新客首单立减券</span><span class="num">−¥50.00</span></div>
+      <div class="r"><span>平台服务费</span><span class="num">¥0.00</span></div>
+      <div class="tot"><span>实付金额</span><span class="price" id="bTotal">¥350.00</span></div>
+    </section>
+
+    <div class="notes">
+      <b>预约须知</b><br>
+      1. 咨询开始前 24 小时可免费取消或改约 1 次，费用原路退回。<br>
+      2. 首次咨询不满意可申请免费更换咨询师。<br>
+      3. 咨询由持证咨询师提供；如遇紧急情况请拨打 12356 或 120。<br>
+      支付即表示同意《心理咨询服务协议》。
+    </div>
+  </main>
+
+  <div class="fixed-bottom">
+    <div class="sum"><span>实付 <span class="price" id="fTotal">¥350</span></span><span class="save" id="fSave">已优惠 ¥50</span></div>
+    <button class="btn btn-lg btn-block btn-pay" type="button" id="pay">微信支付 ¥350</button>
+  </div>
+</div>
+
+<div class="scrim" id="scrim" hidden></div>
+<div class="payov" id="payov" hidden role="dialog" aria-modal="true" aria-live="assertive">
+  <div class="box">
+    <div class="ring" id="ring"></div>
+    <b id="pTitle">正在拉起微信支付</b>
+    <span class="s" id="pSub">请在弹出的窗口中确认付款</span>
+    <div class="amt" id="pAmt">¥350.00</div>
+    <div class="steps"><i class="on"></i><i></i><i></i></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var st = { fee: 400, coupon: true, pm: 'wx', when: '明天 11/16 周一 20:00', mode: '语音咨询' };
+  try { var bk = JSON.parse(sessionStorage.getItem('tingyu-booking') || 'null'); if (bk && bk.price) { st.fee = bk.price; st.when = bk.when; st.mode = bk.mode; } } catch (e) { /* ignore */ }
+  function endTime(w) { var m = /(\d{2}):00$/.exec(w); return m ? w + '–' + m[1] + ':50' : w; }
+  $('oWhen').textContent = endTime(st.when);
+  $('oMode').textContent = st.mode + ' · 50 分钟';
+
+  var hold = 14 * 60 + 32;
+  setInterval(function () { if (hold > 0) hold--; $('hold').textContent = String(Math.floor(hold / 60)).padStart(2, '0') + ':' + String(hold % 60).padStart(2, '0'); }, 1000);
+
+  function total() { return st.fee - (st.coupon ? 50 : 0); }
+  function paint() {
+    var t = total();
+    $('bFee').textContent = '¥' + st.fee.toFixed(2);
+    $('bCouponRow').hidden = !st.coupon;
+    $('bTotal').textContent = '¥' + t.toFixed(2);
+    $('fTotal').textContent = '¥' + t; $('fSave').textContent = st.coupon ? '已优惠 ¥50' : '有 1 张券可用';
+    var p = $('pay'); p.textContent = (st.pm === 'wx' ? '微信支付 ¥' : '支付宝支付 ¥') + t; p.classList.toggle('ali', st.pm === 'ali');
+    $('coupon').classList.toggle('on', st.coupon); $('coupon').setAttribute('aria-checked', st.coupon);
+  }
+  function togCoupon() { st.coupon = !st.coupon; paint(); toast(st.coupon ? '已使用新客首单立减券' : '已取消使用优惠券'); }
+  $('coupon').addEventListener('click', togCoupon);
+  $('coupon').addEventListener('keydown', function (e) { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); togCoupon(); } });
+  $('pms').addEventListener('click', function (e) {
+    var b = e.target.closest('.pm'); if (!b) return;
+    st.pm = b.dataset.k;
+    this.querySelectorAll('.pm').forEach(function (x) { x.classList.toggle('on', x === b); x.setAttribute('aria-checked', x === b); });
+    paint();
+  });
+
+  var SPIN = '<svg class="spin" viewBox="0 0 72 72"><circle class="trk" cx="36" cy="36" r="30" fill="none" stroke-width="5"/><circle class="arc" cx="36" cy="36" r="30" fill="none" stroke-width="5" stroke-linecap="round"/></svg>';
+  var DONE = '<svg class="done" viewBox="0 0 72 72"><circle cx="36" cy="36" r="32" fill="none" stroke-width="4" transform="rotate(-90 36 36)"/><path d="M23 37.5 32 46l17-19" fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  function stepDots(n) { document.querySelectorAll('.payov .steps i').forEach(function (d, i) { d.classList.toggle('on', i === n); }); }
+  $('pay').addEventListener('click', function () {
+    var name = st.pm === 'wx' ? '微信支付' : '支付宝', t = total();
+    $('pAmt').textContent = '¥' + t.toFixed(2);
+    $('ring').innerHTML = SPIN; $('pTitle').textContent = '正在拉起' + name; $('pSub').textContent = '请在弹出的窗口中确认付款'; stepDots(0);
+    $('scrim').hidden = false; $('payov').hidden = false;
+    setTimeout(function () { $('pTitle').textContent = '支付确认中'; $('pSub').textContent = name + '已扣款，正在确认预约…'; stepDots(1); }, 1300);
+    setTimeout(function () { $('ring').innerHTML = DONE; $('pTitle').textContent = '支付成功'; $('pSub').textContent = '林知夏老师已收到你的预约'; stepDots(2); }, 2500);
+    setTimeout(function () { location.href = 'h5-success.html'; }, 3900);
+  });
+  paint();
+})();
+</script>
+</body>
+</html>

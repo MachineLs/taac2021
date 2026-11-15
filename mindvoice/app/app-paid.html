@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>听屿 App · 预约成功</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@500;600;900&display=swap">
+<link rel="stylesheet" href="ds.css">
+<script src="icons.js"></script>
+<style>
+/* App · 预约成功 —— tokens only */
+.done { display: grid; justify-items: center; text-align: center; padding: 2px 24px 16px; }
+.check { width: 76px; height: 76px; position: relative; }
+.check::before { content: ""; position: absolute; inset: -10px; border-radius: 50%; background: var(--ok-soft); transform: scale(.6); opacity: 0; animation: pop .5s .1s cubic-bezier(.2,1.4,.4,1) forwards; }
+.check svg { position: relative; width: 76px; height: 76px; }
+.check .c { stroke: var(--ok); stroke-width: 4; fill: none; stroke-dasharray: 214; stroke-dashoffset: 214; animation: draw .6s ease-out forwards; transform: rotate(-90deg); transform-origin: center; }
+.check .k { stroke: var(--ok); stroke-width: 5; fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 44; stroke-dashoffset: 44; animation: draw .35s .55s ease-out forwards; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@keyframes pop { to { transform: scale(1); opacity: 1; } }
+.done h1 { margin: 14px 0 2px; font-size: 24px; line-height: 1.3; }
+.done p { margin: 0; font-size: 13px; color: var(--ink-3); }
+
+.wrap { padding: 0 16px 16px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+.appt { padding: 14px 16px; }
+.appt .top { display: flex; align-items: center; gap: 12px; padding-bottom: 12px; border-bottom: 1px dashed var(--line); }
+.appt .top b { font-size: 16px; }
+.appt .top .t { font-size: 12px; color: var(--ink-3); }
+.appt .top .tag { margin-left: auto; }
+.kv { display: grid; grid-template-columns: 72px 1fr; gap: 9px 10px; padding-top: 12px; font-size: 13.5px; }
+.kv dt { color: var(--ink-3); }
+.kv dd { margin: 0; font-weight: 500; display: flex; align-items: center; gap: 6px; }
+.kv dd .ic { width: 15px; height: 15px; color: var(--primary); }
+.kv dd .tag { font-weight: 400; }
+
+.list-item b { font-size: 14px; font-weight: 500; display: block; }
+.list-item .s { font-size: 12px; color: var(--ink-3); }
+.list-item .switch { margin-left: auto; flex-shrink: 0; }
+.prep h3 { margin: 0 0 4px; font-size: 15px; display: flex; justify-content: space-between; align-items: baseline; }
+.prep h3 small { font-weight: 400; color: var(--ink-3); font-size: 12px; font-family: var(--font-num); }
+.prep label { display: flex; align-items: flex-start; gap: 10px; padding: 9px 0; cursor: pointer; }
+.prep label + label { border-top: 1px solid var(--line-2); }
+.prep input { position: absolute; opacity: 0; pointer-events: none; }
+.prep .box { width: 20px; height: 20px; border-radius: 6px; border: 1.5px solid var(--ink-4); display: grid; place-items: center; flex-shrink: 0; margin-top: 1px; color: var(--on-primary); transition: background .15s; }
+.prep .box .ic { width: 13px; height: 13px; stroke-width: 3; opacity: 0; }
+.prep input:checked + .box { background: var(--ok); border-color: var(--ok); }
+.prep input:checked + .box .ic { opacity: 1; }
+.prep input:checked ~ div b { color: var(--ink-3); text-decoration: line-through; }
+.prep input:focus-visible + .box { outline: 2px solid var(--primary); outline-offset: 2px; }
+.prep label b { font-size: 14px; font-weight: 500; display: block; line-height: 1.4; }
+.prep label span.s { font-size: 12px; color: var(--ink-3); }
+.tip { display: flex; gap: 8px; align-items: flex-start; font-size: 12px; color: var(--ink-3); padding: 0 4px; line-height: 1.6; }
+.tip .ic { width: 15px; height: 15px; margin-top: 2px; color: var(--primary); }
+
+.foot { flex-shrink: 0; padding: 10px 16px 34px; display: grid; gap: 8px; background: color-mix(in srgb, var(--surface) 96%, transparent); border-top: 1px solid var(--line-2); }
+.foot .enter { display: grid; place-content: center; line-height: 1.25; height: 54px; }
+.foot .enter small { font-size: 11.5px; font-weight: 400; display: flex; align-items: center; gap: 4px; justify-content: center; }
+.foot .enter small .ic { width: 12px; height: 12px; }
+.foot .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+</style>
+</head>
+<body>
+<div class="phone fixed">
+  <div class="statusbar"></div>
+  <header class="navbar">
+    <a class="nb-btn" href="app-home.html" aria-label="关闭"><svg class="ic"><use href="#i-close"/></svg></a>
+    <h1></h1>
+    <a class="nb-btn" href="app-orders.html" aria-label="订单详情"><svg class="ic"><use href="#i-file"/></svg></a>
+  </header>
+
+  <div class="scroll">
+    <section class="done">
+      <div class="check" aria-hidden="true">
+        <svg viewBox="0 0 76 76"><circle class="c" cx="38" cy="38" r="34"/><path class="k" d="M23 39.5 33.5 50 54 28"/></svg>
+      </div>
+      <h1 class="display">预约成功</h1>
+      <p>已支付 <b class="num" id="paid">¥350.00</b> · 订单号 <span class="num">TY2611152141</span></p>
+    </section>
+
+    <div class="wrap">
+      <section class="card appt">
+        <div class="top">
+          <img class="avatar avatar-lg" src="../assets/c-lin.jpg" alt="林知夏">
+          <div><b>林知夏</b><div class="t">国家二级心理咨询师 · CBT</div></div>
+          <span class="tag tag-ok">待咨询</span>
+        </div>
+        <dl class="kv">
+          <dt>时间</dt><dd><svg class="ic"><use href="#i-calendar"/></svg><span id="when">明天 20:00–20:50</span></dd>
+          <dt>日期</dt><dd class="num" id="date">11 月 16 日 周一</dd>
+          <dt>方式</dt><dd><svg class="ic" id="modeIc"><use href="#i-phone"/></svg><span id="mode">语音咨询</span></dd>
+          <dt>时长</dt><dd>50 分钟 · 第 1 次</dd>
+          <dt>接待小结</dt><dd><span class="tag tag-ok">已同步给林老师</span></dd>
+        </dl>
+      </section>
+
+      <div class="list">
+        <div class="list-item">
+          <svg class="ic"><use href="#i-calendar"/></svg>
+          <div class="grow"><b>加入系统日历</b><span class="s">日历中只显示「听屿 · 预约」，不显示咨询内容</span></div>
+          <button class="switch on" type="button" role="switch" aria-checked="true" aria-label="加入系统日历" data-msg="已加入日历|已从日历移除"></button>
+        </div>
+        <div class="list-item">
+          <svg class="ic"><use href="#i-bell"/></svg>
+          <div class="grow"><b>开始前 30 分钟提醒我</b><span class="s">小屿会通过 App 推送和短信提醒</span></div>
+          <button class="switch on" type="button" role="switch" aria-checked="true" aria-label="开始前提醒" data-msg="已开启提醒|已关闭提醒"></button>
+        </div>
+      </div>
+
+      <section class="card card-pad prep">
+        <h3>咨询前准备<small id="prog">0/4</small></h3>
+        <label><input type="checkbox"><span class="box"><svg class="ic"><use href="#i-check"/></svg></span><div><b>找一个安静、不被打扰的环境</b><span class="s">卧室、车里都可以，确保 50 分钟内没人进来</span></div></label>
+        <label><input type="checkbox"><span class="box"><svg class="ic"><use href="#i-check"/></svg></span><div><b>准备好耳机，测试一下麦克风</b><span class="s">有线耳机更稳定，避免外放被别人听到</span></div></label>
+        <label><input type="checkbox"><span class="box"><svg class="ic"><use href="#i-check"/></svg></span><div><b>提前 5 分钟进入咨询室</b><span class="s">检查网络，给自己一点平静下来的时间</span></div></label>
+        <label><input type="checkbox"><span class="box"><svg class="ic"><use href="#i-check"/></svg></span><div><b>想一想最希望这次聊什么</b><span class="s">可以写在情绪日记里，咨询时直接看</span></div></label>
+      </section>
+      <div class="tip"><svg class="ic"><use href="#i-shield"/></svg>开始前 24 小时可在「我的订单」免费改期或取消。如情绪突然变差，可随时拨打 12356 或进入小屿紧急求助。</div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <button class="btn btn-primary btn-lg btn-block enter" type="button" disabled aria-disabled="true">进入咨询室<small><svg class="ic"><use href="#i-clock"/></svg>开始前 10 分钟可进入</small></button>
+    <div class="row2">
+      <a class="btn btn-ghost" href="app-chat.html">给林老师留言</a>
+      <a class="btn btn-ghost" href="app-home.html">返回首页</a>
+    </div>
+  </div>
+  <span class="homebar" aria-hidden="true"></span>
+</div>
+<script>
+(function () {
+  var qs = new URLSearchParams(location.search);
+  var D = { 0: ['今天', '11 月 15 日 周日'], 1: ['明天', '11 月 16 日 周一'], 2: ['11/17', '11 月 17 日 周二'], 3: ['11/18', '11 月 18 日 周三'], 4: ['11/19', '11 月 19 日 周四'], 5: ['11/20', '11 月 20 日 周五'], 6: ['11/21', '11 月 21 日 周六'] };
+  var d = D[qs.get('d')] ? qs.get('d') : '1', t = qs.get('t') || '20:00', m = qs.get('m') || '语音', p = qs.get('p') || '350';
+  if (/^\d{2}:00$/.test(t)) document.getElementById('when').textContent = D[d][0] + ' ' + t + '–' + t.slice(0, 2) + ':50';
+  document.getElementById('date').textContent = D[d][1];
+  if (/^(语音|视频|文字)$/.test(m)) {
+    document.getElementById('mode').textContent = m + '咨询';
+    document.querySelector('#modeIc use').setAttribute('href', '#i-' + ({ '语音': 'phone', '视频': 'video', '文字': 'chat' })[m]);
+  }
+  if (/^\d+$/.test(p)) document.getElementById('paid').textContent = '¥' + p + '.00';
+
+  document.querySelectorAll('.switch').forEach(function (s) {
+    s.addEventListener('click', function () {
+      var on = s.classList.toggle('on'); s.setAttribute('aria-checked', on);
+      toast(s.dataset.msg.split('|')[on ? 0 : 1]);
+    });
+  });
+  var boxes = document.querySelectorAll('.prep input');
+  function prog() {
+    var n = Array.prototype.filter.call(boxes, function (b) { return b.checked; }).length;
+    document.getElementById('prog').textContent = n + '/' + boxes.length;
+    if (n === boxes.length) toast('都准备好了，明晚见');
+  }
+  boxes.forEach(function (b) { b.addEventListener('change', prog); });
+})();
+</script>
+</body>
+</html>

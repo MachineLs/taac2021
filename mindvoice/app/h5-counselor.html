@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>听屿 H5 · 咨询师详情</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@500;600;900&display=swap">
+<link rel="stylesheet" href="ds.css">
+<script src="icons.js"></script>
+<style>
+/* H5 · 咨询师详情 —— tokens only */
+.phone { overflow: clip; display: flex; flex-direction: column; }
+.phone > main { flex: 1; padding-bottom: 16px; }
+.h5-top .nb { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; border: 0; background: none; color: var(--ink); }
+.h5-top h1 { flex: 1; margin: 0; text-align: center; font-size: 16px; font-weight: 600; }
+
+.prof { background: linear-gradient(180deg, var(--primary-soft), var(--surface) 70%); padding: 20px 16px 16px; border-bottom: 1px solid var(--line-2); }
+.prof .top { display: grid; grid-template-columns: 96px 1fr; gap: 14px; align-items: center; }
+.prof .top img { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; object-position: top; box-shadow: 0 0 0 3px var(--surface), var(--shadow); }
+.prof .nm { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.prof .nm h2 { margin: 0; font-size: 23px; line-height: 1.3; }
+.prof .ti { font-size: 12.5px; color: var(--ink-2); margin-top: 2px; }
+.prof .ver { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+.kpis { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 16px; background: var(--surface); border: 1px solid var(--line-2); border-radius: var(--r-lg); padding: 12px 4px; }
+.kpis div { display: grid; justify-items: center; line-height: 1.25; }
+.kpis div + div { border-left: 1px solid var(--line-2); }
+.kpis b { font-family: var(--font-num); font-size: 18px; font-weight: 700; }
+.kpis b small { font-size: 11px; font-weight: 500; color: var(--ink-3); margin-left: 1px; }
+.kpis span { font-size: 11px; color: var(--ink-3); }
+.matchbar { margin-top: 12px; display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-radius: var(--r); background: var(--accent-soft); font-size: 12.5px; color: var(--ink-2); }
+.matchbar .ic { color: var(--accent); width: 16px; height: 16px; }
+.matchbar b { color: var(--accent); }
+
+.sec { margin: 12px 14px 0; padding: 16px; }
+.sec h3 { margin: 0 0 12px; font-size: 15.5px; font-family: var(--font-display); font-weight: var(--display-weight); display: flex; align-items: center; justify-content: space-between; }
+.sec h3 a, .sec h3 small { font-size: 12px; color: var(--ink-3); font-family: var(--font-body); font-weight: 400; display: inline-flex; align-items: center; }
+.qual { display: grid; gap: 10px; }
+.qual div { display: grid; grid-template-columns: 32px 1fr; gap: 10px; align-items: center; }
+.qual .i { width: 32px; height: 32px; border-radius: var(--r-sm); background: var(--primary-soft); color: var(--primary); display: grid; place-items: center; }
+.qual .i .ic { width: 17px; height: 17px; }
+.qual b { font-size: 13.5px; font-weight: 600; display: block; line-height: 1.35; }
+.qual span { font-size: 11.5px; color: var(--ink-3); }
+.good { display: flex; flex-wrap: wrap; gap: 6px; }
+.good .tag { height: 26px; padding: 0 10px; font-size: 12.5px; }
+.bio { margin: 12px 0 0; font-size: 13px; color: var(--ink-2); line-height: 1.75; }
+
+.rv-sum { display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: center; padding-bottom: 12px; border-bottom: 1px solid var(--line-2); }
+.rv-sum .big { font-family: var(--font-num); font-size: 34px; font-weight: 700; line-height: 1; }
+.rv-sum .big small { display: block; font-size: 11px; color: var(--ink-3); font-weight: 400; margin-top: 4px; font-family: var(--font-body); }
+.rv-sum .kw { display: flex; flex-wrap: wrap; gap: 6px; }
+.rv { padding: 12px 0; }
+.rv + .rv { border-top: 1px solid var(--line-2); }
+.rv .h { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--ink-3); }
+.rv .h b { color: var(--ink); font-size: 13px; font-weight: 600; }
+.rv .h .rating { margin-left: auto; font-size: 12px; }
+.rv p { margin: 6px 0 0; font-size: 13px; color: var(--ink-2); line-height: 1.65; }
+.rv .av { width: 26px; height: 26px; border-radius: 50%; background: var(--bg-2); color: var(--ink-3); display: grid; place-items: center; font-size: 12px; }
+
+.modes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.mode { border: 1px solid var(--line); background: var(--surface); border-radius: var(--r); padding: 10px 8px; display: grid; justify-items: center; gap: 2px; text-align: center; }
+.mode .ic { color: var(--ink-3); }
+.mode b { font-size: 13.5px; }
+.mode span { font-size: 11.5px; color: var(--ink-3); font-family: var(--font-num); }
+.mode.on { border-color: var(--primary); background: var(--primary-soft); box-shadow: inset 0 0 0 1px var(--primary); }
+.mode.on .ic, .mode.on b { color: var(--primary); }
+
+.dates { display: flex; gap: 8px; overflow-x: auto; margin: 14px -16px 0; padding: 0 16px 2px; scrollbar-width: none; }
+.dates::-webkit-scrollbar { display: none; }
+.date { flex-shrink: 0; width: 58px; border: 1px solid var(--line); background: var(--surface); border-radius: var(--r); padding: 8px 0 7px; display: grid; justify-items: center; line-height: 1.3; }
+.date small { font-size: 11px; color: var(--ink-3); }
+.date b { font-family: var(--font-num); font-size: 16px; }
+.date i { font-style: normal; font-size: 10.5px; color: var(--ok); }
+.date i.full { color: var(--ink-4); }
+.date.on { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+.date.on small, .date.on i { color: var(--on-primary); opacity: .85; }
+.slots { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 12px; }
+.slot { height: 40px; border: 1px solid var(--line); background: var(--surface); border-radius: var(--r-sm); font-family: var(--font-num); font-size: 14px; font-weight: 500; display: grid; place-items: center; position: relative; }
+.slot[disabled] { background: var(--surface-2); color: var(--ink-4); border-color: var(--line-2); text-decoration: line-through; cursor: not-allowed; }
+.slot.on { border-color: var(--primary); background: var(--primary-soft); color: var(--primary); font-weight: 700; box-shadow: inset 0 0 0 1px var(--primary); }
+.slot .hot { position: absolute; top: -7px; right: -4px; font-size: 9.5px; height: 15px; padding: 0 4px; border-radius: 4px; background: var(--accent); color: var(--on-accent); display: grid; place-items: center; font-family: var(--font-body); text-decoration: none; }
+.legend { display: flex; gap: 14px; font-size: 11px; color: var(--ink-3); margin-top: 10px; }
+.notice { margin-top: 12px; padding: 10px 12px; border-radius: var(--r); background: var(--surface-2); font-size: 12px; color: var(--ink-3); display: grid; gap: 4px; }
+.notice div { display: flex; gap: 6px; align-items: flex-start; }
+.notice .ic { width: 14px; height: 14px; margin-top: 3px; color: var(--primary); }
+
+.fixed-bottom { z-index: 12; display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: center; }
+.fixed-bottom .sel { font-size: 12px; color: var(--ink-3); line-height: 1.4; }
+.fixed-bottom .sel b { display: block; font-size: 14px; color: var(--ink); }
+.fixed-bottom .btn { min-width: 176px; }
+</style>
+</head>
+<body>
+<div class="phone">
+  <header class="h5-top">
+    <a class="nb" href="h5-counselors.html" aria-label="返回"><svg class="ic"><use href="#i-back"/></svg></a>
+    <h1>咨询师主页</h1>
+    <button class="nb" type="button" id="fav" aria-label="收藏"><svg class="ic"><use href="#i-heart"/></svg></button>
+    <button class="nb" type="button" data-toast="链接已复制" aria-label="分享"><svg class="ic"><use href="#i-share"/></svg></button>
+  </header>
+
+  <main>
+    <section class="prof">
+      <div class="top">
+        <img src="../assets/c-lin.jpg" alt="林知夏">
+        <div>
+          <div class="nm"><h2 class="display">林知夏</h2><span class="tag tag-ok"><span class="dot" style="margin-right:4px"></span>明天可约</span></div>
+          <div class="ti">国家二级心理咨询师 · 临床心理学硕士</div>
+          <div class="ver"><span class="tag"><svg class="ic ic-sm" style="margin-right:3px"><use href="#i-shield"/></svg>平台资质审核</span><span class="tag tag-plain">实名认证</span></div>
+        </div>
+      </div>
+      <div class="kpis">
+        <div><b>4.97</b><span>综合评分</span></div>
+        <div><b>8<small>年</small></b><span>从业经验</span></div>
+        <div><b>2,310</b><span>咨询次数</span></div>
+        <div><b>92<small>%</small></b><span>复约率</span></div>
+      </div>
+      <div class="matchbar"><svg class="ic"><use href="#i-sparkle"/></svg><span>根据你的接待小结，匹配度 <b class="num">96%</b> · 擅长失眠与职场压力</span></div>
+    </section>
+
+    <section class="card sec">
+      <h3>资质与受训</h3>
+      <div class="qual">
+        <div><span class="i"><svg class="ic"><use href="#i-file"/></svg></span><span><b>国家二级心理咨询师</b><span>证书编号 2016****0317 · 平台已核验</span></span></div>
+        <div><span class="i"><svg class="ic"><use href="#i-book"/></svg></span><span><b>临床心理学硕士</b><span>研究方向：成人焦虑与睡眠障碍</span></span></div>
+        <div><span class="i"><svg class="ic"><use href="#i-moon"/></svg></span><span><b>CBT-I 失眠认知行为治疗 系统培训</b><span>完成 120 学时 · 持续接受个案督导</span></span></div>
+        <div><span class="i"><svg class="ic"><use href="#i-users"/></svg></span><span><b>个人体验与督导 320+ 小时</b><span>每月接受资深督导师个案督导</span></span></div>
+      </div>
+    </section>
+
+    <section class="card sec">
+      <h3>擅长领域<small>认知行为疗法 CBT</small></h3>
+      <div class="good"><span class="tag">失眠</span><span class="tag">焦虑</span><span class="tag">职场压力</span><span class="tag tag-plain">情绪低落</span><span class="tag tag-plain">拖延与完美主义</span><span class="tag tag-plain">惊恐发作</span></div>
+      <p class="bio">我的工作方式偏结构化：第一次会和你一起把问题拆清楚，之后每次咨询都会留一点可以在生活里练习的小任务。对失眠的来访者，我会用睡眠日记追踪变化，多数人在 4–6 次后入睡时间有明显缩短。</p>
+    </section>
+
+    <section class="card sec">
+      <h3>来访者评价<a href="#" data-toast="共 486 条评价，下载 App 查看全部">全部 486 条<svg class="ic ic-sm"><use href="#i-chevron"/></svg></a></h3>
+      <div class="rv-sum">
+        <div class="big">4.97<small>近 90 天</small></div>
+        <div class="kw"><span class="tag tag-plain">很专业 128</span><span class="tag tag-plain">有方法 96</span><span class="tag tag-plain">让人安心 87</span><span class="tag tag-plain">睡眠改善 64</span></div>
+      </div>
+      <div class="rv">
+        <div class="h"><span class="av">匿</span><b>匿名来访者 · 互联网行业</b><span class="rating"><svg class="ic ic-sm" style="fill:currentColor;stroke:none"><use href="#i-star"/></svg>5.0</span></div>
+        <p>做了 6 次 CBT-I，入睡从一个多小时缩短到二十分钟左右。林老师不会说空话，每次都有具体的练习。</p>
+        <div class="h" style="margin-top:6px"><span>11 月 9 日 · 第 6 次咨询 · 语音</span></div>
+      </div>
+      <div class="rv">
+        <div class="h"><span class="av">匿</span><b>匿名来访者 · 金融</b><span class="rating"><svg class="ic ic-sm" style="fill:currentColor;stroke:none"><use href="#i-star"/></svg>5.0</span></div>
+        <p>第一次咨询很紧张，老师已经看过接待小结，没让我从头讲，直接从最困扰的地方开始，节奏很舒服。</p>
+        <div class="h" style="margin-top:6px"><span>11 月 3 日 · 第 1 次咨询 · 语音</span></div>
+      </div>
+    </section>
+
+    <section class="card sec" id="book">
+      <h3>选择咨询方式<small>每次 50 分钟</small></h3>
+      <div class="modes" id="modes">
+        <button class="mode on" type="button" data-m="语音咨询" data-p="400"><svg class="ic"><use href="#i-phone"/></svg><b>语音</b><span>¥400/次</span></button>
+        <button class="mode" type="button" data-m="视频咨询" data-p="400"><svg class="ic"><use href="#i-video"/></svg><b>视频</b><span>¥400/次</span></button>
+        <button class="mode" type="button" data-m="文字咨询" data-p="320"><svg class="ic"><use href="#i-chat"/></svg><b>文字</b><span>¥320/次</span></button>
+      </div>
+      <h3 style="margin-top:18px;margin-bottom:0">选择时间<small>北京时间 · 11 月</small></h3>
+      <div class="dates" id="dates"></div>
+      <div class="slots" id="slots"></div>
+      <div class="legend"><span class="row" style="gap:4px"><i style="width:10px;height:10px;border-radius:3px;border:1px solid var(--line)"></i>可预约</span><span class="row" style="gap:4px"><i style="width:10px;height:10px;border-radius:3px;background:var(--surface-2);border:1px solid var(--line-2)"></i>已约满</span><span class="row" style="gap:4px"><i style="width:10px;height:10px;border-radius:3px;background:var(--primary)"></i>已选择</span></div>
+      <div class="notice">
+        <div><svg class="ic"><use href="#i-clock"/></svg>开始前 24 小时可免费取消或改约一次</div>
+        <div><svg class="ic"><use href="#i-file"/></svg>你的接待小结会在预约后同步给林老师</div>
+        <div><svg class="ic"><use href="#i-shield"/></svg>首次咨询不满意，可免费更换咨询师</div>
+      </div>
+    </section>
+  </main>
+
+  <div class="fixed-bottom">
+    <div class="sel"><b id="selTxt">明天 11/16 周一 20:00</b><span id="selSub">语音咨询 · 50 分钟</span></div>
+    <a class="btn btn-primary btn-lg" href="h5-login.html" id="cta">¥400 · 立即预约</a>
+  </div>
+</div>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var WD = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+  var base = new Date(2026, 10, 15); // 今天 11/15 周日
+  var TIMES = ['09:00', '10:00', '14:00', '15:00', '16:00', '19:00', '20:00', '21:00'];
+  // deterministic availability per day (1 = open)
+  var OPEN = [
+    [0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 1, 0, 1, 0, 0, 1, 1],
+    [1, 0, 1, 1, 0, 1, 0, 0],
+    [0, 0, 0, 1, 1, 0, 1, 0],
+    [1, 1, 0, 0, 1, 1, 1, 1],
+    [0, 1, 1, 0, 0, 1, 0, 1],
+    [1, 1, 1, 0, 1, 0, 0, 0],
+    [0, 0, 1, 1, 1, 1, 1, 0],
+    [1, 0, 0, 1, 0, 1, 1, 1],
+    [0, 1, 1, 1, 0, 0, 1, 0]
+  ];
+  var st = { day: 1, time: '20:00', mode: '语音咨询', price: 400 };
+  function label(i) { var d = new Date(base); d.setDate(base.getDate() + i); return { d: d, top: i === 0 ? '今天' : i === 1 ? '明天' : i === 2 ? '后天' : WD[d.getDay()], md: (d.getMonth() + 1) + '/' + d.getDate(), wd: WD[d.getDay()] }; }
+  function renderDates() {
+    $('dates').innerHTML = OPEN.map(function (o, i) {
+      var l = label(i), n = o.reduce(function (a, b) { return a + b; }, 0);
+      return '<button type="button" class="date' + (i === st.day ? ' on' : '') + '" data-i="' + i + '"><small>' + l.top + '</small><b>' + l.d.getDate() + '</b><i class="' + (n ? '' : 'full') + '">' + (n ? '余 ' + n : '约满') + '</i></button>';
+    }).join('');
+  }
+  function renderSlots() {
+    $('slots').innerHTML = TIMES.map(function (t, k) {
+      var open = OPEN[st.day][k];
+      return '<button type="button" class="slot' + (t === st.time && open ? ' on' : '') + '"' + (open ? '' : ' disabled') + ' data-t="' + t + '">' + t + (open && st.day === 1 && t === '20:00' ? '<span class="hot">推荐</span>' : '') + '</button>';
+    }).join('');
+  }
+  function paint() {
+    var l = label(st.day);
+    var ok = OPEN[st.day][TIMES.indexOf(st.time)];
+    $('selTxt').textContent = ok ? (st.day < 3 ? l.top + ' ' : '') + l.md + ' ' + l.wd + ' ' + st.time : '请选择时间';
+    $('selSub').textContent = st.mode + ' · 50 分钟';
+    $('cta').textContent = '¥' + st.price + ' · 立即预约';
+    $('cta').classList.toggle('btn-ghost', !ok); $('cta').classList.toggle('btn-primary', !!ok);
+  }
+  $('dates').addEventListener('click', function (e) {
+    var b = e.target.closest('.date'); if (!b) return;
+    st.day = +b.dataset.i;
+    if (!OPEN[st.day][TIMES.indexOf(st.time)]) { var k = OPEN[st.day].indexOf(1); st.time = k >= 0 ? TIMES[k] : ''; }
+    renderDates(); renderSlots(); paint();
+  });
+  $('slots').addEventListener('click', function (e) {
+    var b = e.target.closest('.slot'); if (!b || b.disabled) return;
+    st.time = b.dataset.t; renderSlots(); paint();
+  });
+  $('modes').addEventListener('click', function (e) {
+    var b = e.target.closest('.mode'); if (!b) return;
+    this.querySelectorAll('.mode').forEach(function (x) { x.classList.toggle('on', x === b); });
+    st.mode = b.dataset.m; st.price = +b.dataset.p; paint();
+  });
+  $('cta').addEventListener('click', function (e) {
+    if (!OPEN[st.day][TIMES.indexOf(st.time)]) { e.preventDefault(); toast('请先选择一个可预约的时段'); document.getElementById('book').scrollIntoView({ behavior: 'smooth' }); return; }
+    try { sessionStorage.setItem('tingyu-booking', JSON.stringify({ when: $('selTxt').textContent, mode: st.mode, price: st.price })); } catch (err) { /* ignore */ }
+  });
+  var fav = $('fav');
+  fav.addEventListener('click', function () { var on = fav.classList.toggle('on'); fav.style.color = on ? 'var(--accent)' : ''; fav.querySelector('.ic').style.fill = on ? 'currentColor' : 'none'; toast(on ? '已收藏林知夏老师' : '已取消收藏'); });
+  document.querySelectorAll('[data-toast]').forEach(function (a) { a.addEventListener('click', function (e) { e.preventDefault(); toast(a.getAttribute('data-toast')); }); });
+  renderDates(); renderSlots(); paint();
+})();
+</script>
+</body>
+</html>

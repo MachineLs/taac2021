@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>听屿 App · 我的预约</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@500;600;900&display=swap">
+<link rel="stylesheet" href="ds.css">
+<script src="icons.js"></script>
+<style>
+/* App · 我的预约与订单 —— tokens only */
+.segbar { padding: 4px 16px 12px; }
+.segbar .seg { display: grid; grid-template-columns: repeat(3, 1fr); width: 100%; }
+.segbar .seg button { padding: 0; }
+.segbar .seg .n { font-family: var(--font-num); margin-left: 3px; opacity: .7; }
+.wrap { padding: 0 16px 28px; display: grid; gap: 12px; }
+.ord { padding: 0; overflow: hidden; }
+.ord .hd { display: flex; align-items: center; justify-content: space-between; padding: 11px 14px; border-bottom: 1px solid var(--line-2); font-size: 12px; color: var(--ink-3); }
+.ord .bd { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; padding: 14px; align-items: start; }
+.ord .bd .avatar { width: 52px; height: 52px; }
+.ord .bd b { font-size: 16px; }
+.ord .bd .t { font-size: 12px; color: var(--ink-3); }
+.ord .info { display: grid; gap: 3px; font-size: 13px; color: var(--ink-2); margin-top: 6px; }
+.ord .info span { display: flex; align-items: center; gap: 6px; }
+.ord .info .ic { width: 14px; height: 14px; color: var(--ink-4); }
+.ord .amt { text-align: right; }
+.ord .amt .price { font-size: 18px; display: block; }
+.ord .amt small { font-size: 11px; color: var(--ink-4); }
+.ord .note { margin: 0 14px; padding: 10px 12px; border-radius: var(--r); background: var(--surface-2); font-size: 12.5px; color: var(--ink-2); display: flex; align-items: center; gap: 8px; }
+.ord .note .ic { color: var(--primary); width: 16px; height: 16px; }
+.ord .note.count b { color: var(--primary); font-family: var(--font-num); }
+.ord .ft { display: flex; justify-content: flex-end; gap: 8px; padding: 12px 14px 14px; flex-wrap: wrap; }
+.ord .ft .btn { height: 34px; padding: 0 14px; font-size: 13px; }
+.ord .stars { display: inline-flex; gap: 1px; color: var(--warn); }
+.ord .stars .ic { width: 13px; height: 13px; fill: currentColor; stroke: none; }
+.ord.cancel .bd { opacity: .75; }
+.ord .vip-ic { width: 52px; height: 52px; border-radius: var(--r); display: grid; place-items: center; background: var(--accent-soft); color: var(--accent); }
+.tip { font-size: 12px; color: var(--ink-4); text-align: center; padding: 6px 0 0; line-height: 1.7; }
+.scrim { position: absolute; }
+.sheet.pop { position: absolute; left: 0; right: 0; bottom: 0; z-index: 95; padding: 12px 18px 38px; }
+.pop .grab { width: 36px; height: 5px; border-radius: 3px; background: var(--line); margin: 0 auto 14px; }
+.pop h3 { margin: 0 0 4px; font-size: 18px; }
+.pop p { margin: 0 0 14px; font-size: 13px; color: var(--ink-3); }
+.slots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px; }
+.slots button { border: 1px solid var(--line); background: var(--surface); border-radius: var(--r); padding: 8px 0; display: grid; gap: 0; font-size: 12px; color: var(--ink-3); }
+.slots button b { font-size: 14px; color: var(--ink); font-family: var(--font-num); }
+.slots button.on { border-color: var(--primary); background: var(--primary-soft); }
+.slots button.on b { color: var(--primary); }
+.slots button[disabled] { opacity: .4; }
+</style>
+</head>
+<body>
+<div class="phone fixed">
+  <div class="statusbar"></div>
+  <header class="navbar">
+    <a class="nb-btn" href="app-me.html" aria-label="返回"><svg class="ic"><use href="#i-back"/></svg></a>
+    <h1>我的预约</h1>
+    <button class="nb-btn" type="button" aria-label="开票记录" onclick="toast('开票记录：暂无，已完成的订单可申请电子发票')"><svg class="ic"><use href="#i-file"/></svg></button>
+  </header>
+  <div class="segbar">
+    <div class="seg" role="tablist" aria-label="订单状态">
+      <button class="on" type="button" data-p="todo" role="tab">待开始<span class="n">1</span></button>
+      <button type="button" data-p="done" role="tab">已完成<span class="n">3</span></button>
+      <button type="button" data-p="cancel" role="tab">已取消<span class="n">1</span></button>
+    </div>
+  </div>
+
+  <div class="scroll">
+    <div class="wrap" data-pane="todo">
+      <article class="card ord">
+        <div class="hd"><span class="num">订单号 TY2611151911038</span><span class="tag tag-ok">已支付 · 待开始</span></div>
+        <div class="bd">
+          <img class="avatar" src="../assets/c-lin.jpg" alt="林知夏">
+          <div><b>林知夏</b> <span class="t">国家二级心理咨询师</span>
+            <div class="info">
+              <span><svg class="ic"><use href="#i-calendar"/></svg><span class="num">11月16日 周一 20:00–20:50</span></span>
+              <span><svg class="ic"><use href="#i-headphones"/></svg>语音咨询 · 第 1 次 · 50 分钟</span>
+            </div>
+          </div>
+          <div class="amt"><span class="price">¥400</span><small>微信支付</small></div>
+        </div>
+        <div class="note count"><svg class="ic"><use href="#i-clock"/></svg><span>距开始还有 <b id="cd">22 小时 19 分</b>，开始前 15 分钟可进入咨询室</span></div>
+        <div class="note" style="margin-top:8px"><svg class="ic"><use href="#i-check-circle"/></svg><span>接待小结和测评结果已同步给林老师</span></div>
+        <div class="ft">
+          <button class="btn btn-ghost" type="button" onclick="toast('开始前 24 小时外可免费取消，之后收取 50% 费用')">取消预约</button>
+          <button class="btn btn-ghost" type="button" data-open="resched">改约</button>
+          <a class="btn btn-primary" href="app-session.html"><svg class="ic ic-sm"><use href="#i-video"/></svg>进入咨询室</a>
+        </div>
+      </article>
+      <a class="card" href="app-counselor.html" style="display:flex;align-items:center;gap:12px;padding:14px">
+        <span class="ib" style="width:40px;height:40px;border-radius:var(--r);background:var(--primary-soft);color:var(--primary);display:grid;place-items:center"><svg class="ic"><use href="#i-plus"/></svg></span>
+        <span class="grow"><b style="font-size:14.5px">预约第 2 次咨询</b><br><span class="muted small">林老师建议 CBT-I 每周 1 次，共 6 次</span></span>
+        <svg class="ic ic-sm" style="color:var(--ink-4)"><use href="#i-chevron"/></svg>
+      </a>
+      <p class="tip">开始前 24 小时外可免费改约 / 取消 · 咨询师迟到超过 10 分钟全额退款</p>
+    </div>
+
+    <div class="wrap" data-pane="done" hidden>
+      <article class="card ord">
+        <div class="hd"><span class="num">订单号 TY2611071930217</span><span class="tag tag-plain">已完成 · 待评价</span></div>
+        <div class="bd">
+          <img class="avatar" src="../assets/c-fang.jpg" alt="方宁">
+          <div><b>方宁</b> <span class="t">企业 EAP 顾问</span>
+            <div class="info">
+              <span><svg class="ic"><use href="#i-calendar"/></svg><span class="num">11月7日 周六 19:30–20:20</span></span>
+              <span><svg class="ic"><use href="#i-chat"/></svg>文字咨询 · 50 分钟</span>
+            </div>
+          </div>
+          <div class="amt"><span class="price">¥420</span><small>支付宝</small></div>
+        </div>
+        <div class="ft">
+          <button class="btn btn-ghost" type="button" onclick="toast('电子发票将在 1 个工作日内发送到邮箱')">开发票</button>
+          <button class="btn btn-primary" type="button" onclick="toast('感谢评价，你的反馈仅用于改进服务')">评价</button>
+        </div>
+      </article>
+      <article class="card ord">
+        <div class="hd"><span class="num">订单号 TY2610242000542</span><span class="tag tag-ok">已完成 · 已评价</span></div>
+        <div class="bd">
+          <img class="avatar" src="../assets/c-he.jpg" alt="何清">
+          <div><b>何清</b> <span class="t">正念减压导师</span>
+            <div class="info">
+              <span><svg class="ic"><use href="#i-calendar"/></svg><span class="num">10月24日 周六 20:00–20:50</span></span>
+              <span><svg class="ic"><use href="#i-video"/></svg>视频咨询 · 50 分钟</span>
+              <span class="stars" aria-label="5 星"><svg class="ic"><use href="#i-star"/></svg><svg class="ic"><use href="#i-star"/></svg><svg class="ic"><use href="#i-star"/></svg><svg class="ic"><use href="#i-star"/></svg><svg class="ic"><use href="#i-star"/></svg></span>
+            </div>
+          </div>
+          <div class="amt"><span class="price">¥450</span><small>微信支付</small></div>
+        </div>
+        <div class="ft">
+          <button class="btn btn-ghost" type="button" onclick="toast('电子发票已开具，已发送至 z***@163.com')">查看发票</button>
+          <a class="btn btn-soft" href="app-counselor.html">再次预约</a>
+        </div>
+      </article>
+      <article class="card ord">
+        <div class="hd"><span class="num">订单号 TY2611121603771</span><span class="tag tag-accent">会员订单</span></div>
+        <div class="bd">
+          <span class="vip-ic"><svg class="ic ic-lg"><use href="#i-sparkle"/></svg></span>
+          <div><b>屿伴会员 · 1 个月</b>
+            <div class="info">
+              <span><svg class="ic"><use href="#i-calendar"/></svg><span class="num">2026-11-12 至 2026-12-12</span></span>
+              <span><svg class="ic"><use href="#i-check-circle"/></svg>已生效 · 自动续费已关闭</span>
+            </div>
+          </div>
+          <div class="amt"><span class="price">¥39</span><small>微信支付</small></div>
+        </div>
+        <div class="ft"><button class="btn btn-ghost" type="button" onclick="toast('电子发票将在 1 个工作日内发送到邮箱')">开发票</button></div>
+      </article>
+    </div>
+
+    <div class="wrap" data-pane="cancel" hidden>
+      <article class="card ord cancel">
+        <div class="hd"><span class="num">订单号 TY2610171422906</span><span class="tag tag-plain">已取消 · 已退款</span></div>
+        <div class="bd">
+          <img class="avatar" src="../assets/c-gu.jpg" alt="顾言">
+          <div><b>顾言</b> <span class="t">高校心理咨询师</span>
+            <div class="info">
+              <span><svg class="ic"><use href="#i-calendar"/></svg><span class="num">10月19日 周一 21:00–21:50</span></span>
+              <span><svg class="ic"><use href="#i-headphones"/></svg>语音咨询 · 本人提前 2 天取消</span>
+            </div>
+          </div>
+          <div class="amt"><span class="price" style="color:var(--ink-3);text-decoration:line-through">¥300</span><small>已原路退回</small></div>
+        </div>
+        <div class="note"><svg class="ic"><use href="#i-wallet"/></svg><span class="num">退款 ¥300.00 已于 10月17日 退回微信零钱</span></div>
+        <div class="ft"><a class="btn btn-ghost" href="app-counselors.html">重新选择咨询师</a></div>
+      </article>
+    </div>
+  </div>
+
+  <div class="scrim" id="scrim" hidden></div>
+  <div class="sheet pop" id="resched" hidden role="dialog" aria-label="改约">
+    <div class="grab"></div>
+    <h3 class="display">改约林知夏老师</h3>
+    <p>距开始还有 22 小时，改约需扣除 50% 费用；如因不可抗力请联系客服免费处理。</p>
+    <div class="slots" id="slots">
+      <button type="button" class="on"><b>11/16 周一</b>20:00 当前</button>
+      <button type="button"><b>11/17 周二</b>19:00</button>
+      <button type="button"><b>11/18 周三</b>20:00</button>
+      <button type="button" disabled><b>11/19 周四</b>已约满</button>
+      <button type="button"><b>11/20 周五</b>21:00</button>
+      <button type="button"><b>11/21 周六</b>10:00</button>
+    </div>
+    <div class="row"><button class="btn btn-ghost btn-lg grow" type="button" data-close>暂不改约</button><button class="btn btn-primary btn-lg grow" type="button" id="confirm">确认改约</button></div>
+  </div>
+  <span class="homebar" aria-hidden="true"></span>
+</div>
+<script>
+var btns = document.querySelectorAll('.seg button');
+btns.forEach(function (b) {
+  b.addEventListener('click', function () {
+    btns.forEach(function (x) { x.classList.toggle('on', x === b); });
+    document.querySelectorAll('[data-pane]').forEach(function (p) { p.hidden = p.dataset.pane !== b.dataset.p; });
+  });
+});
+var scrim = document.getElementById('scrim'), sh = document.getElementById('resched');
+function close() { scrim.hidden = true; sh.hidden = true; }
+document.querySelector('[data-open="resched"]').onclick = function () { scrim.hidden = false; sh.hidden = false; };
+scrim.onclick = close; document.querySelector('[data-close]').onclick = close;
+document.querySelectorAll('#slots button').forEach(function (b) {
+  b.addEventListener('click', function () { document.querySelectorAll('#slots button').forEach(function (x) { x.classList.toggle('on', x === b); }); });
+});
+document.getElementById('confirm').onclick = function () {
+  var s = document.querySelector('#slots .on');
+  close();
+  if (s && !/当前/.test(s.textContent)) toast('改约申请已提交，林老师确认后会通知你'); else toast('时间未变化');
+};
+var left = (22 * 60 + 19) * 60;
+setInterval(function () { left--; document.getElementById('cd').textContent = Math.floor(left / 3600) + ' 小时 ' + Math.floor(left % 3600 / 60) + ' 分'; }, 1000);
+</script>
+</body>
+</html>

@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>听屿 App · 情绪日记</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@500;600;900&display=swap">
+<link rel="stylesheet" href="ds.css">
+<script src="icons.js"></script>
+<style>
+/* App · 情绪日记 —— tokens only */
+.wrap { padding: 4px 16px 110px; display: grid; gap: 14px; }
+.head { display: flex; align-items: center; justify-content: space-between; }
+.head .muted { font-size: 12.5px; }
+.chart { padding: 14px 14px 10px; }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 8px; }
+.stats div { display: grid; gap: 0; }
+.stats .num { font-size: 22px; font-weight: 700; line-height: 1.25; color: var(--ink); }
+.stats .num small { font-size: 12px; font-weight: 500; color: var(--ink-3); margin-left: 2px; }
+.stats span { font-size: 11.5px; color: var(--ink-3); }
+.stats .up { color: var(--ok); }
+svg.plot { width: 100%; height: 172px; display: block; overflow: visible; }
+.plot .grid { stroke: var(--line-2); stroke-width: 1; }
+.plot .ylab, .plot .xlab { fill: var(--ink-4); font-size: 10px; font-family: var(--font-num); }
+.plot .area { fill: var(--primary); opacity: .08; }
+.plot .line { fill: none; stroke: var(--primary); stroke-width: 2.2; stroke-linejoin: round; stroke-linecap: round; }
+.plot .avg { stroke: var(--accent); stroke-width: 1.2; stroke-dasharray: 4 4; }
+.plot .avgl { fill: var(--accent); font-size: 10px; font-family: var(--font-num); font-weight: 600; }
+.plot .pt { stroke: var(--surface); stroke-width: 2; }
+.plot .miss { fill: var(--surface); stroke: var(--ink-4); stroke-width: 1.2; stroke-dasharray: 2 2; }
+.l1 { fill: var(--risk); } .l2 { fill: var(--warn); } .l3 { fill: var(--ink-4); } .l4 { fill: var(--primary); } .l5 { fill: var(--ok); }
+.legend { display: flex; gap: 12px; flex-wrap: wrap; font-size: 11px; color: var(--ink-3); padding-top: 4px; }
+.legend i { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 4px; vertical-align: 0; }
+.b1 { background: var(--risk); } .b2 { background: var(--warn); } .b3 { background: var(--ink-4); } .b4 { background: var(--primary); } .b5 { background: var(--ok); }
+
+.insight { padding: 14px; background: var(--primary-soft); border-color: transparent; }
+.insight .k { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--primary); font-weight: 600; }
+.insight p { margin: 6px 0 10px; font-size: 15px; line-height: 1.55; color: var(--ink); font-weight: 500; }
+.insight .tips { display: grid; gap: 6px; font-size: 12.5px; color: var(--ink-2); margin-bottom: 10px; }
+.insight .tips div { display: flex; gap: 6px; }
+.insight .tips .ic { color: var(--primary); margin-top: 3px; }
+.insight .ft { display: flex; align-items: center; gap: 8px; padding-top: 10px; border-top: 1px solid color-mix(in srgb, var(--primary) 16%, transparent); font-size: 11.5px; color: var(--ink-3); }
+.insight .ft .switch { margin-left: auto; transform: scale(.85); transform-origin: right center; }
+
+.rec .list-item { align-items: flex-start; padding: 13px 14px; }
+.rec .d { width: 44px; text-align: center; flex-shrink: 0; }
+.rec .d b { display: block; font-size: 19px; line-height: 1.2; font-family: var(--font-num); }
+.rec .d span { font-size: 11px; color: var(--ink-3); }
+.rec .bd { flex: 1; min-width: 0; display: grid; gap: 4px; }
+.rec .tp { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--ink-3); }
+.rec .tp .lv { display: inline-flex; align-items: center; gap: 4px; color: var(--ink-2); font-weight: 600; }
+.rec .tp .lv i { width: 8px; height: 8px; border-radius: 50%; }
+.rec p { margin: 0; font-size: 13.5px; color: var(--ink); line-height: 1.55; }
+.rec .play { display: inline-flex; align-items: center; gap: 4px; border: 0; background: var(--surface-2); border-radius: var(--r-pill); height: 24px; padding: 0 9px 0 7px; font-size: 11.5px; color: var(--ink-2); width: max-content; font-family: var(--font-num); }
+.rec .play .ic { width: 12px; height: 12px; fill: currentColor; stroke: none; color: var(--primary); }
+.rec .tags { display: flex; gap: 6px; align-items: center; }
+.rec .tags .tag { height: 20px; font-size: 11px; }
+
+.fab { position: absolute; right: 16px; bottom: 40px; z-index: 5; display: inline-flex; align-items: center; gap: 8px; height: 52px; padding: 0 20px 0 8px; border-radius: var(--r-pill); background: var(--primary); color: var(--on-primary); border: 0; font-weight: 600; font-size: 15px; box-shadow: var(--shadow-lg); }
+.fab .orb { width: 38px; height: 38px; display: grid; place-items: center; color: var(--on-primary); }
+
+.scrim { position: absolute; }
+.sheet.rec-sheet { position: absolute; left: 0; right: 0; bottom: 0; z-index: 95; padding: 12px 20px 40px; display: grid; justify-items: center; gap: 10px; text-align: center; }
+.rec-sheet .grab { width: 36px; height: 5px; border-radius: 3px; background: var(--line); }
+.rec-sheet h3 { margin: 4px 0 0; font-size: 18px; }
+.rec-sheet .orb { width: 120px; height: 120px; margin: 18px 0 10px; }
+.rec-sheet .t { font-size: 26px; font-weight: 600; }
+.rec-sheet .live { min-height: 44px; font-size: 13.5px; color: var(--ink-2); max-width: 300px; }
+.rec-sheet .acts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; margin-top: 6px; }
+</style>
+</head>
+<body>
+<div class="phone fixed">
+  <div class="statusbar"></div>
+  <header class="navbar">
+    <a class="nb-btn" href="app-me.html" aria-label="返回"><svg class="ic"><use href="#i-back"/></svg></a>
+    <h1>情绪日记</h1>
+    <button class="nb-btn" type="button" aria-label="日历视图" onclick="toast('日历视图：11 月已打卡 13 天')"><svg class="ic"><use href="#i-calendar"/></svg></button>
+  </header>
+
+  <div class="scroll" id="scroll">
+    <div class="wrap">
+      <div class="head">
+        <div class="seg" role="tablist" aria-label="时间范围">
+          <button class="on" type="button" data-r="7">7 天</button>
+          <button type="button" data-r="30">30 天</button>
+        </div>
+        <span class="muted num" id="range">11月9日 – 11月15日</span>
+      </div>
+
+      <section class="card chart">
+        <div class="stats">
+          <div><span>平均情绪</span><b class="num" id="sAvg">5.4<small>/10</small></b><span class="up" id="sDelta">较上周 +0.4</span></div>
+          <div><span>最低</span><b class="num" id="sMin">3.5</b><span id="sMinD">11/15 周日</span></div>
+          <div><span>打卡</span><b class="num" id="sDays">7<small>/7 天</small></b><span id="sStreak">连续 9 天</span></div>
+        </div>
+        <svg class="plot" id="plot" viewBox="0 0 326 172" role="img" aria-label="情绪曲线"></svg>
+        <div class="legend"><span><i class="b1"></i>很差</span><span><i class="b2"></i>低落</span><span><i class="b3"></i>一般</span><span><i class="b4"></i>不错</span><span><i class="b5"></i>很好</span><span style="margin-left:auto;color:var(--accent)">- - 平均值</span></div>
+      </section>
+
+      <section class="card insight">
+        <div class="k"><svg class="ic ic-sm"><use href="#i-sparkle"/></svg>本周洞察</div>
+        <p>周日晚上情绪最低，和工作日开始前的焦虑有关。</p>
+        <div class="tips">
+          <div><svg class="ic ic-sm"><use href="#i-check"/></svg><span>近 4 个周日的打卡里，「周会」「汇报」出现了 6 次</span></div>
+          <div><svg class="ic ic-sm"><use href="#i-check"/></svg><span>周六有户外活动的那天，情绪是本周最高的 7.0</span></div>
+        </div>
+        <div class="ft"><svg class="ic ic-sm"><use href="#i-sparkle"/></svg>由小屿整理，仅供参考 · 同步给林知夏老师<button class="switch on" type="button" id="share" aria-label="同步给咨询师" aria-pressed="true"></button></div>
+      </section>
+
+      <section>
+        <div class="section-title"><h2>打卡记录</h2><a href="#" onclick="toast('共 26 条语音打卡');return false">共 26 条<svg class="ic ic-sm"><use href="#i-chevron"/></svg></a></div>
+        <div class="list rec" id="rec"></div>
+      </section>
+    </div>
+  </div>
+
+  <button class="fab" type="button" id="fab"><span class="orb" style="--lv:.2"><svg class="ic"><use href="#i-mic"/></svg></span>语音打卡</button>
+
+  <div class="scrim" id="scrim" hidden></div>
+  <div class="sheet rec-sheet" id="sheet" hidden role="dialog" aria-label="语音打卡">
+    <span class="grab"></span>
+    <h3 class="display">说说今天的心情</h3>
+    <span class="muted small">发生了什么、身体有什么感觉，说 30 秒就好</span>
+    <span class="orb" id="orb"></span>
+    <span class="t num" id="rt">00:00</span>
+    <span class="live" id="live">正在听…</span>
+    <div class="acts"><button class="btn btn-ghost btn-lg" type="button" id="cancel">取消</button><button class="btn btn-primary btn-lg" type="button" id="done">完成打卡</button></div>
+  </div>
+  <span class="homebar" aria-hidden="true"></span>
+</div>
+<script>
+var D7 = { labels: ['一', '二', '三', '四', '五', '六', '日'], vals: [5.0, 5.5, 6.0, 4.5, 6.5, 7.0, 3.5], range: '11月9日 – 11月15日', delta: '较上周 +0.4', minD: '11/15 周日', days: '7<small>/7 天</small>', streak: '连续 9 天' };
+var V30 = [6.0, 4.0, 4.5, 5.0, null, 5.5, 6.5, 7.0, 3.5, 4.5, null, 5.5, null, 6.0, 6.5, 4.0, 5.0, 4.5, 6.0, 5.5, null, 7.5, 3.0, 5.0, 5.5, 6.0, 4.5, 6.5, 7.0, 3.5];
+var L30 = V30.map(function (_, i) { var d = new Date(2026, 9, 17 + i); return (d.getMonth() + 1) + '/' + d.getDate(); });
+var D30 = { labels: L30, vals: V30, range: '10月17日 – 11月15日', delta: '较前 30 天 +0.3', minD: '11/8 周日', days: '26<small>/30 天</small>', streak: '周日均值 3.6' };
+function lv(v) { return v <= 3 ? 1 : v <= 4.5 ? 2 : v <= 6 ? 3 : v <= 7.5 ? 4 : 5; }
+var LV = ['', '很差', '低落', '一般', '不错', '很好'];
+function draw(d) {
+  var W = 326, H = 172, L = 22, R = 8, T = 10, B = 22, n = d.vals.length;
+  var x = function (i) { return L + (W - L - R) * (n === 1 ? .5 : i / (n - 1)); };
+  var y = function (v) { return T + (H - T - B) * (1 - (v - 1) / 9); };
+  var s = '';
+  [2, 4, 6, 8, 10].forEach(function (g) { s += '<line class="grid" x1="' + L + '" x2="' + (W - R) + '" y1="' + y(g) + '" y2="' + y(g) + '"/><text class="ylab" x="0" y="' + (y(g) + 3) + '">' + g + '</text>'; });
+  var pts = [], seg = [], segs = [];
+  d.vals.forEach(function (v, i) { if (v == null) { if (seg.length) segs.push(seg); seg = []; } else { seg.push([x(i), y(v)]); pts.push(v); } });
+  if (seg.length) segs.push(seg);
+  var all = []; d.vals.forEach(function (v, i) { if (v != null) all.push([x(i), y(v)]); });
+  s += '<path class="area" d="M' + all.map(function (p) { return p[0].toFixed(1) + ' ' + p[1].toFixed(1); }).join(' L') + ' L' + all[all.length - 1][0] + ' ' + (H - B) + ' L' + all[0][0] + ' ' + (H - B) + 'Z"/>';
+  s += '<path class="line" d="M' + all.map(function (p) { return p[0].toFixed(1) + ' ' + p[1].toFixed(1); }).join(' L') + '"/>';
+  var avg = pts.reduce(function (a, b) { return a + b; }, 0) / pts.length;
+  s += '<line class="avg" x1="' + L + '" x2="' + (W - R) + '" y1="' + y(avg) + '" y2="' + y(avg) + '"/><text class="avgl" x="' + (W - R) + '" y="' + (y(avg) - 5) + '" text-anchor="end">均值 ' + avg.toFixed(1) + '</text>';
+  var r = n > 10 ? 3.2 : 5;
+  d.vals.forEach(function (v, i) {
+    if (v == null) s += '<circle class="miss" cx="' + x(i) + '" cy="' + (H - B - 4) + '" r="2.5"><title>' + d.labels[i] + ' 未打卡</title></circle>';
+    else s += '<circle class="pt l' + lv(v) + '" cx="' + x(i) + '" cy="' + y(v) + '" r="' + r + '"><title>' + d.labels[i] + ' · ' + LV[lv(v)] + ' ' + v + '</title></circle>';
+    var show = n <= 10 || i % 7 === 1 || i === n - 1;
+    if (show) s += '<text class="xlab" x="' + x(i) + '" y="' + (H - 4) + '" text-anchor="middle">' + (n <= 10 ? '周' + d.labels[i] : d.labels[i]) + '</text>';
+  });
+  document.getElementById('plot').innerHTML = s;
+  document.getElementById('sAvg').innerHTML = avg.toFixed(1) + '<small>/10</small>';
+  document.getElementById('sMin').textContent = Math.min.apply(null, pts).toFixed(1);
+  document.getElementById('sMinD').textContent = d.minD;
+  document.getElementById('sDelta').textContent = d.delta;
+  document.getElementById('sDays').innerHTML = d.days;
+  document.getElementById('sStreak').textContent = d.streak;
+  document.getElementById('range').textContent = d.range;
+}
+draw(D7);
+document.querySelectorAll('.seg button').forEach(function (b) {
+  b.addEventListener('click', function () {
+    document.querySelectorAll('.seg button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    draw(b.dataset.r === '7' ? D7 : D30);
+  });
+});
+
+var REC = [
+  [15, '周日', '21:12', 3.5, '明天又要开周会，想到要汇报就有点心慌，躺下半小时了还没睡着。', '0:48', ['工作', '睡眠']],
+  [14, '周六', '22:30', 7.0, '下午和朋友去爬了山，晚上很累但很放松，今天应该能早点睡。', '0:36', ['运动', '朋友']],
+  [13, '周五', '23:05', 6.5, '项目评审过了，松了一口气。还是有点担心下周的排期。', '0:52', ['工作']],
+  [12, '周四', '23:40', 4.5, '加班到十点，和小屿聊了一会儿，预约了林老师，感觉心里有了点着落。', '1:05', ['工作', '咨询']],
+  [11, '周三', '22:18', 6.0, '中午睡了二十分钟，下午状态好一点，晚上没喝咖啡。', '0:28', ['睡眠']],
+  [10, '周二', '23:26', 5.5, '需求又改了一版，有点烦，但跟组里说清楚之后好多了。', '0:41', ['工作']],
+  [9, '周一', '22:54', 5.0, '闹钟响了三次才起来，一整天都昏昏沉沉的。', '0:33', ['睡眠']]
+];
+var COLORS = ['', 'var(--risk)', 'var(--warn)', 'var(--ink-4)', 'var(--primary)', 'var(--ok)'];
+function recHTML(r) {
+  var l = lv(r[3]);
+  return '<div class="list-item"><div class="d"><b>' + r[0] + '</b><span>' + r[1] + '</span></div><div class="bd">' +
+    '<div class="tp"><span class="lv"><i style="background:' + COLORS[l] + '"></i>' + LV[l] + ' · <span class="num">' + r[3].toFixed(1) + '</span></span><span class="num">11月' + r[0] + '日 ' + r[2] + '</span></div>' +
+    '<p>' + r[4] + '</p><div class="tags"><button class="play" type="button" aria-label="播放录音"><svg class="ic"><use href="#i-play"/></svg>' + r[5] + '</button>' +
+    r[6].map(function (t) { return '<span class="tag tag-plain">#' + t + '</span>'; }).join('') + '</div></div></div>';
+}
+var rec = document.getElementById('rec');
+rec.innerHTML = REC.map(recHTML).join('');
+rec.addEventListener('click', function (e) { var b = e.target.closest('.play'); if (b) toast('正在播放 ' + b.textContent.trim() + ' 的语音打卡'); });
+document.getElementById('share').addEventListener('click', function () {
+  var on = this.classList.toggle('on'); this.setAttribute('aria-pressed', on);
+  toast(on ? '本周洞察将在下次咨询前同步给林知夏老师' : '已关闭同步，洞察仅自己可见');
+});
+
+var scrim = document.getElementById('scrim'), sheet = document.getElementById('sheet'), orb = document.getElementById('orb');
+var timer = null, raf = null, t0 = 0;
+var LIVE = '今天其实还好，晚上试了林老师说的呼吸练习，心跳慢下来一些了。';
+function openRec() {
+  scrim.hidden = false; sheet.hidden = false; t0 = Date.now();
+  document.getElementById('live').textContent = '正在听…';
+  timer = setInterval(function () {
+    var s = Math.floor((Date.now() - t0) / 1000);
+    document.getElementById('rt').textContent = '00:' + (s < 10 ? '0' : '') + s;
+    var k = Math.min(LIVE.length, Math.floor((Date.now() - t0) / 160));
+    if (k > 0) document.getElementById('live').textContent = LIVE.slice(0, k);
+  }, 120);
+  (function loop() { orb.style.setProperty('--lv', (.25 + Math.random() * .55).toFixed(2)); raf = setTimeout(loop, 110); })();
+}
+function closeRec() { scrim.hidden = true; sheet.hidden = true; clearInterval(timer); clearTimeout(raf); }
+document.getElementById('fab').addEventListener('click', openRec);
+document.getElementById('cancel').addEventListener('click', closeRec);
+scrim.addEventListener('click', closeRec);
+document.getElementById('done').addEventListener('click', function () {
+  var s = Math.max(3, Math.floor((Date.now() - t0) / 1000));
+  closeRec();
+  rec.insertAdjacentHTML('afterbegin', recHTML([15, '周日', '21:42', 6.0, LIVE, '0:' + (s < 10 ? '0' : '') + s, ['呼吸练习']]));
+  toast('打卡成功，已连续 10 天');
+  document.getElementById('scroll').scrollTo({ top: 420, behavior: 'smooth' });
+});
+</script>
+</body>
+</html>

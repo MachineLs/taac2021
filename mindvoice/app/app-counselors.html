@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>听屿 App · 找咨询师</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@500;600;900&display=swap">
+<link rel="stylesheet" href="ds.css">
+<script src="icons.js"></script>
+<style>
+/* App · 找咨询师 —— tokens only */
+.lt { padding: 4px 16px 10px; display: flex; align-items: flex-end; gap: 10px; }
+.lt h1 { margin: 0; font-size: 28px; line-height: 1.25; flex: 1; }
+.lt .nb { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; background: var(--surface); border: 1px solid var(--line-2); color: var(--ink); position: relative; padding: 0; }
+.lt .nb .badge { position: absolute; top: -3px; right: -3px; min-width: 16px; height: 16px; font-size: 10px; background: var(--primary); color: var(--on-primary); }
+.sbar { padding: 0 16px; }
+.sbar .search { height: 42px; background: var(--surface); }
+.chips { display: flex; gap: 8px; overflow-x: auto; padding: 12px 16px 2px; scrollbar-width: none; }
+.chips::-webkit-scrollbar { display: none; }
+.chip { cursor: pointer; }
+.block { padding: 18px 16px 0; }
+.rec-note { font-size: 12px; color: var(--ink-3); display: flex; align-items: center; gap: 4px; margin: -6px 0 10px; }
+.rec-note .ic { width: 13px; height: 13px; color: var(--accent); }
+.rec { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.rc { overflow: hidden; position: relative; display: block; }
+.rc img { width: 100%; height: 128px; object-fit: cover; object-position: center 20%; }
+.rc .m { position: absolute; top: 8px; left: 8px; height: 22px; padding: 0 8px; border-radius: var(--r-pill); background: var(--accent); color: var(--on-accent); font-size: 11.5px; font-weight: 600; display: inline-flex; align-items: center; font-family: var(--font-num); }
+.rc .in { padding: 9px 11px 11px; display: grid; gap: 3px; }
+.rc .in b { font-size: 15px; }
+.rc .in .t { font-size: 11.5px; color: var(--ink-3); }
+.rc .in .row { gap: 6px; }
+
+.sorts { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.sorts h2 { margin: 0; font-size: 17px; font-family: var(--font-display); font-weight: var(--display-weight); }
+.sorts .seg button { height: 26px; padding: 0 10px; font-size: 12px; }
+.list-c { display: grid; gap: 10px; }
+.ci { display: grid; grid-template-columns: 68px 1fr; gap: 12px; padding: 12px; }
+.ci img { width: 68px; height: 84px; border-radius: var(--r); object-fit: cover; object-position: top; }
+.ci .nm { display: flex; align-items: center; gap: 6px; }
+.ci .nm b { font-size: 16px; }
+.ci .nm .yr { font-size: 11.5px; color: var(--ink-3); }
+.ci .nm .rating { margin-left: auto; font-size: 12.5px; }
+.ci .tt { font-size: 12px; color: var(--ink-3); margin: 1px 0 6px; }
+.ci .tg { display: flex; gap: 4px; flex-wrap: nowrap; overflow: hidden; }
+.ci .tg .tag { height: 20px; font-size: 11px; padding: 0 6px; }
+.ci .ft { display: flex; align-items: center; gap: 6px; margin-top: 8px; font-size: 12px; color: var(--ink-3); }
+.ci .ft .ok { color: var(--ok); display: inline-flex; align-items: center; gap: 4px; }
+.ci .ft .ok .dot { width: 6px; height: 6px; }
+.ci .ft .price { margin-left: auto; font-size: 15px; }
+.empty { text-align: center; padding: 36px 20px; color: var(--ink-3); font-size: 13px; }
+.empty .ic { width: 36px; height: 36px; color: var(--ink-4); margin: 0 auto 8px; display: block; }
+.end { padding: 18px 16px 22px; text-align: center; font-size: 12px; color: var(--ink-4); }
+</style>
+</head>
+<body>
+<div class="phone fixed">
+  <div class="statusbar"></div>
+  <div class="scroll" id="scroll">
+    <header class="lt">
+      <h1 class="display">找咨询师</h1>
+      <button class="nb" type="button" id="filterBtn" aria-label="更多筛选"><svg class="ic"><use href="#i-filter"/></svg></button>
+    </header>
+    <div class="sbar">
+      <label class="search"><svg class="ic"><use href="#i-search"/></svg><input id="q" type="search" placeholder="搜索姓名、困扰或疗法，如「失眠」" aria-label="搜索咨询师"></label>
+    </div>
+    <div class="chips" id="chips" role="group" aria-label="按困扰筛选">
+      <button class="chip on" type="button" data-k="">全部</button>
+      <button class="chip" type="button" data-k="焦虑">焦虑</button>
+      <button class="chip" type="button" data-k="失眠">失眠</button>
+      <button class="chip" type="button" data-k="职场|职业|领导力|团队">职场压力</button>
+      <button class="chip" type="button" data-k="亲密|婚姻|家庭|关系">亲密关系</button>
+      <button class="chip" type="button" data-k="情绪|正念|自我关怀">情绪调节</button>
+      <button class="chip" type="button" data-k="青少年|亲子|学业|大学生">青少年</button>
+      <button class="chip" type="button" data-k="创伤|哀伤|惊恐">创伤</button>
+      <button class="chip" type="button" data-k="抑郁|药物|双相">抑郁评估</button>
+    </div>
+
+    <section class="block" id="recBlock">
+      <div class="section-title"><h2>小屿为你推荐</h2><a href="app-summary.html">接待小结<svg class="ic ic-sm"><use href="#i-chevron"/></svg></a></div>
+      <div class="rec-note"><svg class="ic"><use href="#i-sparkle"/></svg>根据 11 月 15 日接待：失眠、职场压力，偏好语音</div>
+      <div class="rec">
+        <a class="card rc" href="app-counselor.html">
+          <img src="../assets/c-lin.jpg" alt="林知夏"><span class="m">匹配 96%</span>
+          <div class="in"><b>林知夏</b><span class="t">失眠 · 焦虑 · CBT</span><span class="row"><span class="rating"><svg class="ic ic-sm" style="fill:currentColor;stroke:none"><use href="#i-star"/></svg>4.97</span><span class="price" style="margin-left:auto">¥400</span></span></div>
+        </a>
+        <a class="card rc" href="app-counselor.html">
+          <img src="../assets/c-he.jpg" alt="何清"><span class="m">匹配 89%</span>
+          <div class="in"><b>何清</b><span class="t">情绪调节 · 正念 · ACT</span><span class="row"><span class="rating"><svg class="ic ic-sm" style="fill:currentColor;stroke:none"><use href="#i-star"/></svg>4.96</span><span class="price" style="margin-left:auto">¥450</span></span></div>
+        </a>
+      </div>
+    </section>
+
+    <section class="block">
+      <div class="sorts">
+        <h2>全部咨询师 <span class="small muted num" id="count">9</span></h2>
+        <div class="seg" id="sort" role="group" aria-label="排序">
+          <button type="button" class="on" data-s="mix">综合</button>
+          <button type="button" data-s="rating">评分</button>
+          <button type="button" data-s="price">价格</button>
+          <button type="button" data-s="soon">最近可约</button>
+        </div>
+      </div>
+      <div class="list-c" id="list"></div>
+      <div class="empty" id="empty" hidden><svg class="ic"><use href="#i-search"/></svg>没有找到符合条件的咨询师<br>换个关键词，或者<a href="app-voice.html" style="color:var(--primary)">让小屿帮你找</a></div>
+    </section>
+    <div class="end">所有咨询师均已通过资质核验 · 平台持续督导</div>
+  </div>
+
+  <nav class="tabbar" aria-label="主导航">
+    <a href="app-home.html"><svg class="ic"><use href="#i-home"/></svg>首页</a>
+    <a class="on" href="app-counselors.html" aria-current="page"><svg class="ic"><use href="#i-users"/></svg>咨询师</a>
+    <a class="tab-voice" href="app-voice.html" aria-label="小屿语音接待"><span class="orb" style="--lv:.2"><svg class="ic"><use href="#i-mic"/></svg></span></a>
+    <a href="app-messages.html"><svg class="ic"><use href="#i-chat"/></svg>消息</a>
+    <a href="app-me.html"><svg class="ic"><use href="#i-user"/></svg>我的</a>
+  </nav>
+  <span class="homebar" aria-hidden="true"></span>
+</div>
+<script>
+(function () {
+  // mirrors COUNSELORS in ../voice.js, plus availability for the list
+  var C = [
+    { id: 'lin', name: '林知夏', title: '国家二级心理咨询师 · 临床心理学硕士', years: 8, rating: 4.97, sessions: 2310, price: 400, img: 'c-lin.jpg', tags: ['焦虑', '失眠', '职场压力'], method: 'CBT', soon: '明天 20:00', soonRank: 1 },
+    { id: 'he', name: '何清', title: '正念减压导师 · ACT 治疗师', years: 9, rating: 4.96, sessions: 2890, price: 450, img: 'c-he.jpg', tags: ['情绪调节', '正念', '自我关怀'], method: 'ACT', soon: '今天 21:00', soonRank: 0 },
+    { id: 'fang', name: '方宁', title: '企业 EAP 顾问 · 职业发展教练', years: 7, rating: 4.94, sessions: 1980, price: 420, img: 'c-fang.jpg', tags: ['职业倦怠', '领导力', '团队冲突'], method: '焦点解决', soon: '明天 19:00', soonRank: 1 },
+    { id: 'zhou', name: '周以宁', title: '婚姻家庭治疗师 · EFT 认证', years: 11, rating: 4.95, sessions: 3480, price: 600, img: 'c-zhou.jpg', tags: ['亲密关系', '婚姻', '家庭沟通'], method: 'EFT', soon: '11/18 周三', soonRank: 3 },
+    { id: 'song', name: '宋语棠', title: '创伤治疗师 · EMDR 认证', years: 12, rating: 4.98, sessions: 4120, price: 680, img: 'c-song.jpg', tags: ['创伤', '哀伤', '惊恐'], method: 'EMDR', soon: '11/19 周四', soonRank: 4 },
+    { id: 'chen', name: '陈牧', title: '精神科主治医师 · 医学博士', years: 15, rating: 4.96, sessions: 5260, price: 800, img: 'c-chen.jpg', tags: ['抑郁评估', '药物咨询', '双相'], method: '精神科评估', soon: '11/20 周五', soonRank: 5 },
+    { id: 'xu', name: '许蔓', title: '青少年与亲子咨询师', years: 6, rating: 4.93, sessions: 1520, price: 380, img: 'c-xu.jpg', tags: ['青少年', '亲子', '学业压力'], method: '家庭系统', soon: '后天 10:00', soonRank: 2 },
+    { id: 'wang', name: '王屿川', title: '精神分析取向咨询师', years: 10, rating: 4.92, sessions: 2640, price: 550, img: 'c-wang.jpg', tags: ['自我探索', '男性心理', '关系模式'], method: '精神动力学', soon: '后天 20:00', soonRank: 2 },
+    { id: 'gu', name: '顾言', title: '高校心理咨询师', years: 5, rating: 4.91, sessions: 1170, price: 300, img: 'c-gu.jpg', tags: ['大学生', '人际', '职业迷茫'], method: '人本主义', soon: '今天 22:00', soonRank: 0 }
+  ];
+  var state = { k: '', q: '', s: 'mix' };
+  var list = document.getElementById('list');
+  var star = '<svg class="ic ic-sm" style="fill:currentColor;stroke:none"><use href="#i-star"/></svg>';
+  function render() {
+    var re = state.k ? new RegExp(state.k) : null, q = state.q.trim();
+    var rows = C.filter(function (c) {
+      var hay = c.name + c.title + c.tags.join('') + c.method;
+      return (!re || re.test(c.tags.join(' ') + c.title)) && (!q || hay.indexOf(q) >= 0);
+    });
+    if (state.s === 'rating') rows.sort(function (a, b) { return b.rating - a.rating; });
+    if (state.s === 'price') rows.sort(function (a, b) { return a.price - b.price; });
+    if (state.s === 'soon') rows.sort(function (a, b) { return a.soonRank - b.soonRank; });
+    list.innerHTML = rows.map(function (c) {
+      return '<a class="card ci" href="app-counselor.html"><img src="../assets/' + c.img + '" alt="' + c.name + '">' +
+        '<div style="min-width:0"><div class="nm"><b>' + c.name + '</b><span class="yr">' + c.years + ' 年经验</span><span class="rating">' + star + c.rating.toFixed(2) + '</span></div>' +
+        '<div class="tt ellipsis">' + c.title + '</div>' +
+        '<div class="tg">' + c.tags.map(function (t) { return '<span class="tag">' + t + '</span>'; }).join('') + '<span class="tag tag-plain">' + c.method + '</span></div>' +
+        '<div class="ft"><span class="ok"><span class="dot"></span>' + c.soon + ' 可约</span><span>· ' + c.sessions.toLocaleString('en-US') + ' 次</span><span class="price">¥' + c.price + '<small>/次</small></span></div></div></a>';
+    }).join('');
+    document.getElementById('count').textContent = rows.length;
+    document.getElementById('empty').hidden = rows.length > 0;
+    document.getElementById('recBlock').hidden = !!(state.k || q) && !/失眠|焦虑|职场|情绪|正念/.test(state.k + q);
+  }
+  document.querySelectorAll('#chips .chip').forEach(function (b) {
+    b.addEventListener('click', function () {
+      document.querySelectorAll('#chips .chip').forEach(function (x) { x.classList.remove('on'); });
+      b.classList.add('on'); state.k = b.dataset.k; render();
+    });
+  });
+  document.querySelectorAll('#sort button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      document.querySelectorAll('#sort button').forEach(function (x) { x.classList.remove('on'); });
+      b.classList.add('on'); state.s = b.dataset.s; render();
+    });
+  });
+  document.getElementById('q').addEventListener('input', function (e) { state.q = e.target.value; render(); });
+  document.getElementById('filterBtn').addEventListener('click', function () { toast('更多筛选：价格区间、咨询方式、性别、可约时间'); });
+  render();
+})();
+</script>
+</body>
+</html>

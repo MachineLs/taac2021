@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>听屿 App · 达人内容</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@500;600;900&display=swap">
+<link rel="stylesheet" href="ds.css">
+<script src="icons.js"></script>
+<style>
+/* App · 达人内容详情 —— tokens only（封面上的文字用黑色半透明遮罩 + 白字） */
+.phone.fixed { background: var(--surface); }
+.navbar h1 { font-size: 15px; }
+.cover { position: relative; height: 232px; background: var(--bg-2); overflow: hidden; }
+.cover img { width: 100%; height: 100%; object-fit: cover; }
+.cover::after { content: ""; position: absolute; inset: 0; background: linear-gradient(rgba(0,0,0,.05) 40%, rgba(0,0,0,.6)); }
+.cover .pbtn { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 1; width: 64px; height: 64px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,.6); background: rgba(0,0,0,.35); backdrop-filter: blur(8px); display: grid; place-items: center; color: rgba(255,255,255,1); }
+.cover .pbtn .ic { width: 26px; height: 26px; fill: currentColor; stroke: none; margin-left: 4px; }
+.cover .meta { position: absolute; left: 14px; right: 14px; bottom: 10px; z-index: 1; display: flex; justify-content: space-between; align-items: center; color: rgba(255,255,255,.95); font-size: 12px; }
+.cover .meta span { display: inline-flex; align-items: center; gap: 4px; }
+.cover .vbar { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: rgba(255,255,255,.25); z-index: 1; }
+.cover .vbar i { display: block; height: 100%; width: 0; background: var(--accent); transition: width 1s linear; }
+
+.art { padding: 14px 18px 0; }
+.kol { display: flex; align-items: center; gap: 10px; }
+.kol .avatar { width: 42px; height: 42px; }
+.kol b { font-size: 15px; display: flex; align-items: center; gap: 4px; }
+.kol b .ic { width: 15px; height: 15px; color: var(--primary); }
+.kol span { font-size: 12px; color: var(--ink-3); }
+.kol .btn.on { background: var(--surface-2); color: var(--ink-3); border-color: var(--line); }
+.art h1 { margin: 14px 0 6px; font-size: 22px; line-height: 1.42; }
+.art .info { display: flex; gap: 10px; font-size: 12px; color: var(--ink-4); align-items: center; flex-wrap: wrap; }
+.disc { margin: 12px 0 0; display: flex; gap: 6px; align-items: center; padding: 8px 10px; border-radius: var(--r-sm); background: var(--surface-2); border: 1px solid var(--line-2); font-size: 12px; color: var(--ink-3); }
+.body { font-size: 15.5px; line-height: 1.85; color: var(--ink-2); padding-top: 4px; }
+.body p { margin: 14px 0 0; }
+.body b { color: var(--ink); }
+.steps { margin: 14px 0 0; padding: 14px; border-radius: var(--r-lg); background: var(--primary-soft); display: grid; gap: 10px; }
+.steps h3 { margin: 0; font-size: 14.5px; color: var(--primary); display: flex; align-items: center; gap: 6px; }
+.steps ol { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; counter-reset: s; }
+.steps li { display: flex; gap: 10px; font-size: 14px; line-height: 1.6; color: var(--ink); counter-increment: s; }
+.steps li::before { content: counter(s); width: 22px; height: 22px; border-radius: 50%; background: var(--primary); color: var(--on-primary); display: grid; place-items: center; font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 1px; font-family: var(--font-num); }
+.steps li .num { font-weight: 700; color: var(--primary); }
+
+.sec { padding: 22px 18px 0; }
+.cta { display: flex; align-items: center; gap: 12px; padding: 14px; border-radius: var(--r-lg); background: var(--primary); color: var(--on-primary); position: relative; overflow: hidden; }
+.cta::before { content: ""; position: absolute; right: -40px; top: -60px; width: 160px; height: 160px; border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--orb-1) 50%, transparent), transparent 70%); }
+.cta .orb { width: 48px; height: 48px; display: grid; place-items: center; color: var(--on-primary); flex-shrink: 0; }
+.cta .k { font-size: 11.5px; opacity: .8; }
+.cta b { display: block; font-size: 15.5px; line-height: 1.4; position: relative; }
+.cta span.s { font-size: 12px; opacity: .85; position: relative; }
+.cta .go { margin-left: auto; position: relative; background: var(--on-primary); color: var(--primary); height: 32px; padding: 0 12px; font-size: 13px; }
+.cs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.cs a { padding: 12px; display: grid; gap: 6px; }
+.cs .top { display: flex; gap: 8px; align-items: center; }
+.cs b { font-size: 14.5px; }
+.cs .t { font-size: 11.5px; color: var(--ink-3); line-height: 1.5; }
+.cmt { display: flex; gap: 10px; padding: 12px 0; }
+.cmt + .cmt { border-top: 1px solid var(--line-2); }
+.cmt .avatar { width: 34px; height: 34px; }
+.cmt .n { font-size: 13px; color: var(--ink-3); display: flex; align-items: center; gap: 6px; }
+.cmt .n .tag { height: 18px; font-size: 10.5px; padding: 0 5px; }
+.cmt p { margin: 3px 0 4px; font-size: 14px; line-height: 1.6; color: var(--ink); }
+.cmt .ft { display: flex; gap: 14px; font-size: 11.5px; color: var(--ink-4); align-items: center; }
+.cmt .lk { margin-left: auto; display: flex; flex-direction: column; align-items: center; font-size: 11px; color: var(--ink-4); border: 0; background: none; padding: 0; font-family: var(--font-num); }
+.cmt .lk.on { color: var(--accent); }
+.cmt .lk.on .ic { fill: currentColor; }
+.end { padding: 18px 18px 22px; font-size: 11.5px; color: var(--ink-4); text-align: center; }
+
+.act { flex-shrink: 0; display: flex; align-items: center; gap: 4px; padding: 8px 12px 34px 14px; border-top: 1px solid var(--line-2); background: var(--surface); }
+.act .say { flex: 1; min-width: 0; height: 38px; border-radius: var(--r-pill); background: var(--surface-2); border: 1px solid var(--line-2); display: flex; align-items: center; gap: 6px; padding: 0 12px; color: var(--ink-4); font-size: 13px; }
+.act .say input { border: 0; background: none; outline: none; flex: 1; min-width: 0; color: var(--ink); }
+.act .ab { border: 0; background: none; display: grid; justify-items: center; gap: 0; font-size: 10.5px; color: var(--ink-3); width: 50px; padding: 0; font-family: var(--font-num); }
+.act .ab .ic { width: 22px; height: 22px; color: var(--ink-2); }
+.act .ab.on { color: var(--accent); }
+.act .ab.on .ic { color: var(--accent); fill: currentColor; }
+</style>
+</head>
+<body>
+<div class="phone fixed">
+  <div class="statusbar"></div>
+  <header class="navbar">
+    <a class="nb-btn" href="app-home.html" aria-label="返回"><svg class="ic"><use href="#i-back"/></svg></a>
+    <h1>达人专区</h1>
+    <button class="nb-btn" type="button" aria-label="更多" onclick="toast('不感兴趣 · 举报')"><svg class="ic"><use href="#i-more"/></svg></button>
+  </header>
+
+  <div class="scroll" id="scroll">
+    <div class="cover">
+      <img src="../assets/moon.jpg" alt="夜空中的月亮">
+      <button class="pbtn" type="button" id="vplay" aria-label="播放视频"><svg class="ic"><use href="#i-play"/></svg></button>
+      <div class="meta"><span><svg class="ic ic-sm"><use href="#i-video"/></svg>视频 · 跟练版</span><span class="num" id="vt">00:00 / 03:28</span></div>
+      <div class="vbar"><i id="vbar"></i></div>
+    </div>
+
+    <article class="art">
+      <div class="kol">
+        <img class="avatar" src="../assets/u-woman-5.jpg" alt="睡眠研究所阿屿">
+        <div class="grow"><b>睡眠研究所阿屿<svg class="ic"><use href="#i-check-circle"/></svg></b><span>心理科普 · 粉丝 <span class="num">46.8</span> 万</span></div>
+        <button class="btn btn-primary btn-sm" type="button" id="follow"><svg class="ic ic-sm"><use href="#i-plus"/></svg>关注</button>
+      </div>
+      <h1 class="display">凌晨三点还睡不着？试试这个 4-7-8 呼吸法</h1>
+      <div class="info"><span class="num">11月14日 发布</span><span class="num">3.2 万次观看</span><span class="tag tag-plain">#失眠</span><span class="tag tag-plain">#呼吸练习</span></div>
+      <div class="disc"><svg class="ic ic-sm"><use href="#i-alert"/></svg>内容由合作达人提供，不构成诊疗建议</div>
+
+      <div class="body">
+        <p>很多人失眠时会反复看时间、计算「还能睡几个小时」，越算越清醒。这是因为焦虑让身体处在「准备应战」的状态：心跳加快、呼吸变浅，大脑自然不肯下线。这时候硬逼自己睡着往往适得其反，<b>先让身体慢下来</b>反而更有效。</p>
+        <div class="steps">
+          <h3><svg class="ic ic-sm"><use href="#i-leaf"/></svg>4-7-8 呼吸怎么做</h3>
+          <ol>
+            <li><span>舌尖轻抵上排门牙后方，先用嘴把气完全呼出去。</span></li>
+            <li><span>闭上嘴，用鼻子安静地吸气，心里默数 <span class="num">4</span> 秒。</span></li>
+            <li><span>屏住呼吸，默数 <span class="num">7</span> 秒。</span></li>
+            <li><span>用嘴缓缓呼气，发出轻轻的「呼」声，默数 <span class="num">8</span> 秒。以上为一轮，连续做 <span class="num">4</span> 轮。</span></li>
+          </ol>
+        </div>
+        <p>这个方法的关键在于<b>呼气比吸气长</b>。延长的呼气会激活副交感神经，让心率慢慢降下来；数数本身也能把注意力从「明天怎么办」的念头里拉回来。刚开始练习时如果觉得头晕或憋气，可以按比例缩短，比如 2-3.5-4，重要的是保持节奏，而不是时长。</p>
+        <p>建议每天固定练两次，睡前一次、白天一次，坚持一两周会更容易起效。它是一个帮助放松的小工具，不能代替治疗。如果你<b>每周至少三晚睡不好、已经持续一个月以上</b>，并且白天的工作和情绪都受到影响，建议找专业的心理咨询师聊一聊，失眠认知行为治疗（CBT-I）是目前被广泛推荐的非药物方法。</p>
+      </div>
+    </article>
+
+    <section class="sec">
+      <a class="cta" href="app-voice.html">
+        <span class="orb" style="--lv:.25"><svg class="ic"><use href="#i-mic"/></svg></span>
+        <span class="grow"><span class="k">阿屿推荐</span><b>和小屿聊聊你的睡眠</b><span class="s">3 分钟语音接待，为你匹配擅长失眠的咨询师</span></span>
+        <span class="btn go">去聊聊</span>
+      </a>
+    </section>
+
+    <section class="sec">
+      <div class="section-title"><h3>擅长睡眠问题的咨询师</h3><a href="app-counselors.html">更多<svg class="ic ic-sm"><use href="#i-chevron"/></svg></a></div>
+      <div class="cs">
+        <a class="card" href="app-counselor.html">
+          <span class="top"><img class="avatar" src="../assets/c-lin.jpg" alt=""><span><b>林知夏</b><br><span class="rating"><svg class="ic ic-sm" style="fill:currentColor;stroke:none"><use href="#i-star"/></svg>4.97</span></span></span>
+          <span class="t">8 年 · CBT · 失眠 · 焦虑</span>
+          <span class="price">¥400<small>/次</small></span>
+        </a>
+        <a class="card" href="app-counselor.html">
+          <span class="top"><img class="avatar" src="../assets/c-he.jpg" alt=""><span><b>何清</b><br><span class="rating"><svg class="ic ic-sm" style="fill:currentColor;stroke:none"><use href="#i-star"/></svg>4.96</span></span></span>
+          <span class="t">9 年 · ACT · 正念 · 情绪调节</span>
+          <span class="price">¥450<small>/次</small></span>
+        </a>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="section-title"><h3>评论 <span class="num muted" style="font-size:13px;font-weight:500">326</span></h3><a href="#" onclick="toast('按热度排序');return false">最热</a></div>
+      <div class="cmt">
+        <img class="avatar" src="../assets/u-woman-2.jpg" alt="">
+        <div class="grow"><div class="n">一颗柚子</div><p>昨晚跟着做了三轮，数到第二轮就开始打哈欠了，是这半个月睡得最早的一次。</p><div class="ft"><span>2 小时前</span><span>回复</span></div></div>
+        <button class="lk" type="button"><svg class="ic ic-sm"><use href="#i-heart"/></svg>1,208</button>
+      </div>
+      <div class="cmt">
+        <img class="avatar" src="../assets/u-man-2.jpg" alt="">
+        <div class="grow"><div class="n">深夜改需求的阿杰</div><p>屏气 7 秒一开始有点难，按评论区说的先用 2-3.5-4 的节奏，慢慢就适应了。</p><div class="ft"><span>5 小时前</span><span>回复</span></div></div>
+        <button class="lk" type="button"><svg class="ic ic-sm"><use href="#i-heart"/></svg>486</button>
+      </div>
+      <div class="cmt">
+        <img class="avatar" src="../assets/u-woman-5.jpg" alt="">
+        <div class="grow"><div class="n">睡眠研究所阿屿<span class="tag tag-accent">作者</span></div><p>如果失眠已经超过一个月、白天也很难受，别只靠呼吸法硬扛，找专业咨询师聊聊会更快找到原因。</p><div class="ft"><span>昨天</span><span>回复</span></div></div>
+        <button class="lk" type="button"><svg class="ic ic-sm"><use href="#i-heart"/></svg>2,031</button>
+      </div>
+    </section>
+    <div class="end">内容由合作达人提供，不构成诊疗建议 · 如有紧急情况请拨打 12356</div>
+  </div>
+
+  <form class="act" id="act" autocomplete="off">
+    <label class="say"><svg class="ic ic-sm"><use href="#i-edit"/></svg><input id="ci" type="text" placeholder="说点什么…" aria-label="写评论"></label>
+    <button class="ab" type="button" id="like" aria-pressed="false"><svg class="ic"><use href="#i-heart"/></svg><span>2.1万</span></button>
+    <button class="ab" type="button" id="fav" aria-pressed="false"><svg class="ic"><use href="#i-star"/></svg><span>8,640</span></button>
+    <button class="ab" type="button" onclick="toast('已复制链接，可分享到微信')"><svg class="ic"><use href="#i-share"/></svg><span>分享</span></button>
+    <button class="ab" type="button" id="cbtn"><svg class="ic"><use href="#i-chat"/></svg><span>326</span></button>
+  </form>
+  <span class="homebar" aria-hidden="true"></span>
+</div>
+<script>
+var fl = document.getElementById('follow');
+fl.addEventListener('click', function () {
+  var on = fl.classList.toggle('on');
+  fl.className = on ? 'btn btn-ghost btn-sm on' : 'btn btn-primary btn-sm';
+  fl.innerHTML = on ? '已关注' : '<svg class="ic ic-sm"><use href="#i-plus"/></svg>关注';
+  toast(on ? '已关注，阿屿更新时会通知你' : '已取消关注');
+});
+function tog(id, base, unit, msgOn) {
+  var b = document.getElementById(id);
+  b.addEventListener('click', function () {
+    var on = b.classList.toggle('on'); b.setAttribute('aria-pressed', on);
+    if (unit) b.querySelector('span').textContent = on ? base[1] : base[0];
+    if (on) toast(msgOn);
+  });
+}
+tog('like', ['2.1万', '2.1万'], true, '已点赞');
+tog('fav', ['8,640', '8,641'], true, '已收藏，可在「我的」中找到');
+document.querySelectorAll('.lk').forEach(function (b) {
+  b.addEventListener('click', function () {
+    var n = parseInt(b.textContent.replace(/,/g, ''), 10), on = b.classList.toggle('on');
+    n += on ? 1 : -1; b.lastChild.textContent = n.toLocaleString('en-US');
+  });
+});
+document.getElementById('cbtn').addEventListener('click', function () { document.getElementById('scroll').scrollTo({ top: document.querySelector('.cmt').offsetTop - 120, behavior: 'smooth' }); });
+document.getElementById('act').addEventListener('submit', function (e) {
+  e.preventDefault(); var v = document.getElementById('ci').value.trim(); if (!v) return;
+  var d = document.createElement('div'); d.className = 'cmt';
+  d.innerHTML = '<img class="avatar" src="../assets/u-asian-woman.jpg" alt=""><div class="grow"><div class="n">小周</div><p></p><div class="ft"><span>刚刚</span><span>回复</span></div></div><button class="lk" type="button"><svg class="ic ic-sm"><use href="#i-heart"/></svg>0</button>';
+  d.querySelector('p').textContent = v;
+  var first = document.querySelector('.cmt'); first.parentNode.insertBefore(d, first);
+  document.getElementById('ci').value = ''; toast('评论已发布');
+});
+var vp = document.getElementById('vplay'), vt = 0, vtimer = null;
+vp.addEventListener('click', function () {
+  if (vtimer) { clearInterval(vtimer); vtimer = null; vp.innerHTML = '<svg class="ic"><use href="#i-play"/></svg>'; vp.style.opacity = 1; return; }
+  vp.innerHTML = '<svg class="ic" style="stroke:currentColor;fill:none;stroke-width:3;margin:0"><use href="#i-pause"/></svg>'; vp.style.opacity = .55;
+  vtimer = setInterval(function () {
+    vt = Math.min(208, vt + 1);
+    var f = function (s) { return '0' + Math.floor(s / 60) + ':' + ('0' + s % 60).slice(-2); };
+    document.getElementById('vt').textContent = f(vt) + ' / 03:28';
+    document.getElementById('vbar').style.width = (vt / 208 * 100) + '%';
+  }, 1000);
+});
+</script>
+</body>
+</html>
