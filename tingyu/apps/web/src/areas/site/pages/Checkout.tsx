@@ -31,6 +31,7 @@ function OrderSummary({ a }: { a: Appointment }) {
 }
 
 function Success({ a, pay }: { a: Appointment; pay: PayRes['payment'] | null }) {
+  const nav = useNavigate();
   return (
     <div className="site-co-success">
       <div className="card site-success-hero">
@@ -40,7 +41,7 @@ function Success({ a, pay }: { a: Appointment; pay: PayRes['payment'] | null }) 
         {pay && <p className="muted site-small">支付 {yuan(pay.amount)} · {METHOD_LABEL[pay.method]} · 交易号 <span className="num">{pay.transactionNo}</span></p>}
         <div className="site-row-gap site-center">
           <button type="button" className="btn btn-line" onClick={() => downloadIcs(`心理咨询 · ${a.counselor.name}`, a.startAt, a.endAt, `${modeLabel(a.mode)}咨询，开始前 10 分钟进入听屿咨询室`)}><Icon name="calendar" size={16} />添加到日历</button>
-          <Link className="btn btn-line" to={`/account/messages`}><Icon name="chat" size={16} />消息咨询师</Link>
+          <button type="button" className="btn btn-line" onClick={() => api.openConversation(a.counselor.id).then((c) => nav(`/account/messages?c=${c.id}`)).catch(() => nav('/account/messages'))}><Icon name="chat" size={16} />消息咨询师</button>
           <Link className="btn btn-blue" to="/account">去个人中心</Link>
         </div>
       </div>
