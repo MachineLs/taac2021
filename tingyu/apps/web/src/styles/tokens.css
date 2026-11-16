@@ -1,0 +1,43 @@
+/* 听屿 design tokens — from the approved design (design3: Doctolib / Zocdoc blue-white + 中国商业服务布局).
+   Owned by the lead. Use these variables everywhere; do not hard-code colors in area CSS. */
+:root {
+  --bg: #F4F7FB;
+  --surface: #FFFFFF;
+  --surface-2: #F7F9FC;
+  --line: #E3E9F1;
+  --line-2: #EEF2F7;
+  --ink: #111A27;
+  --ink-2: #47536A;
+  --ink-3: #8592A6;
+  --ink-4: #B6BFCC;
+  --blue: #1E6BFF;
+  --blue-ink: #0F4FD6;
+  --blue-2: #4D8DFF;
+  --blue-soft: #EAF2FF;
+  --blue-wash: #F2F7FF;
+  --navy: #0D1B33;
+  --orange: #FF6A2B;
+  --orange-soft: #FFF1E9;
+  --green: #16A36A;
+  --green-soft: #E6F7EF;
+  --amber: #E39A00;
+  --amber-soft: #FFF6E2;
+  --red: #D93A3A;
+  --red-soft: #FDECEC;
+  --purple: #7356F0;
+  --purple-soft: #F1EDFF;
+  --pink: #E0457B;
+  --pink-soft: #FDEEF5;
+  --cyan: #0E93B8;
+  --cyan-soft: #E8F6FA;
+  --shadow-sm: 0 1px 2px rgba(13, 27, 51, .06);
+  --shadow: 0 10px 30px -18px rgba(13, 27, 51, .35);
+  --shadow-lg: 0 24px 60px -24px rgba(13, 27, 51, .45);
+  --scrim: rgba(13, 27, 51, .45);
+  --r-sm: 8px; --r: 12px; --r-lg: 16px; --r-xl: 24px; --r-pill: 999px;
+  --sans: "Inter", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  --num: "Inter", "Noto Sans SC", system-ui, sans-serif;
+  --gutter: max(16px, env(safe-area-inset-left, 0px));
+  --gutter-r: max(16px, env(safe-area-inset-right, 0px));
+  color-scheme: light;
+}
