@@ -13,12 +13,12 @@
 
 /* ---------- nav bar ---------- */
 .m-nav { position: sticky; top: 0; z-index: 30; padding-top: env(safe-area-inset-top, 0px); background: color-mix(in srgb, var(--surface) 94%, transparent); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); border-bottom: 1px solid var(--line-2); }
-.m-nav-in { height: 48px; display: grid; grid-template-columns: 64px 1fr 64px; align-items: center; padding: 0 6px; }
+.m-nav-in { height: 48px; display: grid; grid-template-columns: 88px 1fr 88px; align-items: center; padding: 0 6px; }
 .m-nav-t { margin: 0; text-align: center; font-size: 17px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .m-nav-l, .m-nav-r { display: flex; align-items: center; }
 .m-nav-r { justify-content: flex-end; gap: 2px; }
 .m-nav-btn { width: 40px; height: 40px; display: grid; place-items: center; border: 0; background: none; color: var(--ink); border-radius: 50%; }
-.m-nav-link { font-size: 14px; color: var(--ink-2); padding: 0 10px; background: none; border: 0; }
+.m-nav-link { white-space: nowrap; font-size: 14px; color: var(--ink-2); padding: 0 10px; background: none; border: 0; }
 .m-nav-clear { position: fixed; left: 0; right: 0; max-width: 480px; margin: 0 auto; background: transparent; border-bottom-color: transparent; -webkit-backdrop-filter: none; backdrop-filter: none; transition: background .2s; }
 .m-nav-clear .m-nav-btn { background: color-mix(in srgb, var(--surface) 82%, transparent); box-shadow: var(--shadow-sm); width: 36px; height: 36px; margin-left: 4px; }
 .m-nav-clear .m-nav-t { opacity: 0; }

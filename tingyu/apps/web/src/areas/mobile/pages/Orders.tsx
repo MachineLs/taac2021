@@ -6,7 +6,7 @@ import { useAsync } from '../../../lib/useAsync';
 import { modeLabel, range, STATUS_LABEL, yuan } from '../../../lib/format';
 import { Empty, ErrorState, Loading } from '../../../components/states';
 import { Icon } from '../icons';
-import { errMsg, NavBar } from '../ui';
+import { modeFull, errMsg, NavBar } from '../ui';
 
 const TABS: { k: string; label: string; st: AppointmentStatus[] }[] = [
   { k: 'pending', label: '待支付', st: ['pending_payment'] },
@@ -46,7 +46,7 @@ export function OrderCard({ a }: { a: Appointment }) {
   const canJoin = (a.status === 'paid' || a.status === 'in_session') && new Date(a.startAt).getTime() - Date.now() < 10 * 60000 && new Date(a.endAt).getTime() > Date.now();
   return (
     <article className="m-order" onClick={() => nav(`/m/orders/${a.id}`)} role="link" tabIndex={0} onKeyDown={(e) => { if (e.key === 'Enter') nav(`/m/orders/${a.id}`); }}>
-      <div className="m-order-h"><span>{modeLabel(a.mode)}咨询 · 50 分钟</span><b className={`m-st ${STATUS_TONE[a.status]}`}>{STATUS_LABEL[a.status]}</b></div>
+      <div className="m-order-h"><span>{modeFull(a.mode)} · 50 分钟</span><b className={`m-st ${STATUS_TONE[a.status]}`}>{STATUS_LABEL[a.status]}</b></div>
       <div className="m-order-b">
         <img className="avatar" src={a.counselor.avatar} alt="" width={48} height={48} />
         <div><b>{a.counselor.name}</b><small>{a.counselor.title}</small><span><Icon name="calendar" size={14} />{range(a.startAt, a.endAt)}</span></div>

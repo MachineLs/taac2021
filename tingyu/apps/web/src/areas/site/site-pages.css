@@ -8,7 +8,7 @@
 .site-search:focus-within { border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-soft); }
 .site-search-in { flex: 1; min-width: 0; border: 0; outline: none; background: none; height: 100%; color: var(--ink); }
 .site-list-grid { display: grid; grid-template-columns: 268px minmax(0, 1fr); gap: 24px; align-items: start; }
-.site-filters { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 6px 18px 18px; position: sticky; top: 84px; max-height: calc(100vh - 100px); overflow: auto; }
+.site-filters { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 6px 18px 18px; }
 .site-fgroup { padding: 14px 0; border-bottom: 1px solid var(--line-2); }
 .site-fgroup h3 { margin: 0 0 10px; font-size: 14px; display: flex; justify-content: space-between; align-items: baseline; }
 .site-fgroup h3 small { font-weight: 400; font-size: 12px; }
@@ -71,7 +71,7 @@
 .site-rev-date { margin-left: auto; font-size: 12.5px; }
 .site-revs p { margin: 8px 0; color: var(--ink-2); font-size: 14px; }
 
-.site-book { position: sticky; top: 84px; display: grid; gap: 12px; }
+.site-book { position: sticky; top: 84px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; min-width: 0; }
 .site-book-card { padding: 20px; box-shadow: var(--shadow); }
 .site-book-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding-bottom: 14px; border-bottom: 1px solid var(--line-2); }
 .site-book-top .site-price { margin-left: 0; font-size: 28px; }

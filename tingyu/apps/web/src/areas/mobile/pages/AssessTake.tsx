@@ -47,7 +47,7 @@ export default function AssessTake() {
         <div className="m-take-opts" role="radiogroup" aria-label="选项">
           {opts.map((o) => (
             <button key={o.value} type="button" role="radio" aria-checked={cur === o.value} className={cur === o.value ? 'on' : ''} onClick={() => choose(o.value)}>
-              <i className="m-radio" />{o.label}
+              {o.label}<i className="m-radio" />
             </button>
           ))}
         </div>

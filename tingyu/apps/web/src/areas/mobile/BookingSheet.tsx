@@ -12,7 +12,7 @@ import { errMsg, Sheet, Spin } from './ui';
 export function next7Days() {
   return Array.from({ length: 7 }, (_, i) => {
     const iso = new Date(Date.now() + i * 86400000).toISOString();
-    return { key: dayKey(iso), rel: i === 0 ? '今天' : i === 1 ? '明天' : weekday(iso), date: monthDay(iso).replace(/^\d+月/, '') + '日', iso };
+    return { key: dayKey(iso), rel: i === 0 ? '今天' : i === 1 ? '明天' : weekday(iso), date: monthDay(iso).replace(/^\d+月/, ''), iso };
   });
 }
 

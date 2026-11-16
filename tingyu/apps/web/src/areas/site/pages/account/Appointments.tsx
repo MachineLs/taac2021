@@ -32,10 +32,10 @@ function RescheduleModal({ a, onClose, onDone }: { a: Appointment; onClose: () =
   const days = useMemo(() => nextDays(14), []);
   const byDay = useMemo(() => {
     const m = new Map<string, Slot[]>();
-    for (const s of sortSlots(slots.data ?? [])) { if (s.status === 'blocked' || s.id === a.slotId || Date.parse(s.startAt) < Date.now() + DAY) continue; const k = dayKey(s.startAt); if (!m.has(k)) m.set(k, []); m.get(k)!.push(s); }
+    for (const s of sortSlots(slots.data ?? [])) { if (s.status === 'blocked' || s.id === a.slotId || Date.parse(s.startAt) < Date.now()) continue; const k = dayKey(s.startAt); if (!m.has(k)) m.set(k, []); m.get(k)!.push(s); }
     return m;
   }, [slots.data, a.slotId]);
-  const [day, setDay] = useState(days[1]);
+  const [day, setDay] = useState(days[0]);
   const [sel, setSel] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
@@ -49,7 +49,7 @@ function RescheduleModal({ a, onClose, onDone }: { a: Appointment; onClose: () =
   const list = byDay.get(day) ?? [];
   return (
     <Modal title="改约到新的时间" onClose={onClose} width={620}>
-      <p className="muted site-small">当前：{range(a.startAt, a.endAt)} · {a.counselor.name}。改约需在开始前 24 小时以上，新时段同样需距现在 24 小时以上。</p>
+      <p className="muted site-small">当前：{range(a.startAt, a.endAt)} · {a.counselor.name}。改约需在原预约开始前 24 小时以上，改约不收取费用。</p>
       {slots.error ? <ErrorState error={slots.error} onRetry={slots.reload} /> : !slots.data ? <Loading /> : (
         <>
           <div className="site-days site-days-scroll" role="tablist">

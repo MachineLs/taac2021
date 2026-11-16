@@ -8,7 +8,7 @@ import { modeLabel, range, relDay, time, yuan } from '../../../lib/format';
 import { ErrorState, Loading } from '../../../components/states';
 import { useToast } from '../../../components/Toast';
 import { Icon } from '../icons';
-import { BottomBar, errMsg, invalidateUnread, mmss, NavBar, Spin, useCountdown } from '../ui';
+import { BottomBar, errMsg, modeFull, invalidateUnread, mmss, NavBar, Spin, useCountdown } from '../ui';
 
 export default function Checkout() {
   const { id = '' } = useParams();
@@ -59,7 +59,7 @@ function PayView({ a, onPaid, onExpired }: { a: Appointment; onPaid: (a: Appoint
       <section className="m-card m-order-cc">
         <img className="avatar" src={a.counselor.avatar} alt="" width={52} height={52} />
         <div><b>{a.counselor.name}</b><small>{a.counselor.title}</small></div>
-        <span className="badge">{modeLabel(a.mode)}咨询</span>
+        <span className="badge">{modeFull(a.mode)}</span>
       </section>
       <section className="m-card">
         <div className="m-kv">
@@ -99,7 +99,7 @@ function Success({ a }: { a: Appointment }) {
       <section className="m-success-hero">
         <span className="m-success-ic"><Icon name="check" size={34} /></span>
         <h1>预约成功</h1>
-        <p>{relDay(a.startAt)} {time(a.startAt)} 与 {a.counselor.name} 的{modeLabel(a.mode)}咨询</p>
+        <p>{relDay(a.startAt)} {time(a.startAt)} 与 {a.counselor.name} 的{modeFull(a.mode)}</p>
       </section>
       <section className="m-card">
         <div className="m-order-cc flat">

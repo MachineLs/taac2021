@@ -7,7 +7,7 @@ import { api } from '../../../api/client';
 import { Empty, ErrorState } from '../../../components/states';
 import { Icon } from '../icons';
 import { CardSkeleton, CounselorCard } from '../CounselorCard';
-import { errMsg, Sheet, Spin, TabPage } from '../ui';
+import { errMsg, modeFull, Sheet, Spin, TabPage } from '../ui';
 
 const PAGE_SIZE = 8;
 const SORTS: { v: NonNullable<CounselorQuery['sort']>; label: string }[] = [
@@ -133,7 +133,7 @@ function FilterSheet({ open, onClose, sp, onApply }: { open: boolean; onClose: (
       </div>}>
       <div className="m-sheet-sec"><h3>咨询方式</h3><div className="m-chips-wrap">
         {chip(!d.mode, '不限', () => setD((x) => ({ ...x, mode: '' })))}
-        {(Object.keys(MODE_LABEL) as ConsultMode[]).map((m) => chip(d.mode === m, `${MODE_LABEL[m]}咨询`, () => pick('mode', m)))}
+        {(Object.keys(MODE_LABEL) as ConsultMode[]).map((m) => chip(d.mode === m, modeFull(m), () => pick('mode', m)))}
       </div></div>
       <div className="m-sheet-sec"><h3>价格<small>每次 50 分钟</small></h3><div className="m-chips-wrap">
         {PRICES.map((p) => chip(d.priceMin === p.min && d.priceMax === p.max, p.label, () => setD((x) => ({ ...x, priceMin: p.min, priceMax: p.max }))))}

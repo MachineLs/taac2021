@@ -8,7 +8,7 @@ import { useAsync } from '../../../lib/useAsync';
 import { modeLabel, range, relDay, time } from '../../../lib/format';
 import { ErrorState, Loading } from '../../../components/states';
 import { Icon } from '../icons';
-import { ConfirmSheet, errMsg, hms, mmss, NavBar, useCountdown } from '../ui';
+import { ConfirmSheet, errMsg, modeFull, hms, mmss, NavBar, useCountdown } from '../ui';
 
 export default function Room() {
   const { id = '' } = useParams();
@@ -48,7 +48,7 @@ function Waiting({ room, onJoin, onOpen }: { room: SessionRoom; onJoin: () => vo
       <section className="m-room-hero">
         <img className="avatar" src={a.counselor.avatar} alt="" width={76} height={76} />
         <h1>{a.counselor.name}</h1>
-        <p>{a.counselor.title} · {modeLabel(a.mode)}咨询</p>
+        <p>{a.counselor.title} · {modeFull(a.mode)}</p>
         <div className="m-room-count">
           {room.canJoin ? <><small>咨询室已开放</small><b className="num">{toStart > 0 ? mmss(Math.min(toStart, 5999)) : '已开始'}</b><small>{toStart > 0 ? '后开始' : `${time(a.startAt)} – ${time(a.endAt)}`}</small></>
             : <><small>距离咨询室开放</small><b className="num">{hms(toOpen)}</b><small>{relDay(a.startAt)} {time(a.startAt)} 开始 · 提前 10 分钟开放</small></>}

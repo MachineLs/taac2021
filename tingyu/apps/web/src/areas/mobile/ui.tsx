@@ -1,6 +1,8 @@
 // Shared building blocks of the mobile app: nav bar, tab bar, sheets, fixed bottom bars, small hooks.
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
+import type { ConsultMode } from '@tingyu/shared';
+import { MODE_LABEL } from '@tingyu/shared';
 import { api, ApiError } from '../../api/client';
 import { useAuth } from '../../auth/AuthContext';
 import { Icon, type IconName } from './icons';
@@ -14,6 +16,9 @@ export function errMsg(e: unknown, fallback = '操作失败，请稍后再试'):
   if (e instanceof Error && e.message) return e.message;
   return fallback;
 }
+
+/** "视频咨询" / "语音咨询" / "文字咨询" / "线下面询" */
+export const modeFull = (m: ConsultMode) => (m === 'offline' ? '线下面询' : `${MODE_LABEL[m]}咨询`);
 
 /* ---------- top navigation bar ---------- */
 export function NavBar({ title, back = true, right, tone = 'plain', onBack, className = '' }: {

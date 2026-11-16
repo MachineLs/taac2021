@@ -53,7 +53,7 @@ function Reviews({ counselorId, rating, count }: { counselorId: string; rating: 
 
 export default function CounselorDetail() {
   const { id = '' } = useParams();
-  const [sp] = useSearchParams();
+  const [sp, setSp] = useSearchParams();
   const nav = useNavigate();
   const loc = useLocation();
   const { user } = useAuth();
@@ -124,7 +124,9 @@ export default function CounselorDetail() {
     } catch (e) {
       if (e instanceof ApiError && (e.code === 'slot_taken' || e.status === 409)) {
         toast(e.message || '这个时段刚刚被预约了，请换一个时间');
-        setSlotId(null); slots.reload();
+        setSlotId(null);
+        if (sp.get('slot')) { const n = new URLSearchParams(sp); n.delete('slot'); setSp(n, { replace: true }); }
+        slots.reload();
       } else if (e instanceof ApiError && e.status === 401) {
         nav(`/login?next=${encodeURIComponent(loc.pathname)}`);
       } else toast(errMsg(e, '预约失败，请稍后再试'));

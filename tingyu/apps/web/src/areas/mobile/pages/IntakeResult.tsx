@@ -9,7 +9,7 @@ import { CrisisBanner } from '../../../components/CrisisBanner';
 import { Empty, ErrorState, Loading } from '../../../components/states';
 import { Icon } from '../icons';
 import { CounselorCard, PriceTag, shortTitle } from '../CounselorCard';
-import { errMsg, goodRate, intakeStore, NavBar } from '../ui';
+import { modeFull, errMsg, goodRate, intakeStore, NavBar } from '../ui';
 
 const SCALE_NAME: Record<string, string> = { phq9: '抑郁 PHQ-9', gad7: '焦虑 GAD-7', isi: '失眠 ISI' };
 const RISK: Record<RiskLevel, { label: string; cls: string; hint: string }> = {
@@ -92,7 +92,7 @@ export default function IntakeResult() {
       <section className="m-card">
         <h3>建议方案</h3>
         <ol className="m-timeline">
-          {steps.map((st, i) => <li key={i}><span className="num">{i + 1}</span><div><b>{st}</b>{i === 0 && <small>推荐方式：{modeLabel(sum.modality)}咨询</small>}</div></li>)}
+          {steps.map((st, i) => <li key={i}><span className="num">{i + 1}</span><div><b>{st}</b>{i === 0 && <small>推荐方式：{modeFull(sum.modality)}</small>}</div></li>)}
         </ol>
         <p className="m-disclaimer"><Icon name="info" size={14} />以上方案由持证咨询师评估后执行和调整。小屿是 AI 助理，只做接待、初筛与匹配，不做诊断和治疗。</p>
       </section>

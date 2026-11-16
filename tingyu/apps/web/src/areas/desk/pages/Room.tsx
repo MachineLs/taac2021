@@ -72,12 +72,12 @@ export default function Room() {
         <div className="desk-stage">
           <div className={`desk-remote${showVideo ? ' video' : ''}`}>
             {showVideo && <img className="desk-remote-bg" src="/assets/room-light.jpg" alt="" />}
-            <div className="desk-remote-center">
-              <div className={`desk-remote-av${!finished ? ' talking' : ''}`}><Avatar src={appt.client.avatar} name={appt.client.name} size={112} /></div>
+            {!finished && <div className="desk-remote-center">
+              <div className="desk-remote-av talking"><Avatar src={appt.client.avatar} name={appt.client.name} size={112} /></div>
               <b>{appt.client.name}</b>
-              <span>{finished ? '咨询已结束' : notOpen ? '等待来访者进入…' : '已连接 · 模拟画面'}</span>
-              {!finished && !showVideo && <div className="desk-wave" aria-hidden="true">{Array.from({ length: 9 }, (_, i) => <i key={i} style={{ animationDelay: `${i * 0.11}s` }} />)}</div>}
-            </div>
+              <span>{notOpen ? '等待来访者进入…' : '已连接 · 模拟画面'}</span>
+              {!showVideo && <div className="desk-wave" aria-hidden="true">{Array.from({ length: 9 }, (_, i) => <i key={i} style={{ animationDelay: `${i * 0.11}s` }} />)}</div>}
+            </div>}
             <span className="desk-remote-tag">来访者</span>
           </div>
           <div className={`desk-self${cam ? '' : ' off'}`}>

@@ -136,7 +136,8 @@ export default function Intake() {
     } catch (e) { setLoadErr(e as Error); return null; }
   }, []);
 
-  useEffect(() => { document.title = '小屿 AI 语音接待 · 听屿心理'; boot(); }, [boot]);
+  const booted = useRef(false);
+  useEffect(() => { document.title = '小屿 AI 语音接待 · 听屿心理'; if (booted.current) return; booted.current = true; boot(); }, [boot]);
 
   // Bind an anonymous session to the user after login.
   useEffect(() => {
