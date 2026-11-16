@@ -23,7 +23,6 @@ export function CounselorCard({ c, days = 7 }: { c: CounselorSummary; days?: num
     <article className="site-pc">
       <Link className="site-pc-ph" to={`/counselors/${c.id}`} aria-label={`查看${c.name}的主页`}>
         <img src={c.avatar} alt={c.name} loading="lazy" />
-        <span>{modes}</span>
       </Link>
       <div className="site-pc-info">
         <div className="site-pc-nm">
@@ -54,7 +53,7 @@ export function CounselorCard({ c, days = 7 }: { c: CounselorSummary; days?: num
           ))}
       </div>
       <div className="site-pc-ft">
-        <span className="site-pc-modes"><span>50 分钟 / 次</span><span>咨询前 24 小时可免费改约</span></span>
+        <span className="site-pc-modes"><span>{modes}</span><span>50 分钟 / 次</span></span>
         <PriceTag price={c.price} original={c.originalPrice} />
         <Link className="btn btn-blue" to={`/counselors/${c.id}`}>立即预约</Link>
       </div>
@@ -65,7 +64,7 @@ export function CounselorCard({ c, days = 7 }: { c: CounselorSummary; days?: num
 export function CounselorCardSkeleton() {
   return (
     <div className="site-pc site-pc-skel" aria-hidden="true">
-      <span className="site-skel" style={{ width: 96, height: 116, borderRadius: 12 }} />
+      <span className="site-skel" style={{ width: 88, height: 88, borderRadius: 16 }} />
       <div style={{ display: 'grid', gap: 10 }}>
         <span className="site-skel" style={{ width: '45%', height: 20 }} />
         <span className="site-skel" style={{ width: '80%', height: 14 }} />

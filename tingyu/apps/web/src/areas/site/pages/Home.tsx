@@ -10,14 +10,14 @@ import { Icon } from '../components/Icon';
 import { CounselorCard, CounselorCardSkeleton } from '../components/CounselorCard';
 
 const CATS = [
-  { label: '焦虑与压力', tag: '焦虑', icon: 'pulse', c: 'blue' },
-  { label: '情感与婚姻', tag: '亲密关系', icon: 'heart', c: 'pink' },
-  { label: '亲子与家庭', tag: '亲子', icon: 'family', c: 'purple' },
-  { label: '职场与职业', tag: '职场压力', icon: 'case', c: 'amber' },
-  { label: '失眠与睡眠', tag: '失眠', icon: 'moon', c: 'cyan' },
-  { label: '情绪低落', tag: '情绪低落', icon: 'leaf', c: 'green' },
-  { label: '青少年成长', tag: '青少年', icon: 'sparkle', c: 'orange' },
-  { label: '自我成长', tag: '自我成长', icon: 'user', c: 'gray' },
+  { label: '焦虑与压力', tag: '焦虑', icon: 'pulse', c: 'blue', desc: '紧张担心、停不下来' },
+  { label: '情感与婚姻', tag: '亲密关系', icon: 'heart', c: 'pink', desc: '亲密关系、分手、婚姻' },
+  { label: '亲子与家庭', tag: '亲子', icon: 'family', c: 'purple', desc: '育儿、沟通、家庭矛盾' },
+  { label: '职场与职业', tag: '职场压力', icon: 'case', c: 'amber', desc: '倦怠、人际、职业选择' },
+  { label: '失眠与睡眠', tag: '失眠', icon: 'moon', c: 'cyan', desc: '入睡难、早醒、多梦' },
+  { label: '情绪低落', tag: '情绪低落', icon: 'leaf', c: 'green', desc: '提不起劲、容易难过' },
+  { label: '青少年成长', tag: '青少年', icon: 'sparkle', c: 'orange', desc: '厌学、叛逆、社交' },
+  { label: '自我成长', tag: '自我成长', icon: 'user', c: 'gray', desc: '自我探索、方向迷茫' },
 ];
 const PRICES: Record<string, { priceMin?: number; priceMax?: number }> = { '': {}, lt300: { priceMax: 300 }, '300-500': { priceMin: 300, priceMax: 500 }, gt500: { priceMin: 500 } };
 const HOT = ['失眠', '焦虑', '职场压力', '亲密关系', '亲子', '情绪低落'];
@@ -70,14 +70,13 @@ function Finder() {
 }
 
 function Categories() {
-  const counts = useAsync(() => Promise.all(CATS.map((c) => api.counselors({ tag: c.tag, pageSize: 1 }).then((r) => r.total).catch(() => null))), []);
   return (
     <div className="site-cats">
-      {CATS.map((c, i) => (
+      {CATS.map((c) => (
         <Link key={c.tag} className="site-cat" to={`/counselors?tag=${encodeURIComponent(c.tag)}`}>
           <span className={`site-cat-ic site-c-${c.c}`}><Icon name={c.icon} size={24} /></span>
           <b>{c.label}</b>
-          <span className="site-cat-cnt">{counts.data?.[i] != null ? `${counts.data[i]} 位咨询师` : counts.loading ? '…' : '查看咨询师'}</span>
+          <span className="site-cat-cnt">{c.desc}</span>
           <Icon name="right" className="site-cat-arr" />
         </Link>
       ))}
@@ -90,12 +89,11 @@ function TodayCounselors() {
   const [sort, setSort] = useState<CounselorQuery['sort']>('recommended');
   const q = TABS.find((t) => t.key === tab)!.q;
   const list = useAsync(() => api.counselors({ ...q, availableWithinDays: 1, sort, pageSize: 4 }), [tab, sort]);
-  const all = useAsync(() => api.counselors({ pageSize: 1 }), []);
   return (
     <section className="site-sec site-wrap" aria-labelledby="h-today">
       <div className="site-sec-h">
         <div><h2 id="h-today">今日可约的咨询师</h2><p>点击时间直接下单，咨询前 24 小时可免费改约</p></div>
-        <Link to="/counselors?availableWithinDays=1">查看全部{all.data ? ` ${all.data.total} 位` : ''} →</Link>
+        <Link to="/counselors">查看全部咨询师 →</Link>
       </div>
       <div className="site-ftabs">
         {TABS.map((t) => <button key={t.key} type="button" className={`chip ${tab === t.key ? 'on' : ''}`} aria-pressed={tab === t.key} onClick={() => setTab(t.key)}>{t.label}</button>)}
@@ -121,38 +119,36 @@ export default function Home() {
       <section className="site-hero">
         <div className="site-wrap site-hero-in">
           <div>
-            <span className="site-kicker"><b>●</b> {today.data ? `今日可约咨询师 ${today.data.total} 位` : '今日可约咨询师'} · 最快 1 小时内开始</span>
+            <span className="site-kicker"><b>●</b> 持证心理咨询师 · 在线预约 · 平台担保</span>
             <h1>找到<em>适合你</em>的<br />心理咨询师</h1>
             <p className="site-lead">持证咨询师，视频 / 语音 / 面询任你选。看资质、看评价、看可约时间，在线下单，平台担保。</p>
             <Finder />
             <div className="site-hot">热门：{HOT.map((t) => <Link key={t} to={`/counselors?tag=${encodeURIComponent(t)}`}>{t}</Link>)}</div>
+            <Link className="site-ai-line" to="/intake">
+              <span className="site-orb-sm"><Icon name="mic" size={16} /></span>
+              <span><b>不知道选哪位老师？</b>和 AI 助理小屿语音聊 3 分钟，免费帮你匹配</span>
+              <Icon name="right" />
+            </Link>
           </div>
           <div className="site-visual">
             <div className="site-photo" role="img" aria-label="一位来访者在明亮的咨询室里与咨询师交谈" />
-            <div className="site-float site-f-book"><img src="/assets/u-asian-woman.jpg" alt="" /><div><b>周女士 刚刚预约成功</b>林知夏 · 明天 20:00 · 语音</div><span className="site-ok"><Icon name="check" size={14} stroke={2.6} /></span></div>
-            <div className="site-float site-f-ai">
-              <span className="site-orb-sm"><Icon name="mic" /></span>
-              <b>不知道选哪位老师？</b>
-              <span>和 AI 助理小屿语音聊 3 分钟，免费帮你匹配</span>
-              <Link className="btn btn-blue" to="/intake">免费语音接待助理</Link>
-            </div>
-            <div className="site-float site-f-rate"><b>4.9</b><div><span className="site-stars">★★★★★</span><span>来自真实来访者评价</span></div></div>
+            <div className="site-float site-f-book"><span className="site-ok"><Icon name="check" size={14} stroke={2.6} /></span><div><b>咨询师资质已核验</b>证书 · 面试 · 督导，三重审核</div></div>
+            <div className="site-float site-f-today"><b className="num">{today.data ? today.data.total : '–'}</b><div><strong>位咨询师今日可约</strong><span>最快 1 小时内开始</span></div></div>
           </div>
         </div>
       </section>
 
       <div className="site-wrap site-stats">
         <div className="site-statbox">
-          <div><span className="site-ic"><Icon name="users" /></span><div><b>2,860</b><span>持证咨询师 · 录取率 2%</span></div></div>
-          <div><span className="site-ic"><Icon name="clock" /></span><div><b>120 万+</b><span>累计咨询服务小时</span></div></div>
-          <div><span className="site-ic"><Icon name="star" /></span><div><b>98.6%</b><span>来访者好评率</span></div></div>
-          <div><span className="site-ic"><Icon name="shield" /></span><div><b>担保交易</b><span>咨询完成后才结算给咨询师</span></div></div>
+          <div><span className="site-ic"><Icon name="shield" /></span><div><b>100% 持证</b><span>证书核验 + 面试 + 持续督导</span></div></div>
+          <div><span className="site-ic"><Icon name="lock" /></span><div><b>隐私加密</b><span>咨询内容只有你和咨询师可见</span></div></div>
+          <div><span className="site-ic"><Icon name="clock" /></span><div><b>24 小时前可退改</b><span>免费改约，取消全额退款</span></div></div>
+          <div><span className="site-ic"><Icon name="card" /></span><div><b>担保交易</b><span>咨询完成后才结算给咨询师</span></div></div>
         </div>
-        <p className="site-note">平台数据为示意</p>
       </div>
 
       <section className="site-sec site-wrap" aria-labelledby="h-cats">
-        <div className="site-sec-h"><div><h2 id="h-cats">按困扰找咨询师</h2><p>选择你最想解决的问题，看擅长这个方向的老师</p></div><Link to="/counselors">全部分类 →</Link></div>
+        <div className="site-sec-h"><div><h2 id="h-cats">按困扰找咨询师</h2><p>选择你最想解决的问题，看擅长这个方向的老师</p></div><Link to="/counselors">全部咨询师 →</Link></div>
         <Categories />
       </section>
 
@@ -160,12 +156,12 @@ export default function Home() {
 
       <section className="site-sec site-wrap" aria-labelledby="h-steps">
         <div className="site-sec-h"><div><h2 id="h-steps">4 步开始一次咨询</h2><p>从打开网页到见到咨询师，最快当天完成</p></div></div>
-        <div className="site-steps">
-          <div className="site-step"><div className="site-step-n">1</div><span className="badge badge-green">免费</span><h3>和 AI 助理聊聊</h3><p>语音说出你的困扰，小屿帮你理清问题、完成初步筛查，不知道选谁也没关系。</p><Link to="/intake">开始语音接待 →</Link></div>
-          <div className="site-step"><div className="site-step-n">2</div><h3>选择咨询师</h3><p>按困扰、价格、时间筛选，查看资质证书和真实评价，小屿会给出推荐。</p><Link to="/counselors">浏览咨询师 →</Link></div>
-          <div className="site-step"><div className="site-step-n">3</div><span className="badge">担保交易</span><h3>预约并支付</h3><p>选好时间在线支付，咨询完成后才结算给咨询师；24 小时前可免费改约。</p></div>
-          <div className="site-step"><div className="site-step-n">4</div><h3>开始咨询</h3><p>按时进入视频或语音咨询室，也可到线下门店面询；咨询内容全程保密。</p></div>
-        </div>
+        <ol className="site-steps">
+          <li><span className="site-step-n">1</span><h3>和 AI 助理聊聊</h3><p>语音说出困扰，小屿帮你理清问题、完成初步筛查。免费，不知道选谁也没关系。</p></li>
+          <li><span className="site-step-n">2</span><h3>选择咨询师</h3><p>按困扰、价格、时间筛选，查看资质证书和来访者评价，小屿会给出推荐。</p></li>
+          <li><span className="site-step-n">3</span><h3>预约并支付</h3><p>选好时间在线支付，平台担保；开始前 24 小时可以免费改约或退款。</p></li>
+          <li><span className="site-step-n">4</span><h3>开始咨询</h3><p>按时进入视频或语音咨询室，也可以线下面询；咨询内容全程保密。</p></li>
+        </ol>
       </section>
 
       <section className="site-sec site-wrap" aria-labelledby="h-svc">
@@ -174,14 +170,7 @@ export default function Home() {
           <article className="site-svc"><div className="site-svc-img" style={{ backgroundImage: 'url(/assets/session-window.jpg)' }} /><div className="site-svc-bd"><h3>一对一心理咨询</h3><p>持证咨询师，视频 / 语音 / 面询，50 分钟一次。</p><div className="site-svc-pr"><b>¥300<small>起 / 次</small></b><Link to="/counselors">去预约 →</Link></div></div></article>
           <article className="site-svc"><div className="site-svc-img" style={{ backgroundImage: 'url(/assets/headphones.jpg)' }} /><div className="site-svc-bd"><h3>AI 语音接待</h3><p>小屿 24 小时在线，帮你梳理困扰、初步筛查并匹配咨询师。</p><div className="site-svc-pr"><b>免费</b><Link to="/intake">去聊聊 →</Link></div></div></article>
           <article className="site-svc"><div className="site-svc-img" style={{ backgroundImage: 'url(/assets/notebook-pen.jpg)' }} /><div className="site-svc-bd"><h3>专业心理测评</h3><p>PHQ-9 抑郁、GAD-7 焦虑、ISI 失眠等标准化量表。</p><div className="site-svc-pr"><b>免费</b><Link to="/account/assessments">去测评 →</Link></div></div></article>
-          <article className="site-svc"><div className="site-svc-img" style={{ backgroundImage: 'url(/assets/team-highfive.jpg)' }} /><div className="site-svc-bd"><h3>企业 EAP</h3><p>员工心理福利、管理者培训、危机干预，按人数定制。</p><div className="site-svc-pr"><b>定制<small>方案</small></b><span className="muted">敬请期待</span></div></div></article>
-        </div>
-
-        <div className="site-guar">
-          <div><span className="site-gic"><Icon name="shield" /></span><b>资质严格审核</b><span>证书核验 + 面试 + 督导，录取率 2%</span></div>
-          <div><span className="site-gic"><Icon name="lock" /></span><b>隐私加密保护</b><span>咨询内容只有你和咨询师可见</span></div>
-          <div><span className="site-gic"><Icon name="card" /></span><b>不满意可退款</b><span>咨询前 24 小时取消全额退款</span></div>
-          <div><span className="site-gic site-gic-r"><Icon name="phone" /></span><b>危机干预通道</b><span>识别到风险立即提示 12356 与值班咨询师</span></div>
+          <article className="site-svc"><div className="site-svc-img" style={{ backgroundImage: 'url(/assets/team-highfive.jpg)' }} /><div className="site-svc-bd"><h3>企业 EAP</h3><p>员工心理福利、管理者培训、危机干预，按人数定制。</p><div className="site-svc-pr"><b>定制<small>方案</small></b><span className="muted">即将上线</span></div></div></article>
         </div>
 
         <div className="site-appband">

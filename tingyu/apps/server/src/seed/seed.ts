@@ -16,9 +16,9 @@ const COUNSELORS = [
   { key: 'fang', name: '方宁', avatar: '/assets/c-fang.jpg', title: '企业 EAP 顾问', headline: '职业发展教练 · 焦点解决短程治疗', badges: [], years: 7, sessions: 1980, rating: 4.94, rebook: 66, tags: ['职场压力', '自我成长'], modes: ['video', 'voice'], price: 420, orig: null, city: '深圳', gender: 'female', methods: ['焦点解决短程治疗 SFBT'], intro: '职业倦怠、职场人际和职业选择，是我最常陪伴来访者面对的课题。' },
   { key: 'wang', name: '王屿川', avatar: '/assets/c-wang.jpg', title: '精神分析取向咨询师', headline: '自我探索 · 男性心理与关系模式', badges: [], years: 10, sessions: 2640, rating: 4.92, rebook: 69, tags: ['自我成长', '亲密关系'], modes: ['video', 'voice', 'offline'], price: 550, orig: null, city: '北京', gender: 'male', methods: ['精神动力学'], intro: '在长程的对话里，看见那些反复出现的关系模式，理解它们从哪里来。' },
   { key: 'gu', name: '顾言', avatar: '/assets/c-gu.jpg', title: '高校心理咨询师', headline: '大学生与职业迷茫 · 人本主义疗法', badges: [], years: 5, sessions: 1170, rating: 4.91, rebook: 58, tags: ['自我成长', '焦虑', '青少年'], modes: ['voice', 'text', 'video'], price: 300, orig: null, city: '南京', gender: 'male', methods: ['人本主义疗法'], intro: '迷茫不是失败，而是重新认识自己的机会。' },
-  { key: 'qiao', name: '乔安', avatar: '/assets/u-woman-5.jpg', title: '国家二级心理咨询师', headline: '情绪调节 · 辩证行为疗法（DBT）', badges: [], years: 6, sessions: 1340, rating: 4.9, rebook: 60, tags: ['情绪低落', '焦虑'], modes: ['voice', 'text'], price: 320, orig: 380, city: '成都', gender: 'female', methods: ['辩证行为疗法 DBT'], intro: '情绪像海浪，我们可以学会冲浪。' },
-  { key: 'luo', name: '罗川', avatar: '/assets/u-man-2.jpg', title: '注册心理师', headline: '男性心理 · 婚恋与家庭', badges: [], years: 8, sessions: 1760, rating: 4.89, rebook: 57, tags: ['亲密关系', '婚姻', '职场压力'], modes: ['video', 'voice'], price: 360, orig: null, city: '广州', gender: 'male', methods: ['认知行为疗法 CBT', '叙事疗法'], intro: '帮助男性来访者在压力和关系中照顾好自己。' },
-  { key: 'tang', name: '唐晓', avatar: '/assets/u-woman-smile.jpg', title: '国家二级心理咨询师', headline: '产后情绪 · 女性成长', badges: [], years: 7, sessions: 1610, rating: 4.94, rebook: 63, tags: ['情绪低落', '亲子', '自我成长'], modes: ['video', 'voice', 'offline'], price: 420, orig: null, city: '杭州', gender: 'female', methods: ['接纳承诺疗法 ACT', '人际心理治疗 IPT'], intro: '成为妈妈之后，也别忘了照顾自己。' },
+  { key: 'qiao', name: '乔安', avatar: '/assets/c-qiao.jpg', title: '国家二级心理咨询师', headline: '情绪调节 · 辩证行为疗法（DBT）', badges: [], years: 6, sessions: 1340, rating: 4.9, rebook: 60, tags: ['情绪低落', '焦虑'], modes: ['voice', 'text'], price: 320, orig: 380, city: '成都', gender: 'female', methods: ['辩证行为疗法 DBT'], intro: '情绪像海浪，我们可以学会冲浪。' },
+  { key: 'luo', name: '罗川', avatar: '/assets/c-luo.jpg', title: '注册心理师', headline: '男性心理 · 婚恋与家庭', badges: [], years: 8, sessions: 1760, rating: 4.89, rebook: 57, tags: ['亲密关系', '婚姻', '职场压力'], modes: ['video', 'voice'], price: 360, orig: null, city: '广州', gender: 'male', methods: ['认知行为疗法 CBT', '叙事疗法'], intro: '帮助男性来访者在压力和关系中照顾好自己。' },
+  { key: 'tang', name: '唐晓', avatar: '/assets/c-tang.jpg', title: '国家二级心理咨询师', headline: '产后情绪 · 女性成长', badges: [], years: 7, sessions: 1610, rating: 4.94, rebook: 63, tags: ['情绪低落', '亲子', '自我成长'], modes: ['video', 'voice', 'offline'], price: 420, orig: null, city: '杭州', gender: 'female', methods: ['接纳承诺疗法 ACT', '人际心理治疗 IPT'], intro: '成为妈妈之后，也别忘了照顾自己。' },
 ] as const;
 
 const CLIENT_NAMES = ['周', '陈', '李', '王', '张', '刘', '杨', '赵', '黄', '吴', '徐', '孙', '马', '朱', '胡'];
@@ -53,9 +53,9 @@ export function seed() {
 
     // creators
     const creatorDefs = [
-      { phone: '13600000001', name: '睡眠研究所阿屿', avatar: '/assets/u-woman-5.jpg', platform: '抖音', followers: 468000, bio: '心理学硕士，专注睡眠与情绪科普。', ref: 'AYU2026', recs: ['lin', 'he', 'chen'] },
-      { phone: '13600000002', name: '打工人心理课', avatar: '/assets/u-man-3.jpg', platform: '小红书', followers: 231000, bio: '聊聊职场里的情绪与边界。', ref: 'WORK2026', recs: ['fang', 'lin', 'luo'] },
-      { phone: '13600000003', name: '恋爱里的小心思', avatar: '/assets/u-woman-6.jpg', platform: '抖音', followers: 315000, bio: '亲密关系里的心理学。', ref: 'LOVE2026', recs: ['zhou', 'wang', 'luo'] },
+      { phone: '13600000001', name: '睡眠研究所阿屿', avatar: '/assets/cr-ayu.jpg', platform: '抖音', followers: 468000, bio: '心理学硕士，专注睡眠与情绪科普。', ref: 'AYU2026', recs: ['lin', 'he', 'chen'] },
+      { phone: '13600000002', name: '打工人心理课', avatar: '/assets/cr-work.jpg', platform: '小红书', followers: 231000, bio: '聊聊职场里的情绪与边界。', ref: 'WORK2026', recs: ['fang', 'lin', 'luo'] },
+      { phone: '13600000003', name: '恋爱里的小心思', avatar: '/assets/cr-love.jpg', platform: '抖音', followers: 315000, bio: '亲密关系里的心理学。', ref: 'LOVE2026', recs: ['zhou', 'wang', 'luo'] },
     ];
 
     // counselors (+ their user accounts)
@@ -72,9 +72,9 @@ export function seed() {
         'approved', 100 - i, t0);
     });
     // one pending application for the admin review queue
-    const pendingUid = user('13900000013', '沈默', '/assets/u-man-4.jpg', ['client', 'counselor']);
+    const pendingUid = user('13900000013', '沈默', '/assets/c-shen.jpg', ['client', 'counselor']);
     run(`INSERT INTO counselors (id, user_id, name, avatar, title, headline, badges, years, tags, modes, price, gender, intro, methods, status, created_at)
-         VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`, id('c'), pendingUid, '沈默', '/assets/u-man-4.jpg', '国家三级心理咨询师', '大学生情绪与学业压力', '[]', 3,
+         VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`, id('c'), pendingUid, '沈默', '/assets/c-shen.jpg', '国家三级心理咨询师', '大学生情绪与学业压力', '[]', 3,
       JSON.stringify(['焦虑', '青少年']), JSON.stringify(['voice', 'text']), 260, 'male', '刚完成 300 小时个案督导，希望陪伴更多年轻人。', JSON.stringify(['人本主义疗法']), 'pending', t0);
 
     const crId: Record<string, string> = {};

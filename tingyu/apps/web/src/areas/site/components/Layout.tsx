@@ -117,7 +117,7 @@ export function SiteFooter() {
             <li><span>企业 EAP</span></li>
           </ul></div>
           <div><h4>帮助</h4><ul>
-            <li><span>退款规则：咨询前 24 小时可全额退款</span></li>
+            <li><span>退款规则</span></li>
             <li><span>隐私政策</span></li>
             <li><span>用户协议</span></li>
           </ul></div>
