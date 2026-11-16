@@ -83,7 +83,7 @@ describe('B1 workbench', () => {
     expect((await api.post('/api/workbench/slots').set('Authorization', t).send({ slots: [{ startAt: cnAt(-1, 7) }] })).status).toBe(400);
     expect((await api.post('/api/workbench/slots').set('Authorization', t).send({ slots: [{ startAt: 'tomorrow' }] })).status).toBe(400);
 
-    const listed = (await api.get('/api/workbench/slots').query({ days: 3 }).set('Authorization', t)).body as Slot[];
+    const listed = (await api.get('/api/workbench/slots').query({ days: 4 }).set('Authorization', t)).body as Slot[];
     expect(listed.some((s) => s.id === created[0].id)).toBe(true);
     expect(listed.every((s) => s.counselorId === lin)).toBe(true);
 
