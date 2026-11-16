@@ -156,7 +156,7 @@ export interface CounselorEarnings {
   month: string;              // "2026-11"
   sessions: number;
   gross: number;              // sum of amounts of completed appointments this month
-  platformFee: number;        // platform service fee (30%, or 20% + creator 10% on referred first orders)
+  platformFee: number;        // platform service fee: 30% of gross (on creator-referred first orders the platform pays 10% of the order to the creator out of this fee)
   net: number;
   pendingSettlement: number;  // paid but not completed yet
 }

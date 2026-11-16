@@ -2,6 +2,7 @@
 type Events = {
   'appointment.paid': { appointmentId: string };
   'appointment.completed': { appointmentId: string };
+  'appointment.refunded': { appointmentId: string };
   'intake.crisis': { sessionId: string; userId: string | null };
 };
 type Handler<K extends keyof Events> = (p: Events[K]) => void;

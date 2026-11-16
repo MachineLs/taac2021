@@ -2,7 +2,7 @@
 
 所有路径前缀 `/api`。类型都在 `packages/shared/src/types.ts`。鉴权：`Authorization: Bearer <token>`。
 标记：🔓 公开 · 🔑 需登录 · 🧑‍⚕️ 需 counselor 角色 · 🛡 需 admin 角色 · 📣 需 creator 角色。
-错误：`{ error: { code, message } }`，code 取值：`bad_request` `unauthorized` `forbidden` `not_found` `conflict` `slot_taken` `payment_expired` `invalid_code` `internal`。
+错误：`{ error: { code, message } }`，code 取值：`bad_request` `unauthorized` `forbidden` `not_found` `conflict` `slot_taken` `payment_expired` `invalid_code` `too_many`（验证码发送过于频繁，409） `internal`。
 
 ## B1 · 交易核心（apps/server/src/modules/{auth,counselors,appointments,coupons,workbench}）
 | 方法 | 路径 | 权限 | 请求 | 响应 |
@@ -70,6 +70,7 @@
 ## 事件（apps/server/src/core/events.ts）
 - `appointment.paid` → payload `{ appointmentId }`：B2 的 creators 模块据此计提达人佣金（首单 × commission_rate），notifications 由 B1 直接调用 `notify()`。
 - `appointment.completed` → `{ appointmentId }`
+- `appointment.refunded` → `{ appointmentId }`：B2 据此撤销该订单的待结算佣金。
 - `intake.crisis` → `{ sessionId, userId }`
 
 ## 演示账号（seed）
