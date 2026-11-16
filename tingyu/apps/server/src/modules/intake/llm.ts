@@ -12,7 +12,8 @@ import { detectCrisis } from './crisis';
 
 const API_URL = 'https://api.anthropic.com/v1/messages';
 const API_VERSION = '2026-10-21';
-export const LLM_TIMEOUT_MS = 8000;
+/** Mutable so tests can shorten the timeout. */
+export const llmSettings = { timeoutMs: 8000 };
 /** Models that accept the server-side refusal fallback (`fallbacks: "default"`). */
 const FALLBACK_MODELS = new Set(['claude-sonnet-5-5', 'claude-opus-5-5', 'claude-opus-5', 'claude-fable-5-1', 'claude-fable-5-2']);
 
@@ -64,7 +65,7 @@ interface ClaudeCall { system: string; messages: { role: 'user' | 'assistant'; c
 /** One Messages API call; returns the concatenated text, or throws on error / refusal / timeout. */
 export async function callClaude(req: ClaudeCall): Promise<string> {
   const ctrl = new AbortController();
-  const timer = setTimeout(() => ctrl.abort(), LLM_TIMEOUT_MS);
+  const timer = setTimeout(() => ctrl.abort(), llmSettings.timeoutMs);
   const model = config.anthropicModel;
   const headers: Record<string, string> = {
     'content-type': 'application/json',

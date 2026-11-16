@@ -18,7 +18,6 @@ export default function Room() {
   const toast = useToast();
   const room = useAsync(() => api.room(id), [id]);
   const brief = useAsync(() => api.wbBrief(id), [id]);
-  const [joinedAt] = useState(Date.now());
   const now = useNow(1000);
   const [mic, setMic] = useState(true);
   const [cam, setCam] = useState(true);
@@ -35,7 +34,7 @@ export default function Room() {
 
   const start = new Date(appt.startAt).getTime();
   const end = new Date(appt.endAt).getTime();
-  const elapsed = now - Math.max(joinedAt, Math.min(start, now));
+  const started = now >= start;
   const left = end - now;
   const finished = appt.status === 'completed';
   const canEnd = appt.status === 'paid' || appt.status === 'in_session';
@@ -62,8 +61,8 @@ export default function Room() {
         <span className="desk-room-demo"><Icon name="alert" size={14} />演示环境：音视频服务待接入</span>
         <div className="desk-room-timer num" aria-live="off">
           <span className={`desk-rec${finished ? ' off' : ''}`} />
-          {finished ? '已结束' : clock(elapsed)}
-          {!finished && left > 0 && left < 50 * 60000 && <small>剩余 {Math.ceil(left / 60000)} 分</small>}
+          {finished ? '已结束' : started ? clock(now - start) : <><small>距开始</small>{clock(start - now)}</>}
+          {!finished && started && <small>{left > 0 ? `剩余 ${Math.ceil(left / 60000)} 分` : `已超时 ${Math.floor(-left / 60000)} 分`}</small>}
         </div>
       </header>
 
@@ -120,14 +119,19 @@ export default function Room() {
 function SidePanel({ tab, setTab, brief, briefErr, id, onClose, toast }: {
   tab: 'brief' | 'notes'; setTab: (t: 'brief' | 'notes') => void; brief: ClientBrief | null; briefErr: Error | null; id: string; onClose: () => void; toast: (m: string) => void;
 }) {
-  const [notes, setNotes] = useState<SessionNote[]>([]);
+  const [note, setNote] = useState<SessionNote | null>(null);
   const [text, setText] = useState('');
   const [busy, setBusy] = useState(false);
-  useEffect(() => { if (brief) setNotes(brief.notes); }, [brief]);
+  useEffect(() => {
+    if (!brief) return;
+    const n = brief.notes.find((x) => x.appointmentId === id) ?? null;
+    setNote(n); setText(n?.content ?? '');
+  }, [brief, id]);
+  const history = (brief?.notes ?? []).filter((x) => x.appointmentId !== id).sort((a, b) => b.createdAt.localeCompare(a.createdAt));
   async function save() {
     if (!text.trim()) return;
     setBusy(true);
-    try { const n = await api.wbAddNote(id, text.trim()); setNotes((p) => [n, ...p]); setText(''); toast('笔记已保存'); }
+    try { const n = await api.wbAddNote(id, text.trim()); setNote(n); toast('笔记已保存'); }
     catch (e) { toast(errMsg(e, '保存失败，请稍后再试')); } finally { setBusy(false); }
   }
   const s = brief?.intake;
@@ -164,12 +168,14 @@ function SidePanel({ tab, setTab, brief, briefErr, id, onClose, toast }: {
           )
         ) : (
           <>
-            <textarea className="textarea" placeholder="边听边记，结束后可在简报页查看…" value={text} onChange={(e) => setText(e.target.value)}
+            <textarea className="textarea" placeholder="边听边记，本次咨询只保留一份记录，可随时更新…" value={text} onChange={(e) => setText(e.target.value)}
               onKeyDown={(e) => { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) save(); }} />
-            <button className="btn btn-blue btn-sm btn-block" type="button" onClick={save} disabled={busy || !text.trim()}>{busy && <Spin />}保存笔记</button>
+            <button className="btn btn-blue btn-sm btn-block" type="button" onClick={save} disabled={busy || !text.trim() || text.trim() === note?.content}>{busy && <Spin />}{note ? '更新笔记' : '保存笔记'}</button>
+            {note && <small className="muted num">已保存 · {dateTime(note.updatedAt)}</small>}
+            <h4>往次记录</h4>
             <ul className="desk-room-notes">
-              {[...notes].sort((a, b) => b.createdAt.localeCompare(a.createdAt)).map((n) => <li key={n.id}><small className="num">{dateTime(n.createdAt)}</small><p>{n.content}</p></li>)}
-              {notes.length === 0 && <li className="muted">暂无笔记</li>}
+              {history.map((n) => <li key={n.id}><small className="num">{dateTime(n.createdAt)}</small><p>{n.content}</p></li>)}
+              {history.length === 0 && <li className="muted">暂无往次记录</li>}
             </ul>
           </>
         )}

@@ -6,7 +6,7 @@ import { ISSUE_TAGS, MODE_LABEL } from '@tingyu/shared';
 import { api, ApiError } from '../../../api/client';
 import { useAuth } from '../../../auth/AuthContext';
 import { Loading } from '../../../components/states';
-import { dateTime, yuan } from '../../../lib/format';
+import { yuan } from '../../../lib/format';
 import { DeskBare } from '../DeskLayout';
 import { Icon, Spin, errMsg } from '../ui';
 
@@ -200,7 +200,7 @@ function ApplyForm({ defaults, rejected, onDone }: { defaults: Form; rejected: b
         <E k="agree" />
         {err && <div className="desk-form-err" role="alert">{err}</div>}
         <div className="desk-apply-submit">
-          <span className="muted desk-small">提交后 1–3 个工作日内完成审核 · {dateTime(new Date().toISOString()).slice(0, 10)}</span>
+          <span className="muted desk-small">提交后 1–3 个工作日内完成审核，结果将短信通知你</span>
           <button className="btn btn-blue btn-lg" type="submit" disabled={busy}>{busy && <Spin />}提交申请</button>
         </div>
       </form>

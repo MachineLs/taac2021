@@ -26,11 +26,11 @@ export function recommendCounselors(topics: string[], modality: ConsultMode | nu
   const in3 = addDays(now, 3), in7 = addDays(now, 7);
   const scored = approvedCounselors().map((c, i) => {
     let s = 0;
-    topics.forEach((t, k) => { if (c.tags.includes(t)) s += k === 0 ? 12 : 8; });
+    topics.forEach((t, k) => { if (c.tags.includes(t)) s += k === 0 ? 12 : k === 1 ? 7 : 4; });
     s += (c.rating - 4.5) * 10;                       // 4.9 → +4
     if (c.nextAt) s += c.nextAt <= in3 ? 3 : c.nextAt <= in7 ? 1.5 : 0.5; else s -= 6;
     if (modality && c.modes.includes(modality)) s += 3;
-    else if (modality) s -= 4;
+    else if (modality) s -= modality === 'offline' ? 15 : 6;   // face-to-face is a hard constraint
     s -= i * 0.01;                                    // stable tie-break by platform sort weight
     return { c, s, overlap: topics.filter((t) => c.tags.includes(t)).length };
   });

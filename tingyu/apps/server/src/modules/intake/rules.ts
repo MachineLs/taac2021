@@ -84,7 +84,7 @@ export function fit(optional: string[], required: string[]): string {
 // ---------- signals for scale estimates ----------
 const count = (re: RegExp, t: string) => (t.match(new RegExp(re.source, 'g')) || []).length;
 function updateSignals(s: IntakeState, text: string) {
-  s.signals.low += count(/难过|想哭|哭|没意思|低落|抑郁|开心不起来|不开心|提不起劲|没动力|空虚|绝望|麻木|自责|没用/, text);
+  s.signals.low += count(/难过|难受|想哭|不想说话|不想见人|哭|没意思|低落|抑郁|开心不起来|不开心|提不起劲|没动力|空虚|绝望|麻木|自责|没用/, text);
   s.signals.anxiety += count(/焦虑|紧张|担心|心慌|不安|害怕|慌|停不下来|烦躁|压力/, text);
   s.signals.sleep += count(/睡不着|失眠|睡不好|早醒|半夜.{0,2}醒|多梦|入睡|整夜/, text);
   s.signals.fatigue += count(/累|没精神|疲惫|没力气|没劲|困/, text);
@@ -118,7 +118,7 @@ function recommendText(s: IntakeState): string {
   const skill = tags.length ? `擅长${tags.join('和')}的` : '';
   const when = top.nextAt ? `${fmtWhen(top.nextAt)} 就能约` : '';
   const mode = s.modality && top.modes.includes(s.modality) ? MODE_LABEL[s.modality] : MODE_LABEL[top.modes[0] ?? 'voice'];
-  return `我为你推荐${skill}${top.name}老师${when ? `，${when}` : ''}。要不要现在帮你预约一次${mode}咨询？`;
+  return `我为你推荐${skill}${top.name}老师${when ? `，${when}` : ''}。要不要现在帮你预约一次${mode === '面询' ? '面询' : `${mode}咨询`}？`;
 }
 
 /** Pure rule step: returns the reply text and the next state. */
@@ -132,13 +132,14 @@ export function ruleStep(history: HistoryItem[], state: IntakeState): ReplyResul
   const filledNow = new Set<string>();
 
   // --- slot extraction from this message ---
-  const hits = extractTopics(text).filter((h) => !s.topics.includes(h.tag));
+  // in the impact step, words like "上班"/"睡不好" describe affected areas, not new complaints
+  const hits = extractTopics(text).filter((h) => !s.topics.includes(h.tag) && !(asked === 'impact' && (h.tag === '职场压力' || h.tag === '失眠')));
   if (hits.length) {
     s.topics.push(...hits.map((h) => h.tag));
     if (s.slots.issue !== 'done') { s.slots.issue = 'done'; s.issueText = text.slice(0, 200); filledNow.add('issue'); }
   }
   if (!s.slots.duration || s.slots.duration === 'skipped') {
-    const d = extractDuration(text);
+    const d = extractDuration(text, asked === 'duration');
     if (d) { s.duration = d.label; s.durationDays = d.days; s.slots.duration = 'done'; filledNow.add('duration'); }
   }
   if (asked !== 'issue' && !filledNow.has('issue')) {
@@ -190,7 +191,8 @@ export function ruleStep(history: HistoryItem[], state: IntakeState): ReplyResul
   else if (asked === 'duration' && filledNow.has('duration')) {
     reflection = durationReflection(s.duration!, s.durationDays ?? 0);
     if (filledNow.has('impact') && s.impactAreas.includes('精力')) reflection = reflection.replace(/。$/, '，白天还没精神，很消耗人。');
-  } else if (hits.length) reflection = topicReflection(hits);
+  } else if (asked === 'impact' && filledNow.has('impact')) reflection = impactReflection(s.impactAreas, s.impactSeverity);
+  else if (hits.length) reflection = topicReflection(hits);
   else if (filledNow.has('impact')) reflection = impactReflection(s.impactAreas, s.impactSeverity);
   else if (filledNow.has('duration')) reflection = durationReflection(s.duration!, s.durationDays ?? 0);
 
@@ -208,7 +210,8 @@ export function ruleStep(history: HistoryItem[], state: IntakeState): ReplyResul
   // --- turn cap: wrap up ---
   if (s.turns >= MAX_TURNS) {
     for (const k of ['issue', 'duration', 'impact', 'modality'] as Slot[]) if (!s.slots[k]) s.slots[k] = 'skipped';
-    if (!s.slots.safety) { s.stage = 'safety'; return { text: fit([faq ?? '时间差不多了，最后我想确认一件事。'], [QUESTIONS.safety[0]]), state: s }; }
+    if (!s.slots.safety && asked !== 'safety') { s.stage = 'safety'; return { text: fit([faq ?? ''], ['时间差不多了，最后想确认一下：最近有没有出现过伤害自己的念头？']), state: s }; }
+    if (!s.slots.safety) { s.slots.safety = 'skipped'; s.safety = 'unclear'; }
     if (!s.modality) s.modality = 'voice';
     if (!s.recommended.length) return { text: fit([faq ?? reflection, '今天先聊到这里。'], [recommendText(s)]), state: s };
     s.stage = 'closing';

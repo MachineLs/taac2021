@@ -27,13 +27,13 @@ export default function Today() {
   const next = all.find(isUpcoming) ?? null;
   const ws = weekStart(today);
   const weekAppts = all.filter((a) => isActive(a.status) && dayKey(a.startAt) >= ws && dayKey(a.startAt) < addDays(ws, 7));
-  const recentDone = all.filter((a) => a.status === 'completed' && dayKey(a.startAt) >= addDays(today, -14)).reverse().slice(0, 6);
+  const recentDone = all.filter((a) => a.status === 'completed' && dayKey(a.startAt) >= addDays(today, -14)).reverse().slice(0, 5);
   const recentKey = recentDone.map((a) => a.id).join(',');
 
   const brief = useAsync(() => (next ? api.wbBrief(next.id) : Promise.resolve(null)), [next?.id]);
   const todo = useAsync(async () => {
     const briefs = await Promise.all(recentDone.map((a) => api.wbBrief(a.id).catch(() => null)));
-    return briefs.filter((b): b is ClientBrief => !!b && b.notes.length === 0).map((b) => b.appointment);
+    return briefs.filter((b): b is ClientBrief => !!b && !b.notes.some((n) => n.appointmentId === b.appointment.id)).map((b) => b.appointment);
   }, [recentKey]);
 
   const unreadConvs = (convs.data ?? []).filter((c) => c.unread > 0);

@@ -91,3 +91,5 @@ export function downloadIcs(title: string, startIso: string, endIso: string, des
   const a = document.createElement('a'); a.href = url; a.download = 'tingyu-appointment.ics'; a.click();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
+/** "11/16" from a day key "2026-11-16". */
+export const shortDate = (key: string) => `${Number(key.slice(5, 7))}/${Number(key.slice(8, 10))}`;

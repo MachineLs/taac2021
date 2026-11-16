@@ -90,7 +90,7 @@ export default function Brief() {
         <div className="desk-brief-main">
           <IntakeCard brief={b} />
           <AssessCard list={b.assessments} shared={a.shareIntake} />
-          <NotesCard brief={b} onAdded={(n) => brief.setData({ ...b, notes: [n, ...b.notes] })} toast={toast} />
+          <NotesCard key={a.id} brief={b} onSaved={(n) => brief.setData({ ...b, notes: [n, ...b.notes.filter((x) => x.id !== n.id)] })} toast={toast} />
         </div>
         <aside className="desk-brief-side">
           <section className="card desk-panel">
@@ -230,8 +230,12 @@ function AssessCard({ list, shared }: { list: AssessmentResult[]; shared: boolea
   );
 }
 
-function NotesCard({ brief, onAdded, toast }: { brief: ClientBrief; onAdded: (n: SessionNote) => void; toast: (m: string) => void }) {
-  const [text, setText] = useState('');
+function NotesCard({ brief, onSaved, toast }: { brief: ClientBrief; onSaved: (n: SessionNote) => void; toast: (m: string) => void }) {
+  const apptId = brief.appointment.id;
+  const mine = brief.notes.find((n) => n.appointmentId === apptId) ?? null;
+  const history = brief.notes.filter((n) => n.appointmentId !== apptId).sort((x, y) => y.createdAt.localeCompare(x.createdAt));
+  const [editing, setEditing] = useState(!mine);
+  const [text, setText] = useState(mine?.content ?? '');
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState('');
   async function save() {
@@ -239,26 +243,38 @@ function NotesCard({ brief, onAdded, toast }: { brief: ClientBrief; onAdded: (n:
     if (!c) { setErr('请先填写记录内容'); return; }
     setBusy(true); setErr('');
     try {
-      onAdded(await api.wbAddNote(brief.appointment.id, c));
-      setText('');
+      onSaved(await api.wbAddNote(apptId, c));
+      setEditing(false);
       toast('记录已保存');
     } catch (e) { setErr(errMsg(e, '保存失败，请稍后再试')); } finally { setBusy(false); }
   }
   return (
     <section className="card desk-panel" id="notes">
       <div className="desk-panel-head"><h2>咨询记录</h2><span className="muted">仅您本人可见</span></div>
-      <div className="desk-note-form">
-        <textarea className="textarea" placeholder="记录本次咨询要点、评估与下次计划…（Ctrl + Enter 保存）" value={text} maxLength={5000}
-          onChange={(e) => { setText(e.target.value); setErr(''); }}
-          onKeyDown={(e) => { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) save(); }} />
-        <div className="desk-note-form-foot">
-          {err ? <span className="form-error">{err}</span> : <span className="muted desk-small num">{text.length}/5000</span>}
-          <button className="btn btn-blue btn-sm" type="button" onClick={save} disabled={busy}>{busy && <Spin />}保存记录</button>
+      <h3 className="desk-sub">本次咨询（{monthDay(brief.appointment.startAt)}）</h3>
+      {editing ? (
+        <div className="desk-note-form">
+          <textarea className="textarea" placeholder="记录本次咨询要点、评估与下次计划…（Ctrl + Enter 保存）" value={text} maxLength={5000}
+            onChange={(e) => { setText(e.target.value); setErr(''); }}
+            onKeyDown={(e) => { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) save(); }} />
+          <div className="desk-note-form-foot">
+            {err ? <span className="form-error">{err}</span> : <span className="muted desk-small num">{text.length}/5000</span>}
+            <div className="desk-note-btns">
+              {mine && <button className="btn btn-line btn-sm" type="button" onClick={() => { setText(mine.content); setEditing(false); setErr(''); }} disabled={busy}>取消</button>}
+              <button className="btn btn-blue btn-sm" type="button" onClick={save} disabled={busy}>{busy && <Spin />}保存记录</button>
+            </div>
+          </div>
         </div>
-      </div>
-      {brief.notes.length === 0 ? <p className="muted desk-p">还没有咨询记录。</p> : (
+      ) : mine && (
+        <div className="desk-note-cur">
+          <p>{mine.content}</p>
+          <div><span className="num muted desk-small">最后更新 {dateTime(mine.updatedAt)}</span><button className="btn btn-text" type="button" onClick={() => { setText(mine.content); setEditing(true); }}><Icon name="note" size={14} />编辑</button></div>
+        </div>
+      )}
+      <h3 className="desk-sub">往次记录</h3>
+      {history.length === 0 ? <p className="muted desk-p">暂无往次记录。</p> : (
         <ul className="desk-notes">
-          {[...brief.notes].sort((x, y) => y.createdAt.localeCompare(x.createdAt)).map((n) => (
+          {history.map((n) => (
             <li key={n.id}><span className="num muted">{dateTime(n.createdAt)}</span><p>{n.content}</p></li>
           ))}
         </ul>

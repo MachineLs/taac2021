@@ -8,7 +8,7 @@ const TOPIC_RULES: [RegExp, Tag[]][] = [
   [/失眠|睡不着|睡不好|睡不踏实|入睡|早醒|半夜.{0,2}醒|睡眠|多梦|整夜|熬夜|躺下.{0,6}(停不下来|清醒)/, ['失眠']],
   [/焦虑|紧张|心慌|恐慌|不安|担心|慌|坐立不安|压力/, ['焦虑']],
   [/工作|加班|老板|领导|上班|职场|同事|绩效|KPI|kpi|裁员|辞职|失业|996|项目|考核|上司|升职|跳槽/, ['职场压力']],
-  [/难过|想哭|哭|没意思|低落|抑郁|消沉|开心不起来|不开心|提不起劲|没动力|空虚|郁闷|心情不好|心情很差|丧|孤独|绝望|麻木/, ['情绪低落']],
+  [/难过|难受|想哭|哭|没意思|低落|抑郁|消沉|开心不起来|不开心|提不起劲|没动力|空虚|郁闷|心情不好|心情很差|丧|孤独|绝望|麻木/, ['情绪低落']],
   [/老公|老婆|丈夫|妻子|婚姻|离婚|结婚|出轨|婆婆|婆媳|婚后/, ['婚姻', '亲密关系']],
   [/分手|男朋友|女朋友|男友|女友|对象|恋爱|前任|暧昧|失恋|感情|伴侣|喜欢的人/, ['亲密关系']],
   [/父母|爸妈|爸爸|妈妈|家里人|家人|原生家庭|家庭/, ['家庭沟通']],
@@ -51,7 +51,8 @@ const UNIT_LABEL: Record<string, string> = { 天: '天', 周: '周', 星期: '�
 
 export interface DurationHit { label: string; days: number }
 
-export function extractDuration(text: string): DurationHit | null {
+/** `loose` also accepts vague answers ("这几天", "很久"), used when the assistant just asked about duration. */
+export function extractDuration(text: string, loose = true): DurationHit | null {
   const t = text.replace(/\s+/g, '');
   if (/大半年/.test(t)) return { label: '大半年', days: 240 };
   if (/半年多/.test(t)) return { label: '半年多', days: 200 };
@@ -77,6 +78,7 @@ export function extractDuration(text: string): DurationHit | null {
     if (/好几/.test(t) && isVague) label = `好几${unitLabel}`;
     return { label, days };
   }
+  if (!loose) return null;
   if (/去年|一年前/.test(t)) return { label: '1 年左右', days: 365 };
   if (/上个月/.test(t)) return { label: '1 个月左右', days: 30 };
   if (/上周|上个星期/.test(t)) return { label: '1 周左右', days: 7 };

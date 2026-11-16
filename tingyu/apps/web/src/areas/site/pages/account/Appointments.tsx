@@ -8,7 +8,7 @@ import { Empty, ErrorState, Loading } from '../../../../components/states';
 import { useToast } from '../../../../components/Toast';
 import { Icon } from '../../components/Icon';
 import { Modal } from '../../components/Layout';
-import { dayIso, errMsg, mmss, nextDays, sortSlots, useCountdown } from '../../util';
+import { dayIso, errMsg, mmss, nextDays, shortDate, sortSlots, useCountdown } from '../../util';
 
 type TabKey = 'all' | 'pending' | 'upcoming' | 'done' | 'cancelled';
 const TABS: { k: TabKey; l: string; st: AppointmentStatus[] }[] = [
@@ -55,7 +55,7 @@ function RescheduleModal({ a, onClose, onDone }: { a: Appointment; onClose: () =
           <div className="site-days site-days-scroll" role="tablist">
             {days.map((d) => { const n = (byDay.get(d) ?? []).filter((s) => s.status === 'open').length; return (
               <button key={d} type="button" role="tab" aria-selected={day === d} className={`site-day ${day === d ? 'on' : ''}`} onClick={() => { setDay(d); setSel(null); }}>
-                <b>{relDay(dayIso(d)).length <= 2 ? relDay(dayIso(d)) : weekday(dayIso(d))}</b><span>{monthDay(dayIso(d))}</span><small className={n ? '' : 'none'}>{n ? `${n} 个` : '无'}</small>
+                <b>{relDay(dayIso(d)).length <= 2 ? relDay(dayIso(d)) : weekday(dayIso(d))}</b><span>{shortDate(d)}</span><small className={n ? '' : 'none'}>{n ? `${n} 个` : '无'}</small>
               </button>); })}
           </div>
           {list.length === 0 ? <p className="site-noslot">这一天没有可改约的时段</p> : (

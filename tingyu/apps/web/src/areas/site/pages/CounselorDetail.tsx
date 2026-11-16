@@ -9,7 +9,7 @@ import { ErrorState, Empty, Loading } from '../../../components/states';
 import { useToast } from '../../../components/Toast';
 import { Icon } from '../components/Icon';
 import { PriceTag, Stars } from '../components/CounselorCard';
-import { bestCoupon, dayIso, errMsg, nextDays, sortSlots } from '../util';
+import { bestCoupon, dayIso, errMsg, nextDays, shortDate, sortSlots } from '../util';
 
 const MODE_ICON: Record<ConsultMode, string> = { video: 'video', voice: 'phone', text: 'chat', offline: 'pin' };
 const MODE_HINT: Record<ConsultMode, string> = { video: '视频咨询室', voice: '语音通话', text: '文字咨询', offline: '线下门店' };
@@ -207,7 +207,7 @@ export default function CounselorDetail() {
                   const n = (byDay.get(d) ?? []).filter((s) => s.status === 'open').length;
                   return (
                     <button key={d} type="button" role="tab" aria-selected={day === d} className={`site-day ${day === d ? 'on' : ''}`} onClick={() => { setDay(d); setSlotId(null); }}>
-                      <b>{relDay(dayIso(d)).length <= 2 ? relDay(dayIso(d)) : weekday(dayIso(d))}</b><span>{monthDay(dayIso(d))}</span><small className={n ? '' : 'none'}>{slots.data ? (n ? `${n} 个` : '约满') : '…'}</small>
+                      <b>{relDay(dayIso(d)).length <= 2 ? relDay(dayIso(d)) : weekday(dayIso(d))}</b><span>{shortDate(d)}</span><small className={n ? '' : 'none'}>{slots.data ? (n ? `${n} 个` : '约满') : '…'}</small>
                     </button>
                   );
                 })}
