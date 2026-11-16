@@ -49,11 +49,28 @@ router.get('/conversations', requireAuth, h((req, res) => {
   res.json(list);
 }));
 
-const OpenBody = z.object({ counselorId: z.string().min(1) });
+const OpenBody = z.object({ counselorId: z.string().min(1).optional(), clientId: z.string().min(1).optional() })
+  .refine((b) => !!b.counselorId !== !!b.clientId, { message: '需要 counselorId 或 clientId 之一' });
 
 router.post('/conversations', requireAuth, h((req, res) => {
   const u = me(req);
-  const { counselorId } = parse(OpenBody, req.body);
+  const body = parse(OpenBody, req.body);
+  if (body.clientId) {
+    // counselor → client: only with someone who has booked this counselor
+    if (!u.counselorId) throw forbidden('只有咨询师可以主动联系来访者');
+    if (!one("SELECT 1 FROM appointments WHERE user_id = ? AND counselor_id = ? AND status IN ('paid','in_session','completed')", body.clientId, u.counselorId))
+      throw forbidden('只能联系预约过你的来访者');
+    let crow = one('SELECT id FROM conversations WHERE user_id = ? AND counselor_id = ?', body.clientId, u.counselorId);
+    if (!crow) {
+      const now = nowIso(); const ncid = id('cv');
+      run('INSERT INTO conversations (id, user_id, counselor_id, created_at, updated_at) VALUES (?,?,?,?,?)', ncid, body.clientId, u.counselorId, now, now);
+      crow = { id: ncid };
+    }
+    const cconv: Conversation = toConversation(one(`${CONV_SELECT} WHERE cv.id = ?`, crow.id)!, u.id);
+    res.json(cconv);
+    return;
+  }
+  const counselorId = body.counselorId!;
   const c = one('SELECT id, user_id, status FROM counselors WHERE id = ?', counselorId);
   if (!c || c.status !== 'approved') throw notFound('咨询师不存在或暂未开放');
   if (c.user_id === u.id) throw badRequest('不能和自己发起会话');

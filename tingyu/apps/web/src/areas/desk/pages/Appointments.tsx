@@ -97,7 +97,7 @@ export default function Appointments() {
                         <td><ModeTag mode={a.mode} /></td>
                         <td><StatusBadge status={a.status} /></td>
                         <td className="r num"><b>{yuan(a.amount)}</b>{a.discount > 0 && <div className="muted desk-small">优惠 {yuan(a.discount)}</div>}</td>
-                        <td>{a.creatorId ? <span className="desk-src"><Icon name="link" size={13} />达人推广</span> : <span className="muted">自然流量</span>}</td>
+                        <td>{a.creatorId ? <span className="desk-src"><Icon name="link" size={13} />{a.creatorName ?? "达人推广"}</span> : <span className="muted">自然流量</span>}</td>
                         <td className="r"><Link className="btn btn-text" to={`/desk/appointments/${a.id}`} onClick={(e) => e.stopPropagation()}>简报</Link></td>
                       </tr>
                     ))}

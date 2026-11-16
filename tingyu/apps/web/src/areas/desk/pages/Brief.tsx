@@ -50,10 +50,8 @@ export default function Brief() {
   async function message() {
     setMsgBusy(true);
     try {
-      const cs = await api.conversations();
-      const c = cs.find((x) => x.client.id === a.client.id);
-      if (c) nav(`/desk/messages?c=${c.id}`);
-      else toast('该来访者还没有发起过留言，暂时无法主动发消息');
+      const c = await api.openConversationWithClient(a.client.id);
+      nav(`/desk/messages?c=${c.id}`);
     } catch (e) {
       toast(errMsg(e, '打开会话失败，请稍后再试'));
     } finally { setMsgBusy(false); }

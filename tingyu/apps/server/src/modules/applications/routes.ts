@@ -30,7 +30,17 @@ export const applySchema = z.object({
 router.post('/counselor-applications', requireAuth, h((req, res) => {
   const body = parse(applySchema, req.body);
   const uid = me(req).id;
-  if (one('SELECT 1 FROM counselors WHERE user_id = ?', uid)) throw conflict('你已经提交过入驻申请了');
+  const existing = one('SELECT id, status FROM counselors WHERE user_id = ?', uid);
+  if (existing && existing.status !== 'rejected') throw conflict('你已经提交过入驻申请了');
+  if (existing) {
+    // re-application after rejection: update the same profile and send it back to review
+    run(`UPDATE counselors SET name = ?, title = ?, headline = ?, years = ?, tags = ?, modes = ?, price = ?, city = ?, gender = ?, intro = ?, methods = ?, status = 'pending' WHERE id = ?`,
+      body.name, body.title, body.headline, body.years, JSON.stringify([...new Set(body.tags)]), JSON.stringify([...new Set(body.modes)]),
+      body.price, body.city || null, body.gender, body.intro, JSON.stringify(body.methods), existing.id);
+    const again: CounselorDetail = toCounselorDetail(one('SELECT * FROM counselors WHERE id = ?', existing.id)!);
+    res.status(201).json(again);
+    return;
+  }
   const user = one('SELECT avatar, roles FROM users WHERE id = ?', uid)!;
   const cid = id('c');
   const now = nowIso();

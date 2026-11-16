@@ -89,3 +89,8 @@
 .m-vsend:disabled { opacity: .5; }
 .m-voice-foot { margin: 12px 0 0; text-align: center; font-size: 11px; color: color-mix(in srgb, var(--surface) 45%, transparent); }
 @media (max-height: 700px) { .m-voice-stage.live .m-orb { width: 128px; height: 128px; } .m-voice-status { margin-top: 14px; } }
+.m-voice.has-crisis .m-voice-stage.live { padding-top: 10px; }
+.m-voice.has-crisis .m-voice-stage.live .m-orb { width: 104px; height: 104px; }
+.m-voice.has-crisis .m-voice-status { margin-top: 10px; font-size: 15px; }
+.m-voice.has-crisis .m-voice-crisis .crisis { padding: 10px 12px; }
+.m-voice.has-crisis .m-voice-crisis .crisis b { font-size: 13.5px; }

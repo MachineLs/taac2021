@@ -43,6 +43,7 @@ router.post('/assessments/:scale', requireAuth, h((req, res) => {
   const item9 = scale === 'phq9' && answers[8] > 0;
   const result: AssessmentResult = {
     id: id('ar'), scale, score, max: SCALE_MAX[scale], level, interpretation: interpret(scale, level, item9), answers, createdAt: nowIso(),
+    ...(item9 ? { crisis: true } : {}),
   };
   const user = me(req);
   tx(() => {

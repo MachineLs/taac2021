@@ -104,6 +104,8 @@ export const api = {
   // messages & notifications
   conversations: () => get<T.Conversation[]>('/conversations'),
   openConversation: (counselorId: string) => post<T.Conversation>('/conversations', { counselorId }),
+  /** Counselor side: open (or get) the conversation with a client who has booked this counselor. */
+  openConversationWithClient: (clientId: string) => post<T.Conversation>('/conversations', { clientId }),
   messages: (conversationId: string) => get<T.ChatMessage[]>(`/conversations/${conversationId}/messages`),
   sendMessage: (conversationId: string, content: string) => post<T.ChatMessage>(`/conversations/${conversationId}/messages`, { content }),
   notifications: () => get<T.Notification[]>('/notifications'),

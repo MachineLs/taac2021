@@ -37,10 +37,11 @@ export function getCounselorSummary(counselorId: string): CounselorSummary | nul
 /** Standard SELECT for appointments; pass the WHERE/ORDER clause. */
 export const APPOINTMENT_SELECT = `
   SELECT a.*, c.name AS c_name, c.avatar AS c_avatar, c.title AS c_title,
-         u.name AS u_name, u.avatar AS u_avatar
+         u.name AS u_name, u.avatar AS u_avatar, cr.name AS cr_name
   FROM appointments a
   JOIN counselors c ON c.id = a.counselor_id
-  JOIN users u ON u.id = a.user_id`;
+  JOIN users u ON u.id = a.user_id
+  LEFT JOIN creators cr ON cr.id = a.creator_id`;
 
 export function toAppointment(a: Row): Appointment {
   return {
@@ -49,7 +50,7 @@ export function toAppointment(a: Row): Appointment {
     client: { id: a.user_id, name: a.u_name, avatar: a.u_avatar ?? null },
     slotId: a.slot_id, startAt: a.start_at, endAt: a.end_at, mode: a.mode, status: a.status,
     price: a.price, discount: a.discount, amount: a.amount, couponId: a.user_coupon_id ?? null,
-    intakeSessionId: a.intake_session_id ?? null, shareIntake: !!a.share_intake, creatorId: a.creator_id ?? null,
+    intakeSessionId: a.intake_session_id ?? null, shareIntake: !!a.share_intake, creatorId: a.creator_id ?? null, creatorName: a.cr_name ?? null,
     reviewed: !!a.reviewed, createdAt: a.created_at, paidAt: a.paid_at ?? null, cancelledAt: a.cancelled_at ?? null,
     payExpiresAt: a.pay_expires_at ?? null,
   };

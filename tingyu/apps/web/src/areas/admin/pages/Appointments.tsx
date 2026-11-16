@@ -75,7 +75,7 @@ export default function Appointments() {
                     <td>{modeLabel(a.mode)}</td>
                     <td className="r"><b className="num">{yuan(a.amount)}</b>{a.discount > 0 && <span className="adm-cell-sub">原价 {yuan(a.price)}</span>}</td>
                     <td className="r num">{a.discount > 0 ? <span className="adm-discount">-{yuan(a.discount)}</span> : <span className="muted">—</span>}</td>
-                    <td>{a.creatorId ? <span className="tag adm-tag-blue">{creatorName.get(a.creatorId) ?? '达人推荐'}</span> : <span className="muted">自然流量</span>}</td>
+                    <td>{a.creatorId ? <span className="tag adm-tag-blue">{a.creatorName ?? creatorName.get(a.creatorId) ?? '达人推荐'}</span> : <span className="muted">自然流量</span>}</td>
                     <td><span className={STATUS_BADGE[a.status]}>{STATUS_LABEL[a.status]}</span></td>
                   </tr>
                 ))}

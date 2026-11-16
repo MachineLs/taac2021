@@ -122,7 +122,7 @@ export default function Voice() {
   const showCrisis = !!crisis || !!session?.crisis;
 
   return (
-    <div className={`m-voice is-${phase === 'live' ? status : 'idle'}`}>
+    <div className={`m-voice is-${phase === 'live' ? status : 'idle'}${showCrisis ? ' has-crisis' : ''}`}>
       <div className="m-voice-bg" aria-hidden="true"><i /><i /><i /></div>
       <header className="m-voice-top">
         <button type="button" className="m-vbtn" aria-label="返回" onClick={() => nav(-1)}><Icon name="back" size={22} /></button>

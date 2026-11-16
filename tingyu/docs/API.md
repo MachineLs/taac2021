@@ -31,9 +31,9 @@
 | GET | /workbench/slots?from=&days=14 | 🧑‍⚕️ | – | Slot[] |
 | POST | /workbench/slots | 🧑‍⚕️ | UpsertSlotsReq | Slot[]（新建的） |
 | DELETE | /workbench/slots/:id | 🧑‍⚕️ | – | `{ ok: true }`（只能删 open） |
-| POST | /workbench/appointments/:id/notes | 🧑‍⚕️ | `{ content: string }` | SessionNote |
+| POST | /workbench/appointments/:id/notes | 🧑‍⚕️ | `{ content: string }` | SessionNote（每个预约一条，再次提交即更新；brief.notes 返回该来访者所有预约的记录） |
 | GET | /workbench/earnings?month=2026-11 | 🧑‍⚕️ | – | CounselorEarnings |
-| POST | /counselor-applications | 🔑 | ApplyCounselorReq | CounselorDetail（status=pending，当前用户获得 counselor 角色） |
+| POST | /counselor-applications | 🔑 | ApplyCounselorReq | CounselorDetail（status=pending，当前用户获得 counselor 角色；被驳回后可重新提交） |
 | GET | /admin/counselors?status= | 🛡 | – | CounselorDetail[] |
 | POST | /admin/counselors/:id/review | 🛡 | ReviewCounselorReq | CounselorDetail |
 | GET | /admin/appointments?status=&page= | 🛡 | – | Page<Appointment> |
@@ -53,7 +53,7 @@
 | GET | /mood?days=30 | 🔑 | – | MoodCheckin[] |
 | POST | /mood | 🔑 | CreateMoodReq | MoodCheckin |
 | GET | /conversations | 🔑 | – | Conversation[]（来访者或咨询师视角） |
-| POST | /conversations | 🔑 | `{ counselorId: string }` | Conversation（已存在则返回已有） |
+| POST | /conversations | 🔑 | `{ counselorId }`（来访者）或 `{ clientId }`（咨询师，对方须预约过自己） | Conversation（已存在则返回已有） |
 | GET | /conversations/:id/messages | 🔑 | – | ChatMessage[]（同时把对方消息标记已读） |
 | POST | /conversations/:id/messages | 🔑 | SendMessageReq | ChatMessage（含风险词 → 写 crisis_alerts，source=message） |
 | GET | /notifications | 🔑 | – | Notification[] |

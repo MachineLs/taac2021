@@ -124,6 +124,7 @@ export interface Appointment {
   intakeSessionId: string | null;
   shareIntake: boolean;       // client consented to share the AI intake summary with the counselor
   creatorId: string | null;   // attributed creator (达人) for the first order
+  creatorName: string | null; // name of the attributed creator, for display
   reviewed: boolean;
   createdAt: string;
   paidAt: string | null;
@@ -227,6 +228,7 @@ export interface AssessmentResult {
   interpretation: string;
   answers: number[];
   createdAt: string;
+  crisis?: boolean;           // true when the answers indicate self-harm risk (PHQ-9 item 9 > 0); show CrisisBanner
 }
 export interface SubmitAssessmentReq { answers: number[] }
 
