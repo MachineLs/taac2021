@@ -1,6 +1,6 @@
 /* Creator (达人) dashboard (F4). Prefix: cr-. Colors come from tokens only. */
 html:has(.cr) { scroll-behavior: smooth; }
-.cr { display: grid; grid-template-columns: 220px minmax(0, 1fr); min-height: 100vh; background: var(--bg); }
+.cr { display: grid; grid-template-columns: 220px minmax(0, 1fr); min-height: 100vh; background: linear-gradient(to right, var(--surface) 219px, var(--line) 219px 220px, var(--bg) 220px); }
 .cr-side { position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column; gap: 18px; padding: 18px 14px; background: var(--surface); border-right: 1px solid var(--line); }
 .cr-logo { display: flex; align-items: center; gap: 10px; padding: 0 8px; }
 .cr-logo-mark { width: 32px; height: 32px; border-radius: 9px; background: var(--blue); color: var(--surface); display: grid; place-items: center; font-weight: 800; font-size: 16px; flex-shrink: 0; }
@@ -36,7 +36,11 @@ html:has(.cr) { scroll-behavior: smooth; }
 .cr-profile-main { min-width: 0; flex: 1; }
 .cr-profile-name { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .cr-profile-name h2 { margin: 0; font-size: 19px; }
+.cr-profile-main { display: flex; flex-direction: column; align-self: stretch; }
 .cr-profile-main > p { margin: 6px 0 14px; color: var(--ink-2); }
+.cr-profile-status { margin-top: auto; padding-top: 14px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 12.5px; color: var(--ink-2); }
+.cr-profile-status i { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
+.cr-profile-status span { color: var(--ink-3); }
 .cr-profile-meta { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; list-style: none; margin: 0; padding: 0; }
 .cr-profile-meta li { display: grid; padding: 10px 12px; border-radius: var(--r); background: var(--surface); border: 1px solid var(--line-2); min-width: 0; }
 .cr-profile-meta b { font-size: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -68,7 +72,7 @@ html:has(.cr) { scroll-behavior: smooth; }
 .cr-kpi-accent .cr-kpi-value { color: var(--surface); }
 
 /* trend + funnel */
-.cr-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; align-items: start; }
+.cr-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; align-items: stretch; }
 .cr-span-2 { grid-column: span 2; }
 .cr-trend { display: grid; gap: 14px; }
 .cr-readout { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px; min-height: 21px; }
@@ -132,7 +136,7 @@ html:has(.cr) { scroll-behavior: smooth; }
   .cr-span-2 { grid-column: auto; }
 }
 @media (max-width: 960px) {
-  .cr { grid-template-columns: minmax(0, 1fr); }
+  .cr { grid-template-columns: minmax(0, 1fr); background: var(--bg); }
   .cr-side { display: none; }
   .cr-logo-top { display: flex; }
   .cr-top-title { display: none; }
@@ -152,4 +156,9 @@ html:has(.cr) { scroll-behavior: smooth; }
   .cr-copy-row .btn { min-width: 0; padding: 0 12px; }
   .cr-multiples { grid-template-columns: minmax(0, 1fr); }
   .cr-profile-meta b { font-size: 14px; }
+  .cr-profile { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 0 12px; }
+  .cr-profile > .avatar { width: 52px; height: 52px; grid-row: span 2; }
+  .cr-profile-main { display: contents; }
+  .cr-profile-main > p { margin: 2px 0 12px; font-size: 13px; }
+  .cr-profile-meta, .cr-profile-status { grid-column: 1 / -1; }
 }

@@ -50,6 +50,7 @@ export function OverviewTrend({ daily }: { daily: Day[] }) {
   const band = n ? plotW / n : 0;
   const cx = (i: number) => padL + band * (i + 0.5);
   const bw = Math.max(2, Math.min(24, band * 0.56));
+  const labelEvery = Math.max(1, Math.ceil(40 / Math.max(band, 1)));
 
   const gTicks = niceTicks(Math.max(...daily.map((d) => d.gmv), 0));
   const gTop = gTicks[gTicks.length - 1];
@@ -141,7 +142,7 @@ export function OverviewTrend({ daily }: { daily: Day[] }) {
               )}
 
               {/* shared x-axis */}
-              {daily.map((d, i) => (n <= 8 || i % 2 === (n - 1) % 2) && (
+              {daily.map((d, i) => ((n - 1 - i) % labelEvery === 0) && (
                 <text key={`x${d.date}`} x={cx(i)} y={p2Bot + 20} textAnchor="middle" className={`adm-ax${i === idx ? ' on' : ''}`}>{shortDate(d.date)}</text>
               ))}
 

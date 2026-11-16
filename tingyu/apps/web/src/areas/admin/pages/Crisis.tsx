@@ -6,6 +6,7 @@ import { api } from '../../../api/client';
 import { ago, dateTime, time } from '../../../lib/format';
 import { useToast } from '../../../components/Toast';
 import { Empty, ErrorState, Loading } from '../../../components/states';
+import { useAuth } from '../../../auth/AuthContext';
 import { useAdminShell } from '../AdminLayout';
 import { IconPhone, IconRefresh } from '../icons';
 import { asError, errText } from '../lib';
@@ -108,6 +109,9 @@ export default function Crisis() {
 function AlertItem({ a, onUpdated, onError }: { a: CrisisAlert; onUpdated: (a: CrisisAlert) => void; onError: (m: string) => void }) {
   const [busy, setBusy] = useState<null | 'handling' | 'resolved'>(null);
   const [confirm, setConfirm] = useState(false);
+  const { user } = useAuth();
+  // handledBy may be a display name or a user id (contract is ambiguous, see docs/contract-requests/f4.md)
+  const handler = !a.handledBy ? null : a.handledBy === user?.id ? `${user.name}（我）` : /^u_[a-z0-9]+$/i.test(a.handledBy) ? `运营账号 ${a.handledBy}` : a.handledBy;
   const waitedMin = Math.floor((Date.now() - new Date(a.createdAt).getTime()) / 60000);
   const overdue = a.status === 'open' && waitedMin >= 3;
 
@@ -131,7 +135,7 @@ function AlertItem({ a, onUpdated, onError }: { a: CrisisAlert; onUpdated: (a: C
         </div>
         <blockquote className="adm-alert-quote">“{a.excerpt}”</blockquote>
         {!a.user && <p className="adm-alert-hint">匿名用户无联系方式：请通过该会话向用户推送热线信息，并持续关注会话动态。</p>}
-        {a.handledBy && <p className="adm-alert-handler">处理人：{a.handledBy}</p>}
+        {handler && <p className="adm-alert-handler">处理人：{handler}</p>}
       </div>
       <div className="adm-alert-actions">
         {a.status === 'open' && (

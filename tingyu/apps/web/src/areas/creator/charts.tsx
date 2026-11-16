@@ -20,6 +20,17 @@ function useWidth<T extends HTMLElement>() {
   return [ref, w] as const;
 }
 
+function useMedia(q: string) {
+  const [m, setM] = useState(() => typeof window !== 'undefined' && window.matchMedia(q).matches);
+  useEffect(() => {
+    const mq = window.matchMedia(q);
+    const on = () => setM(mq.matches);
+    on(); mq.addEventListener('change', on);
+    return () => mq.removeEventListener('change', on);
+  }, [q]);
+  return m;
+}
+
 type Day = CreatorStats['daily'][number];
 type Key = 'visits' | 'signups' | 'orders';
 const SERIES: { key: Key; label: string; unit: string; color: string }[] = [
@@ -31,6 +42,7 @@ const SERIES: { key: Key; label: string; unit: string; color: string }[] = [
 export function TrendMultiples({ daily }: { daily: Day[] }) {
   const [idx, setIdx] = useState<number | null>(null);
   const [table, setTable] = useState(false);
+  const stacked = useMedia('(max-width: 640px)');
   const hov = idx !== null ? daily[idx] : null;
   const onKey = (e: KeyboardEvent) => {
     const n = daily.length;
@@ -62,17 +74,17 @@ export function TrendMultiples({ daily }: { daily: Day[] }) {
         </div>
       ) : (
         <div className="cr-multiples" tabIndex={0} role="group" aria-label="近 30 天访问、注册、订单趋势，使用左右方向键逐日查看" onKeyDown={onKey} onBlur={() => setIdx(null)}>
-          {SERIES.map((s) => <Panel key={s.key} daily={daily} s={s} idx={idx} setIdx={setIdx} />)}
+          {SERIES.map((s) => <Panel key={s.key} daily={daily} s={s} idx={idx} setIdx={setIdx} compactH={stacked} />)}
         </div>
       )}
     </div>
   );
 }
 
-function Panel({ daily, s, idx, setIdx }: { daily: Day[]; s: (typeof SERIES)[number]; idx: number | null; setIdx: (i: number | null) => void }) {
+function Panel({ daily, s, idx, setIdx, compactH }: { daily: Day[]; s: (typeof SERIES)[number]; idx: number | null; setIdx: (i: number | null) => void; compactH: boolean }) {
   const [ref, W] = useWidth<HTMLDivElement>();
   const n = daily.length;
-  const H = 150, padL = 34, padR = 30, top = 10, bot = 124;
+  const H = compactH ? 170 : 236, padL = 34, padR = 30, top = 12, bot = H - 26;
   const plotW = Math.max(0, W - padL - padR);
   const x = (i: number) => padL + (n > 1 ? (i / (n - 1)) * plotW : plotW / 2);
   const vals = daily.map((d) => d[s.key]);

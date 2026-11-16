@@ -78,6 +78,7 @@ function Body({ s, toast }: { s: CreatorStats; toast: (m: string) => void }) {
               <li><b className="num">{c.refCode}</b><span>邀请码</span></li>
               <li><b className="num">{rate}%</b><span>首单分成</span></li>
             </ul>
+            <p className="cr-profile-status"><i aria-hidden="true" />合作中<span>· 新客首单 {rate}% 分成 · 每月 15 日结算上月佣金</span></p>
           </div>
         </div>
         <div id="cr-links" className="card cr-links">
