@@ -1,13 +1,17 @@
 {
   "name": "tingyu",
   "private": true,
-  "workspaces": ["packages/*", "apps/*"],
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
   "scripts": {
     "dev:server": "npm run dev -w @tingyu/server",
     "dev:web": "npm run dev -w @tingyu/web",
     "seed": "npm run seed -w @tingyu/server",
     "test": "npm test -w @tingyu/server",
     "typecheck": "npm run typecheck -w @tingyu/shared && npm run typecheck -w @tingyu/server && npm run typecheck -w @tingyu/web",
-    "build": "npm run build -w @tingyu/web"
+    "build": "npm run build -w @tingyu/web",
+    "start": "npm run build && npm run start -w @tingyu/server"
   }
 }
